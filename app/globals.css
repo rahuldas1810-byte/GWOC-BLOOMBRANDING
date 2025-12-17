@@ -1,0 +1,105 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+  }
+  
+  body {
+    @apply bg-earl-gray text-near-black font-sans;
+    font-size: 16px;
+    line-height: 1.6;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-serif text-dark-choc;
+    line-height: 1.05;
+  }
+
+  p {
+    @apply text-near-black;
+    line-height: 1.75;
+  }
+}
+
+@layer components {
+  .container-custom {
+    @apply max-w-6xl mx-auto px-6 sm:px-10 lg:px-16;
+  }
+  
+  .section-padding {
+    @apply py-24 md:py-32 lg:py-40;
+  }
+  
+  /* Editorial Typography - Refined Scale */
+  .heading-1 {
+    @apply font-serif text-dark-choc font-normal;
+    font-size: clamp(3rem, 7vw, 5.5rem);
+    line-height: 1;
+    letter-spacing: -0.03em;
+  }
+  
+  .heading-2 {
+    @apply font-serif text-dark-choc font-normal;
+    font-size: clamp(2.25rem, 5vw, 4rem);
+    line-height: 1.05;
+    letter-spacing: -0.02em;
+  }
+  
+  .heading-3 {
+    @apply font-serif text-dark-choc font-normal;
+    font-size: clamp(1.5rem, 3vw, 2.25rem);
+    line-height: 1.15;
+    letter-spacing: -0.01em;
+  }
+
+  .body-text {
+    @apply text-near-black/80 font-sans;
+    font-size: 1.125rem;
+    line-height: 1.8;
+  }
+
+  /* Refined Label Text - More Elegant */
+  .label-text {
+    @apply font-mono text-dark-choc/70 uppercase;
+    font-size: 0.6875rem;
+    letter-spacing: 0.2em;
+  }
+  
+  /* Brand Buttons - More Refined */
+  .btn-primary {
+    @apply inline-flex items-center justify-center px-10 py-5 font-mono text-xs uppercase text-white bg-electric-blue hover:bg-electric-blue-dark transition-all duration-500 ease-out;
+    letter-spacing: 0.2em;
+  }
+  
+  .btn-secondary {
+    @apply inline-flex items-center justify-center px-10 py-5 font-mono text-xs uppercase text-electric-blue bg-transparent border border-electric-blue/40 hover:border-electric-blue hover:bg-electric-blue hover:text-white transition-all duration-500 ease-out;
+    letter-spacing: 0.2em;
+  }
+
+  /* Card Styles - Cleaner */
+  .card {
+    @apply bg-white p-10 md:p-12;
+  }
+
+  .card-highlight {
+    @apply bg-butter-yellow/40 p-10 md:p-12;
+  }
+
+  /* Image placeholder styling */
+  .image-placeholder {
+    @apply bg-dark-choc/5 relative overflow-hidden;
+  }
+
+  .image-placeholder::after {
+    content: '';
+    @apply absolute inset-0 bg-gradient-to-br from-transparent to-dark-choc/5;
+  }
+}
+
+/* Selection styling */
+::selection {
+  @apply bg-electric-blue/20 text-dark-choc;
+}

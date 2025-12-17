@@ -1,0 +1,129 @@
+'use client'
+
+import { useState } from 'react'
+import Link from 'next/link'
+import { usePathname } from 'next/navigation'
+import { motion, AnimatePresence } from 'framer-motion'
+
+const navItems = [
+  { href: '/', label: 'Home' },
+  { href: '/our-story', label: 'Our Story' },
+  { href: '/services', label: 'Services' },
+  { href: '/clients', label: 'Clients' },
+  { href: '/testimonials', label: 'Testimonials' },
+  { href: '/contact', label: 'Contact' },
+]
+
+export default function Navbar() {
+  const pathname = usePathname()
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
+
+  return (
+    <motion.nav
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      transition={{ duration: 0.8 }}
+      className="sticky top-0 z-50 bg-earl-gray/95 backdrop-blur-sm"
+    >
+      <div className="container-custom">
+        <div className="flex items-center justify-between h-20 md:h-28">
+          {/* Logo */}
+          <Link 
+            href="/" 
+            className="flex items-baseline gap-1.5 group"
+          >
+            <span className="font-serif text-3xl md:text-4xl text-electric-blue group-hover:text-electric-blue-dark transition-colors duration-500">
+              Bloom
+            </span>
+            <span className="font-mono text-[9px] uppercase tracking-[0.25em] text-dark-choc/50 hidden sm:block">
+              Branding
+            </span>
+          </Link>
+          
+          <div className="hidden lg:flex items-center space-x-12">
+            {navItems.map((item) => (
+              <Link
+                key={item.href}
+                href={item.href}
+                className={`font-mono text-[11px] uppercase tracking-[0.2em] transition-colors duration-500 ${
+                  pathname === item.href
+                    ? 'text-electric-blue'
+                    : 'text-dark-choc/70 hover:text-electric-blue'
+                }`}
+              >
+                {item.label}
+              </Link>
+            ))}
+          </div>
+
+          <div className="flex items-center gap-8">
+            <Link
+              href="/contact"
+              className="hidden lg:inline-block font-mono text-[11px] uppercase tracking-[0.2em] text-white bg-electric-blue px-7 py-4 hover:bg-electric-blue-dark transition-colors duration-500"
+            >
+              Get Started
+            </Link>
+            
+            <button
+              onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+              className="lg:hidden p-2 text-dark-choc hover:text-electric-blue transition-colors duration-500"
+              aria-label="Toggle menu"
+            >
+              <svg
+                className="w-6 h-6"
+                fill="none"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth="1.5"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
+                {mobileMenuOpen ? (
+                  <path d="M6 18L18 6M6 6l12 12" />
+                ) : (
+                  <path d="M4 6h16M4 12h16M4 18h16" />
+                )}
+              </svg>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <AnimatePresence>
+        {mobileMenuOpen && (
+          <motion.div
+            initial={{ opacity: 0, height: 0 }}
+            animate={{ opacity: 1, height: 'auto' }}
+            exit={{ opacity: 0, height: 0 }}
+            transition={{ duration: 0.4 }}
+            className="lg:hidden border-t border-dark-choc/5 bg-earl-gray"
+          >
+            <div className="container-custom py-10 space-y-8">
+              {navItems.map((item) => (
+                <Link
+                  key={item.href}
+                  href={item.href}
+                  onClick={() => setMobileMenuOpen(false)}
+                  className={`block font-mono text-sm uppercase tracking-[0.2em] transition-colors duration-500 ${
+                    pathname === item.href
+                      ? 'text-electric-blue'
+                      : 'text-dark-choc/70 hover:text-electric-blue'
+                  }`}
+                >
+                  {item.label}
+                </Link>
+              ))}
+              <Link
+                href="/contact"
+                onClick={() => setMobileMenuOpen(false)}
+                className="inline-block font-mono text-[11px] uppercase tracking-[0.2em] text-white bg-electric-blue px-7 py-4 mt-4"
+              >
+                Get Started
+              </Link>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </motion.nav>
+  )
+}
