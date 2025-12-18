@@ -1,6 +1,7 @@
 'use client'
 
 import SectionReveal from '@/components/SectionReveal'
+import Image from 'next/image'
 
 export default function OurStory() {
   return (
@@ -87,9 +88,25 @@ export default function OurStory() {
         <section className="section-padding bg-white">
           <div className="container-custom">
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-16 lg:gap-24 items-center">
-              <div className="lg:col-span-5 order-2 lg:order-1">
-                <div className="image-placeholder aspect-[4/5] bg-earl-gray" />
-              </div>
+<div className="lg:col-span-6 order-2 lg:order-1">
+  <div className="rounded-2xl overflow-hidden shadow-[0_30px_80px_rgba(0,0,0,0.18)]">
+    <Image
+      src="/27.jpg"
+      alt="Bloom Branding work showcase"
+      width={1800}
+      height={1000}
+      className="w-full h-auto"
+      priority
+    />
+  </div>
+</div>
+
+
+
+
+
+
+
               <div className="lg:col-span-6 lg:col-start-7 order-1 lg:order-2">
                 <p className="label-text mb-5">Our Purpose</p>
                 <h2 className="heading-2 mb-10">Why We Exist</h2>
