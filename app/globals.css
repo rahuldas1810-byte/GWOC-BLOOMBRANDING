@@ -45,7 +45,7 @@
     @apply font-serif text-dark-choc font-normal;
     font-size: clamp(2.25rem, 5vw, 4rem);
     line-height: 1.05;
-    letter-spacing: -0.02em;
+    letter-spacing: -0.em;
   }
   
   .heading-3 {
@@ -65,7 +65,7 @@
   .label-text {
     @apply font-mono text-dark-choc/70 uppercase;
     font-size: 0.6875rem;
-    letter-spacing: 0.2em;
+    letter-spacing: 0.18em;
   }
   
   /* Brand Buttons - More Refined */
@@ -103,3 +103,15 @@
 ::selection {
   @apply bg-electric-blue/20 text-dark-choc;
 }
+/* Subtle float animation for editorial images */
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-8px); }
+}
+
+.float-image {
+  animation: float 12s ease-in-out infinite;
+}
+
+
+

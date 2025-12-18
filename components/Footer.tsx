@@ -1,4 +1,6 @@
 import Link from 'next/link'
+import Image from "next/image"
+
 
 export default function Footer() {
   return (
@@ -6,13 +8,20 @@ export default function Footer() {
       <div className="container-custom py-24 md:py-32">
         <div className="grid grid-cols-1 md:grid-cols-12 gap-16 md:gap-8">
           <div className="md:col-span-5">
-            {/* Logo */}
-            <div className="mb-8">
-              <span className="font-serif text-4xl text-white">Bloom</span>
-              <span className="font-mono text-[9px] uppercase tracking-[0.25em] text-white/50 ml-2">
-                Branding
-              </span>
-            </div>
+{/* Logo */}
+<div className="mb-8">
+  <Link href="/">
+    <Image
+      src="/bloom-logo.png"   // your logo file
+      alt="Bloom Branding Logo"
+      width={190}
+      height={70}
+      className="object-contain"
+      priority
+    />
+  </Link>
+</div>
+
             <p className="font-mono text-[11px] uppercase tracking-[0.2em] text-butter-yellow mb-5">
               Helping Brands Bloom
             </p>
@@ -63,9 +72,16 @@ export default function Footer() {
             &copy; {new Date().getFullYear()} Bloom Branding
           </p>
           {/* Brand Mark */}
-          <span className="font-serif text-3xl text-butter-yellow/70">
-            Bb.
-          </span>
+         <Link href="/" className="md:ml-auto">
+  <Image
+    src="/Bblogo.png"   // ← your logo file
+    alt="Bloom Branding logo"
+    width={84}
+    height={84}
+    className="opacity-70 hover:opacity-100 transition-opacity duration-300"
+  />
+</Link>
+
         </div>
       </div>
     </footer>
