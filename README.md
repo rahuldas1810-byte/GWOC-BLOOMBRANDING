@@ -1,169 +1,80 @@
-# Bloom Branding - GWOC Track 3
+Bloom Branding — GWOC Track 3
 
-A polished, premium branding agency website built for Google Winter of Code - Track 3.
+A clean, client-ready branding agency website built as part of Google Winter of Code (GWOC) – Track 3.
 
-## 🎯 Project Overview
+The project focuses on strong fundamentals: clear layouts, consistent design, and a maintainable codebase, rather than unnecessary visual or technical complexity.
 
-This is a client-ready branding agency website for **Bloom Branding**, built with modern web technologies and following strict design principles: clarity over complexity, polish over flashiness, and stability over experiments.
+Project Overview
 
-## 🛠️ Tech Stack
+Bloom Branding represents a premium branding agency.
+The objective was to build a realistic agency website that prioritizes clarity, readability, and long-term maintainability.
 
-- **Next.js 14** (App Router)
-- **TypeScript**
-- **Tailwind CSS**
-- **Framer Motion** (restrained animations)
-- **Next.js Server Actions** (form handling)
-- **React Hook Form** + **Zod** (form validation)
+Design and development decisions were guided by simplicity, structure, and production readiness.
 
-## 📋 Features
+Tech Stack
 
-- 6 core pages: Home, Our Story, Services, Clients, Testimonials, Contact
-- File-based content management (no database required)
-- Contact form with Server Actions
-- Fully responsive design
-- Restrained, confident animations
-- Production-ready codebase
+Next.js 14 (App Router)
 
-## 🚀 Getting Started
+TypeScript
 
-### Prerequisites
+Tailwind CSS
 
-- **Node.js 18+** (required to run this Next.js application)
-- npm or yarn package manager
+Framer Motion (minimal usage)
 
-### Installation & Setup
+Next.js Server Actions
 
-1. **Clone the repository:**
-```bash
+React Hook Form + Zod
+
+Features
+
+Core pages: Home, Our Story, Services, Clients, Testimonials, Contact
+
+Fully responsive layout
+
+File-based content management
+
+Server-side contact form handling
+
+Clean and scalable project structure
+
+Getting Started
+Requirements
+
+Node.js 18+
+
+npm or yarn
+
+Setup
 git clone <repository-url>
 cd bloom-branding-gwoc
-```
-
-2. **Install dependencies using Node.js/npm:**
-```bash
 npm install
-```
 
-3. **Customize content (optional):**
-   - Edit `/content/testimonials.ts` to update testimonials
-   - Edit `/content/clients.ts` to update client list
-   - Edit `/content/homepage.ts` to update homepage content
-   - All content is stored in TypeScript files for easy version control and updates
-
-## ▶️ Running the Application
-
-This is a **Next.js application** that runs on **Node.js**. Use the following commands:
-
-### Development Mode (Recommended)
-```bash
+Run Locally
 npm run dev
-```
-This starts the Next.js development server on **http://localhost:3000**
 
-### Production Build
-```bash
-npm run build
-npm start
-```
-This builds and runs the optimized production version.
 
-### Other Commands
-```bash
-npm run lint    # Run ESLint to check code quality
-```
+The app runs at http://localhost:3000.
 
-**Note:** Make sure you have Node.js 18+ installed. You can check your version with:
-```bash
-node --version
-```
+Project Structure
+app/        Next.js pages and routes
+components/ Reusable UI components
+content/    File-based content (TypeScript)
+lib/        Utilities
+types/      Type definitions
 
-## 📁 Project Structure
+Content Management
 
-```
-├── app/                    # Next.js App Router pages
-│   ├── page.tsx           # Home page
-│   ├── our-story/         # Our Story page
-│   ├── services/          # Services page
-│   ├── clients/           # Clients page
-│   ├── testimonials/      # Testimonials page
-│   ├── contact/           # Contact page
-│   └── actions/           # Server Actions
-│       └── contact.ts     # Contact form handler
-├── components/            # Reusable React components
-│   ├── Navbar.tsx
-│   ├── Footer.tsx
-│   └── SectionReveal.tsx
-├── content/               # Content files (file-based CMS)
-│   ├── testimonials.ts   # Testimonials data
-│   ├── clients.ts        # Clients data
-│   └── homepage.ts       # Homepage content
-├── lib/                   # Utility functions
-│   └── content.ts         # Content utilities
-└── types/                 # TypeScript type definitions
-```
+All website content is stored in TypeScript files under the content/ directory.
+This approach ensures type safety, version control, and easy updates without using a database.
 
-## 🎨 Brand Design System
+Deployment
 
-### Color Palette (From Brand Guide)
-```css
-Earl Gray:       #E8E6D8  /* Background, neutral */
-Electric Blue:   #2C4494  /* Primary CTA, accent */
-Butter Yellow:   #BDAF62  /* Highlight sections */
-Dark Choc:       #624A41  /* Headings, contrast */
-Near Black:      #1A1A1A  /* Body text */
-```
+The project can be deployed directly on Vercel with no additional configuration.
 
-### Typography
-- **Headings**: Playfair Display (serif, editorial)
-- **UI/Labels**: Lekton (mono, uppercase tracking)
-- **Body**: Arial (clean, readable)
+License
 
-### Design Principles
-- **Editorial**: Print-inspired, spacious layouts
-- **Clarity > Features**: Focus on clear communication
-- **Polish > Complexity**: Refined, not over-engineered
-- **Confidence > Flashiness**: Premium, not attention-seeking
+Built for Google Winter of Code — Track 3.
 
-### Visual Rules
-- No gradients
-- No shadows
-- Rectangular buttons (no rounding)
-- Large section padding (80-120px)
-- Restrained animations (opacity + subtle Y movement)
+Credits
 
-## 📝 Content Management
-
-All content is stored in TypeScript files in the `/content` directory. This approach provides:
-
-- **Version control**: All content changes are tracked in git
-- **Type safety**: TypeScript ensures content structure is correct
-- **Easy updates**: Edit files directly, no database needed
-- **Predictable**: No external dependencies or API calls
-
-### Content Files
-
-- `/content/testimonials.ts` - Client testimonials
-- `/content/clients.ts` - Client list
-- `/content/homepage.ts` - Homepage text content
-
-### Contact Form
-
-The contact form uses **Next.js Server Actions** to handle submissions. Form data is validated on the server and logged (you can extend this to send emails or store submissions as needed).
-
-## 🚢 Deployment
-
-This project is ready for Vercel deployment:
-
-1. Push your code to GitHub
-2. Import the project in Vercel
-3. Deploy (no environment variables needed!)
-
-The project uses only Next.js primitives, so no external services or API keys are required.
-
-## 📄 License
-
-This project is built for Google Winter of Code - Track 3.
-
-## 👥 Credits
-
-Built for Bloom Branding as part of GWOC Track 3 evaluation.
+Developed for the Bloom Branding project as part of GWOC Track 3 evaluation.
