@@ -4,6 +4,7 @@ import { useState } from 'react'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { motion, AnimatePresence } from 'framer-motion'
+import Image from 'next/image'
 
 const navItems = [
   { href: '/', label: 'Home' },
@@ -27,18 +28,16 @@ export default function Navbar() {
     >
       <div className="container-custom">
         <div className="flex items-center justify-between h-20 md:h-28">
-          {/* Logo */}
-          <Link 
-            href="/" 
-            className="flex items-baseline gap-1.5 group"
-          >
-            <span className="font-serif text-3xl md:text-4xl text-electric-blue group-hover:text-electric-blue-dark transition-colors duration-500">
-              Bloom
-            </span>
-            <span className="font-mono text-[9px] uppercase tracking-[0.25em] text-dark-choc/50 hidden sm:block">
-              Branding
-            </span>
-          </Link>
+      
+<Link href="/" className="flex items-center group">
+  <Image
+    src="/bloom-logo.png"
+    alt="Bloom Branding Logo"
+    width={180}
+    height={60}
+    priority
+  />
+</Link>
           
           <div className="hidden lg:flex items-center space-x-12">
             {navItems.map((item) => (
