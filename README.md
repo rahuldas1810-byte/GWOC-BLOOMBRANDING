@@ -1,80 +1,62 @@
-Bloom Branding — GWOC Track 3
+Bloom Branding – GWOC Track 3
 
-A clean, client-ready branding agency website built as part of Google Winter of Code (GWOC) – Track 3.
+This project is a branding agency website created for Google Winter of Code (GWOC) – Track 3.
 
-The project focuses on strong fundamentals: clear layouts, consistent design, and a maintainable codebase, rather than unnecessary visual or technical complexity.
+Bloom Branding is a sample agency concept. The goal of this project was to build a clean, professional, and client-ready website. The focus was on clarity, simple structure, and stable code rather than heavy animations or unnecessary complexity.
 
-Project Overview
+WHAT THIS PROJECT INCLUDES
 
-Bloom Branding represents a premium branding agency.
-The objective was to build a realistic agency website that prioritizes clarity, readability, and long-term maintainability.
+Six main pages: Home, Our Story, Services, Clients, Testimonials, Contact
+Fully responsive layout for all screen sizes
+Contact form handled using server-side logic
+Content managed through TypeScript files
+Simple and maintainable project structure
 
-Design and development decisions were guided by simplicity, structure, and production readiness.
+TECH STACK USED
 
-Tech Stack
-
-Next.js 14 (App Router)
-
+Next.js 14 with App Router
 TypeScript
-
 Tailwind CSS
+Framer Motion used minimally for animations
+React Hook Form with Zod for validation
+Next.js Server Actions for form handling
 
-Framer Motion (minimal usage)
+HOW TO RUN THE PROJECT
 
-Next.js Server Actions
-
-React Hook Form + Zod
-
-Features
-
-Core pages: Home, Our Story, Services, Clients, Testimonials, Contact
-
-Fully responsive layout
-
-File-based content management
-
-Server-side contact form handling
-
-Clean and scalable project structure
-
-Getting Started
 Requirements
-
-Node.js 18+
-
-npm or yarn
+Node.js version 18 or higher
 
 Setup
 git clone <repository-url>
 cd bloom-branding-gwoc
 npm install
 
-Run Locally
+Run locally
 npm run dev
 
+Open http://localhost:3000
+ in your browser.
 
-The app runs at http://localhost:3000.
+PROJECT STRUCTURE OVERVIEW
 
-Project Structure
-app/        Next.js pages and routes
-components/ Reusable UI components
-content/    File-based content (TypeScript)
-lib/        Utilities
-types/      Type definitions
+The app folder contains all pages and routes
+The components folder contains reusable UI components
+The content folder contains website text and data
+The lib folder contains helper and utility functions
+The types folder contains TypeScript type definitions
 
-Content Management
+CONTENT HANDLING
 
-All website content is stored in TypeScript files under the content/ directory.
-This approach ensures type safety, version control, and easy updates without using a database.
+All website content is stored inside the content folder as TypeScript files. This makes updates easy, keeps everything type-safe, and removes the need for a database or external CMS.
 
-Deployment
+DEPLOYMENT
 
-The project can be deployed directly on Vercel with no additional configuration.
+The project can be deployed directly on Vercel without any additional configuration or environment variables.
 
-License
+LICENSE
 
-Built for Google Winter of Code — Track 3.
+Created for Google Winter of Code – Track 3.
 
-Credits
+CREDITS
 
-Developed for the Bloom Branding project as part of GWOC Track 3 evaluation.
+Built as part of the GWOC Track 3 evaluation for the Bloom Branding project.
