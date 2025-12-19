@@ -3,7 +3,7 @@
 import { useEffect, useState } from 'react'
 import Link from 'next/link'
 import SectionReveal from '@/components/SectionReveal'
-import ClientShowcase from '@/components/ClientShowcase/clientshowcase'
+import ClientShowcase from '@/components/clientshowcase'
 import { getClients } from '@/lib/content'
 
 export default function Clients() {
