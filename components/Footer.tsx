@@ -26,38 +26,55 @@ export default function Footer() {
               Helping Brands Bloom
             </p>
             <p className="font-sans text-white/60 text-base leading-relaxed max-w-sm">
-              Bringing synergy of aesthetics and expertise to help your brand bloom.
+              Bringing synergy of aesthetics and expertise to help your brand
+              bloom.
             </p>
           </div>
-          
+
           <div className="md:col-span-3 md:col-start-7">
-            <h4 className="font-mono text-[11px] uppercase tracking-[0.2em] text-butter-yellow mb-8">Pages</h4>
+            <h4 className="font-mono text-[11px] uppercase tracking-[0.2em] text-butter-yellow mb-8">
+              Pages
+            </h4>
             <ul className="space-y-5">
               <li>
-                <Link href="/our-story" className="font-sans text-base text-white/60 hover:text-white transition-colors duration-500">
+                <Link
+                  href="/our-story"
+                  className="font-sans text-base text-white/60 hover:text-white transition-colors duration-500"
+                >
                   Our Story
                 </Link>
               </li>
               <li>
-                <Link href="/services" className="font-sans text-base text-white/60 hover:text-white transition-colors duration-500">
+                <Link
+                  href="/services"
+                  className="font-sans text-base text-white/60 hover:text-white transition-colors duration-500"
+                >
                   Services
                 </Link>
               </li>
               <li>
-                <Link href="/clients" className="font-sans text-base text-white/60 hover:text-white transition-colors duration-500">
+                <Link
+                  href="/clients"
+                  className="font-sans text-base text-white/60 hover:text-white transition-colors duration-500"
+                >
                   Clients
                 </Link>
               </li>
               <li>
-                <Link href="/testimonials" className="font-sans text-base text-white/60 hover:text-white transition-colors duration-500">
+                <Link
+                  href="/testimonials"
+                  className="font-sans text-base text-white/60 hover:text-white transition-colors duration-500"
+                >
                   Testimonials
                 </Link>
               </li>
             </ul>
           </div>
-          
+
           <div className="md:col-span-3">
-            <h4 className="font-mono text-[11px] uppercase tracking-[0.2em] text-butter-yellow mb-8">Contact</h4>
+            <h4 className="font-mono text-[11px] uppercase tracking-[0.2em] text-butter-yellow mb-8">
+              Contact
+            </h4>
             <Link
               href="/contact"
               className="inline-block font-mono text-[11px] uppercase tracking-[0.2em] text-white border border-white/30 px-7 py-4 hover:bg-white hover:text-electric-blue transition-colors duration-500"
@@ -66,7 +83,7 @@ export default function Footer() {
             </Link>
           </div>
         </div>
-        
+
         <div className="mt-20 pt-10 border-t border-white/10 flex flex-col md:flex-row justify-between items-center gap-6">
           <p className="font-mono text-[11px] uppercase tracking-[0.2em] text-white/40">
             &copy; {new Date().getFullYear()} Bloom Branding
@@ -85,5 +102,5 @@ export default function Footer() {
         </div>
       </div>
     </footer>
-  )
+  );
 }
