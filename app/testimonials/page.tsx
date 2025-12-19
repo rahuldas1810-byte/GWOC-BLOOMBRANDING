@@ -1,23 +1,15 @@
 "use client";
 
-import { useEffect, useState, useRef } from "react";
+import { useEffect, useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
-import { motion, useScroll, useTransform, useSpring } from "framer-motion";
+import { motion } from "framer-motion";
 import SectionReveal from "@/components/SectionReveal";
 import { getTestimonials } from "@/lib/content";
 import type { Testimonial } from "@/types";
 
-// Maximum number of testimonials to support (prevents hook order issues)
-const MAX_TESTIMONIALS = 10;
-
 export default function Testimonials() {
   const [testimonials, setTestimonials] = useState<Testimonial[]>([]);
-  const containerRef = useRef<HTMLDivElement>(null);
-  const { scrollYProgress } = useScroll({
-    target: containerRef,
-    offset: ["start start", "end end"],
-  });
 
   useEffect(() => {
     const fetchTestimonials = async () => {
@@ -26,691 +18,6 @@ export default function Testimonials() {
     };
     fetchTestimonials();
   }, []);
-
-  // Smooth spring animation for scroll progress
-  const smoothProgress = useSpring(scrollYProgress, {
-    stiffness: 100,
-    damping: 30,
-    restDelta: 0.001,
-  });
-
-  // Precompute all motion values at the top level
-  // Always create MAX_TESTIMONIALS hooks to maintain hook order
-  // Call hooks unconditionally - they will adapt to testimonials.length dynamically
-  const imageOpacities = [
-    useTransform(smoothProgress, (latest) => {
-      if (testimonials.length === 0) return 0;
-      const index = 0;
-      const sectionStart = index / testimonials.length;
-      const sectionEnd = (index + 1) / testimonials.length;
-      if (latest < sectionStart || latest > sectionEnd) return 0;
-      const sectionProgress =
-        (latest - sectionStart) / (sectionEnd - sectionStart);
-      if (sectionProgress < 0.2) return sectionProgress / 0.2;
-      if (sectionProgress > 0.8) return 1 - (sectionProgress - 0.8) / 0.2;
-      return 1;
-    }),
-    useTransform(smoothProgress, (latest) => {
-      if (testimonials.length === 0) return 0;
-      const index = 1;
-      const sectionStart = index / testimonials.length;
-      const sectionEnd = (index + 1) / testimonials.length;
-      if (latest < sectionStart || latest > sectionEnd) return 0;
-      const sectionProgress =
-        (latest - sectionStart) / (sectionEnd - sectionStart);
-      if (sectionProgress < 0.2) return sectionProgress / 0.2;
-      if (sectionProgress > 0.8) return 1 - (sectionProgress - 0.8) / 0.2;
-      return 1;
-    }),
-    useTransform(smoothProgress, (latest) => {
-      if (testimonials.length === 0) return 0;
-      const index = 2;
-      const sectionStart = index / testimonials.length;
-      const sectionEnd = (index + 1) / testimonials.length;
-      if (latest < sectionStart || latest > sectionEnd) return 0;
-      const sectionProgress =
-        (latest - sectionStart) / (sectionEnd - sectionStart);
-      if (sectionProgress < 0.2) return sectionProgress / 0.2;
-      if (sectionProgress > 0.8) return 1 - (sectionProgress - 0.8) / 0.2;
-      return 1;
-    }),
-    useTransform(smoothProgress, (latest) => {
-      if (testimonials.length === 0) return 0;
-      const index = 3;
-      const sectionStart = index / testimonials.length;
-      const sectionEnd = (index + 1) / testimonials.length;
-      if (latest < sectionStart || latest > sectionEnd) return 0;
-      const sectionProgress =
-        (latest - sectionStart) / (sectionEnd - sectionStart);
-      if (sectionProgress < 0.2) return sectionProgress / 0.2;
-      if (sectionProgress > 0.8) return 1 - (sectionProgress - 0.8) / 0.2;
-      return 1;
-    }),
-    useTransform(smoothProgress, (latest) => {
-      if (testimonials.length === 0) return 0;
-      const index = 4;
-      const sectionStart = index / testimonials.length;
-      const sectionEnd = (index + 1) / testimonials.length;
-      if (latest < sectionStart || latest > sectionEnd) return 0;
-      const sectionProgress =
-        (latest - sectionStart) / (sectionEnd - sectionStart);
-      if (sectionProgress < 0.2) return sectionProgress / 0.2;
-      if (sectionProgress > 0.8) return 1 - (sectionProgress - 0.8) / 0.2;
-      return 1;
-    }),
-    useTransform(smoothProgress, (latest) => {
-      if (testimonials.length === 0) return 0;
-      const index = 5;
-      const sectionStart = index / testimonials.length;
-      const sectionEnd = (index + 1) / testimonials.length;
-      if (latest < sectionStart || latest > sectionEnd) return 0;
-      const sectionProgress =
-        (latest - sectionStart) / (sectionEnd - sectionStart);
-      if (sectionProgress < 0.2) return sectionProgress / 0.2;
-      if (sectionProgress > 0.8) return 1 - (sectionProgress - 0.8) / 0.2;
-      return 1;
-    }),
-    useTransform(smoothProgress, (latest) => {
-      if (testimonials.length === 0) return 0;
-      const index = 6;
-      const sectionStart = index / testimonials.length;
-      const sectionEnd = (index + 1) / testimonials.length;
-      if (latest < sectionStart || latest > sectionEnd) return 0;
-      const sectionProgress =
-        (latest - sectionStart) / (sectionEnd - sectionStart);
-      if (sectionProgress < 0.2) return sectionProgress / 0.2;
-      if (sectionProgress > 0.8) return 1 - (sectionProgress - 0.8) / 0.2;
-      return 1;
-    }),
-    useTransform(smoothProgress, (latest) => {
-      if (testimonials.length === 0) return 0;
-      const index = 7;
-      const sectionStart = index / testimonials.length;
-      const sectionEnd = (index + 1) / testimonials.length;
-      if (latest < sectionStart || latest > sectionEnd) return 0;
-      const sectionProgress =
-        (latest - sectionStart) / (sectionEnd - sectionStart);
-      if (sectionProgress < 0.2) return sectionProgress / 0.2;
-      if (sectionProgress > 0.8) return 1 - (sectionProgress - 0.8) / 0.2;
-      return 1;
-    }),
-    useTransform(smoothProgress, (latest) => {
-      if (testimonials.length === 0) return 0;
-      const index = 8;
-      const sectionStart = index / testimonials.length;
-      const sectionEnd = (index + 1) / testimonials.length;
-      if (latest < sectionStart || latest > sectionEnd) return 0;
-      const sectionProgress =
-        (latest - sectionStart) / (sectionEnd - sectionStart);
-      if (sectionProgress < 0.2) return sectionProgress / 0.2;
-      if (sectionProgress > 0.8) return 1 - (sectionProgress - 0.8) / 0.2;
-      return 1;
-    }),
-    useTransform(smoothProgress, (latest) => {
-      if (testimonials.length === 0) return 0;
-      const index = 9;
-      const sectionStart = index / testimonials.length;
-      const sectionEnd = (index + 1) / testimonials.length;
-      if (latest < sectionStart || latest > sectionEnd) return 0;
-      const sectionProgress =
-        (latest - sectionStart) / (sectionEnd - sectionStart);
-      if (sectionProgress < 0.2) return sectionProgress / 0.2;
-      if (sectionProgress > 0.8) return 1 - (sectionProgress - 0.8) / 0.2;
-      return 1;
-    }),
-  ];
-
-  const imageScales = [
-    useTransform(smoothProgress, (latest) => {
-      if (testimonials.length === 0) return 0.98;
-      const index = 0;
-      const sectionStart = index / testimonials.length;
-      const sectionEnd = (index + 1) / testimonials.length;
-      if (latest < sectionStart || latest > sectionEnd) return 0.98;
-      const sectionProgress =
-        (latest - sectionStart) / (sectionEnd - sectionStart);
-      return 0.98 + Math.sin(sectionProgress * Math.PI) * 0.02;
-    }),
-    useTransform(smoothProgress, (latest) => {
-      if (testimonials.length === 0) return 0.98;
-      const index = 1;
-      const sectionStart = index / testimonials.length;
-      const sectionEnd = (index + 1) / testimonials.length;
-      if (latest < sectionStart || latest > sectionEnd) return 0.98;
-      const sectionProgress =
-        (latest - sectionStart) / (sectionEnd - sectionStart);
-      return 0.98 + Math.sin(sectionProgress * Math.PI) * 0.02;
-    }),
-    useTransform(smoothProgress, (latest) => {
-      if (testimonials.length === 0) return 0.98;
-      const index = 2;
-      const sectionStart = index / testimonials.length;
-      const sectionEnd = (index + 1) / testimonials.length;
-      if (latest < sectionStart || latest > sectionEnd) return 0.98;
-      const sectionProgress =
-        (latest - sectionStart) / (sectionEnd - sectionStart);
-      return 0.98 + Math.sin(sectionProgress * Math.PI) * 0.02;
-    }),
-    useTransform(smoothProgress, (latest) => {
-      if (testimonials.length === 0) return 0.98;
-      const index = 3;
-      const sectionStart = index / testimonials.length;
-      const sectionEnd = (index + 1) / testimonials.length;
-      if (latest < sectionStart || latest > sectionEnd) return 0.98;
-      const sectionProgress =
-        (latest - sectionStart) / (sectionEnd - sectionStart);
-      return 0.98 + Math.sin(sectionProgress * Math.PI) * 0.02;
-    }),
-    useTransform(smoothProgress, (latest) => {
-      if (testimonials.length === 0) return 0.98;
-      const index = 4;
-      const sectionStart = index / testimonials.length;
-      const sectionEnd = (index + 1) / testimonials.length;
-      if (latest < sectionStart || latest > sectionEnd) return 0.98;
-      const sectionProgress =
-        (latest - sectionStart) / (sectionEnd - sectionStart);
-      return 0.98 + Math.sin(sectionProgress * Math.PI) * 0.02;
-    }),
-    useTransform(smoothProgress, (latest) => {
-      if (testimonials.length === 0) return 0.98;
-      const index = 5;
-      const sectionStart = index / testimonials.length;
-      const sectionEnd = (index + 1) / testimonials.length;
-      if (latest < sectionStart || latest > sectionEnd) return 0.98;
-      const sectionProgress =
-        (latest - sectionStart) / (sectionEnd - sectionStart);
-      return 0.98 + Math.sin(sectionProgress * Math.PI) * 0.02;
-    }),
-    useTransform(smoothProgress, (latest) => {
-      if (testimonials.length === 0) return 0.98;
-      const index = 6;
-      const sectionStart = index / testimonials.length;
-      const sectionEnd = (index + 1) / testimonials.length;
-      if (latest < sectionStart || latest > sectionEnd) return 0.98;
-      const sectionProgress =
-        (latest - sectionStart) / (sectionEnd - sectionStart);
-      return 0.98 + Math.sin(sectionProgress * Math.PI) * 0.02;
-    }),
-    useTransform(smoothProgress, (latest) => {
-      if (testimonials.length === 0) return 0.98;
-      const index = 7;
-      const sectionStart = index / testimonials.length;
-      const sectionEnd = (index + 1) / testimonials.length;
-      if (latest < sectionStart || latest > sectionEnd) return 0.98;
-      const sectionProgress =
-        (latest - sectionStart) / (sectionEnd - sectionStart);
-      return 0.98 + Math.sin(sectionProgress * Math.PI) * 0.02;
-    }),
-    useTransform(smoothProgress, (latest) => {
-      if (testimonials.length === 0) return 0.98;
-      const index = 8;
-      const sectionStart = index / testimonials.length;
-      const sectionEnd = (index + 1) / testimonials.length;
-      if (latest < sectionStart || latest > sectionEnd) return 0.98;
-      const sectionProgress =
-        (latest - sectionStart) / (sectionEnd - sectionStart);
-      return 0.98 + Math.sin(sectionProgress * Math.PI) * 0.02;
-    }),
-    useTransform(smoothProgress, (latest) => {
-      if (testimonials.length === 0) return 0.98;
-      const index = 9;
-      const sectionStart = index / testimonials.length;
-      const sectionEnd = (index + 1) / testimonials.length;
-      if (latest < sectionStart || latest > sectionEnd) return 0.98;
-      const sectionProgress =
-        (latest - sectionStart) / (sectionEnd - sectionStart);
-      return 0.98 + Math.sin(sectionProgress * Math.PI) * 0.02;
-    }),
-  ];
-
-  const testimonialYs = [
-    useTransform(smoothProgress, (latest) => {
-      if (testimonials.length === 0) return 0;
-      const index = 0;
-      const sectionStart = index / testimonials.length;
-      const sectionEnd = (index + 1) / testimonials.length;
-      if (latest < sectionStart || latest > sectionEnd) {
-        // Move inactive testimonials further out of view
-        return latest < sectionStart ? 100 : -100;
-      }
-      const sectionProgress =
-        (latest - sectionStart) / (sectionEnd - sectionStart);
-      // Subtle upward motion when active
-      return -Math.sin(sectionProgress * Math.PI) * 10;
-    }),
-    useTransform(smoothProgress, (latest) => {
-      if (testimonials.length === 0) return 0;
-      const index = 1;
-      const sectionStart = index / testimonials.length;
-      const sectionEnd = (index + 1) / testimonials.length;
-      if (latest < sectionStart || latest > sectionEnd) {
-        // Move inactive testimonials further out of view
-        return latest < sectionStart ? 100 : -100;
-      }
-      const sectionProgress =
-        (latest - sectionStart) / (sectionEnd - sectionStart);
-      // Subtle upward motion when active
-      return -Math.sin(sectionProgress * Math.PI) * 10;
-    }),
-    useTransform(smoothProgress, (latest) => {
-      if (testimonials.length === 0) return 0;
-      const index = 2;
-      const sectionStart = index / testimonials.length;
-      const sectionEnd = (index + 1) / testimonials.length;
-      if (latest < sectionStart || latest > sectionEnd) {
-        // Move inactive testimonials further out of view
-        return latest < sectionStart ? 100 : -100;
-      }
-      const sectionProgress =
-        (latest - sectionStart) / (sectionEnd - sectionStart);
-      // Subtle upward motion when active
-      return -Math.sin(sectionProgress * Math.PI) * 10;
-    }),
-    useTransform(smoothProgress, (latest) => {
-      if (testimonials.length === 0) return 0;
-      const index = 3;
-      const sectionStart = index / testimonials.length;
-      const sectionEnd = (index + 1) / testimonials.length;
-      if (latest < sectionStart || latest > sectionEnd) {
-        // Move inactive testimonials further out of view
-        return latest < sectionStart ? 100 : -100;
-      }
-      const sectionProgress =
-        (latest - sectionStart) / (sectionEnd - sectionStart);
-      // Subtle upward motion when active
-      return -Math.sin(sectionProgress * Math.PI) * 10;
-    }),
-    useTransform(smoothProgress, (latest) => {
-      if (testimonials.length === 0) return 0;
-      const index = 4;
-      const sectionStart = index / testimonials.length;
-      const sectionEnd = (index + 1) / testimonials.length;
-      if (latest < sectionStart || latest > sectionEnd) {
-        // Move inactive testimonials further out of view
-        return latest < sectionStart ? 100 : -100;
-      }
-      const sectionProgress =
-        (latest - sectionStart) / (sectionEnd - sectionStart);
-      // Subtle upward motion when active
-      return -Math.sin(sectionProgress * Math.PI) * 10;
-    }),
-    useTransform(smoothProgress, (latest) => {
-      if (testimonials.length === 0) return 0;
-      const index = 5;
-      const sectionStart = index / testimonials.length;
-      const sectionEnd = (index + 1) / testimonials.length;
-      if (latest < sectionStart || latest > sectionEnd) {
-        // Move inactive testimonials further out of view
-        return latest < sectionStart ? 100 : -100;
-      }
-      const sectionProgress =
-        (latest - sectionStart) / (sectionEnd - sectionStart);
-      // Subtle upward motion when active
-      return -Math.sin(sectionProgress * Math.PI) * 10;
-    }),
-    useTransform(smoothProgress, (latest) => {
-      if (testimonials.length === 0) return 0;
-      const index = 6;
-      const sectionStart = index / testimonials.length;
-      const sectionEnd = (index + 1) / testimonials.length;
-      if (latest < sectionStart || latest > sectionEnd) {
-        // Move inactive testimonials further out of view
-        return latest < sectionStart ? 100 : -100;
-      }
-      const sectionProgress =
-        (latest - sectionStart) / (sectionEnd - sectionStart);
-      // Subtle upward motion when active
-      return -Math.sin(sectionProgress * Math.PI) * 10;
-    }),
-    useTransform(smoothProgress, (latest) => {
-      if (testimonials.length === 0) return 0;
-      const index = 7;
-      const sectionStart = index / testimonials.length;
-      const sectionEnd = (index + 1) / testimonials.length;
-      if (latest < sectionStart || latest > sectionEnd) {
-        // Move inactive testimonials further out of view
-        return latest < sectionStart ? 100 : -100;
-      }
-      const sectionProgress =
-        (latest - sectionStart) / (sectionEnd - sectionStart);
-      // Subtle upward motion when active
-      return -Math.sin(sectionProgress * Math.PI) * 10;
-    }),
-    useTransform(smoothProgress, (latest) => {
-      if (testimonials.length === 0) return 0;
-      const index = 8;
-      const sectionStart = index / testimonials.length;
-      const sectionEnd = (index + 1) / testimonials.length;
-      if (latest < sectionStart || latest > sectionEnd) {
-        // Move inactive testimonials further out of view
-        return latest < sectionStart ? 100 : -100;
-      }
-      const sectionProgress =
-        (latest - sectionStart) / (sectionEnd - sectionStart);
-      // Subtle upward motion when active
-      return -Math.sin(sectionProgress * Math.PI) * 10;
-    }),
-    useTransform(smoothProgress, (latest) => {
-      if (testimonials.length === 0) return 0;
-      const index = 9;
-      const sectionStart = index / testimonials.length;
-      const sectionEnd = (index + 1) / testimonials.length;
-      if (latest < sectionStart || latest > sectionEnd) {
-        // Move inactive testimonials further out of view
-        return latest < sectionStart ? 100 : -100;
-      }
-      const sectionProgress =
-        (latest - sectionStart) / (sectionEnd - sectionStart);
-      // Subtle upward motion when active
-      return -Math.sin(sectionProgress * Math.PI) * 10;
-    }),
-  ];
-
-  const testimonialOpacities = [
-    useTransform(smoothProgress, (latest) => {
-      if (testimonials.length === 0) return 0;
-      const index = 0;
-      const sectionStart = index / testimonials.length;
-      const sectionEnd = (index + 1) / testimonials.length;
-      if (latest < sectionStart || latest > sectionEnd) {
-        // Completely hide inactive testimonials
-        return 0;
-      }
-      const sectionProgress =
-        (latest - sectionStart) / (sectionEnd - sectionStart);
-      // Smooth fade in/out at edges
-      if (sectionProgress < 0.2) {
-        return sectionProgress / 0.2;
-      }
-      if (sectionProgress > 0.8) {
-        return 1 - (sectionProgress - 0.8) / 0.2;
-      }
-      return 1;
-    }),
-    useTransform(smoothProgress, (latest) => {
-      if (testimonials.length === 0) return 0;
-      const index = 1;
-      const sectionStart = index / testimonials.length;
-      const sectionEnd = (index + 1) / testimonials.length;
-      if (latest < sectionStart || latest > sectionEnd) {
-        // Completely hide inactive testimonials
-        return 0;
-      }
-      const sectionProgress =
-        (latest - sectionStart) / (sectionEnd - sectionStart);
-      // Smooth fade in/out at edges
-      if (sectionProgress < 0.2) {
-        return sectionProgress / 0.2;
-      }
-      if (sectionProgress > 0.8) {
-        return 1 - (sectionProgress - 0.8) / 0.2;
-      }
-      return 1;
-    }),
-    useTransform(smoothProgress, (latest) => {
-      if (testimonials.length === 0) return 0;
-      const index = 2;
-      const sectionStart = index / testimonials.length;
-      const sectionEnd = (index + 1) / testimonials.length;
-      if (latest < sectionStart || latest > sectionEnd) {
-        // Completely hide inactive testimonials
-        return 0;
-      }
-      const sectionProgress =
-        (latest - sectionStart) / (sectionEnd - sectionStart);
-      // Smooth fade in/out at edges
-      if (sectionProgress < 0.2) {
-        return sectionProgress / 0.2;
-      }
-      if (sectionProgress > 0.8) {
-        return 1 - (sectionProgress - 0.8) / 0.2;
-      }
-      return 1;
-    }),
-    useTransform(smoothProgress, (latest) => {
-      if (testimonials.length === 0) return 0;
-      const index = 3;
-      const sectionStart = index / testimonials.length;
-      const sectionEnd = (index + 1) / testimonials.length;
-      if (latest < sectionStart || latest > sectionEnd) {
-        // Completely hide inactive testimonials
-        return 0;
-      }
-      const sectionProgress =
-        (latest - sectionStart) / (sectionEnd - sectionStart);
-      // Smooth fade in/out at edges
-      if (sectionProgress < 0.2) {
-        return sectionProgress / 0.2;
-      }
-      if (sectionProgress > 0.8) {
-        return 1 - (sectionProgress - 0.8) / 0.2;
-      }
-      return 1;
-    }),
-    useTransform(smoothProgress, (latest) => {
-      if (testimonials.length === 0) return 0;
-      const index = 4;
-      const sectionStart = index / testimonials.length;
-      const sectionEnd = (index + 1) / testimonials.length;
-      if (latest < sectionStart || latest > sectionEnd) {
-        // Completely hide inactive testimonials
-        return 0;
-      }
-      const sectionProgress =
-        (latest - sectionStart) / (sectionEnd - sectionStart);
-      // Smooth fade in/out at edges
-      if (sectionProgress < 0.2) {
-        return sectionProgress / 0.2;
-      }
-      if (sectionProgress > 0.8) {
-        return 1 - (sectionProgress - 0.8) / 0.2;
-      }
-      return 1;
-    }),
-    useTransform(smoothProgress, (latest) => {
-      if (testimonials.length === 0) return 0;
-      const index = 5;
-      const sectionStart = index / testimonials.length;
-      const sectionEnd = (index + 1) / testimonials.length;
-      if (latest < sectionStart || latest > sectionEnd) {
-        // Completely hide inactive testimonials
-        return 0;
-      }
-      const sectionProgress =
-        (latest - sectionStart) / (sectionEnd - sectionStart);
-      // Smooth fade in/out at edges
-      if (sectionProgress < 0.2) {
-        return sectionProgress / 0.2;
-      }
-      if (sectionProgress > 0.8) {
-        return 1 - (sectionProgress - 0.8) / 0.2;
-      }
-      return 1;
-    }),
-    useTransform(smoothProgress, (latest) => {
-      if (testimonials.length === 0) return 0;
-      const index = 6;
-      const sectionStart = index / testimonials.length;
-      const sectionEnd = (index + 1) / testimonials.length;
-      if (latest < sectionStart || latest > sectionEnd) {
-        // Completely hide inactive testimonials
-        return 0;
-      }
-      const sectionProgress =
-        (latest - sectionStart) / (sectionEnd - sectionStart);
-      // Smooth fade in/out at edges
-      if (sectionProgress < 0.2) {
-        return sectionProgress / 0.2;
-      }
-      if (sectionProgress > 0.8) {
-        return 1 - (sectionProgress - 0.8) / 0.2;
-      }
-      return 1;
-    }),
-    useTransform(smoothProgress, (latest) => {
-      if (testimonials.length === 0) return 0;
-      const index = 7;
-      const sectionStart = index / testimonials.length;
-      const sectionEnd = (index + 1) / testimonials.length;
-      if (latest < sectionStart || latest > sectionEnd) {
-        // Completely hide inactive testimonials
-        return 0;
-      }
-      const sectionProgress =
-        (latest - sectionStart) / (sectionEnd - sectionStart);
-      // Smooth fade in/out at edges
-      if (sectionProgress < 0.2) {
-        return sectionProgress / 0.2;
-      }
-      if (sectionProgress > 0.8) {
-        return 1 - (sectionProgress - 0.8) / 0.2;
-      }
-      return 1;
-    }),
-    useTransform(smoothProgress, (latest) => {
-      if (testimonials.length === 0) return 0;
-      const index = 8;
-      const sectionStart = index / testimonials.length;
-      const sectionEnd = (index + 1) / testimonials.length;
-      if (latest < sectionStart || latest > sectionEnd) {
-        // Completely hide inactive testimonials
-        return 0;
-      }
-      const sectionProgress =
-        (latest - sectionStart) / (sectionEnd - sectionStart);
-      // Smooth fade in/out at edges
-      if (sectionProgress < 0.2) {
-        return sectionProgress / 0.2;
-      }
-      if (sectionProgress > 0.8) {
-        return 1 - (sectionProgress - 0.8) / 0.2;
-      }
-      return 1;
-    }),
-    useTransform(smoothProgress, (latest) => {
-      if (testimonials.length === 0) return 0;
-      const index = 9;
-      const sectionStart = index / testimonials.length;
-      const sectionEnd = (index + 1) / testimonials.length;
-      if (latest < sectionStart || latest > sectionEnd) {
-        // Completely hide inactive testimonials
-        return 0;
-      }
-      const sectionProgress =
-        (latest - sectionStart) / (sectionEnd - sectionStart);
-      // Smooth fade in/out at edges
-      if (sectionProgress < 0.2) {
-        return sectionProgress / 0.2;
-      }
-      if (sectionProgress > 0.8) {
-        return 1 - (sectionProgress - 0.8) / 0.2;
-      }
-      return 1;
-    }),
-  ];
-
-  const quoteYs = [
-    useTransform(smoothProgress, (latest) => {
-      if (testimonials.length === 0) return 0;
-      const index = 0;
-      const sectionStart = index / testimonials.length;
-      const sectionEnd = (index + 1) / testimonials.length;
-      if (latest < sectionStart || latest > sectionEnd) return 0;
-      const sectionProgress =
-        (latest - sectionStart) / (sectionEnd - sectionStart);
-      return -Math.sin(sectionProgress * Math.PI) * 8;
-    }),
-    useTransform(smoothProgress, (latest) => {
-      if (testimonials.length === 0) return 0;
-      const index = 1;
-      const sectionStart = index / testimonials.length;
-      const sectionEnd = (index + 1) / testimonials.length;
-      if (latest < sectionStart || latest > sectionEnd) return 0;
-      const sectionProgress =
-        (latest - sectionStart) / (sectionEnd - sectionStart);
-      return -Math.sin(sectionProgress * Math.PI) * 8;
-    }),
-    useTransform(smoothProgress, (latest) => {
-      if (testimonials.length === 0) return 0;
-      const index = 2;
-      const sectionStart = index / testimonials.length;
-      const sectionEnd = (index + 1) / testimonials.length;
-      if (latest < sectionStart || latest > sectionEnd) return 0;
-      const sectionProgress =
-        (latest - sectionStart) / (sectionEnd - sectionStart);
-      return -Math.sin(sectionProgress * Math.PI) * 8;
-    }),
-    useTransform(smoothProgress, (latest) => {
-      if (testimonials.length === 0) return 0;
-      const index = 3;
-      const sectionStart = index / testimonials.length;
-      const sectionEnd = (index + 1) / testimonials.length;
-      if (latest < sectionStart || latest > sectionEnd) return 0;
-      const sectionProgress =
-        (latest - sectionStart) / (sectionEnd - sectionStart);
-      return -Math.sin(sectionProgress * Math.PI) * 8;
-    }),
-    useTransform(smoothProgress, (latest) => {
-      if (testimonials.length === 0) return 0;
-      const index = 4;
-      const sectionStart = index / testimonials.length;
-      const sectionEnd = (index + 1) / testimonials.length;
-      if (latest < sectionStart || latest > sectionEnd) return 0;
-      const sectionProgress =
-        (latest - sectionStart) / (sectionEnd - sectionStart);
-      return -Math.sin(sectionProgress * Math.PI) * 8;
-    }),
-    useTransform(smoothProgress, (latest) => {
-      if (testimonials.length === 0) return 0;
-      const index = 5;
-      const sectionStart = index / testimonials.length;
-      const sectionEnd = (index + 1) / testimonials.length;
-      if (latest < sectionStart || latest > sectionEnd) return 0;
-      const sectionProgress =
-        (latest - sectionStart) / (sectionEnd - sectionStart);
-      return -Math.sin(sectionProgress * Math.PI) * 8;
-    }),
-    useTransform(smoothProgress, (latest) => {
-      if (testimonials.length === 0) return 0;
-      const index = 6;
-      const sectionStart = index / testimonials.length;
-      const sectionEnd = (index + 1) / testimonials.length;
-      if (latest < sectionStart || latest > sectionEnd) return 0;
-      const sectionProgress =
-        (latest - sectionStart) / (sectionEnd - sectionStart);
-      return -Math.sin(sectionProgress * Math.PI) * 8;
-    }),
-    useTransform(smoothProgress, (latest) => {
-      if (testimonials.length === 0) return 0;
-      const index = 7;
-      const sectionStart = index / testimonials.length;
-      const sectionEnd = (index + 1) / testimonials.length;
-      if (latest < sectionStart || latest > sectionEnd) return 0;
-      const sectionProgress =
-        (latest - sectionStart) / (sectionEnd - sectionStart);
-      return -Math.sin(sectionProgress * Math.PI) * 8;
-    }),
-    useTransform(smoothProgress, (latest) => {
-      if (testimonials.length === 0) return 0;
-      const index = 8;
-      const sectionStart = index / testimonials.length;
-      const sectionEnd = (index + 1) / testimonials.length;
-      if (latest < sectionStart || latest > sectionEnd) return 0;
-      const sectionProgress =
-        (latest - sectionStart) / (sectionEnd - sectionStart);
-      return -Math.sin(sectionProgress * Math.PI) * 8;
-    }),
-    useTransform(smoothProgress, (latest) => {
-      if (testimonials.length === 0) return 0;
-      const index = 9;
-      const sectionStart = index / testimonials.length;
-      const sectionEnd = (index + 1) / testimonials.length;
-      if (latest < sectionStart || latest > sectionEnd) return 0;
-      const sectionProgress =
-        (latest - sectionStart) / (sectionEnd - sectionStart);
-      return -Math.sin(sectionProgress * Math.PI) * 8;
-    }),
-  ];
 
   return (
     <div className="min-h-screen">
@@ -732,14 +39,10 @@ export default function Testimonials() {
 
       {/* Split-Screen Testimonials Section */}
       {testimonials.length > 0 && (
-        <section
-          ref={containerRef}
-          className="relative bg-white"
-          style={{ height: `${testimonials.length * 100}vh` }}
-        >
-          <div className="sticky top-0 h-screen flex overflow-hidden">
+        <section className="relative bg-white">
+          <div className="flex min-h-screen">
             {/* Left Side - Sticky Anchor Image Container */}
-            <div className="w-1/2 h-full bg-earl-gray/30 flex items-center justify-center p-12 md:p-16 lg:p-20">
+            <div className="sticky top-0 w-1/2 h-screen bg-earl-gray/30 flex items-center justify-center p-12 md:p-16 lg:p-20">
               <div className="relative w-full h-full max-w-2xl">
                 {/* Static Anchor Image */}
                 <div className="relative w-full h-full rounded-2xl overflow-hidden shadow-lg bg-dark-choc/5">
@@ -755,37 +58,53 @@ export default function Testimonials() {
               </div>
             </div>
 
-            {/* Right Side - Scrollable Testimonials */}
-            <div className="w-1/2 h-full bg-white overflow-y-auto">
-              <div className="relative">
-                {testimonials.map((testimonial, index) => (
-                  <motion.div
-                    key={testimonial.id}
-                    className="min-h-screen flex items-center justify-center px-12 md:px-16 lg:px-20 py-20"
-                    style={{
-                      y: testimonialYs[index],
-                      opacity: testimonialOpacities[index],
-                    }}
-                  >
-                    <div className="max-w-2xl w-full">
-                      {/* Quote */}
-                      <p className="font-serif text-3xl md:text-4xl lg:text-5xl text-dark-choc mb-12 md:mb-16 leading-relaxed">
-                        &ldquo;{testimonial.quote}&rdquo;
-                      </p>
-
-                      {/* Author Block */}
-                      <div className="mt-8 md:mt-12">
-                        <p className="font-serif text-xl md:text-2xl text-dark-choc mb-1 font-medium">
-                          {testimonial.clientName}
-                        </p>
-                        <p className="font-sans text-sm md:text-base text-dark-choc/60">
-                          {testimonial.company}
-                        </p>
+            {/* Right Side - Scrollable Testimonials in Normal Document Flow */}
+            <div className="w-1/2 bg-white">
+              {testimonials.map((testimonial, index) => (
+                <motion.section
+                  key={testimonial.id}
+                  className="min-h-screen flex items-center justify-center px-12 md:px-16 lg:px-20 py-20"
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true, margin: "-100px" }}
+                  transition={{
+                    duration: 0.6,
+                    ease: [0.25, 0.1, 0.25, 1],
+                  }}
+                >
+                  <div className="max-w-2xl w-full">
+                    {/* Testimonial Image (Optional) */}
+                    {testimonial.image && (
+                      <div className="mb-12 md:mb-16">
+                        <div className="relative w-full max-w-md aspect-[4/3] rounded-lg overflow-hidden bg-dark-choc/5">
+                          <Image
+                            src={testimonial.image}
+                            alt={`${testimonial.clientName} from ${testimonial.company}`}
+                            fill
+                            className="object-cover"
+                            sizes="(max-width: 768px) 100vw, 28rem"
+                          />
+                        </div>
                       </div>
+                    )}
+
+                    {/* Quote */}
+                    <p className="font-serif text-3xl md:text-4xl lg:text-5xl text-dark-choc mb-12 md:mb-16 leading-relaxed">
+                      &ldquo;{testimonial.quote}&rdquo;
+                    </p>
+
+                    {/* Author Block */}
+                    <div className="mt-8 md:mt-12">
+                      <p className="font-serif text-xl md:text-2xl text-dark-choc mb-1 font-medium">
+                        {testimonial.clientName}
+                      </p>
+                      <p className="font-sans text-sm md:text-base text-dark-choc/60">
+                        {testimonial.company}
+                      </p>
                     </div>
-                  </motion.div>
-                ))}
-              </div>
+                  </div>
+                </motion.section>
+              ))}
             </div>
           </div>
         </section>
