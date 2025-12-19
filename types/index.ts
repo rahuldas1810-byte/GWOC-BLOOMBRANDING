@@ -3,6 +3,7 @@ export interface Testimonial {
   quote: string
   clientName: string
   company: string
+  image?: string
   createdAt?: any
 }
 
