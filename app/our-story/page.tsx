@@ -29,7 +29,9 @@ export default function OurStory() {
             <div className="absolute inset-0 rounded-2xl bg-dark-choc/5 -rotate-1"></div>
 
             {/* image card */}
-            <div className="relative rounded-2xl overflow-hidden shadow-[0_30px_80px_rgba(0,0,0,0.18)] float-image">
+            <div className="relative rounded-2xl overflow-hidden shadow-[0_30px_80px_rgba(0,0,0,0.18)]
+            motion-safe:animate-[float_14s_ease-in-out_infinite]">
+
               <Image
                 src="/who-we-are.jpg"
                 alt="Bloom Branding studio"
@@ -97,8 +99,11 @@ export default function OurStory() {
 
           {/* Item 1 */}
           <SectionReveal delay={0.1}>
-            <div className="relative pl-10 md:pl-12">
-              <span className="absolute left-0 top-2 h-2 w-2 rounded-full bg-dark-choc/40" />
+            <div className="group relative pl-10 md:pl-12">
+
+              <span className="absolute left-0 top-2 h-2 w-2 rounded-full bg-dark-choc/40
+                 transition-transform duration-300 group-hover:scale-125" />
+
               <h3 className="heading-3 mb-6">Clarity Over Complexity</h3>
               <p className="body-text">
                 The best brands are simple, clear, and easy to understand. We strip away the noise
@@ -109,8 +114,11 @@ export default function OurStory() {
 
           {/* Item 2 */}
           <SectionReveal delay={0.2}>
-            <div className="relative pl-10 md:pl-12">
-              <span className="absolute left-0 top-2 h-2 w-2 rounded-full bg-dark-choc/40" />
+            <div className="group relative pl-10 md:pl-12">
+
+             <span className="absolute left-0 top-2 h-2 w-2 rounded-full bg-dark-choc/40
+                 transition-transform duration-300 group-hover:scale-125" />
+
               <h3 className="heading-3 mb-6">Strategy First</h3>
               <p className="body-text">
                 Every design decision we make is backed by strategic thinking. We don&apos;t create
@@ -121,8 +129,11 @@ export default function OurStory() {
 
           {/* Item 3 */}
           <SectionReveal delay={0.3}>
-            <div className="relative pl-10 md:pl-12">
-              <span className="absolute left-0 top-2 h-2 w-2 rounded-full bg-dark-choc/40" />
+            <div className="group relative pl-10 md:pl-12">
+
+              <span className="absolute left-0 top-2 h-2 w-2 rounded-full bg-dark-choc/40
+                 transition-transform duration-300 group-hover:scale-125" />
+
               <h3 className="heading-3 mb-6">Confidence, Not Flash</h3>
               <p className="body-text">
                 Premium doesn&apos;t mean flashy. We build brands that are confident and refined,
@@ -137,6 +148,20 @@ export default function OurStory() {
     </div>
   </section>
 </SectionReveal>
+<section className="py-32 bg-white">
+  <div className="container-custom">
+    <div className="rounded-3xl overflow-hidden shadow-lg">
+      <Image
+        src="/22.jpg"
+        alt="Bloom Branding selected work"
+        width={1600}
+        height={900}
+        className="w-full h-auto"
+      />
+    </div>
+  </div>
+</section>
+
 
 
 
@@ -147,7 +172,8 @@ export default function OurStory() {
 
       {/* IMAGE — reveals first */}
       <div className="lg:col-span-6 order-2 lg:order-1">
-        <SectionReveal delay={0}>
+        <SectionReveal delay={0} direction="left">
+
           <div className="rounded-3xl overflow-hidden shadow-[0_30px_80px_rgba(0,0,0,0.15)]">
             <Image
               src="/27.jpg"
@@ -163,7 +189,8 @@ export default function OurStory() {
 
       {/* TEXT — reveals slightly after */}
       <div className="lg:col-span-6 order-1 lg:order-2">
-        <SectionReveal delay={0.15}>
+        <SectionReveal delay={0.2} direction="right">
+
           <p className="label-text mb-5">Our Purpose</p>
           <h2 className="heading-2 mb-10">Why We Exist</h2>
 
