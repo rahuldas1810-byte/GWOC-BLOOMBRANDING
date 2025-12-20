@@ -7,7 +7,8 @@ import ScrollHorizontalMarquee from '@/components/ScrollHorizontalMarquee'
 const services = [
   {
     title: 'Brand Identity',
-    description: 'Complete visual identity systems that define who you are. We create logos, color palettes, typography, and brand guidelines that work together to tell your story.',
+    description:
+      'Complete visual identity systems that define who you are. We create logos, color palettes, typography, and brand guidelines that work together to tell your story.',
     details: [
       'Logo design and variations',
       'Color palette and typography',
@@ -17,7 +18,8 @@ const services = [
   },
   {
     title: 'Visual Design',
-    description: 'Stunning design that communicates your brand story. From web design to print materials, we create visuals that resonate.',
+    description:
+      'Stunning design that communicates your brand story. From web design to print materials, we create visuals that resonate.',
     details: [
       'Web and digital design',
       'Print and packaging design',
@@ -27,7 +29,8 @@ const services = [
   },
   {
     title: 'Social Media Branding',
-    description: 'Cohesive brand presence across all social platforms. We ensure your brand looks and feels consistent wherever your audience finds you.',
+    description:
+      'Cohesive brand presence across all social platforms. We ensure your brand looks and feels consistent wherever your audience finds you.',
     details: [
       'Social media templates',
       'Content style guides',
@@ -37,7 +40,8 @@ const services = [
   },
   {
     title: 'Content Strategy',
-    description: 'Strategic messaging that resonates with your audience. We help you find your voice and communicate clearly.',
+    description:
+      'Strategic messaging that resonates with your audience. We help you find your voice and communicate clearly.',
     details: [
       'Brand messaging framework',
       'Content guidelines',
@@ -47,7 +51,8 @@ const services = [
   },
   {
     title: 'Creative Direction',
-    description: 'End-to-end creative vision for your brand. We guide the entire creative process from concept to execution.',
+    description:
+      'End-to-end creative vision for your brand. We guide the entire creative process from concept to execution.',
     details: [
       'Creative strategy',
       'Art direction',
@@ -88,29 +93,26 @@ export default function Services() {
                   : ''
               }`}
             >
+              {/* Content Strategy background */}
               {service.title === 'Content Strategy' && (
                 <>
-                  {/* Scroll-driven background */}
-                  <div className="absolute inset-0 opacity-[0.80] pointer-events-none z-0">
-
+                  <div className="absolute inset-0 opacity-[0.8] pointer-events-none z-0">
                     <ScrollHorizontalMarquee
-                      images={[
-                        '/story1.jpeg',
-                        '/story2.jpeg',
-                        '/story3.jpeg',
-                      ]}
+                      images={['/story1.jpeg', '/story2.jpeg', '/story3.jpeg']}
                     />
                   </div>
 
-                  {/* Soft overlay */}
-                 <div className="absolute inset-0 z-[1] bg-gradient-to-r from-earl-gray/85 via-earl-gray/55 to-earl-gray/85" />
-
-
+                  <div className="absolute inset-0 z-[1] bg-gradient-to-r from-earl-gray/85 via-earl-gray/55 to-earl-gray/85" />
                 </>
               )}
 
               <div className="relative z-10 container-custom">
-                <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-24">
+                <div
+                  className={`grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-24 ${
+                    service.title === 'Brand Identity' ? 'items-center' : ''
+                  }`}
+                >
+                  {/* LEFT — TEXT */}
                   <div className="lg:col-span-5">
                     <span className="font-mono text-xs text-dark-choc/30 mb-6 block tracking-[0.2em]">
                       0{index + 1}
@@ -119,6 +121,19 @@ export default function Services() {
                     <p className="body-text">{service.description}</p>
                   </div>
 
+                  {/* BRAND IDENTITY — VISUAL SYSTEM */}
+                  {service.title === 'Brand Identity' && (
+                    <div className="lg:col-span-5 lg:col-start-8 mb-16 lg:mb-0">
+                      <div className="grid grid-cols-2 gap-4">
+                        <div className="h-40 rounded-xl bg-dark-choc/10" />
+                        <div className="h-40 rounded-xl bg-electric-blue/20" />
+                        <div className="h-40 rounded-xl bg-butter-yellow/40" />
+                        <div className="h-40 rounded-xl bg-dark-choc/5" />
+                      </div>
+                    </div>
+                  )}
+
+                  {/* RIGHT — WHAT’S INCLUDED */}
                   <div className="lg:col-span-5 lg:col-start-8">
                     <p className="label-text mb-8">What&apos;s Included</p>
                     <ul className="space-y-5">
@@ -147,7 +162,10 @@ export default function Services() {
               </p>
               <h2
                 className="font-serif text-white font-normal mb-12"
-                style={{ fontSize: 'clamp(2.5rem, 5vw, 4.5rem)', lineHeight: 1.05 }}
+                style={{
+                  fontSize: 'clamp(2.5rem, 5vw, 4.5rem)',
+                  lineHeight: 1.05,
+                }}
               >
                 Let&apos;s discuss
                 <br />
