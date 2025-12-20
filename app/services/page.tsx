@@ -3,6 +3,9 @@
 import Link from 'next/link'
 import SectionReveal from '@/components/SectionReveal'
 import ScrollHorizontalMarquee from '@/components/ScrollHorizontalMarquee'
+import Image from 'next/image'
+import { motion } from 'framer-motion'
+import MagneticButton from '@/components/MagneticButton'
 
 const services = [
   {
@@ -84,15 +87,33 @@ export default function Services() {
       <section>
         {services.map((service, index) => (
           <SectionReveal key={service.title} delay={index * 0.05}>
-            <div
-              className={`section-padding ${
-                index % 2 === 0 ? 'bg-white' : 'bg-earl-gray'
-              } ${
-                service.title === 'Content Strategy'
-                  ? 'relative overflow-hidden min-h-[80vh]'
-                  : ''
-              }`}
-            >
+<div
+  className={`section-padding relative overflow-hidden ${
+    index % 2 === 0 ? 'bg-white' : 'bg-earl-gray'
+  } ${
+    service.title === 'Content Strategy'
+      ? 'min-h-[80vh]'
+      : ''
+  }`}
+>
+{service.title === 'Brand Identity' && (
+  <>
+    <div className="hidden lg:block absolute inset-0 z-0 pointer-events-none items-center justify-center">
+      <Image
+        src="/12.jpg"
+        alt="Brand identity background"
+        fill
+        className="object-contain opacity-[0.48]"
+        priority
+      />
+    </div>
+
+    <div className="hidden lg:block absolute inset-0 z-[1] bg-gradient-to-r from-white/75 via-white/40 to-white/75" />
+  </>
+)}
+
+
+
               {/* Content Strategy background */}
               {service.title === 'Content Strategy' && (
                 <>
@@ -121,20 +142,69 @@ export default function Services() {
                     <p className="body-text">{service.description}</p>
                   </div>
 
-                  {/* BRAND IDENTITY — VISUAL SYSTEM */}
-                  {service.title === 'Brand Identity' && (
-                    <div className="lg:col-span-5 lg:col-start-8 mb-16 lg:mb-0">
-                      <div className="grid grid-cols-2 gap-4">
-                        <div className="h-40 rounded-xl bg-dark-choc/10" />
-                        <div className="h-40 rounded-xl bg-electric-blue/20" />
-                        <div className="h-40 rounded-xl bg-butter-yellow/40" />
-                        <div className="h-40 rounded-xl bg-dark-choc/5" />
-                      </div>
-                    </div>
-                  )}
+{/* BRAND IDENTITY — VISUAL SYSTEM */}
+{service.title === 'Brand Identity' && (
+  <div className="lg:col-span-5 lg:col-start-8 mb-16 lg:mb-0">
+    <div className="grid grid-cols-2 gap-4">
+{[
+  '/service1.jpeg',
+  '/service2.jpeg',
+  '/service3.jpeg',
+  '/service4.jpeg',
+].map((src, i) => (
+  <MagneticButton
+    key={i}
+    className="block bg-transparent p-0 border-0 focus:outline-none"
+  >
+    <motion.div
+      initial={{ opacity: 0, y: 20 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true }}
+      transition={{ duration: 0.6, delay: i * 0.08 }}
+      className="
+        relative h-40 md:h-44
+        rounded-xl overflow-hidden
+        shadow-[0_20px_50px_rgba(0,0,0,0.08)]
+        transition-all duration-500 ease-out
+        hover:-translate-y-2
+        hover:shadow-[0_30px_70px_rgba(0,0,0,0.15)]
+        group
+      "
+    >
+      <Image
+        src={src}
+        alt="Brand system visual"
+        fill
+        className="
+          object-cover
+          transition-transform duration-700 ease-out
+          group-hover:scale-105
+        "
+      />
+
+      <div
+        className="
+          absolute inset-0
+          bg-gradient-to-t
+          from-black/30 via-black/5 to-transparent
+          opacity-0
+          transition-opacity duration-500
+          group-hover:opacity-100
+        "
+      />
+    </motion.div>
+  </MagneticButton>
+))}
+
+    </div>
+  </div>
+)}
+
+
 
                   {/* RIGHT — WHAT’S INCLUDED */}
                   <div className="lg:col-span-5 lg:col-start-8">
+                    
                     <p className="label-text mb-8">What&apos;s Included</p>
                     <ul className="space-y-5">
                       {service.details.map((detail) => (
