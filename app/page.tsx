@@ -198,12 +198,13 @@ export default function Home() {
   viewport={{ once: true }}
   transition={{
     duration: 0.6,
-    ease: "ease-out",
+    ease: "easeOut", // ✅ CORRECT
   }}
 >
+
   {/* Decorative Quote */}
   <span className="absolute -top-6 -left-4 text-[6rem] leading-none font-serif text-electric-blue/10">
-    "
+    
   </span>
 
   <p className="font-serif text-[1.75rem] leading-snug text-dark-choc mb-10">
