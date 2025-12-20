@@ -14,12 +14,12 @@ Simple and maintainable project structure
 
 TECH STACK USED
 
-Next.js 14 with App Router
-TypeScript
-Tailwind CSS
-Framer Motion used minimally for animations
-React Hook Form with Zod for validation
-Next.js Server Actions for form handling
+•Next.js 14 with App Router
+•TypeScript
+•Tailwind CSS
+•Framer Motion used minimally for animations
+•React Hook Form with Zod for validation
+•Next.js Server Actions for form handling
 
 HOW TO RUN THE PROJECT
 
