@@ -6,7 +6,7 @@ export const testimonials: Testimonial[] = [
     quote: 'Bloom Branding transformed our brand identity completely. Their strategic approach helped us stand out in a crowded market.',
     clientName: 'Sarah Chen',
     company: 'TechFlow',
-    image: '/testimonials/one.jpg',
+    image: '/testimonials/five.jpg',
   },
   {
     id: '2',

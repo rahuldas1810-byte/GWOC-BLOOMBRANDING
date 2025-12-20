@@ -180,7 +180,7 @@ export default function Home() {
                 dragConstraints={{ left: -1000, right: 0 }}
               >
                 {[...testimonials, ...testimonials].map((t, i) => (
-<div
+<motion.div
   key={`${t.id}-${i}`}
   className="
     relative min-w-[90%] md:min-w-[45%]
@@ -193,10 +193,17 @@ export default function Home() {
     hover:-translate-y-1
     transition-all duration-500
   "
+  initial={{ opacity: 0, y: 20 }}
+  whileInView={{ opacity: 1, y: 0 }}
+  viewport={{ once: true }}
+  transition={{
+    duration: 0.6,
+    ease: "ease-out",
+  }}
 >
   {/* Decorative Quote */}
   <span className="absolute -top-6 -left-4 text-[6rem] leading-none font-serif text-electric-blue/10">
-    “
+    "
   </span>
 
   <p className="font-serif text-[1.75rem] leading-snug text-dark-choc mb-10">
@@ -211,7 +218,7 @@ export default function Home() {
       {t.company}
     </p>
   </div>
-</div>
+</motion.div>
 
                 ))}
               </motion.div>
