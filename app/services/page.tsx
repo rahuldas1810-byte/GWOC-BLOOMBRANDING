@@ -2,6 +2,7 @@
 
 import Link from 'next/link'
 import SectionReveal from '@/components/SectionReveal'
+import ScrollHorizontalMarquee from '@/components/ScrollHorizontalMarquee'
 
 const services = [
   {
@@ -78,8 +79,37 @@ export default function Services() {
       <section>
         {services.map((service, index) => (
           <SectionReveal key={service.title} delay={index * 0.05}>
-            <div className={`section-padding ${index % 2 === 0 ? 'bg-white' : 'bg-earl-gray'}`}>
-              <div className="container-custom">
+            <div
+              className={`section-padding ${
+                index % 2 === 0 ? 'bg-white' : 'bg-earl-gray'
+              } ${
+                service.title === 'Content Strategy'
+                  ? 'relative overflow-hidden min-h-[80vh]'
+                  : ''
+              }`}
+            >
+              {service.title === 'Content Strategy' && (
+                <>
+                  {/* Scroll-driven background */}
+                  <div className="absolute inset-0 opacity-[0.80] pointer-events-none z-0">
+
+                    <ScrollHorizontalMarquee
+                      images={[
+                        '/story1.jpeg',
+                        '/story2.jpeg',
+                        '/story3.jpeg',
+                      ]}
+                    />
+                  </div>
+
+                  {/* Soft overlay */}
+                 <div className="absolute inset-0 z-[1] bg-gradient-to-r from-earl-gray/85 via-earl-gray/55 to-earl-gray/85" />
+
+
+                </>
+              )}
+
+              <div className="relative z-10 container-custom">
                 <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-24">
                   <div className="lg:col-span-5">
                     <span className="font-mono text-xs text-dark-choc/30 mb-6 block tracking-[0.2em]">
@@ -88,6 +118,7 @@ export default function Services() {
                     <h2 className="heading-2 mb-8">{service.title}</h2>
                     <p className="body-text">{service.description}</p>
                   </div>
+
                   <div className="lg:col-span-5 lg:col-start-8">
                     <p className="label-text mb-8">What&apos;s Included</p>
                     <ul className="space-y-5">
@@ -114,13 +145,16 @@ export default function Services() {
               <p className="font-mono text-xs uppercase tracking-[0.2em] text-white/50 mb-8">
                 Ready to Start?
               </p>
-              <h2 className="font-serif text-white font-normal mb-12" style={{ fontSize: 'clamp(2.5rem, 5vw, 4.5rem)', lineHeight: 1.05 }}>
+              <h2
+                className="font-serif text-white font-normal mb-12"
+                style={{ fontSize: 'clamp(2.5rem, 5vw, 4.5rem)', lineHeight: 1.05 }}
+              >
                 Let&apos;s discuss
                 <br />
                 your project.
               </h2>
-              <Link 
-                href="/contact" 
+              <Link
+                href="/contact"
                 className="inline-block font-mono text-xs uppercase tracking-[0.2em] text-electric-blue bg-white px-10 py-5 hover:bg-earl-gray transition-colors duration-500"
               >
                 Contact Us
