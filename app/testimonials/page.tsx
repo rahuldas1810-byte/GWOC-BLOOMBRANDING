@@ -7,6 +7,9 @@ import { motion } from "framer-motion";
 import SectionReveal from "@/components/SectionReveal";
 import { getTestimonials } from "@/lib/content";
 import type { Testimonial } from "@/types";
+import SliceReveal from "@/components/SliceReveal";
+import MagneticButton from "@/components/MagneticButton";
+
 
 export default function Testimonials() {
   const [testimonials, setTestimonials] = useState<Testimonial[]>([]);
@@ -20,6 +23,28 @@ export default function Testimonials() {
     fetchTestimonials();
   }, []);
 
+  const heroItem = {
+    hidden: { opacity: 0, y: 40 },
+    show: {
+      opacity: 1,
+      y: 0,
+      transition: {
+        duration: 0.9,
+        ease: [0.22, 1, 0.36, 1],
+      },
+    },
+  };
+  
+  const heroContainer = {
+    hidden: {},
+    show: {
+      transition: {
+        staggerChildren: 0.12,
+        delayChildren: 0.25,
+      },
+    },
+  };
+  
   return (
     <div className="min-h-screen">
 
@@ -27,42 +52,55 @@ export default function Testimonials() {
       <section className="relative min-h-[90vh] w-full overflow-hidden">
         <div className="relative h-screen">
 
-          {/* Background Image */}
-          <Image
-            src="/testimonials/hero.jpg"
-            alt="Client workspace"
-            fill
-            priority
-            className="object-cover"
-          />
+          {/* Slice Reveal Background */}
+          <SliceReveal />
 
           {/* Dark Overlay */}
-          <div className="absolute inset-0 bg-black/55" />
+          <div className="absolute inset-0 bg-black/55 z-10 pointer-events-none" />
 
           {/* Text Content */}
-          <div className="absolute inset-0 flex items-center">
-            <div className="container-custom w-full px-10">
-              <div className="max-w-5xl text-left text-white [&_*]:test-white">
+          {/* Text Content */}
+<div className="absolute inset-0 z-20 flex items-center">
+  <div className="container-custom px-16 md:px-24">
+  <motion.div
+  className="max-w-5xl text-left text-white [&_*]:text-white"
+  variants={heroContainer}
+  initial="hidden"
+  animate="show"
+>
 
-                <p className="text-sm font-semibold tracking-[0.3em] uppercase mb-6 text-white">
-                  Testimonials
-                </p>
 
-                <h1 className="font-serif font-medium text-[clamp(3.2rem,5.5vw,4.2rem)] leading-[1.15] mb-6 text-white">
-                  Hear from companies who have worked with us to build their brand identity.
-                </h1>
+      {/* Small label */}
+      <motion.p
+       variants={heroItem}
+       className="text-[11px] tracking-[0.35em] uppercase mb-10 opacity-70 text-white"
+       >
+        Client Stories
+      </motion.p>
 
-                <p className="text-base md:text-lg max-w-xl opacity-80 mb-10 text-white">
-                  Hear from companies who have worked with us to build their brand identity.
-                </p>
+      {/* MAIN heading */}
+      <motion.h1 variants={heroItem} 
+      className="font-serif text-[clamp(4.5rem,8vw,8rem)] leading-[0.98] mb-10 text-white">
+        Testimonials
+      </motion.h1>
 
-                <button className="px-12 py-5 border border-white/70 rounded-full text-sm font-medium tracking-[0.3em] uppercase hover:bg-white hover:text-black transition-all duration-300">
-                  Client Stories
-                </button>
+      {/* Description */}
+      <motion.p
+       variants={heroItem}
+       className="text-lg md:text-xl max-w-xl opacity-90 mb-14 text-white">
+        Hear from companies who have worked with us to build their brand identity.
+      </motion.p>
 
-              </div>
-            </div>
-          </div>
+      {/* Button */}
+      <motion.div variants={heroItem}>
+      <MagneticButton
+        className="px-14 py-6 border border-white/60 rounded-full text-[11px] tracking-[0.3em] uppercase hover:bg-white hover:text-black transition-all duration-300">
+        Client Stories
+      </MagneticButton>
+    </motion.div>
+    </motion.div>
+  </div>
+</div>
 
           {/* Scroll Arrow */}
           <motion.button
@@ -71,13 +109,13 @@ export default function Testimonials() {
                 .getElementById("client-reviews")
                 ?.scrollIntoView({ behavior: "smooth" });
             }}
-            animate={{y:[0,8,0]}}
+            animate={{ y: [0,8,0] }}
             transition={{
               duration: 1.8,
-              ease: "easeInOut",
+              ease: [0.22, 1, 0.36, 1],
               repeat: Infinity,
             }}
-            className="absolute bottom-20 right-20 w-20 h-20 rounded-full border border-white/60 flex items-center justify-center text-white hover:border-white hover:scale-105 transition-transform duration-300"
+            className="absolute bottom-20 right-20 z-20 w-20 h-20 rounded-full border border-white/60 flex items-center justify-center text-white hover:border-white hover:scale-105 transition-transform duration-300"
           >
             <span className="text-2xl">↓</span>
 
@@ -111,7 +149,7 @@ export default function Testimonials() {
                           src={testimonial.image}
                           alt={`${testimonial.clientName} from ${testimonial.company}`}
                           fill
-                          className="object-cover transition-transform duration-[1200ms] ease-out group-hover:scale-[1.04]"
+                          className="object-cover transition-transform duration-[1200ms] group-hover:scale-[1.04]"
                           sizes="(max-width: 768px) 100vw, 50vw"
                           priority={index === 0}
                         />
