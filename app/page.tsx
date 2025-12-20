@@ -64,7 +64,7 @@ export default function Home() {
           playsInline
           preload="auto"
         >
-          <source src="/videos/video2.mp4" type="video/mp4" />
+          <source src="/videos/video1.mp4" type="video/mp4" />
         </video>
         <div className="absolute inset-0 bg-[#1f1b16]/45" />
         <div className="relative z-10 h-full flex items-center">
@@ -133,7 +133,7 @@ export default function Home() {
       {/* ================= VIDEO BREAK ================= */}
       <section className="w-screen h-screen overflow-hidden bg-black">
         <video className="w-full h-full object-cover" autoPlay loop muted playsInline>
-          <source src="/videos/hero.mp4" type="video/mp4" />
+          <source src="/videos/video.mp4" type="video/mp4" />
         </video>
       </section>
 

@@ -27,16 +27,17 @@ export default function Navbar() {
     >
       <div className="container-custom pl-3 pr-4 md:pl-5 md:pr-7 lg:pl-6 lg:pr-10">
         <div className="flex items-center justify-between py-3.5 md:py-4">
-          <Link href="/" className="flex items-end group pr-6">
-            <Image
-              src="/bloom-logo.png"
-              alt="Bloom Branding Logo"
-              width={716}
-              height={349}
-              className="h-[46px] md:h-[54px] w-auto translate-y-[1px]"
-              priority
-            />
-          </Link>
+<Link href="/" className="flex items-center h-full pr-6">
+  <Image
+    src="/bloom-logo.png"
+    alt="Bloom Branding Logo"
+    width={2200}
+    height={1600}
+    className="h-full max-h-[64px] md:max-h-80px] w-auto object-contain"
+    priority
+  />
+</Link>
+
 
           <div className="flex-1 flex justify-center h-full">
             <div className="hidden lg:flex items-center h-full space-x-8">
