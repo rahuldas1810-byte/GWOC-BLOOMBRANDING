@@ -12,6 +12,7 @@ export interface Client {
   name: string
   logo?: string
   order?: number
+  image: string
 }
 
 export interface HomepageContent {
@@ -31,3 +32,9 @@ export interface ContactSubmission {
   createdAt?: any
 }
 
+export interface ShowcaseClient {
+  name: string
+  type: string
+  review: string
+  image: string
+}
