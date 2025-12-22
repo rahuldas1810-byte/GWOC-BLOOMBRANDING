@@ -4,8 +4,9 @@ import Link from 'next/link'
 import SectionReveal from '@/components/SectionReveal'
 import ScrollHorizontalMarquee from '@/components/ScrollHorizontalMarquee'
 import Image from 'next/image'
-import { motion } from 'framer-motion'
+import { motion, AnimatePresence } from 'framer-motion'
 import MagneticButton from '@/components/MagneticButton'
+import { useState } from 'react'
 
 const services = [
   {
@@ -18,6 +19,12 @@ const services = [
       'Brand guidelines document',
       'Visual identity system',
     ],
+    images: [
+      '/service1.jpeg',
+      '/service2.jpeg',
+      '/service3.jpeg',
+      '/service4.jpeg',
+    ],
   },
   {
     title: 'Visual Design',
@@ -28,6 +35,12 @@ const services = [
       'Print and packaging design',
       'Marketing materials',
       'Design system creation',
+    ],
+    images: [
+      '/visual1.jpeg',
+      '/visual2.jpeg',
+      '/visual3.jpeg',
+      '/visual4.jpeg',
     ],
   },
   {
@@ -40,6 +53,12 @@ const services = [
       'Profile optimization',
       'Brand consistency audits',
     ],
+    images: [
+      '/23.jpg',
+      '/24.jpg',
+      '/25.jpg',
+      '/26.jpg',
+    ],
   },
   {
     title: 'Content Strategy',
@@ -50,6 +69,12 @@ const services = [
       'Content guidelines',
       'Tone of voice development',
       'Messaging strategy',
+    ],
+    images: [
+      '/content1.jpeg',
+      '/content2.jpeg',
+      '/content4.jpeg',
+      '/content3.jpeg',
     ],
   },
   {
@@ -62,13 +87,21 @@ const services = [
       'Campaign development',
       'Brand evolution planning',
     ],
+    images: [
+      '/creative1.jpeg',
+      '/creative3.jpeg',
+      '/11.jpg',
+      '/12.jpg',
+    ],
   },
 ]
 
 export default function Services() {
+  const [activeServiceIndex, setActiveServiceIndex] = useState(0)
+
   return (
     <div className="min-h-screen">
-      {/* Hero */}
+      {/* HERO */}
       <section className="py-32 md:py-40 lg:py-48 bg-earl-gray">
         <div className="container-custom">
           <SectionReveal>
@@ -83,139 +116,105 @@ export default function Services() {
         </div>
       </section>
 
-      {/* Services List */}
-      <section>
-        {services.map((service, index) => (
-          <SectionReveal key={service.title} delay={index * 0.05}>
-<div
-  className={`section-padding relative overflow-hidden ${
-    index % 2 === 0 ? 'bg-white' : 'bg-earl-gray'
-  } ${
-    service.title === 'Content Strategy'
-      ? 'min-h-[80vh]'
-      : ''
-  }`}
->
-{service.title === 'Brand Identity' && (
-  <>
-    <div className="hidden lg:block absolute inset-0 z-0 pointer-events-none items-center justify-center">
-      <Image
-        src="/12.jpg"
-        alt="Brand identity background"
-        fill
-        className="object-contain opacity-[0.48]"
-        priority
-      />
-    </div>
+      {/* DESKTOP SPLIT */}
+      <section className="hidden lg:flex relative items-start bg-white">
+        {/* LEFT STICKY */}
+        <div className="w-1/2 sticky top-0 h-screen flex flex-col justify-center px-12 xl:px-24 border-r border-dark-choc/5 bg-earl-gray z-20">
+          <AnimatePresence mode="wait">
+            <motion.div
+              key={activeServiceIndex}
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -20 }}
+              transition={{ duration: 0.5 }}
+              className="max-w-lg"
+            >
+              <span className="font-mono text-xs text-dark-choc/30 mb-6 block tracking-[0.2em]">
+                0{activeServiceIndex + 1}
+              </span>
+              <h2 className="heading-2 mb-8">
+                {services[activeServiceIndex].title}
+              </h2>
+              <p className="body-text">
+                {services[activeServiceIndex].description}
+              </p>
+            </motion.div>
+          </AnimatePresence>
+        </div>
 
-    <div className="hidden lg:block absolute inset-0 z-[1] bg-gradient-to-r from-white/75 via-white/40 to-white/75" />
-  </>
-)}
-
-
-
-              {/* Content Strategy background */}
-              {service.title === 'Content Strategy' && (
-                <>
-                  <div className="absolute inset-0 opacity-[0.8] pointer-events-none z-0">
-                    <ScrollHorizontalMarquee
-                      images={['/story1.jpeg', '/story2.jpeg', '/story3.jpeg']}
-                    />
-                  </div>
-
-                  <div className="absolute inset-0 z-[1] bg-gradient-to-r from-earl-gray/85 via-earl-gray/55 to-earl-gray/85" />
-                </>
-              )}
-
-              <div className="relative z-10 container-custom">
-                <div
-                  className={`grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-24 ${
-                    service.title === 'Brand Identity' ? 'items-center' : ''
-                  }`}
-                >
-                  {/* LEFT — TEXT */}
-                  <div className="lg:col-span-5">
-                    <span className="font-mono text-xs text-dark-choc/30 mb-6 block tracking-[0.2em]">
-                      0{index + 1}
-                    </span>
-                    <h2 className="heading-2 mb-8">{service.title}</h2>
-                    <p className="body-text">{service.description}</p>
-                  </div>
-
-{/* BRAND IDENTITY — VISUAL SYSTEM */}
-{service.title === 'Brand Identity' && (
-  <div className="lg:col-span-5 lg:col-start-8 mb-16 lg:mb-0">
-    <div className="grid grid-cols-2 gap-4">
-{[
-  '/service1.jpeg',
-  '/service2.jpeg',
-  '/service3.jpeg',
-  '/service4.jpeg',
-].map((src, i) => (
-  <MagneticButton
-    key={i}
-    className="block bg-transparent p-0 border-0 focus:outline-none"
-  >
-    <motion.div
-      initial={{ opacity: 0, y: 20 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true }}
-      transition={{ duration: 0.6, delay: i * 0.08 }}
-      className="
-        relative h-40 md:h-44
-        rounded-xl overflow-hidden
-        shadow-[0_20px_50px_rgba(0,0,0,0.08)]
-        transition-all duration-500 ease-out
-        hover:-translate-y-2
-        hover:shadow-[0_30px_70px_rgba(0,0,0,0.15)]
-        group
-      "
-    >
-      <Image
-        src={src}
-        alt="Brand system visual"
-        fill
-        className="
-          object-cover
-          transition-transform duration-700 ease-out
-          group-hover:scale-105
-        "
-      />
-
-      <div
-        className="
-          absolute inset-0
-          bg-gradient-to-t
-          from-black/30 via-black/5 to-transparent
-          opacity-0
-          transition-opacity duration-500
-          group-hover:opacity-100
-        "
-      />
-    </motion.div>
-  </MagneticButton>
-))}
-
-    </div>
-  </div>
-)}
-
-
-
-                  {/* RIGHT — WHAT’S INCLUDED */}
-                  <div className="lg:col-span-5 lg:col-start-8">
-                    
-                    <p className="label-text mb-8">What&apos;s Included</p>
-                    <ul className="space-y-5">
-                      {service.details.map((detail) => (
-                        <li key={detail} className="flex items-start">
-                          <span className="text-electric-blue mr-5 mt-1 text-xs">—</span>
-                          <span className="body-text">{detail}</span>
-                        </li>
-                      ))}
-                    </ul>
-                  </div>
+        {/* RIGHT SCROLL */}
+        <div className="w-1/2">
+          {services.map((service, index) => (
+            <motion.div
+              key={service.title}
+              className={`min-h-[100vh] flex flex-col justify-center px-12 xl:px-24 py-24 relative ${
+                index % 2 === 0 ? 'bg-white' : 'bg-earl-gray'
+              }`}
+              onViewportEnter={() => setActiveServiceIndex(index)}
+              viewport={{ amount: 0.55 }}
+            >
+              <div className="relative z-10">
+                {/* 4 IMAGES */}
+                <div className="grid grid-cols-2 gap-4 mb-16">
+                  {service.images.map((src, i) => (
+                    <motion.div
+                      key={i}
+                      initial={{ opacity: 0, scale: 0.9 }}
+                      whileInView={{ opacity: 1, scale: 1 }}
+                      transition={{ duration: 0.5, delay: i * 0.1 }}
+                      className="relative h-40 rounded-lg overflow-hidden"
+                    >
+                      <Image src={src} alt="" fill className="object-cover" />
+                    </motion.div>
+                  ))}
                 </div>
+
+                <p className="label-text mb-8">What&apos;s Included</p>
+                <ul className="space-y-4">
+                  {service.details.map((detail) => (
+                    <li key={detail} className="flex items-start">
+                      <span className="text-electric-blue mr-4 mt-1 text-xs">●</span>
+                      <span className="body-text">{detail}</span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            </motion.div>
+          ))}
+        </div>
+      </section>
+
+      {/* MOBILE STACK */}
+      <section className="lg:hidden">
+        {services.map((service, index) => (
+          <SectionReveal key={service.title}>
+            <div className={`section-padding ${index % 2 === 0 ? 'bg-white' : 'bg-earl-gray'}`}>
+              <div className="container-custom">
+                <span className="font-mono text-xs text-dark-choc/30 mb-6 block tracking-[0.2em]">
+                  0{index + 1}
+                </span>
+                <h2 className="heading-2 mb-8">{service.title}</h2>
+                <p className="body-text mb-12">{service.description}</p>
+
+                <div className="grid grid-cols-2 gap-4 mb-12">
+                  {service.images.map((src, i) => (
+                    <MagneticButton key={i}>
+                      <div className="relative h-40 rounded-xl overflow-hidden">
+                        <Image src={src} alt="" fill className="object-cover" />
+                      </div>
+                    </MagneticButton>
+                  ))}
+                </div>
+
+                <p className="label-text mb-6">What&apos;s Included</p>
+                <ul className="space-y-4">
+                  {service.details.map((detail) => (
+                    <li key={detail} className="flex items-start">
+                      <span className="text-electric-blue mr-4 mt-1 text-xs">—</span>
+                      <span className="body-text">{detail}</span>
+                    </li>
+                  ))}
+                </ul>
               </div>
             </div>
           </SectionReveal>
@@ -226,28 +225,15 @@ export default function Services() {
       <SectionReveal>
         <section className="py-32 md:py-40 lg:py-48 bg-electric-blue">
           <div className="container-custom">
-            <div className="max-w-4xl">
-              <p className="font-mono text-xs uppercase tracking-[0.2em] text-white/50 mb-8">
-                Ready to Start?
-              </p>
-              <h2
-                className="font-serif text-white font-normal mb-12"
-                style={{
-                  fontSize: 'clamp(2.5rem, 5vw, 4.5rem)',
-                  lineHeight: 1.05,
-                }}
-              >
-                Let&apos;s discuss
-                <br />
-                your project.
-              </h2>
-              <Link
-                href="/contact"
-                className="inline-block font-mono text-xs uppercase tracking-[0.2em] text-electric-blue bg-white px-10 py-5 hover:bg-earl-gray transition-colors duration-500"
-              >
-                Contact Us
-              </Link>
-            </div>
+            <h2 className="font-serif text-white mb-12 text-[clamp(2.5rem,5vw,4.5rem)]">
+              Let&apos;s discuss<br />your project.
+            </h2>
+            <Link
+              href="/contact"
+              className="inline-block font-mono text-xs uppercase tracking-[0.2em] text-electric-blue bg-white px-10 py-5"
+            >
+              Contact Us
+            </Link>
           </div>
         </section>
       </SectionReveal>
