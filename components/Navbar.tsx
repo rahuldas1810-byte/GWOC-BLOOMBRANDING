@@ -40,18 +40,21 @@ export default function Navbar() {
             {/* Logo */}
             <Link href="/" className="relative z-50 group block">
               <motion.div
-                animate={{ scale: isScrolled ? 0.9 : 1 }}
+                animate={{ scale: isScrolled ? 1.0 : 1.35 }}
                 transition={{ duration: 0.5, ease: "easeOut" }}
                 className="relative lg:-ml-40 origin-left"
               >
-                <Image
-                  src="/bloom-logo.png"
-                  alt="Bloom Branding Logo"
-                  width={220}
-                  height={70}
-                  className="h-full max-h-[48px] w-auto object-contain"
-                  priority
-                />
+                {/* Nested div for independent hover scaling */}
+                <div className="group-hover:scale-[1.02] transition-transform duration-300 ease-out origin-left">
+                  <Image
+                    src="/bloom-logo.png"
+                    alt="Bloom Branding Logo"
+                    width={220}
+                    height={70}
+                    className="h-full max-h-[48px] w-auto object-contain"
+                    priority
+                  />
+                </div>
               </motion.div>
             </Link>
 
