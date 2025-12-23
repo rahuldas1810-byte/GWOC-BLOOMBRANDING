@@ -1,162 +1,112 @@
-"use client";
+'use client'
 
-import Link from "next/link";
-import Image from "next/image";
-import { Instagram, Facebook, Linkedin } from "lucide-react";
-import { useState } from "react";
+import Link from 'next/link'
+import { Instagram } from 'lucide-react'
+import { Inter, Cinzel_Decorative } from 'next/font/google'
+
+const inter = Inter({
+  subsets: ['latin'],
+  display: 'swap',
+  variable: '--font-inter',
+})
+
+const cinzel = Cinzel_Decorative({
+  weight: '400',
+  subsets: ['latin'],
+  display: 'swap',
+})
 
 export default function Footer() {
-  const [email, setEmail] = useState("");
-  const [isSubmitting, setIsSubmitting] = useState(false);
-
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setIsSubmitting(true);
-    // TODO: Add email submission logic
-    setTimeout(() => {
-      setIsSubmitting(false);
-      setEmail("");
-    }, 1000);
-  };
-
   return (
-    <footer className="bg-white text-near-black">
-      {/* Thin divider line above footer */}
-      <div className="border-t border-near-black/10"></div>
+    <footer className={`bg-[#1E3570] text-[#FDF6EE] relative overflow-hidden pt-20 pb-0 ${inter.variable} font-sans`}>
+      <div className="container-custom relative z-10">
 
-      <div className="container-custom py-4 md:py-6">
-        {/* CTA Section */}
-        <div className="mb-6 md:mb-8">
-          <h3 className="font-serif text-xl md:text-2xl text-near-black mb-3 text-center md:text-left">
-            Ready to elevate your brand?
-          </h3>
-          <form onSubmit={handleSubmit} className="max-w-md">
-            <div className="mb-3">
-              <label
-                htmlFor="email"
-                className="block font-sans text-sm text-near-black/70 mb-2"
-              >
-                Email *
-              </label>
-              <input
-                type="email"
-                id="email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                placeholder="your@email.com"
-                required
-                className="w-full px-3 py-1.5 border border-near-black/20 rounded-sm focus:outline-none focus:border-near-black/40 transition-colors duration-300 font-sans text-near-black bg-white"
-              />
-            </div>
-            <button
-              type="submit"
-              disabled={isSubmitting}
-              className="px-5 py-1.5 bg-electric-blue text-white font-mono text-xs uppercase tracking-[0.15em] hover:bg-electric-blue-dark transition-colors duration-300 rounded-sm disabled:opacity-70"
-            >
-              {isSubmitting ? "Submitting..." : "Submit"}
-            </button>
-          </form>
-        </div>
+        {/* Top Row: 4 Columns */}
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-12 mb-24 md:mb-32">
 
-        {/* Main Footer Content */}
-        <div className="grid grid-cols-1 md:grid-cols-[1.2fr_1fr] items-center mb-4">
-          {/* Left: Logo */}
-          <div className="flex items-start">
-            <Link href="/" className="inline-block">
-              <Image
-                src="/bloom-logo.png"
-                alt="Bloom Branding Logo"
-                width={180}
-                height={70}
-                className="object-contain opacity-100 hover:opacity-100 -mt-1"
-                priority
-              />
-            </Link>
+          {/* Column 1: Come by */}
+          <div className="flex flex-col gap-6">
+            <h3 className="font-[family-name:var(--font-inter)] font-semibold text-[18px] text-[#FDF6EE]">
+              Come by
+            </h3>
+            <address className="font-[family-name:var(--font-inter)] font-normal text-[15px] leading-[1.6] text-white/85 not-italic">
+              Bloom Branding Studio<br />
+              Bloom Branding, Solarium<br />
+              Business Centre, 515,<br />
+              beside Times Corner, Surat,<br />
+              Gujarat 395007
+            </address>
           </div>
 
-          {/* Right: Navigation Links */}
-          <div className="flex flex-nowrap justify-end items-center gap-x-5">
-
-            <Link
-              href="/our-story"
-              className="font-sans text-xs md:text-[13px] uppercase tracking-wide whitespace-nowrap text-near-black/80 hover:text-near-black transition-all duration-300 font-medium"
-
-
-            >
-              OUR STORY
-            </Link>
-            <Link
-              href="/services"
-              className="font-sans text-xs md:text-sm uppercase tracking-wide text-near-black/80 hover:text-near-black transition-all duration-300 font-medium"
-
-            >
-              SERVICES
-            </Link>
-            <Link
-              href="/clients"
-              className="font-sans text-xs md:text-sm uppercase tracking-wide text-near-black/80 hover:text-near-black transition-all duration-300 font-medium"
-
-            >
-              CLIENTS
-            </Link>
-            <Link
-              href="/testimonials"
-              className="font-sans text-xs md:text-sm uppercase tracking-wide text-near-black/80 hover:text-near-black transition-all duration-300 font-medium"
-
-            >
-              TESTIMONIALS
-            </Link>
-            <Link
-              href="/contact"
-              className="font-sans text-sx md:text-sm uppercase tracking-tight text-near-black/80 hover:text-near-black hover:-translate-y-0.5 transition-all duration-300 font-medium"
-            >
-              CONTACT
-            </Link>
-          </div>
-        </div>
-
-        {/* Bottom: Divider, Social Icons, and Copyright */}
-        <div className="pt-3 border-t-2 border-near-black/20">
-          <div className="flex flex-col md:flex-row justify-between items-center gap-4">
-            {/* Copyright */}
-            <p className="font-mono text-xs uppercase tracking-[0.18em] text-near-black/60 font-medium">
-              &copy; {new Date().getFullYear()} Bloom Branding. All rights
-              reserved.
-            </p>
-
-            {/* Social Media Icons */}
-            <div className="flex items-center gap-4">
+          {/* Column 2: Say hello */}
+          <div className="flex flex-col gap-6">
+            <h3 className="font-[family-name:var(--font-inter)] font-semibold text-[18px] text-[#FDF6EE]">
+              Say hello
+            </h3>
+            <div className="flex flex-col gap-4">
+              <a href="mailto:hello@bloombranding.com" className="font-[family-name:var(--font-inter)] font-normal text-[15px] leading-[1.6] text-white/85 hover:text-white transition-colors">
+                Email us
+              </a>
               <a
                 href="https://www.instagram.com/bloom.branding_/"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="text-near-black/60 hover:text-near-black hover:scale-110 transition-all duration-300"
-                aria-label="Instagram"
+                className="text-white/85 hover:text-white transition-colors inline-block"
               >
                 <Instagram size={20} strokeWidth={1.5} />
               </a>
-              <a
-                href="https://www.facebook.com/hello.bloombranding/"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-near-black/60 hover:text-near-black hover:scale-110 transition-all duration-300"
-                aria-label="Facebook"
-              >
-                <Facebook size={20} strokeWidth={1.5} />
-              </a>
-              <a
-                href="https://www.linkedin.com/company/bloombranding-digital-media-marketing-branding-agency/?originalSubdomain=in"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-near-black/60 hover:text-near-black hover:scale-110 transition-all duration-300"
-                aria-label="LinkedIn"
-              >
-                <Linkedin size={20} strokeWidth={1.5} />
-              </a>
             </div>
           </div>
+
+          {/* Column 3: Explore */}
+          <div className="flex flex-col gap-6">
+            <h3 className="font-[family-name:var(--font-inter)] font-semibold text-[18px] text-[#FDF6EE]">
+              Explore
+            </h3>
+            <nav className="flex flex-col gap-3">
+              <Link href="/" className="font-[family-name:var(--font-inter)] font-normal text-[15px] leading-[1.6] text-white/85 hover:text-white transition-colors">
+                Home
+              </Link>
+              <Link href="/about" className="font-[family-name:var(--font-inter)] font-normal text-[15px] leading-[1.6] text-white/85 hover:text-white transition-colors">
+                About
+              </Link>
+              <Link href="/services" className="font-[family-name:var(--font-inter)] font-normal text-[15px] leading-[1.6] text-white/85 hover:text-white transition-colors">
+                Services
+              </Link>
+              <Link href="/clients" className="font-[family-name:var(--font-inter)] font-normal text-[15px] leading-[1.6] text-white/85 hover:text-white transition-colors">
+                Clients
+              </Link>
+              <Link href="/faqs" className="font-[family-name:var(--font-inter)] font-normal text-[15px] leading-[1.6] text-white/85 hover:text-white transition-colors">
+                FAQs
+              </Link>
+            </nav>
+          </div>
+
+          {/* Column 4: Tagline + CTA */}
+          <div className="flex flex-col gap-8 md:pl-4">
+            <p className="font-serif italic font-normal text-[24px] md:text-[28px] leading-[1.3] text-[#FFF6EC]">
+              Bloom Branding.<br />
+              Helping brands bloom
+            </p>
+            <div>
+              <Link
+                href="/contact"
+                className="inline-block bg-[#1A1A1A] hover:bg-black text-[#FDF6EE] font-[family-name:var(--font-inter)] font-medium text-[14px] px-7 py-[14px] rounded-full transition-colors duration-300"
+              >
+                Book a Consultation
+              </Link>
+            </div>
+          </div>
+
+        </div>
+
+        {/* Bottom Wordmark */}
+        <div className="relative w-full flex justify-center pb-4 md:pb-8">
+          <h1 className={`${cinzel.className} font-normal text-[clamp(72px,10vw,120px)] tracking-[0.08em] leading-none text-white text-center uppercase whitespace-nowrap`}>
+            Bloom Branding
+          </h1>
         </div>
       </div>
     </footer>
-  );
+  )
 }

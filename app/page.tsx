@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react'
 import Link from 'next/link'
 import { motion } from 'framer-motion'
 import SectionReveal from '@/components/SectionReveal'
+import ExperienceSection from '@/components/ExperienceSection'
 import { getTestimonials, getClients } from '@/lib/content'
 import { homepageContent } from '@/content/homepage'
 import type { Testimonial, Client } from '@/types'
@@ -158,6 +159,11 @@ export default function Home() {
         </SectionReveal>
       )}
 
+      {/* ================= EXPERIENCE ================= */}
+      <SectionReveal>
+        <ExperienceSection />
+      </SectionReveal>
+
       {/* ================= TESTIMONIALS SLIDER ================= */}
       {testimonials.length > 0 && (
         <SectionReveal>
@@ -180,9 +186,9 @@ export default function Home() {
                 dragConstraints={{ left: -1000, right: 0 }}
               >
                 {[...testimonials, ...testimonials].map((t, i) => (
-<motion.div
-  key={`${t.id}-${i}`}
-  className="
+                  <motion.div
+                    key={`${t.id}-${i}`}
+                    className="
     relative min-w-[90%] md:min-w-[45%]
     bg-white p-10 md:p-14
     rounded-2xl
@@ -193,33 +199,33 @@ export default function Home() {
     hover:-translate-y-1
     transition-all duration-500
   "
-  initial={{ opacity: 0, y: 20 }}
-  whileInView={{ opacity: 1, y: 0 }}
-  viewport={{ once: true }}
-  transition={{
-    duration: 0.6,
-    ease: "easeOut", // ✅ CORRECT
-  }}
->
+                    initial={{ opacity: 0, y: 20 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true }}
+                    transition={{
+                      duration: 0.6,
+                      ease: "easeOut", // ✅ CORRECT
+                    }}
+                  >
 
-  {/* Decorative Quote */}
-  <span className="absolute -top-6 -left-4 text-[6rem] leading-none font-serif text-electric-blue/10">
-    
-  </span>
+                    {/* Decorative Quote */}
+                    <span className="absolute -top-6 -left-4 text-[6rem] leading-none font-serif text-electric-blue/10">
 
-  <p className="font-serif text-[1.75rem] leading-snug text-dark-choc mb-10">
-    {t.quote}
-  </p>
+                    </span>
 
-  <div className="border-t border-dark-choc/10 pt-6">
-    <p className="font-mono text-xs uppercase tracking-[0.2em] text-dark-choc">
-      {t.clientName}
-    </p>
-    <p className="text-sm text-near-black/50 mt-1">
-      {t.company}
-    </p>
-  </div>
-</motion.div>
+                    <p className="font-serif text-[1.75rem] leading-snug text-dark-choc mb-10">
+                      {t.quote}
+                    </p>
+
+                    <div className="border-t border-dark-choc/10 pt-6">
+                      <p className="font-mono text-xs uppercase tracking-[0.2em] text-dark-choc">
+                        {t.clientName}
+                      </p>
+                      <p className="text-sm text-near-black/50 mt-1">
+                        {t.company}
+                      </p>
+                    </div>
+                  </motion.div>
 
                 ))}
               </motion.div>
