@@ -26,7 +26,7 @@ export default function OurStory() {
 
               {/* RIGHT — IMAGE */}
               <div className="flex justify-end lg:justify-center">
-                <div className="relative w-full max-w-lg">
+                <div className="relative w-full lg:w-[180%] lg:-ml-[5%] max-w-none">
                   <div className="absolute inset-0 rounded-2xl bg-dark-choc/5 -rotate-1"></div>
 
                   <div className="relative rounded-2xl overflow-hidden shadow-[0_30px_80px_rgba(0,0,0,0.18)]
@@ -141,7 +141,7 @@ export default function OurStory() {
         <div className="container-custom">
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-16 lg:gap-24 items-center">
 
-            <div className="lg:col-span-6 order-2 lg:order-1">
+            <div className="lg:col-span-7 order-2 lg:order-1">
               <SectionReveal direction="left">
                 <div className="rounded-3xl overflow-hidden shadow-[0_30px_80px_rgba(0,0,0,0.15)]">
                   <Image
@@ -155,7 +155,7 @@ export default function OurStory() {
               </SectionReveal>
             </div>
 
-            <div className="lg:col-span-6 order-1 lg:order-2">
+            <div className="lg:col-span-5 order-1 lg:order-2">
               <SectionReveal direction="right" delay={0.2}>
                 <p className="label-text mb-5">Our Purpose</p>
                 <h2 className="heading-2 mb-10">Why We Exist</h2>
