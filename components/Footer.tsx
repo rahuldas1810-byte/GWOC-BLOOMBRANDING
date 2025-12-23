@@ -1,5 +1,6 @@
 'use client'
 
+import Image from 'next/image'
 import Link from 'next/link'
 import { Instagram } from 'lucide-react'
 import { Inter, Cinzel_Decorative } from 'next/font/google'
@@ -18,7 +19,20 @@ const cinzel = Cinzel_Decorative({
 
 export default function Footer() {
   return (
-    <footer className={`bg-[#1E3570] text-[#FDF6EE] relative overflow-hidden pt-20 pb-0 ${inter.variable} font-sans`}>
+    <footer className={`relative overflow-hidden pt-20 pb-0 ${inter.variable} font-sans text-[#FDF6EE]`}>
+
+      {/* Background Image */}
+      <div className="absolute inset-0 z-0">
+        <Image
+          src="/footer-bg.png"
+          alt="Footer Background"
+          fill
+          className="object-cover"
+          priority
+        />
+        {/* Optional overlay if needed for text readability, but not requested */}
+      </div>
+
       <div className="container-custom relative z-10">
 
         {/* Top Row: 4 Columns */}

@@ -2,6 +2,7 @@
 
 import { motion } from 'framer-motion'
 import { La_Belle_Aurore } from 'next/font/google'
+import Image from 'next/image'
 
 const handwriting = La_Belle_Aurore({
     weight: '400',
@@ -10,7 +11,18 @@ const handwriting = La_Belle_Aurore({
 
 export default function ExperienceSection() {
     return (
-        <section className="py-16 md:py-20 bg-earl-gray relative overflow-hidden">
+        <section className="py-16 md:py-20 relative overflow-hidden">
+            {/* Background Image */}
+            <div className="absolute inset-0 z-0">
+                <Image
+                    src="/experience-bg.png"
+                    alt="Experience Background"
+                    fill
+                    className="object-cover"
+                    priority
+                />
+            </div>
+
             <div className="container-custom relative z-10">
 
                 {/* Header */}
