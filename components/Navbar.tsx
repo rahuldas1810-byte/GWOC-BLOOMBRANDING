@@ -30,28 +30,29 @@ export default function Navbar() {
         initial={{ y: -100, opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}
         transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-        className={`sticky top-0 z-50 transition-all duration-700 ease-out border-b ${isScrolled
-            ? "bg-[#F6F4F1]/95 backdrop-blur-md py-3 border-transparent shadow-[0_10px_30px_rgba(0,0,0,0.04)]"
-            : "bg-[#F6F4F1]/60 backdrop-blur-sm py-5 md:py-6 border-transparent shadow-none"
+        className={`fixed top-0 left-0 w-full z-50 transition-all duration-700 ease-out
+          ${isScrolled
+            ? "bg-[#F6F4F1] py-3 shadow-[0_10px_30px_rgba(0,0,0,0.06)]"
+            : "bg-transparent py-6"
           }`}
       >
-        <div className="container-custom pl-3 pr-4 md:pl-5 md:pr-7 lg:pl-6 lg:pr-10">
-          <div className="flex items-center justify-between">
+        <div className="w-full pl-10 pr-6 lg:pl-16 lg:pr-12">
+          <div className="flex items-center">
             {/* Logo */}
             <Link href="/" className="relative z-50 group block">
               <motion.div
-                animate={{ scale: isScrolled ? 1.0 : 1.35 }}
+                animate={{ scale: isScrolled ? 1.0 : 1.15 }}
                 transition={{ duration: 0.5, ease: "easeOut" }}
-                className="relative lg:-ml-40 origin-left"
+                className="relative origin-left"
               >
                 {/* Nested div for independent hover scaling */}
                 <div className="group-hover:scale-[1.02] transition-transform duration-300 ease-out origin-left">
                   <Image
                     src="/bloom-logo.png"
                     alt="Bloom Branding Logo"
-                    width={220}
+                    width={260}
                     height={70}
-                    className="h-full max-h-[48px] w-auto object-contain"
+                    className="h-full max-h-[56px] w-auto object-contain"
                     priority
                   />
                 </div>
@@ -59,7 +60,7 @@ export default function Navbar() {
             </Link>
 
             {/* Desktop Navigation */}
-            <div className="hidden lg:flex items-center gap-12">
+            <div className="hidden lg:flex items-center gap-8 ml-10">
               {navItems.map((item) => {
                 const isActive = pathname === item.href;
                 return (
@@ -69,10 +70,16 @@ export default function Navbar() {
                     className="relative group py-2"
                   >
                     <motion.span
-                      className={`block text-[13px] font-medium uppercase tracking-[0.25em] transition-all duration-300 ${isActive
-                          ? "text-[#2E4AA7]"
-                          : "text-[#6B6B6B] group-hover:text-[#2E4AA7]"
-                        }`}
+                      className={`block text-[14px] font-semibold uppercase tracking-[0.25em] transition-all duration-300 ${
+                        isScrolled
+                          ? isActive
+                            ? "text-[#2E4AA7]"
+                            : "text-[#4B4B4B] group-hover:text-[#2E4AA7]"
+                          : isActive
+                            ? "text-white"
+                            : "text-white/90 group-hover:text-white"
+                      }`}
+                      
                       whileHover={{ y: -2 }}
                     >
                       {item.label}
@@ -92,12 +99,18 @@ export default function Navbar() {
             </div>
 
             {/* CTA & Mobile Toggle */}
-            <div className="flex items-center gap-6">
+            <div className="flex items-center gap-6 ml-auto">
               <Link
                 href="/contact"
-                className="hidden lg:inline-block px-8 py-2.5 border border-[#2E4AA7] text-[#2E4AA7] text-[12px] font-medium uppercase tracking-[0.25em] transition-all duration-300 ease-out hover:bg-[#2E4AA7] hover:text-white hover:scale-[1.03] hover:shadow-[0_5px_15px_rgba(46,74,167,0.15)]"
+                className={`hidden lg:inline-block px-8 py-2.5 text-[12px] font-medium uppercase tracking-[0.25em] transition-all duration-300
+                  ${isScrolled
+                    ? "border border-[#2E4AA7] text-[#2E4AA7] hover:bg-[#2E4AA7] hover:text-white"
+                    : "border border-white/70 text-white hover:bg-white hover:text-black"
+                  }
+                `}
+                
               >
-                Contact
+                Let's Talk
               </Link>
 
               {/* Mobile Menu Button */}
