@@ -1,7 +1,6 @@
 "use client";
-"use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import Link from "next/link";
 import { motion } from "framer-motion";
 import SectionReveal from "@/components/SectionReveal";
@@ -40,6 +39,8 @@ const services = [
 export default function Home() {
   const [testimonials, setTestimonials] = useState<Testimonial[]>([]);
   const [clients, setClients] = useState<Client[]>([]);
+  const [videoEnded, setVideoEnded] = useState(false);
+  const videoRef = useRef<HTMLVideoElement>(null);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -53,40 +54,83 @@ export default function Home() {
     fetchData();
   }, []);
 
+  useEffect(() => {
+    const video = videoRef.current;
+    if (!video) return;
+
+    const handleVideoEnd = () => {
+      setVideoEnded(true);
+    };
+
+    const handleVideoError = () => {
+      // If video fails to load, show content after a short delay
+      setTimeout(() => {
+        setVideoEnded(true);
+      }, 500);
+    };
+
+    video.addEventListener("ended", handleVideoEnd);
+    video.addEventListener("error", handleVideoError);
+
+    return () => {
+      video.removeEventListener("ended", handleVideoEnd);
+      video.removeEventListener("error", handleVideoError);
+    };
+  }, []);
+
   return (
     <div className="min-h-screen">
       {/* ================= HERO SECTION ================= */}
       <section className="relative h-screen overflow-hidden">
+        {/* Video - plays first, then disappears */}
         <video
-          className="absolute inset-0 w-full h-full object-cover"
+          ref={videoRef}
+          className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-1000 ${
+            videoEnded ? "opacity-0 pointer-events-none" : "opacity-100"
+          }`}
           autoPlay
-          loop
           muted
           playsInline
           preload="auto"
         >
           <source src="/videos/video1.mp4" type="video/mp4" />
         </video>
-        <div className="absolute inset-0 bg-[#1f1b16]/45" />
-        <div className="relative z-10 h-full flex items-center">
+
+        {/* Beige background - appears after video */}
+        <div
+          className={`absolute inset-0 bg-earl-gray transition-opacity duration-1000 ${
+            videoEnded ? "opacity-100" : "opacity-0 pointer-events-none"
+          }`}
+        />
+
+        {/* Content - only visible after video ends */}
+        <div
+          className={`relative z-10 h-full flex items-center transition-opacity duration-1000 ${
+            videoEnded ? "opacity-100" : "opacity-0 pointer-events-none"
+          }`}
+        >
           <div className="container-custom">
             <motion.div
               initial={{ opacity: 0, y: 12 }}
-              animate={{ opacity: 1, y: 0 }}
+              animate={
+                videoEnded ? { opacity: 1, y: 0 } : { opacity: 0, y: 12 }
+              }
               transition={{ duration: 0.8 }}
               className="max-w-5xl"
             >
-              <p className="label-text mb-8 text-white/70">
+              <p className="label-text mb-8 text-dark-choc/70">
                 Helping Brands Bloom
               </p>
-              <h1 className="heading-1 mb-10 text-white">
+              <h1
+                className="font-serif text-dark-choc leading-tight mb-10"
+                style={{ fontSize: "clamp(6rem, 8vw, 8rem)" }}
+              >
                 We craft brand
                 <br />
-                identities that
-                <br />
-                <span className="text-electric-blue">resonate.</span>
+                identities that{" "}
+                <span className="text-[#892F1A]">resonate.</span>
               </h1>
-              <p className="body-text max-w-xl mb-14 text-white/80">
+              <p className="body-text max-w-xl mb-14 text-dark-choc/80">
                 {homepageContent.heroSubheading}
               </p>
               <Link href="/contact" className="btn-primary">
@@ -185,8 +229,8 @@ export default function Home() {
           playsInline
         >
           <source src="/videos/video.mp4" type="video/mp4" />
-        </motion.video>
-      </motion.section>
+        </video>
+      </section>
 
       {/* ================= CLIENTS ================= */}
       {clients.length > 0 && (
@@ -255,7 +299,7 @@ export default function Home() {
                     className="text-center font-serif text-xl text-dark-choc/40"
                   >
                     {client.name}
-                  </motion.span>
+                  </span>
                 ))}
               </div>
             </div>
@@ -553,6 +597,5 @@ export default function Home() {
         </section>
       </SectionReveal>
     </div>
-  );
   );
 }
