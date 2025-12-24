@@ -34,7 +34,7 @@ export default function Testimonials() {
       },
     },
   };
-  
+
   const heroContainer = {
     hidden: {},
     show: {
@@ -44,7 +44,7 @@ export default function Testimonials() {
       },
     },
   };
-  
+
   return (
     <div className="min-h-screen">
 
@@ -60,47 +60,47 @@ export default function Testimonials() {
 
           {/* Text Content */}
           {/* Text Content */}
-<div className="absolute inset-0 z-20 flex items-center">
-  <div className="container-custom px-16 md:px-24">
-  <motion.div
-  className="max-w-5xl text-left text-white [&_*]:text-white"
-  variants={heroContainer}
-  initial="hidden"
-  animate="show"
->
+          <div className="absolute inset-0 z-20 flex items-center">
+            <div className="container-custom px-16 md:px-24">
+              <motion.div
+                className="max-w-5xl text-left text-white [&_*]:text-white"
+                variants={heroContainer}
+                initial="hidden"
+                animate="show"
+              >
 
 
-      {/* Small label */}
-      <motion.p
-       variants={heroItem}
-       className="text-[11px] tracking-[0.35em] uppercase mb-10 opacity-70 text-white"
-       >
-        Client Stories
-      </motion.p>
+                {/* Small label */}
+                <motion.p
+                  variants={heroItem}
+                  className="text-[11px] tracking-[0.35em] uppercase mb-10 opacity-70 text-white"
+                >
+                  Client Stories
+                </motion.p>
 
-      {/* MAIN heading */}
-      <motion.h1 variants={heroItem} 
-      className="font-serif text-[clamp(4.5rem,8vw,8rem)] leading-[0.98] mb-10 text-white">
-        Testimonials
-      </motion.h1>
+                {/* MAIN heading */}
+                <motion.h1 variants={heroItem}
+                  className="font-serif text-[clamp(4.5rem,8vw,8rem)] leading-[0.98] mb-10 text-white">
+                  Testimonials
+                </motion.h1>
 
-      {/* Description */}
-      <motion.p
-       variants={heroItem}
-       className="text-lg md:text-xl max-w-xl opacity-90 mb-14 text-white">
-        Hear from companies who have worked with us to build their brand identity.
-      </motion.p>
+                {/* Description */}
+                <motion.p
+                  variants={heroItem}
+                  className="text-lg md:text-xl max-w-xl opacity-90 mb-14 text-white">
+                  Hear from companies who have worked with us to build their brand identity.
+                </motion.p>
 
-      {/* Button */}
-      <motion.div variants={heroItem}>
-      <MagneticButton
-        className="px-14 py-6 border border-white/60 rounded-full text-[11px] tracking-[0.3em] uppercase hover:bg-white hover:text-black transition-all duration-300">
-        Client Stories
-      </MagneticButton>
-    </motion.div>
-    </motion.div>
-  </div>
-</div>
+                {/* Button */}
+                <motion.div variants={heroItem}>
+                  <MagneticButton
+                    className="px-14 py-6 border border-white/60 rounded-full text-[11px] tracking-[0.3em] uppercase hover:bg-white hover:text-black transition-all duration-300">
+                    Client Stories
+                  </MagneticButton>
+                </motion.div>
+              </motion.div>
+            </div>
+          </div>
 
           {/* Scroll Arrow */}
           <motion.button
@@ -109,7 +109,7 @@ export default function Testimonials() {
                 .getElementById("client-reviews")
                 ?.scrollIntoView({ behavior: "smooth" });
             }}
-            animate={{ y: [0,8,0] }}
+            animate={{ y: [0, 8, 0] }}
             transition={{
               duration: 1.8,
               ease: [0.22, 1, 0.36, 1],
@@ -195,29 +195,7 @@ export default function Testimonials() {
         </section>
       )}
 
-      {/* ================= FINAL CTA ================= */}
-      <SectionReveal>
-        <section className="py-32 md:py-40 lg:py-48 bg-electric-blue">
-          <div className="container-custom">
-            <div className="max-w-4xl">
-              <p className="font-mono text-xs uppercase tracking-[0.2em] text-white/50 mb-8">
-                Your Story Next
-              </p>
-              <h2 className="font-serif text-white mb-12 text-[clamp(2.5rem,5vw,4.5rem)] leading-[1.05]">
-                Ready to build
-                <br />
-                your brand?
-              </h2>
-              <Link
-                href="/contact"
-                className="inline-block font-mono text-xs uppercase tracking-[0.2em] text-electric-blue bg-white px-10 py-5 hover:bg-earl-gray transition-colors duration-500"
-              >
-                Get Started
-              </Link>
-            </div>
-          </div>
-        </section>
-      </SectionReveal>
+
 
     </div>
   );

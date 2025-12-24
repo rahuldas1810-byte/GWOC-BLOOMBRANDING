@@ -147,9 +147,8 @@ export default function Services() {
           {services.map((service, index) => (
             <motion.div
               key={service.title}
-              className={`min-h-[100vh] flex flex-col justify-center px-12 xl:px-24 py-24 relative ${
-                index % 2 === 0 ? 'bg-white' : 'bg-earl-gray'
-              }`}
+              className={`min-h-[100vh] flex flex-col justify-center px-12 xl:px-24 py-24 relative ${index % 2 === 0 ? 'bg-white' : 'bg-earl-gray'
+                }`}
               onViewportEnter={() => setActiveServiceIndex(index)}
               viewport={{ amount: 0.55 }}
             >
@@ -221,22 +220,7 @@ export default function Services() {
         ))}
       </section>
 
-      {/* CTA */}
-      <SectionReveal>
-        <section className="py-32 md:py-40 lg:py-48 bg-electric-blue">
-          <div className="container-custom">
-            <h2 className="font-serif text-white mb-12 text-[clamp(2.5rem,5vw,4.5rem)]">
-              Let&apos;s discuss<br />your project.
-            </h2>
-            <Link
-              href="/contact"
-              className="inline-block font-mono text-xs uppercase tracking-[0.2em] text-electric-blue bg-white px-10 py-5"
-            >
-              Contact Us
-            </Link>
-          </div>
-        </section>
-      </SectionReveal>
+
     </div>
   )
 }
