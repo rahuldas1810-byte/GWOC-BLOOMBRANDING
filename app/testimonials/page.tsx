@@ -70,13 +70,13 @@ export default function Testimonials() {
               >
 
 
-                {/* Small label */}
-                <motion.p
-                  variants={heroItem}
-                  className="text-[11px] tracking-[0.35em] uppercase mb-10 opacity-70 text-white"
-                >
-                  Client Stories
-                </motion.p>
+      {/* Small label */}
+      <motion.p
+       variants={heroItem}
+       className="text-[11px] tracking-[0.35em] uppercase mb-10 opacity-70 text-white"
+       >
+        
+      </motion.p>
 
                 {/* MAIN heading */}
                 <motion.h1 variants={heroItem}
