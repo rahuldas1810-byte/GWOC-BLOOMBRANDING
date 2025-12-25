@@ -89,4 +89,4 @@ The design avoids generic trends in favor of a timeless, confident aesthetic. We
 
 ---
 
-*Developed by Rahul Das for GWoC 2025.*
+*Developed by Cyber Knights for GWoC 2025.*
