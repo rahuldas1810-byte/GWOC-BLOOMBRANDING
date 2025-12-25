@@ -4,19 +4,20 @@ import Image from 'next/image'
 
 interface HorizontalMarqueeProps {
   images: string[]
+  gradientClass?: string
 }
 
-export default function HorizontalMarquee({ images }: HorizontalMarqueeProps) {
+export default function HorizontalMarquee({ images, gradientClass = "from-white" }: HorizontalMarqueeProps) {
   return (
     <div className="relative w-full overflow-hidden group">
 
       {/* LEFT EDGE FADE */}
-      <div className="pointer-events-none absolute left-0 top-0 z-10 h-full w-32
-                      bg-gradient-to-r from-white to-transparent" />
+      <div className={`pointer-events-none absolute left-0 top-0 z-10 h-full w-32
+                      bg-gradient-to-r ${gradientClass} to-transparent`} />
 
       {/* RIGHT EDGE FADE */}
-      <div className="pointer-events-none absolute right-0 top-0 z-10 h-full w-32
-                      bg-gradient-to-l from-white to-transparent" />
+      <div className={`pointer-events-none absolute right-0 top-0 z-10 h-full w-32
+                      bg-gradient-to-l ${gradientClass} to-transparent`} />
 
       <motion.div
         className="flex gap-10 w-max"

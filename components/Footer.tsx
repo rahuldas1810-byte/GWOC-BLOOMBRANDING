@@ -98,10 +98,18 @@ export default function Footer() {
 
           {/* Column 4: Tagline + CTA */}
           <div className="flex flex-col gap-8 md:pl-4">
-            <p className="font-serif italic font-normal text-[24px] md:text-[28px] leading-[1.3] text-[#FFF6EC]">
-              Bloom Branding.<br />
-              Helping brands bloom
-            </p>
+            <div className="flex flex-col gap-2">
+              <Image
+                src="/bloom-logo.png"
+                alt="Bloom Branding"
+                width={240}
+                height={80}
+                className="w-56 h-auto object-contain brightness-0 invert"
+              />
+              <p className="font-serif italic font-normal text-[24px] md:text-[28px] leading-[1.3] text-[#FFF6EC]">
+                Helping brands bloom
+              </p>
+            </div>
             <div>
               <Link
                 href="/contact"

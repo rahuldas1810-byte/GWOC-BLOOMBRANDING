@@ -4,171 +4,334 @@ import SectionReveal from '@/components/SectionReveal'
 import Image from 'next/image'
 import HorizontalMarquee from '@/components/HorizontalMarquee'
 import HoverCard from '@/components/HoverCard'
+import { motion, useScroll, useTransform, useMotionValue, useSpring, useMotionTemplate } from 'framer-motion'
+import { useRef, useState } from 'react'
 
 export default function OurStory() {
+
+  // Parallax Logic for Hero
+  const containerRef = useRef<HTMLDivElement>(null)
+  const { scrollYProgress } = useScroll({
+    target: containerRef,
+    offset: ["start start", "end start"]
+  })
+  const y = useTransform(scrollYProgress, [0, 1], ["0%", "50%"])
+  const opacity = useTransform(scrollYProgress, [0, 0.5], [1, 0])
+
+  // Purpose Parallax
+  const purposeRef = useRef<HTMLDivElement>(null)
+  const { scrollYProgress: purposeProgress } = useScroll({
+    target: purposeRef,
+    offset: ["start end", "end start"]
+  })
+  const purposeY = useTransform(purposeProgress, [0, 1], ["-20%", "10%"])
+
+  // Philosophy State
+  const [activeCard, setActiveCard] = useState<string | null>(null)
+
   return (
     <div className="min-h-screen">
 
-      {/* Hero */}
-      <section className="py-32 md:py-40 lg:py-48 bg-earl-gray">
-        <div className="container-custom">
-          <SectionReveal>
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-20 items-center">
+      {/* ================= CINEMATIC HERO ================= */}
+      <section ref={containerRef} className="relative h-[90vh] min-h-[700px] overflow-hidden flex items-center justify-center bg-dark-choc">
 
-              {/* LEFT — TEXT */}
-              <div className="lg:pr-12">
-                <p className="label-text mb-8">About Bloom</p>
-                <h1 className="heading-1 mb-10">Our Story</h1>
-                <p className="body-text max-w-md">
-                  We believe in brands that are confident, clear, and built to last.
-                </p>
+        {/* Parallax Background Image */}
+        <motion.div
+          style={{ y }}
+          className="absolute inset-0 z-0"
+        >
+          <Image
+            src="/who-we-are.jpg"
+            alt="Bloom Branding studio"
+            fill
+            className="object-cover opacity-50"
+            priority
+          />
+          {/* Gradient Overlay for Text Readability */}
+          <div className="absolute inset-0 bg-gradient-to-t from-dark-choc via-dark-choc/30 to-transparent" />
+        </motion.div>
+
+        {/* Content Layer */}
+        <div className="container-custom relative z-10 w-full pt-20">
+          <motion.div
+            style={{ opacity }}
+            className="flex flex-col items-center text-center"
+          >
+            <motion.p
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8, delay: 0.2 }}
+              className="label-text mb-8 tracking-[0.4em] text-earl-gray/80"
+            >
+              Established 2024
+            </motion.p>
+
+            {/* Massive Editorial Title */}
+            <h1 className="font-serif text-earl-gray leading-[0.85]">
+              <div className="overflow-hidden">
+                <motion.span
+                  initial={{ y: "100%" }}
+                  animate={{ y: 0 }}
+                  transition={{ duration: 1, ease: [0.16, 1, 0.3, 1] }}
+                  className="block text-[15vw] lg:text-[14rem]"
+                >
+                  OUR
+                </motion.span>
               </div>
-
-              {/* RIGHT — IMAGE */}
-              <div className="flex justify-end lg:justify-center">
-                <div className="relative w-full lg:w-[180%] lg:-ml-[5%] max-w-none">
-                  <div className="absolute inset-0 rounded-2xl bg-dark-choc/5 -rotate-1"></div>
-
-                  <div className="relative rounded-2xl overflow-hidden shadow-[0_30px_80px_rgba(0,0,0,0.18)]
-                    motion-safe:animate-[float_14s_ease-in-out_infinite]">
-                    <Image
-                      src="/who-we-are.jpg"
-                      alt="Bloom Branding studio"
-                      width={1200}
-                      height={900}
-                      className="w-full h-auto"
-                      priority
-                    />
-                  </div>
-                </div>
+              <div className="overflow-hidden">
+                <motion.span
+                  initial={{ y: "100%" }}
+                  animate={{ y: 0 }}
+                  transition={{ duration: 1, delay: 0.1, ease: [0.16, 1, 0.3, 1] }}
+                  className="block text-[15vw] lg:text-[14rem] italic pl-[10vw] lg:pl-32"
+                >
+                  STORY
+                </motion.span>
               </div>
+            </h1>
 
-            </div>
-          </SectionReveal>
+            <motion.p
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ duration: 1, delay: 0.8 }}
+              className="body-text text-xl md:text-2xl max-w-lg mt-12 text-earl-gray/80"
+            >
+              Building brands that leave a legacy through clarity, confidence, and craft.
+            </motion.p>
+          </motion.div>
         </div>
       </section>
 
-      {/* Who We Are */}
-      <SectionReveal>
-        <section className="section-padding bg-white">
-          <div className="container-custom">
-            <div className="grid grid-cols-1 lg:grid-cols-12 gap-16 lg:gap-28 items-start">
+      {/* Who We Are - REFINED */}
+      <section className="section-padding bg-white relative z-20 rounded-t-[3rem] -mt-20 min-h-[80vh]">
+        <div className="container-custom">
 
-              <div className="lg:col-span-5">
-                <p className="label-text mb-5">Who We Are</p>
-                <h2 className="heading-2 leading-tight max-w-sm">
-                  A studio built on clarity.
-                </h2>
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-16 lg:gap-28 items-start pt-10">
+
+            {/* Sticky Left Column */}
+            <div className="lg:col-span-5 lg:sticky lg:top-32 self-start">
+              <SectionReveal>
+                <p className="label-text mb-8 text-dark-choc/60">Who We Are</p>
+              </SectionReveal>
+
+              <div className="overflow-hidden mb-8">
+                <motion.h2
+                  initial={{ y: "100%" }}
+                  whileInView={{ y: 0 }}
+                  viewport={{ once: true, margin: "-10%" }}
+                  transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+                  className="heading-2 text-6xl md:text-7xl leading-[1.1] text-dark-choc"
+                >
+                  A studio built <br /> on <span className="text-electric-blue">clarity.</span>
+                </motion.h2>
               </div>
 
-              <div className="lg:col-span-6 lg:col-start-7 space-y-10">
-                <p className="body-text">
-                  Bloom Branding is a strategic branding agency focused on helping modern companies
-                  build brand identities that matter. We work with startups, D2C brands, and creators
-                  who are ready to make a real impact in their markets.
+              {/* Animated Scale Line */}
+              <motion.div
+                initial={{ scaleX: 0, originX: 0 }}
+                whileInView={{ scaleX: 1 }}
+                viewport={{ once: true }}
+                transition={{ duration: 1, delay: 0.4, ease: "easeOut" }}
+                className="h-[2px] w-24 bg-dark-choc/20"
+              />
+            </div>
+
+            {/* Scrollable Right Content */}
+            <div className="lg:col-span-6 lg:col-start-7 space-y-12 lg:pt-32">
+              <SectionReveal delay={0.2}>
+                <p className="body-text text-2xl md:text-3xl leading-relaxed text-dark-choc indent-12">
+                  Bloom Branding is a strategic branding agency for those ready to make a noise.
                 </p>
-                <p className="body-text">
+              </SectionReveal>
+
+              <SectionReveal delay={0.3}>
+                <p className="body-text text-lg md:text-xl leading-relaxed text-dark-choc/70">
+                  We work with startups, D2C brands, and creators who are ready to make a real impact.
                   Our team combines strategic thinking with clean, confident design. We don&apos;t chase trends.
                   We build brands that stand the test of time.
                 </p>
-              </div>
+              </SectionReveal>
 
-            </div>
-          </div>
-        </section>
-      </SectionReveal>
-
-      {/* Philosophy */}
-      <SectionReveal>
-        <section className="section-padding bg-butter-yellow/40">
-          <div className="container-custom">
-            <div className="max-w-4xl mx-auto">
-
-              <div className="text-center mb-20">
-                <p className="label-text mb-5">Our Philosophy</p>
-                <h2 className="heading-2">What we believe.</h2>
-              </div>
-
-              <div className="space-y-20">
-                {[
-                  {
-                    title: 'Clarity Over Complexity',
-                    text: 'The best brands are simple, clear, and easy to understand. We strip away the noise and focus on what truly matters.',
-                  },
-                  {
-                    title: 'Strategy First',
-                    text: 'Every design decision we make is backed by strategic thinking. We create brands that work.',
-                  },
-                  {
-                    title: 'Confidence, Not Flash',
-                    text: 'Premium doesn’t mean flashy. We build brands that are confident and refined.',
-                  },
-                ].map((item, i) => (
-                  <SectionReveal key={i} delay={0.1 * (i + 1)}>
-                    <div className="group relative pl-10 md:pl-12">
-                      <span className="absolute left-0 top-2 h-2 w-2 rounded-full bg-dark-choc/40
-                        transition-transform duration-300 group-hover:scale-125" />
-                      <h3 className="heading-3 mb-6">{item.title}</h3>
-                      <p className="body-text">{item.text}</p>
-                    </div>
-                  </SectionReveal>
-                ))}
-              </div>
-
-            </div>
-          </div>
-        </section>
-      </SectionReveal>
-
-      {/* Horizontal Marquee */}
-      <section className="py-32 bg-white overflow-hidden">
-        <HorizontalMarquee
-          images={[
-            '/2.jpg',
-            '/3.jpg',
-            '/4.jpg',
-            '/5.jpg',
-            '/6.jpg',
-            '/7.jpg',
-            '/8.jpg',
-            '/9.jpg',
-          ]}
-        />
-      </section>
-
-      {/* Why We Exist */}
-      <section className="section-padding bg-white">
-        <div className="container-custom">
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-16 lg:gap-24 items-center">
-
-            <div className="lg:col-span-7 order-2 lg:order-1">
-              <SectionReveal direction="left">
-                <div className="rounded-3xl overflow-hidden shadow-[0_30px_80px_rgba(0,0,0,0.15)]">
-                  <Image
-                    src="/27.jpg"
-                    alt="Bloom Branding work showcase"
-                    width={1800}
-                    height={1000}
-                    className="w-full h-auto"
-                  />
+              <SectionReveal delay={0.4}>
+                <div className="grid grid-cols-2 gap-8 pt-8 border-t border-dark-choc/10">
+                  <div>
+                    <span className="block text-4xl font-serif text-electric-blue mb-2">30+</span>
+                    <span className="text-sm font-mono uppercase tracking-wider text-dark-choc/60">Brands Built</span>
+                  </div>
+                  <div>
+                    <span className="block text-4xl font-serif text-electric-blue mb-2">100%</span>
+                    <span className="text-sm font-mono uppercase tracking-wider text-dark-choc/60">Satisfaction</span>
+                  </div>
                 </div>
               </SectionReveal>
             </div>
 
-            <div className="lg:col-span-5 order-1 lg:order-2">
-              <SectionReveal direction="right" delay={0.2}>
-                <p className="label-text mb-5">Our Purpose</p>
-                <h2 className="heading-2 mb-10">Why We Exist</h2>
-                <p className="body-text mb-8">
-                  The branding industry is full of agencies that overcomplicate things.
-                </p>
-                <p className="body-text">
-                  We help companies build brand identities that are strategic, clear, and built to last.
-                </p>
-              </SectionReveal>
+          </div>
+        </div>
+      </section>
+
+      {/* Philosophy - INTERACTIVE CARDS */}
+      <section className="section-padding bg-earl-gray relative z-20">
+        <div className="container-custom">
+
+          <div className="text-center mb-24">
+            <p className="label-text mb-5 text-dark-choc/60">Our Philosophy</p>
+            <h2 className="heading-2 text-dark-choc">What we believe.</h2>
+          </div>
+
+          <div className="flex flex-col md:flex-row gap-6 justify-center">
+            {[
+              {
+                id: '01',
+                title: 'Clarity Over Complexity',
+                text: 'The best brands are simple, clear, and easy to understand. We strip away the noise.'
+              },
+              {
+                id: '02',
+                title: 'Strategy First',
+                text: 'Every design decision we make is backed by strategic thinking. We create brands that work.'
+              },
+              {
+                id: '03',
+                title: 'Confidence, Not Flash',
+                text: 'Premium doesn’t mean flashy. We build brands that represent quiet confidence.'
+              }
+            ].map((item, i) => (
+              <motion.div
+                key={i}
+                layout
+                initial={{ opacity: 0, scale: 0.9, y: 20 }}
+                whileInView={{ opacity: 1, scale: 1, y: 0 }}
+                animate={{
+                  flex: activeCard === item.id ? 2 : 1,
+                  transition: { duration: 0.4, ease: "easeInOut" }
+                }}
+                viewport={{ once: true, margin: "-10%" }}
+                onClick={() => setActiveCard(activeCard === item.id ? null : item.id)}
+                className={`group px-8 py-10 lg:p-12 border-t border-dark-choc/10 hover:border-transparent h-[450px] w-full md:w-auto flex flex-col justify-between 
+                           cursor-pointer transition-colors duration-500 overflow-hidden relative
+                           ${activeCard === item.id
+                    ? 'bg-electric-blue text-white border-transparent'
+                    : 'bg-white hover:bg-electric-blue hover:text-white'}`}
+              >
+                <motion.div layout="position">
+                  <span className={`block text-6xl font-serif mb-8 transition-colors duration-500
+                                    ${activeCard === item.id
+                      ? 'text-white/30'
+                      : 'text-dark-choc/20 group-hover:text-white/30'}`}>
+                    {item.id}
+                  </span>
+                </motion.div>
+
+                <motion.div layout="position">
+                  <motion.h3
+                    layout="position"
+                    className={`heading-3 mb-6 transition-colors duration-500 whitespace-nowrap
+                                  ${activeCard === item.id
+                        ? 'text-white'
+                        : 'text-dark-choc group-hover:text-white'}`}>
+                    {item.title}
+                  </motion.h3>
+                  <motion.p
+                    layout="position"
+                    className={`body-text transition-opacity duration-500
+                                  ${activeCard === item.id
+                        ? 'opacity-90 text-white'
+                        : 'opacity-80 group-hover:opacity-90 group-hover:text-white'}`}>
+                    {item.text}
+                  </motion.p>
+                </motion.div>
+              </motion.div>
+            ))}
+          </div>
+
+        </div>
+      </section>
+
+      {/* ================= MARQUEE ================= */}
+      <SectionReveal>
+        <section className="py-32 bg-dark-choc overflow-hidden border-t border-dark-choc/5">
+          <div className="container-custom mb-16 text-center">
+            <p className="label-text mb-6 text-earl-gray/60">Culture</p>
+            <h2 className="heading-2 text-earl-gray">Life at Bloom</h2>
+          </div>
+          <HorizontalMarquee
+            gradientClass="from-dark-choc"
+            images={[
+              '/2.jpg', '/4.jpg', '/5.jpg',
+              '/6.jpg', '/7.jpg', '/8.jpg', '/9.jpg'
+            ]}
+          />
+        </section>
+      </SectionReveal>
+
+      {/* Why We Exist - EDITORIAL OVERLAP */}
+      <section ref={purposeRef} className="section-padding bg-white relative overflow-hidden py-32 lg:py-48">
+        <div className="container-custom relative z-10">
+
+          <div className="relative">
+            {/* Parallax Image - Large & Cinematic */}
+            <div className="lg:w-[75%] relative aspect-[16/9] lg:aspect-[21/9] overflow-hidden rounded-[2rem] shadow-2xl group">
+              <motion.div style={{ y: purposeY }} className="absolute inset-0 w-full h-[120%] -top-[10%]">
+                <Image
+                  src="/27.jpg"
+                  alt="Bloom Branding purpose"
+                  fill
+                  className="object-cover"
+                />
+                <div className="absolute inset-0 bg-dark-choc/10 mix-blend-multiply" />
+              </motion.div>
+
+              {/* Image Curtain Reveal */}
+              <motion.div
+                initial={{ height: "100%" }}
+                whileInView={{ height: "0%" }}
+                viewport={{ once: true }}
+                transition={{ duration: 1.5, ease: [0.19, 1, 0.22, 1] }}
+                className="absolute inset-0 bg-electric-blue z-20 top-auto bottom-0"
+              />
             </div>
 
+            {/* Overlapping Content Card - FAANG TILT */}
+            <TiltCard
+              className="bg-white/95 backdrop-blur-md p-10 md:p-16 rounded-[2rem] shadow-[0_40px_100px_rgba(0,0,0,0.1)] border border-dark-choc/5
+                            relative mt-[-10%] ml-[5%] w-[90%]
+                            lg:absolute lg:right-0 lg:bottom-[10%] lg:w-[45%] lg:mt-0 lg:ml-0 overflow-hidden group/card"
+            >
+              {/* Rotating Badge */}
+              <div className="absolute -top-12 -right-12 w-48 h-48 opacity-10 md:opacity-100 hidden md:block pointer-events-none z-20">
+                <div className="w-full h-full animate-[spin_10s_linear_infinite]">
+                  <svg viewBox="0 0 100 100" className="w-full h-full overflow-visible">
+                    <defs>
+                      <path id="circlePath" d="M 50, 50 m -37, 0 a 37,37 0 1,1 74,0 a 37,37 0 1,1 -74,0" />
+                    </defs>
+                    <text fontSize="11" fill="currentColor" className="text-dark-choc font-mono uppercase tracking-[0.2em]">
+                      <textPath href="#circlePath" startOffset="0%">
+                        Strategy • Clarity • Design •
+                      </textPath>
+                    </text>
+                  </svg>
+                </div>
+              </div>
+
+              <span className="block w-12 h-1 bg-electric-blue mb-8 relative z-10" />
+
+              <div className="relative z-10 transform-gpu preserve-3d">
+                <p className="label-text mb-6 text-dark-choc/60">Our Purpose</p>
+                <h2 className="heading-2 mb-8">Why We Exist</h2>
+
+                <p className="font-serif text-3xl md:text-4xl text-dark-choc mb-8 leading-tight">
+                  No jargon. No fluff. <span className="text-dark-choc/40 italic">Just clarity.</span>
+                </p>
+
+                {/* Scroll Highlight Text */}
+                <ScrollHighlightText
+                  text="The branding industry is full of agencies that overcomplicate things to justify fees. We exist to destroy that noise. We help companies build brand identities that are strategic, clear, and built to last."
+                />
+              </div>
+            </TiltCard>
           </div>
+
         </div>
       </section>
 
@@ -205,5 +368,95 @@ export default function OurStory() {
       </SectionReveal>
 
     </div>
+  )
+}
+
+function ScrollHighlightText({ text }: { text: string }) {
+  const containerRef = useRef<HTMLParagraphElement>(null)
+  const { scrollYProgress } = useScroll({
+    target: containerRef,
+    offset: ["start 0.9", "start 0.6"]
+  })
+
+  const words = text.split(" ")
+
+  return (
+    <p ref={containerRef} className="body-text text-lg leading-relaxed flex flex-wrap gap-x-1.5">
+      {words.map((word, i) => {
+        const start = i / words.length
+        const end = start + (1 / words.length)
+        // eslint-disable-next-line
+        const opacity = useTransform(scrollYProgress, [start, end], [0.3, 1])
+
+        return (
+          <motion.span
+            key={i}
+            style={{ opacity }}
+            className="text-dark-choc"
+          >
+            {word}
+          </motion.span>
+        )
+      })}
+    </p>
+  )
+}
+
+function TiltCard({ children, className }: { children: React.ReactNode, className?: string }) {
+  const x = useMotionValue(0)
+  const y = useMotionValue(0)
+
+  // Physics for Smooth Tilt
+  const mouseX = useSpring(x, { stiffness: 150, damping: 15 })
+  const mouseY = useSpring(y, { stiffness: 150, damping: 15 })
+
+  // Map mouse position to rotation degrees
+  const rotateX = useTransform(mouseY, [-0.5, 0.5], ["7deg", "-7deg"])
+  const rotateY = useTransform(mouseX, [-0.5, 0.5], ["-7deg", "7deg"])
+
+  // Spotlight gradient position
+  const spotlightX = useTransform(mouseX, [-0.5, 0.5], ["0%", "100%"])
+  const spotlightY = useTransform(mouseY, [-0.5, 0.5], ["0%", "100%"])
+
+  function onMouseMove({ currentTarget, clientX, clientY }: React.MouseEvent) {
+    const { left, top, width, height } = currentTarget.getBoundingClientRect()
+    x.set((clientX - left) / width - 0.5)
+    y.set((clientY - top) / height - 0.5)
+  }
+
+  function onMouseLeave() {
+    x.set(0)
+    y.set(0)
+  }
+
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 40 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true, margin: "-10%" }}
+      transition={{ duration: 0.8, delay: 0.2 }}
+      onMouseMove={onMouseMove}
+      onMouseLeave={onMouseLeave}
+      style={{
+        rotateX,
+        rotateY,
+        transformStyle: "preserve-3d",
+        perspective: 1000
+      }}
+      className={className}
+    >
+      {/* Spotlight Effect */}
+      <motion.div
+        className="pointer-events-none absolute -inset-px opacity-0 group-hover/card:opacity-100 transition duration-500 z-30"
+        style={{
+          background: useMotionTemplate`radial-gradient(
+               650px circle at ${spotlightX} ${spotlightY},
+               rgba(255,255,255,0.4),
+               transparent 80%
+             )`
+        }}
+      />
+      {children}
+    </motion.div>
   )
 }

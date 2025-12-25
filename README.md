@@ -1,62 +1,36 @@
-Bloom Branding – GWOC Track 3
+# Bloom Branding
 
-This project is a branding agency website created for Google Winter of Code (GWOC) – Track 3.
+A strategic branding studio website built with **Next.js 14**, **Tailwind CSS**, and **Framer Motion**.
 
-Bloom Branding is a sample agency concept. The goal of this project was to build a clean, professional, and client-ready website. The focus was on clarity, simple structure, and stable code rather than heavy animations or unnecessary complexity.
+This project represents a modern, high-performance agency portfolio featuring cinematic scrolling interactions, physics-based animations, and a sophisticated "Luxury Inversion" design system.
 
-WHAT THIS PROJECT INCLUDES
+## Features
 
-Six main pages: Home, Our Story, Services, Clients, Testimonials, Contact
-Fully responsive layout for all screen sizes
-Contact form handled using server-side logic
-Content managed through TypeScript files
-Simple and maintainable project structure
+-   **Cinematic Hero**: Parallax scrolling with massive editorial typography.
+-   **Interactive Services**: Physics-based accordion lists with "Dark Mode on Hover" logic.
+-   **Performance**: Fully optimized Next.js app router architecture.
+-   **Motion**: Custom Framer Motion implementations for scroll reveals, marquees, and text effects.
 
-TECH STACK USED
+## Tech Stack
 
-•Next.js 14 with App Router
-•TypeScript
-•Tailwind CSS
-•Framer Motion used minimally for animations
-•React Hook Form with Zod for validation
-•Next.js Server Actions for form handling
+-   **Framework**: Next.js 14 (App Router)
+-   **Styling**: Tailwind CSS
+-   **Animation**: Framer Motion
+-   **Font**: Inter & Cinzel Decorative
 
-HOW TO RUN THE PROJECT
+## Getting Started
 
-Requirements
-Node.js version 18 or higher
+1.  **Install dependencies**:
+    ```bash
+    npm install
+    ```
 
-Setup
-git clone <repository-url>
-cd bloom-branding-gwoc
-npm install
+2.  **Run the development server**:
+    ```bash
+    npm run dev
+    ```
 
-Run locally
-npm run dev
-
-Open http://localhost:3000
- in your browser.
-
-PROJECT STRUCTURE OVERVIEW
-
-The app folder contains all pages and routes
-The components folder contains reusable UI components
-The content folder contains website text and data
-The lib folder contains helper and utility functions
-The types folder contains TypeScript type definitions
-
-CONTENT HANDLING
-
-All website content is stored inside the content folder as TypeScript files. This makes updates easy, keeps everything type-safe, and removes the need for a database or external CMS.
-
-DEPLOYMENT
-
-The project can be deployed directly on Vercel without any additional configuration or environment variables.
-
-LICENSE
-
-Created for Google Winter of Code – Track 3.
-
-CREDITS
-
-Built as part of the GWOC Track 3 evaluation for the Bloom Branding project.
+3.  **Build for production**:
+    ```bash
+    npm run build
+    ```

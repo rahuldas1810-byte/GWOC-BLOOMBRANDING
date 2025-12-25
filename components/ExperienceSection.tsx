@@ -1,13 +1,37 @@
 'use client'
 
-import { motion } from 'framer-motion'
+import { motion, useInView, useMotionValue, useTransform, animate } from 'framer-motion'
 import { La_Belle_Aurore } from 'next/font/google'
 import Image from 'next/image'
+import { useEffect, useRef } from 'react'
 
 const handwriting = La_Belle_Aurore({
     weight: '400',
     subsets: ['latin'],
 })
+
+function CountUp({ to, duration = 2 }: { to: number; duration?: number }) {
+    const ref = useRef<HTMLSpanElement>(null)
+    const inView = useInView(ref, { once: true })
+    const count = useMotionValue(0)
+    const rounded = useTransform(count, (latest) => Math.round(latest))
+
+    useEffect(() => {
+        if (inView) {
+            animate(count, to, { duration, ease: "easeOut" })
+        }
+    }, [inView, count, to, duration])
+
+    useEffect(() => {
+        return rounded.on("change", (latest) => {
+            if (ref.current) {
+                ref.current.textContent = latest.toString()
+            }
+        })
+    }, [rounded])
+
+    return <span ref={ref} />
+}
 
 export default function ExperienceSection() {
     return (
@@ -60,7 +84,7 @@ export default function ExperienceSection() {
             "
                     >
                         <span className="font-serif text-5xl md:text-6xl text-electric-blue font-bold mb-2">
-                            4+
+                            <CountUp to={4} />+
                         </span>
                         <span className="font-sans text-sm md:text-base tracking-widest text-near-black uppercase font-medium">
                             Years of<br />Experience<br />in the Industry
@@ -85,7 +109,7 @@ export default function ExperienceSection() {
                             Worked On
                         </span>
                         <span className="font-serif text-5xl md:text-6xl text-electric-blue font-bold mb-2">
-                            75+
+                            <CountUp to={75} />+
                         </span>
                         <span className="font-sans text-sm md:text-base tracking-widest text-near-black uppercase font-medium">
                             Clients
@@ -107,7 +131,7 @@ export default function ExperienceSection() {
             "
                     >
                         <span className="font-serif text-5xl md:text-6xl text-electric-blue font-bold mb-2">
-                            100+
+                            <CountUp to={100} />+
                         </span>
                         <span className="font-sans text-sm md:text-base tracking-widest text-near-black uppercase font-medium">
                             Branding &<br />Production<br />Projects

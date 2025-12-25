@@ -70,16 +70,15 @@ export default function Navbar() {
                     className="relative group py-2"
                   >
                     <motion.span
-                      className={`block text-[14px] font-semibold uppercase tracking-[0.25em] transition-all duration-300 ${
-                        isScrolled
+                      className={`block text-[14px] font-semibold uppercase tracking-[0.25em] transition-all duration-300 ${isScrolled
                           ? isActive
                             ? "text-[#2E4AA7]"
                             : "text-[#4B4B4B] group-hover:text-[#2E4AA7]"
                           : isActive
-                            ? "text-white"
-                            : "text-white/90 group-hover:text-white"
-                      }`}
-                      
+                            ? "text-[#2E4AA7]"
+                            : "text-[#3b2f2f] group-hover:text-[#2E4AA7]"
+                        }`}
+
                       whileHover={{ y: -2 }}
                     >
                       {item.label}
@@ -105,10 +104,10 @@ export default function Navbar() {
                 className={`hidden lg:inline-block px-8 py-2.5 text-[12px] font-medium uppercase tracking-[0.25em] transition-all duration-300
                   ${isScrolled
                     ? "border border-[#2E4AA7] text-[#2E4AA7] hover:bg-[#2E4AA7] hover:text-white"
-                    : "border border-white/70 text-white hover:bg-white hover:text-black"
+                    : "border border-[#3b2f2f]/30 text-[#3b2f2f] hover:bg-[#3b2f2f] hover:text-white"
                   }
                 `}
-                
+
               >
                 Let's Talk
               </Link>
@@ -161,8 +160,8 @@ export default function Navbar() {
                       href={item.href}
                       onClick={() => setMobileMenuOpen(false)}
                       className={`block font-mono text-sm uppercase tracking-[0.2em] transition-colors duration-300 ${pathname === item.href
-                          ? "text-[#2E4AA7]"
-                          : "text-[#6B6B6B] hover:text-[#2E4AA7]"
+                        ? "text-[#2E4AA7]"
+                        : "text-[#6B6B6B] hover:text-[#2E4AA7]"
                         }`}
                     >
                       {item.label}
