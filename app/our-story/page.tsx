@@ -208,7 +208,7 @@ export default function OurStory() {
                 }}
                 viewport={{ once: true, margin: "-10%" }}
                 onClick={() => setActiveCard(activeCard === item.id ? null : item.id)}
-                className={`group px-8 py-10 lg:p-12 border-t border-dark-choc/10 hover:border-transparent h-[450px] w-full md:w-auto flex flex-col justify-between 
+                className={`group px-8 py-10 lg:p-12 border-t border-dark-choc/10 hover:border-transparent min-h-[450px] w-full md:w-auto flex flex-col justify-between 
                            cursor-pointer transition-colors duration-500 overflow-hidden relative
                            ${activeCard === item.id
                     ? 'bg-electric-blue text-white border-transparent'
@@ -226,7 +226,7 @@ export default function OurStory() {
                 <motion.div layout="position">
                   <motion.h3
                     layout="position"
-                    className={`heading-3 mb-6 transition-colors duration-500 whitespace-nowrap
+                    className={`heading-3 mb-6 transition-colors duration-500
                                   ${activeCard === item.id
                         ? 'text-white'
                         : 'text-dark-choc group-hover:text-white'}`}>
