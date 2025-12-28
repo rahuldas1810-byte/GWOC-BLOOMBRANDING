@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import SectionReveal from "@/components/SectionReveal";
 import { getTestimonials } from "@/lib/content";
 import type { Testimonial } from "@/types";
@@ -14,6 +14,37 @@ import MagneticButton from "@/components/MagneticButton";
 export default function Testimonials() {
   const [testimonials, setTestimonials] = useState<Testimonial[]>([]);
   const [activeIndex, setActiveIndex] = useState<number>(0);
+  const [activeCategory, setActiveCategory] = useState<BrandCategory>("JEWELLERY");
+
+const brandData = {
+  JEWELLERY: [
+    { name: "Dhruv Gems", label: "Luxury jewellery brand", image: "/brands/dhruv.jpg" },
+    { name: "AMBC Gems", label: "Fine diamond jewellery", image: "/brands/ambc.jpg" },
+    { name: "Vardhaman Diam", label: "Diamond brand", image: "/brands/vardhaman.jpg" },
+  ],
+  FASHION: [
+    { name: "The Right Cut", label: "Contemporary fashion label", image: "/brands/the-right-cut.jpg" },
+    { name: "Binal Patel", label: "Designer wear brand", image: "/brands/binal-patel.jpg" },
+    { name: "Mansi Nagdev", label: "Ethnic fashion brand", image: "/brands/mansi-nagdev.jpg" },
+  ],
+  "CAFE & RESTAURANTS": [
+    { name: "Thyme and Whisk", label: "Cafe & bistro", image: "/brands/thyme.jpg" },
+    { name: "KAFFYN", label: "Specialty coffee brand", image: "/brands/kaffyn.jpg" },
+    { name: "Amar Fastfood Center", label: "Quick service restaurant", image: "/brands/amar.jpg" },
+  ],
+  "HOME FURNISHING": [
+    { name: "Fine Decor", label: "Home decor brand", image: "/brands/fine-decor.jpg" },
+    { name: "Moire Rugs", label: "Handcrafted rugs", image: "/brands/moire-rugs.jpg" },
+    { name: "Bafna Marble", label: "Luxury marble & stone", image: "/brands/bafna-marble.jpg" },
+  ],
+  LIFESTYLE: [
+    { name: "Life’s A Beach", label: "Lifestyle brand", image: "/brands/beach.jpg" },
+    { name: "ShoP", label: "Concept retail brand", image: "/brands/shop.jpg" },
+    { name: "B’there", label: "Innerwear brand", image: "/brands/bthere.jpg" },
+  ],
+} as const;
+
+type BrandCategory = keyof typeof brandData;
 
   useEffect(() => {
     const fetchTestimonials = async () => {
@@ -45,11 +76,38 @@ export default function Testimonials() {
     },
   };
 
+  const cardContainer = {
+    hidden: {},
+    show: {
+      transition: {
+        staggerChildren: 0.12,
+      },
+    },
+  };
+  
+  const cardItem = {
+    hidden: { opacity: 0, y: 30 },
+    show: {
+      opacity: 1,
+      y: 0,
+      transition: {
+        duration: 0.6,
+        ease: [0.22, 1, 0.36, 1],
+      },
+    },
+    exit: {
+      opacity: 0,
+      y: -20,
+      transition: { duration: 0.4 },
+    },
+  };
+  
+
   return (
     <div className="min-h-screen">
 
       {/* ================= HERO SECTION ================= */}
-      <section className="relative min-h-[90vh] w-full overflow-hidden">
+      <section className="relative min-h-[85vh] w-full overflow-hidden mt-20 lg:mt-24">
         <div className="relative h-screen">
 
           {/* Slice Reveal Background */}
@@ -69,13 +127,12 @@ export default function Testimonials() {
                 animate="show"
               >
 
-
       {/* Small label */}
       <motion.p
        variants={heroItem}
        className="text-[11px] tracking-[0.35em] uppercase mb-10 opacity-70 text-white"
        >
-        
+        Our Partners
       </motion.p>
 
                 {/* MAIN heading */}
@@ -124,18 +181,102 @@ export default function Testimonials() {
         </div>
       </section>
 
+      {/* ================= BRAND CATEGORIES ================= */}
+<section className="py-24 bg-earl-gray">
+  <div className="flex justify-center gap-6 mb-14 -mt-8">
+  {(Object.keys(brandData) as BrandCategory[]).map((category) => {
+    const isActive = activeCategory === category;
+
+    return (
+      <button
+        key={category}
+        onClick={() => setActiveCategory(category)}
+        className={`px-7 py-2.5 rounded-full text-[11px] tracking-[0.25em] uppercase transition-all duration-300
+          ${
+            isActive
+              ? "bg-dark-choc text-white"
+              : "border border-dark-choc/30 text-dark-choc hover:border-dark-choc"
+          }
+        `}
+      >
+        {category}
+      </button>
+    );
+  })}
+</div>
+
+
+    {/* Brand Cards */}
+    <AnimatePresence mode="wait">
+  <motion.div
+    key={activeCategory}
+    variants={cardContainer}
+    initial="hidden"
+    animate="show"
+    exit="hidden"
+    className="grid grid-cols-1 md:grid-cols-3 gap-14 max-w-7xl xl:max-w-[85rem] mx-auto px-6"
+  >
+
+      {brandData[activeCategory].map((brand) => (
+        <motion.div
+        key={brand.name}
+        variants={cardItem}
+        className="text-center"
+      >
+
+          {/* Image */}
+          <div className="relative w-full h-[460px] rounded-xl overflow-hidden bg-dark-choc/10 mb-4">
+
+
+            <Image
+              src={brand.image}
+              alt={brand.name}
+              fill
+              className="object-cover transition-transform duration-700 ease-out group-hover:scale-[1.06]"
+            />
+
+            {/* Soft overlay */}
+            <div className="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-colors duration-500" />
+
+          </div>
+
+
+          {/* Brand Name (clickable) */}
+          <Link
+            href="#"
+            className="block font-serif text-xl text-dark-choc hover:underline transition-colors"
+
+          >
+            {brand.name}
+          </Link>
+
+          {/* Small Label */}
+          <p className="mt-2 text-sm tracking-wide text-dark-choc/60">
+
+            {brand.label}
+          </p>
+
+        </motion.div>
+      ))}
+    </motion.div>
+  </AnimatePresence>
+  <div className="h-6 md:h-10" />
+
+</section>
+
+      
       {/* ================= SPLIT TESTIMONIALS ================= */}
       {testimonials.length > 0 && (
-        <section id="client-reviews" className="relative bg-white">
-          <div className="flex min-h-screen">
+        <section id="client-reviews" className="relative bg-white pb-20">
+          <div className="flex relative">
 
             {/* Left Sticky Image */}
-            <div className="sticky top-0 w-[55%] h-screen bg-earl-gray/30 flex items-center justify-center p-12 md:p-16 lg:p-20">
+            <div className="sticky top-[20vh] w-[55%] h-[60vh] bg-earl-gray/30 flex items-center justify-center p-12 md:p-16 lg:p-20">
               <div className="relative w-full h-full pr-24">
 
                 {testimonials.map((testimonial, index) => {
                   if (!testimonial.image) return null;
-
+                  
                   return (
                     <motion.div
                       key={testimonial.id}
@@ -166,7 +307,7 @@ export default function Testimonials() {
               {testimonials.map((testimonial, index) => (
                 <motion.section
                   key={testimonial.id}
-                  className="min-h-screen flex items-center px-16 py-20"
+                  className="min-h-[60vh] flex items-center px-16 py-20"
                   initial={{ opacity: 0, y: 20 }}
                   whileInView={{ opacity: 1, y: 0 }}
                   onViewportEnter={() => setActiveIndex(index)}
