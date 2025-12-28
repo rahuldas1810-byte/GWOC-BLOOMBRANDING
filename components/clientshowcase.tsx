@@ -1,7 +1,7 @@
 'use client'
 
 import { useState, useRef } from 'react'
-import { motion } from 'framer-motion'
+import { motion, AnimatePresence } from 'framer-motion'
 import type { ShowcaseClient } from '@/types'
 
 export default function ClientShowcase() {
@@ -69,45 +69,89 @@ export default function ClientShowcase() {
       <div className="relative w-full">
         <div className="relative flex items-center justify-center h-[700px] w-screen max-w-none overflow-visible">
           {visibleClients.map((client, i) => {
-            const pos = positions[i]
+            const pos = positions[i] // 5 positions
             const isCenter = i === 2
+
+            // Determine z-index based on position to ensure center is on top
+            const zIndex = isCenter ? 10 : i === 1 || i === 3 ? 5 : 1
 
             return (
               <motion.div
                 key={client.name}
+                initial={false}
                 animate={{ x: pos.x, scale: pos.scale }}
-                transition={{ duration: 0.45, ease: 'easeOut' }}
+                transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }} // smooth easeOut
                 onMouseEnter={() =>
-                  handleHover(
-                    (activeIndex + i - 2 + clients.length) % clients.length
-                  )
+                  handleHover((activeIndex + i - 2 + clients.length) % clients.length)
                 }
-                className={`absolute rounded-2xl overflow-hidden transition-opacity duration-300 ${
+                className={`absolute rounded-2xl overflow-hidden shadow-2xl transition-all duration-500 ${
                   isCenter
-                    ? 'w-[420px] h-[520px] z-10 bg-white'
-                    : 'w-72 h-[420px] bg-gradient-to-br from-pink-400 to-yellow-300 opacity-60'
+                    ? 'w-[420px] h-[520px] bg-white'
+                    : 'w-72 h-[420px] bg-gradient-to-br from-pink-400 to-yellow-300 opacity-60' // Keeping original side style
                 }`}
+                style={{ zIndex }}
               >
-                {isCenter && (
-                  <div className="flex h-full w-full flex-col">
-                    {/* IMAGE SECTION */}
-                    <div className="h-[65%] w-full overflow-hidden">
-                      {/* eslint-disable-next-line @next/next/no-img-element */}
-                      <img
-                        src={client.image}
-                        alt={client.name}
-                        className="h-full w-full object-cover"
-                      />
-                    </div>
+                <AnimatePresence mode="wait">
+                  {isCenter && (
+                    <motion.div
+                      key="center-content"
+                      className="flex h-full w-full flex-col relative group"
+                      initial={{ opacity: 0 }}
+                      animate={{ opacity: 1 }}
+                      exit={{ opacity: 0 }}
+                      transition={{ duration: 0.4 }}
+                    >
+                      {/* IMAGE SECTION */}
+                      <div className="h-[65%] w-full overflow-hidden relative bg-gray-100">
+                        <motion.img
+                          src={client.image}
+                          alt={client.name}
+                          className="h-full w-full object-cover"
+                          initial={{ scale: 1.02, opacity: 0 }}
+                          animate={{ scale: 1, opacity: 1 }}
+                          transition={{ duration: 0.6, ease: 'easeOut' }}
+                          whileHover={{ scale: 1.04 }}
+                        />
+                        
+                        {/* Hover Overlay - Only on center card */}
+                        <motion.div 
+                          className="absolute inset-0 bg-dark-choc/20 flex items-center justify-center opacity-0 transition-opacity duration-300 group-hover:opacity-100"
+                        >
+                          <motion.span
+                            initial={{ opacity: 0, y: 6 }}
+                            whileHover={{ opacity: 1, y: 0 }}
+                            transition={{ duration: 0.3, delay: 0.1 }}
+                            className="text-white font-mono text-xs uppercase tracking-widest bg-dark-choc/90 px-5 py-2 rounded-full backdrop-blur-sm transform translate-y-2 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-300 delay-100"
+                          >
+                            View Work →
+                          </motion.span>
+                        </motion.div>
+                      </div>
 
-                    {/* TEXT SECTION */}
-                    <div className="flex h-[35%] flex-col items-center justify-center px-6 text-center">
-                      <h3 className="text-xl mb-1">{client.name}</h3>
-                      <p className="text-sm opacity-70">{client.type}</p>
-                      <p className="text-sm mt-2">{client.review}</p>
-                    </div>
-                  </div>
-                )}
+                      {/* TEXT SECTION */}
+                      <div className="flex h-[35%] flex-col items-center justify-center px-8 text-center bg-white relative z-10">
+                        <motion.h3 
+                          className="text-2xl font-serif text-dark-choc mb-2"
+                        >
+                          {client.name}
+                        </motion.h3>
+                        <motion.p 
+                          className="text-xs font-mono uppercase tracking-widest text-dark-choc/50 mb-4"
+                        >
+                          {client.type}
+                        </motion.p>
+                        <motion.p 
+                          className="text-base text-near-black/80 font-sans leading-relaxed"
+                          initial={{ opacity: 0, y: 10 }}
+                          animate={{ opacity: 1, y: 0 }}
+                          transition={{ delay: 0.1, duration: 0.4 }}
+                        >
+                          {client.review}
+                        </motion.p>
+                      </div>
+                    </motion.div>
+                  )}
+                </AnimatePresence>
               </motion.div>
             )
           })}
