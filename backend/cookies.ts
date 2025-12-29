@@ -5,7 +5,7 @@ if (typeof window !== 'undefined') {
 }
 
 export function setAuthCookie(response: NextResponse, token: string): void {
-  response.cookies.set('admin_token', token, {
+  response.cookies.set('adminToken', token, {
     httpOnly: true,
     secure: process.env.NODE_ENV === 'production',
     sameSite: 'lax',
@@ -15,6 +15,6 @@ export function setAuthCookie(response: NextResponse, token: string): void {
 }
 
 export function clearAuthCookie(response: NextResponse): void {
-  response.cookies.delete('admin_token');
+  response.cookies.delete('adminToken');
 }
 

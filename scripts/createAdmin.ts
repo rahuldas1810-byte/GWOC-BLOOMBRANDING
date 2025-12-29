@@ -1,38 +1,53 @@
-import mongoose from 'mongoose';
-import bcrypt from 'bcryptjs';
-import connectDB from '../backend/db';
-import Admin from '../models/Admin';
+import path from 'path'
+import dotenv from 'dotenv'
+
+dotenv.config({
+  path: path.resolve(process.cwd(), '.env.local'),
+})
+
+import bcrypt from 'bcryptjs'
 
 async function createAdmin() {
   try {
-    await connectDB();
-    console.log('✅ Connected to MongoDB');
+    console.log('🔄 Starting admin creation...')
 
-    // Check if admin already exists
-    const existingAdmin = await Admin.findOne({ email: 'admin@bloombranding.com' });
+    // 🔥 CRITICAL: dynamic imports AFTER dotenv
+    const { default: connectDB } = await import('../backend/db')
+    const { default: Admin } = await import('../models/Admin')
+
+    await connectDB()
+    console.log('✅ Connected to MongoDB')
+
+    const email = 'admin@bloombranding.com'
+    const plainPassword = 'admin123'
+
+    const existingAdmin = await Admin.findOne({ email })
     if (existingAdmin) {
-      console.log('⚠️  Admin user already exists:', existingAdmin.email);
-      console.log('   If you want to create a new admin, use a different email.');
-      process.exit(0);
+      console.log('⚠️ Admin already exists:', email)
+      process.exit(0)
     }
 
-    const admin = await Admin.create({
-      email: 'admin@bloombranding.com',
-      password: 'admin123', // ⚠️ CHANGE THIS PASSWORD IMMEDIATELY AFTER FIRST LOGIN!
+    const hashedPassword = await bcrypt.hash(plainPassword, 10)
+
+    await Admin.create({
+      email,
+      password: hashedPassword,
       name: 'Admin User',
       role: 'admin',
-    });
+    })
 
-    console.log('✅ Admin user created successfully!');
-    console.log('   Email: admin@bloombranding.com');
-    console.log('   Password: admin123');
-    console.log('   ⚠️  IMPORTANT: Change this password immediately after first login!');
-    process.exit(0);
+    console.log('✅ Admin user created successfully!')
+    console.log('Email:', email)
+    console.log('Password:', plainPassword)
+    console.log('⚠️ Change this password after first login!')
+    process.exit(0)
   } catch (error: any) {
-    console.error('❌ Error:', error.message);
-    process.exit(1);
+    console.error('❌ Error creating admin:')
+    console.error(error.message)
+    process.exit(1)
   }
 }
 
-createAdmin();
+createAdmin()
+
 

@@ -65,11 +65,12 @@ class ApiClient {
 
   // Auth
   async login(email: string, password: string) {
-    return this.request<{ token: string; user: any }>('/auth/login', {
+    return this.request<{ user: any }>('/admin/auth/login', {
       method: 'POST',
       body: JSON.stringify({ email, password }),
     });
   }
+  
 
   async getMe() {
     return this.request<any>('/auth/me');

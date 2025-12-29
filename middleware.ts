@@ -8,7 +8,7 @@ export async function middleware(request: NextRequest) {
   if (pathname.startsWith('/admin') && !pathname.startsWith('/admin/login')) {
     // Edge Runtime compatible: Just check if auth cookie exists
     // Full JWT verification happens in API routes (Node.js runtime)
-    const token = request.cookies.get('admin_token')?.value;
+    const token = request.cookies.get('adminToken')?.value;
 
     if (!token || token.trim() === '') {
       return NextResponse.redirect(new URL('/admin/login', request.url));

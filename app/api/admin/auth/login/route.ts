@@ -1,15 +1,16 @@
-import { NextRequest, NextResponse } from 'next/server';
-import bcrypt from 'bcryptjs';
-import { connectDB, signToken, setAuthCookie } from '@/backend';
-import Admin from '@/models/Admin';
+import { NextRequest, NextResponse } from 'next/server'
+import bcrypt from 'bcryptjs'
+import connectDB from '@/backend/db'
+import { signToken } from '@/backend'
+import Admin from '@/models/Admin'
 
 export async function POST(request: NextRequest) {
   try {
-    await connectDB();
+    await connectDB()
 
-    const body = await request.json();
-    const { email, password } = body;
+    const { email, password } = await request.json()
 
+    // Basic validation
     if (!email || !password) {
       return NextResponse.json(
         {
@@ -17,32 +18,40 @@ export async function POST(request: NextRequest) {
           message: 'Email and password are required',
         },
         { status: 400 }
-      );
+      )
     }
 
-    const user = await Admin.findOne({ email: email.toLowerCase() }).select('+password');
+    // Find admin and explicitly include password
+    const normalizedEmail = email.toLowerCase().trim()
+    const admin = await Admin.findOne({
+      email: normalizedEmail,
+    }).select('+password')
 
-    if (!user || !user.isActive) {
+    // ❌ Admin not found OR not active
+    if (!admin || admin.isActive !== true) {
       return NextResponse.json(
         {
           success: false,
           message: 'Invalid credentials',
         },
         { status: 401 }
-      );
+      )
     }
 
-    if (!user.password) {
+    // Extra safety check
+    if (!admin.password) {
       return NextResponse.json(
         {
           success: false,
           message: 'Invalid credentials',
         },
         { status: 401 }
-      );
+      )
     }
 
-    const isPasswordValid = await bcrypt.compare(password, user.password);
+    // 🔑 Compare password using bcryptjs
+    const plainPassword = password.trim()
+    const isPasswordValid = await bcrypt.compare(plainPassword, admin.password)
 
     if (!isPasswordValid) {
       return NextResponse.json(
@@ -51,35 +60,49 @@ export async function POST(request: NextRequest) {
           message: 'Invalid credentials',
         },
         { status: 401 }
-      );
+      )
     }
 
-    const token = signToken(user._id.toString(), user.email, user.role);
+    // Create JWT token
+    const token = signToken(
+      admin._id.toString(),
+      admin.email,
+      admin.role
+    )
 
+    // Success response
     const response = NextResponse.json({
       success: true,
       message: 'Login successful',
       data: {
         user: {
-          id: user._id.toString(),
-          email: user.email,
-          name: user.name,
-          role: user.role,
+          id: admin._id.toString(),
+          email: admin.email,
+          name: admin.name,
+          role: admin.role,
         },
       },
-    });
+    })
 
-    setAuthCookie(response, token);
+    // Set auth cookie with name "adminToken"
+    response.cookies.set('adminToken', token, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === 'production',
+      sameSite: 'lax',
+      maxAge: 60 * 60 * 24 * 7, // 7 days
+      path: '/',
+    })
 
-    return response;
+    return response
   } catch (error: any) {
-    console.error('Login error:', error);
+    console.error('❌ Admin login error:', error)
+
     return NextResponse.json(
       {
         success: false,
-        message: error.message || 'Login failed. Please try again.',
+        message: 'Login failed. Please try again.',
       },
       { status: 500 }
-    );
+    )
   }
 }

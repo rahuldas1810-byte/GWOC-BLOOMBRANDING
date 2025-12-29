@@ -39,7 +39,7 @@ export function verifyAuthToken(request: NextRequest): { userId: string; email: 
     let token: string | null = null;
 
     // Try to get token from cookie first
-    const cookieToken = request.cookies.get('admin_token')?.value;
+    const cookieToken = request.cookies.get('adminToken')?.value;
     if (cookieToken) {
       token = cookieToken;
     } else {
@@ -69,7 +69,7 @@ export async function authenticate(request: NextRequest): Promise<AuthResult> {
     let token: string | null = null;
 
     // Try to get token from cookie first
-    const cookieToken = request.cookies.get('admin_token')?.value;
+    const cookieToken = request.cookies.get('adminToken')?.value;
     if (cookieToken) {
       token = cookieToken;
     } else {
