@@ -12,7 +12,7 @@ export interface Client {
   name: string
   logo?: string
   order?: number
-  image: string
+  image?: string
 }
 
 export interface HomepageContent {

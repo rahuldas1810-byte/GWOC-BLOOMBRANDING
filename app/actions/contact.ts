@@ -7,6 +7,7 @@ const contactSchema = z.object({
   email: z.string().email('Please enter a valid email address'),
   company: z.string().optional(),
   message: z.string().min(10, 'Message must be at least 10 characters'),
+  phone: z.string().optional(),
 })
 
 export type ContactFormData = z.infer<typeof contactSchema>
@@ -18,19 +19,29 @@ export async function submitContactForm(formData: FormData) {
       email: formData.get('email'),
       company: formData.get('company') || undefined,
       message: formData.get('message'),
+      phone: formData.get('phone') || undefined,
     }
 
     const validatedData = contactSchema.parse(rawData)
 
-    // Log submission (in production, you might want to send an email or store elsewhere)
-    console.log('Contact form submission:', {
-      ...validatedData,
-      submittedAt: new Date().toISOString(),
+    // Submit to API
+    const response = await fetch('/api/enquiries', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(validatedData),
     })
 
-    return {
-      success: true,
-      message: 'Thank you! Your message has been sent successfully.',
+    const result = await response.json()
+
+    if (result.success) {
+      return {
+        success: true,
+        message: 'Thank you! Your message has been sent successfully.',
+      }
+    } else {
+      throw new Error(result.message || 'Failed to submit enquiry')
     }
   } catch (error) {
     if (error instanceof z.ZodError) {

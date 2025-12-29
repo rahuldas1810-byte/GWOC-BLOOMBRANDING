@@ -4,6 +4,7 @@
 /node_modules
 /.pnp
 .pnp.js
+/server/node_modules
 
 # testing
 /coverage
@@ -35,3 +36,5 @@ yarn-error.log*
 *.tsbuildinfo
 next-env.d.ts
 
+# server folder (deprecated - using Next.js API routes only)
+/server

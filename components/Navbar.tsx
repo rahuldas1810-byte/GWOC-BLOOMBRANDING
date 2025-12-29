@@ -71,12 +71,12 @@ export default function Navbar() {
                   >
                     <motion.span
                       className={`block text-[14px] font-semibold uppercase tracking-[0.25em] transition-all duration-300 ${isScrolled
-                          ? isActive
-                            ? "text-[#2E4AA7]"
-                            : "text-[#4B4B4B] group-hover:text-[#2E4AA7]"
-                          : isActive
-                            ? "text-[#2E4AA7]"
-                            : "text-[#3b2f2f] group-hover:text-[#2E4AA7]"
+                        ? isActive
+                          ? "text-[#2E4AA7]"
+                          : "text-[#4B4B4B] group-hover:text-[#2E4AA7]"
+                        : isActive
+                          ? "text-[#2E4AA7]"
+                          : "text-[#3b2f2f] group-hover:text-[#2E4AA7]"
                         }`}
 
                       whileHover={{ y: -2 }}
@@ -109,7 +109,7 @@ export default function Navbar() {
                 `}
 
               >
-                Let's Talk
+                Let&apos;s Talk
               </Link>
 
               {/* Mobile Menu Button */}
