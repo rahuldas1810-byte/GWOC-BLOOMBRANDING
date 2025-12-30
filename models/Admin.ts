@@ -7,6 +7,8 @@ export interface IAdmin extends Document {
   name: string
   role: 'admin' | 'superadmin'
   isActive: boolean
+  resetPasswordToken?: string
+  resetPasswordExpiry?: Date
   comparePassword(candidatePassword: string): Promise<boolean>
   createdAt: Date
   updatedAt: Date
@@ -39,6 +41,14 @@ const AdminSchema = new Schema<IAdmin>(
     isActive: {
       type: Boolean,
       default: true,
+    },
+    resetPasswordToken: {
+      type: String,
+      select: false,
+    },
+    resetPasswordExpiry: {
+      type: Date,
+      select: false,
     },
   },
   {

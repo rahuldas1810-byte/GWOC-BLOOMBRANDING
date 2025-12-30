@@ -63,7 +63,7 @@ export default function EnquiriesPage() {
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
         <h1 className="text-3xl font-bold text-dark-choc mb-8">Enquiries</h1>
 
-      <div className="mb-6 flex gap-2">
+        <div className="mb-6 flex gap-2">
         {['all', 'new', 'contacted', 'resolved'].map((status) => (
           <button
             key={status}
@@ -77,9 +77,9 @@ export default function EnquiriesPage() {
             {status}
           </button>
         ))}
-      </div>
+        </div>
 
-      <div className="bg-white rounded-lg shadow-md border border-dark-choc/10 overflow-hidden">
+        <div className="bg-white rounded-lg shadow-md border border-dark-choc/10 overflow-hidden">
         {enquiries.length === 0 ? (
           <div className="p-12 text-center text-dark-choc/60">
             No enquiries found.
