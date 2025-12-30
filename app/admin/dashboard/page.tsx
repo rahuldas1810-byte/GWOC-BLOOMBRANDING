@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from 'react'
 import { api } from '@/lib/api'
-import { Users, MessageSquare, Image, Mail, Film, FileText } from 'lucide-react'
+import { Users, MessageSquare, Mail, Film, FileText } from 'lucide-react'
 
 export default function AdminDashboard() {
   const [stats, setStats] = useState<any>(null)
@@ -28,7 +28,6 @@ export default function AdminDashboard() {
   const statCards = [
     { label: 'Brands', value: stats?.brands || 0, icon: Users, color: 'bg-electric-blue' },
     { label: 'Testimonials', value: stats?.testimonials || 0, icon: MessageSquare, color: 'bg-butter-yellow' },
-    { label: 'Banners', value: stats?.banners || 0, icon: Image, color: 'bg-[#892F1A]' },
     { label: 'Clients', value: stats?.clients || 0, icon: Users, color: 'bg-dark-choc' },
     { label: 'Media Files', value: stats?.media || 0, icon: Film, color: 'bg-earl-gray' },
     { label: 'New Enquiries', value: stats?.newEnquiries || 0, icon: Mail, color: 'bg-red-500' },

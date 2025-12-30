@@ -30,7 +30,6 @@ const navigation = [
   { name: 'Site Settings', href: '/admin/site-settings', icon: Settings },
   { name: 'Brands', href: '/admin/brands', icon: Users },
   { name: 'Testimonials', href: '/admin/testimonials', icon: MessageSquare },
-  { name: 'Banners', href: '/admin/banners', icon: Image },
   { name: 'Clients', href: '/admin/clients', icon: Users },
   { name: 'Media Manager', href: '/admin/media', icon: Film },
   { name: 'Enquiries', href: '/admin/enquiries', icon: Mail },

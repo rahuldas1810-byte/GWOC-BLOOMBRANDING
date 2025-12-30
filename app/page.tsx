@@ -103,8 +103,15 @@ export default function Home() {
     }
     
     // Reset states when hero video changes - hero video should play first
+    // Always start with hero video playing, background video hidden
     setVideoEnded(false);
     setHeroVideoReady(false);
+    
+    // Ensure background video is paused and reset when hero video is present
+    if (backgroundVideoRef.current && homepageContent.heroVideo) {
+      backgroundVideoRef.current.pause();
+      backgroundVideoRef.current.currentTime = 0;
+    }
   }, [homepageContent.heroVideo, homepageContent.backgroundVideo]);
 
   // Handle hero video events and ensure it plays
@@ -175,16 +182,18 @@ export default function Home() {
       // Start background video when hero ends or if no hero video
       // Add a small delay to ensure smooth transition
       const playTimeout = setTimeout(() => {
+        bgVideo.load(); // Reload to ensure it starts fresh
         bgVideo.play().catch((error) => {
           console.error('Error playing background video:', error);
         });
-      }, 100);
+      }, 300);
       
       return () => clearTimeout(playTimeout);
     } else {
       // Pause and reset background video if hero video is playing
       bgVideo.pause();
       bgVideo.currentTime = 0;
+      bgVideo.load(); // Reset the video
     }
   }, [videoEnded, homepageContent.heroVideo, homepageContent.backgroundVideo]);
 
@@ -202,7 +211,10 @@ export default function Home() {
             muted
             playsInline
             preload="auto"
-            style={{ visibility: videoEnded ? 'hidden' : 'visible' }}
+            style={{ 
+              visibility: videoEnded ? 'hidden' : 'visible',
+              display: videoEnded ? 'none' : 'block'
+            }}
           >
             <source src={homepageContent.heroVideo} type="video/mp4" />
             <source src={homepageContent.heroVideo} type="video/webm" />
@@ -215,13 +227,14 @@ export default function Home() {
             ref={backgroundVideoRef}
             className={`absolute inset-0 w-full h-full object-cover scale-[1.35] z-10 transition-opacity duration-1000 ${videoEnded || !homepageContent.heroVideo ? "opacity-100 z-10" : "opacity-0 z-0 pointer-events-none"
               }`}
-            autoPlay={!homepageContent.heroVideo}
+            autoPlay={!homepageContent.heroVideo || videoEnded}
             loop
             muted
             playsInline
-            preload={homepageContent.heroVideo ? "metadata" : "auto"}
+            preload={homepageContent.heroVideo ? "none" : "auto"}
             style={{ 
               visibility: homepageContent.heroVideo && !videoEnded ? 'hidden' : 'visible',
+              display: homepageContent.heroVideo && !videoEnded ? 'none' : 'block',
               pointerEvents: homepageContent.heroVideo && !videoEnded ? 'none' : 'auto'
             }}
           >
