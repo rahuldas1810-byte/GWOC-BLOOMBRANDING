@@ -181,7 +181,6 @@ export default function BannersPage() {
           </tbody>
         </table>
       </div>
-        </div>
       </div>
     </div>
   )

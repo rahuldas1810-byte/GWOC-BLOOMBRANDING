@@ -155,7 +155,6 @@ export default function TestimonialsPage() {
           </tbody>
         </table>
       </div>
-        </div>
       </div>
     </div>
   )

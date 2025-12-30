@@ -70,7 +70,27 @@ class ApiClient {
       body: JSON.stringify({ email, password }),
     });
   }
-  
+
+  async forgotPassword(email: string) {
+    return this.request('/admin/auth/forgot-password', {
+      method: 'POST',
+      body: JSON.stringify({ email }),
+    });
+  }
+
+  async validateResetToken(token: string) {
+    return this.request('/admin/auth/validate-reset-token', {
+      method: 'POST',
+      body: JSON.stringify({ token }),
+    });
+  }
+
+  async resetPassword(token: string, newPassword: string) {
+    return this.request('/admin/auth/reset-password', {
+      method: 'POST',
+      body: JSON.stringify({ token, newPassword }),
+    });
+  }
 
   async getMe() {
     return this.request<any>('/admin/auth/me');

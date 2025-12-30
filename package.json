@@ -11,10 +11,12 @@
     "create-admin": "tsx scripts/createAdminUser.ts",
     "reset-admin-password": "tsx --env-file .env.local scripts/resetAdminPassword.ts",
     "setup-env": "tsx scripts/setupEnv.ts",
-    "test-db": "tsx --env-file .env.local scripts/testConnection.ts"
+    "test-db": "tsx --env-file .env.local scripts/testConnection.ts",
+    "test-email": "tsx --env-file .env.local scripts/testEmail.ts"
   },
   "dependencies": {
     "@hookform/resolvers": "^3.3.2",
+    "@types/nodemailer": "^7.0.4",
     "bcryptjs": "^2.4.3",
     "cloudinary": "^2.8.0",
     "dotenv": "^17.2.3",
@@ -24,6 +26,7 @@
     "lucide-react": "^0.562.0",
     "mongoose": "^8.20.4",
     "next": "14.0.4",
+    "nodemailer": "^7.0.12",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-hook-form": "^7.49.2",
