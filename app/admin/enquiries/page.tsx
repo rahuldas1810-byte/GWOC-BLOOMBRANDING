@@ -59,8 +59,9 @@ export default function EnquiriesPage() {
   }
 
   return (
-    <div>
-      <h1 className="text-3xl font-bold text-dark-choc mb-8">Enquiries</h1>
+    <div className="min-h-screen bg-dark-choc/5 py-8">
+      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+        <h1 className="text-3xl font-bold text-dark-choc mb-8">Enquiries</h1>
 
       <div className="mb-6 flex gap-2">
         {['all', 'new', 'contacted', 'resolved'].map((status) => (
@@ -134,6 +135,7 @@ export default function EnquiriesPage() {
             ))}
           </div>
         )}
+      </div>
       </div>
     </div>
   )

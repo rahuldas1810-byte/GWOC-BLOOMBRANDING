@@ -21,6 +21,10 @@ export interface HomepageContent {
   heroSubheading: string
   aboutPreview: string
   servicesPreview: string[]
+  tagline?: string
+  heroVideo?: { url: string; mediaId?: string } | null
+  backgroundVideo?: { url: string; mediaId?: string } | null
+  sectionVideo?: { url: string; mediaId?: string } | null
 }
 
 export interface ContactSubmission {

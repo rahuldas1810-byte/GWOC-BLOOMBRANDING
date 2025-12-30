@@ -24,14 +24,26 @@ export async function submitContactForm(formData: FormData) {
 
     const validatedData = contactSchema.parse(rawData)
 
-    // Submit to API
-    const response = await fetch('/api/enquiries', {
+    // Submit to API - use absolute URL for server actions
+    const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'http://localhost:3000'
+    const response = await fetch(`${baseUrl}/api/public/enquiries`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify(validatedData),
     })
+
+    if (!response.ok) {
+      const errorText = await response.text()
+      let errorData
+      try {
+        errorData = JSON.parse(errorText)
+      } catch {
+        errorData = { message: `Server error: ${response.status}` }
+      }
+      throw new Error(errorData.message || 'Failed to submit enquiry')
+    }
 
     const result = await response.json()
 

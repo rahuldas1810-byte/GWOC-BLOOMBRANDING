@@ -1,8 +1,7 @@
 import type { Metadata } from 'next'
 import { Playfair_Display, Lekton } from 'next/font/google'
 import './globals.css'
-import Navbar from '@/components/Navbar'
-import Footer from '@/components/Footer'
+import ConditionalLayout from '@/components/ConditionalLayout'
 
 const playfair = Playfair_Display({ 
   subsets: ['latin'],
@@ -30,9 +29,7 @@ export default function RootLayout({
   return (
     <html lang="en" className={`${playfair.variable} ${lekton.variable}`}>
       <body className="antialiased bg-earl-gray text-near-black">
-        <Navbar />
-        <main>{children}</main>
-        <Footer />
+        <ConditionalLayout>{children}</ConditionalLayout>
       </body>
     </html>
   )

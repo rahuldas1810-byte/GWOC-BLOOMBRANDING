@@ -73,121 +73,122 @@ class ApiClient {
   
 
   async getMe() {
-    return this.request<any>('/auth/me');
+    return this.request<any>('/admin/auth/me');
   }
 
   async logout() {
     this.setToken(null);
-    return this.request('/auth/logout', { method: 'POST' });
+    return this.request('/admin/auth/logout', { method: 'POST' });
   }
 
-  // Brands
+  // Brands (Admin)
   async getBrands(category?: string) {
     const query = category ? `?category=${category}` : '';
-    return this.request<any[]>('/brands' + query);
+    return this.request<any[]>('/admin/brands' + query);
   }
 
   async getBrand(id: string) {
-    return this.request<any>(`/brands/${id}`);
+    return this.request<any>(`/admin/brands/${id}`);
   }
 
   async createBrand(data: any) {
-    return this.request<any>('/brands', {
+    return this.request<any>('/admin/brands', {
       method: 'POST',
       body: JSON.stringify(data),
     });
   }
 
   async updateBrand(id: string, data: any) {
-    return this.request<any>(`/brands/${id}`, {
+    return this.request<any>(`/admin/brands/${id}`, {
       method: 'PUT',
       body: JSON.stringify(data),
     });
   }
 
   async deleteBrand(id: string) {
-    return this.request(`/brands/${id}`, { method: 'DELETE' });
+    return this.request(`/admin/brands/${id}`, { method: 'DELETE' });
   }
 
-  // Testimonials
+  // Testimonials (Admin)
   async getTestimonials() {
-    return this.request<any[]>('/testimonials');
+    return this.request<any[]>('/admin/testimonials');
   }
 
   async createTestimonial(data: any) {
-    return this.request<any>('/testimonials', {
+    return this.request<any>('/admin/testimonials', {
       method: 'POST',
       body: JSON.stringify(data),
     });
   }
 
   async updateTestimonial(id: string, data: any) {
-    return this.request<any>(`/testimonials/${id}`, {
+    return this.request<any>(`/admin/testimonials/${id}`, {
       method: 'PUT',
       body: JSON.stringify(data),
     });
   }
 
   async deleteTestimonial(id: string) {
-    return this.request(`/testimonials/${id}`, { method: 'DELETE' });
+    return this.request(`/admin/testimonials/${id}`, { method: 'DELETE' });
   }
 
-  // Banners
+  // Banners (Admin)
   async getBanners(type?: string) {
     const query = type ? `?type=${type}` : '';
-    return this.request<any[]>('/banners' + query);
+    return this.request<any[]>('/admin/banners' + query);
   }
 
   async createBanner(data: any) {
-    return this.request<any>('/banners', {
+    return this.request<any>('/admin/banners', {
       method: 'POST',
       body: JSON.stringify(data),
     });
   }
 
   async updateBanner(id: string, data: any) {
-    return this.request<any>(`/banners/${id}`, {
+    return this.request<any>(`/admin/banners/${id}`, {
       method: 'PUT',
       body: JSON.stringify(data),
     });
   }
 
   async deleteBanner(id: string) {
-    return this.request(`/banners/${id}`, { method: 'DELETE' });
+    return this.request(`/admin/banners/${id}`, { method: 'DELETE' });
   }
 
-  // Clients
+  // Clients (Admin)
   async getClients() {
-    return this.request<any[]>('/clients');
+    return this.request<any[]>('/admin/clients');
   }
 
   async createClient(data: any) {
-    return this.request<any>('/clients', {
+    return this.request<any>('/admin/clients', {
       method: 'POST',
       body: JSON.stringify(data),
     });
   }
 
   async updateClient(id: string, data: any) {
-    return this.request<any>(`/clients/${id}`, {
+    return this.request<any>(`/admin/clients/${id}`, {
       method: 'PUT',
       body: JSON.stringify(data),
     });
   }
 
   async deleteClient(id: string) {
-    return this.request(`/clients/${id}`, { method: 'DELETE' });
+    return this.request(`/admin/clients/${id}`, { method: 'DELETE' });
   }
 
-  // Media
-  async uploadMedia(file: File, folder?: string, tags?: string, description?: string) {
+  // Media (Admin)
+  async uploadMedia(file: File, folder?: string, tags?: string, altText?: string, usedIn?: string) {
     const formData = new FormData();
-    formData.append('file', file);
-    if (folder) formData.append('folder', folder);
-    if (tags) formData.append('tags', tags);
-    if (description) formData.append('description', description);
+      formData.append('file', file);
+      if (folder) formData.append('folder', folder);
+      if (tags) formData.append('tags', tags);
+      if (altText) formData.append('altText', altText);
+      if (usedIn) formData.append('usedIn', usedIn);
 
-    const url = `${this.baseUrl}/media/upload`;
+    const url = `${this.baseUrl}/admin/media/upload`;
 
     try {
       const response = await fetch(url, {
@@ -195,6 +196,14 @@ class ApiClient {
         credentials: 'include',
         body: formData,
       });
+
+      // Check content type before parsing JSON
+      const contentType = response.headers.get('content-type');
+      if (!contentType || !contentType.includes('application/json')) {
+        const text = await response.text();
+        console.error('❌ Non-JSON response from upload API:', text.substring(0, 200));
+        throw new Error('Server returned invalid response. Please check your authentication.');
+      }
 
       const data = await response.json();
 
@@ -212,15 +221,15 @@ class ApiClient {
     }
   }
 
-  async getMedia(params?: { type?: string; folder?: string; tag?: string; page?: number; limit?: number }) {
+  async getMedia(params?: { type?: string; usedIn?: string; page?: number; limit?: number }) {
     const query = params
       ? '?' + new URLSearchParams(params as any).toString()
       : '';
-    return this.request<any[]>('/media' + query);
+    return this.request<any[]>('/admin/media' + query);
   }
 
   async deleteMedia(id: string) {
-    return this.request(`/media/${id}`, { method: 'DELETE' });
+    return this.request(`/admin/media/${id}`, { method: 'DELETE' });
   }
 
   // Enquiries
@@ -231,31 +240,32 @@ class ApiClient {
     });
   }
 
+  // Enquiries (Admin)
   async getEnquiries(params?: { status?: string; page?: number; limit?: number }) {
     const query = params
       ? '?' + new URLSearchParams(params as any).toString()
       : '';
-    return this.request<any[]>('/enquiries' + query);
+    return this.request<any[]>('/admin/enquiries' + query);
   }
 
   async updateEnquiry(id: string, data: { status?: string; notes?: string }) {
-    return this.request<any>(`/enquiries/${id}`, {
+    return this.request<any>(`/admin/enquiries/${id}`, {
       method: 'PUT',
       body: JSON.stringify(data),
     });
   }
 
   async deleteEnquiry(id: string) {
-    return this.request(`/enquiries/${id}`, { method: 'DELETE' });
+    return this.request(`/admin/enquiries/${id}`, { method: 'DELETE' });
   }
 
-  // Homepage
+  // Homepage (Admin)
   async getHomepage() {
-    return this.request<any>('/homepage');
+    return this.request<any>('/admin/homepage');
   }
 
   async updateHomepage(data: any) {
-    return this.request<any>('/homepage', {
+    return this.request<any>('/admin/homepage', {
       method: 'PUT',
       body: JSON.stringify(data),
     });
@@ -264,6 +274,69 @@ class ApiClient {
   // Admin
   async getStats() {
     return this.request<any>('/admin/stats');
+  }
+
+  // Services (Admin)
+  async getServices() {
+    return this.request<any[]>('/admin/services');
+  }
+
+  async getService(id: string) {
+    return this.request<any>(`/admin/services/${id}`);
+  }
+
+  async createService(data: any) {
+    return this.request<any>('/admin/services', {
+      method: 'POST',
+      body: JSON.stringify(data),
+    });
+  }
+
+  async updateService(id: string, data: any) {
+    return this.request<any>(`/admin/services/${id}`, {
+      method: 'PUT',
+      body: JSON.stringify(data),
+    });
+  }
+
+  async deleteService(id: string) {
+    return this.request(`/admin/services/${id}`, { method: 'DELETE' });
+  }
+
+  // Our Story (Admin)
+  async getOurStory() {
+    return this.request<any>('/admin/our-story');
+  }
+
+  async updateOurStory(data: any) {
+    return this.request<any>('/admin/our-story', {
+      method: 'PUT',
+      body: JSON.stringify(data),
+    });
+  }
+
+  // Contact (Admin)
+  async getContact() {
+    return this.request<any>('/admin/contact');
+  }
+
+  async updateContact(data: any) {
+    return this.request<any>('/admin/contact', {
+      method: 'PUT',
+      body: JSON.stringify(data),
+    });
+  }
+
+  // Site Settings (Admin)
+  async getSiteSettings() {
+    return this.request<any>('/admin/site-settings');
+  }
+
+  async updateSiteSettings(data: any) {
+    return this.request<any>('/admin/site-settings', {
+      method: 'PUT',
+      body: JSON.stringify(data),
+    });
   }
 }
 

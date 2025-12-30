@@ -1,14 +1,8 @@
 'use client'
 
 import { motion, useMotionValue, useTransform, animate, useInView } from 'framer-motion'
-import { useEffect, useRef } from 'react'
-
-const stats = [
-  { value: 20, suffix: '+', label: 'Brands Collaborated' },
-  { value: 10, suffix: '+', label: 'Successful Launches' },
-  { value: 4, suffix: '+', label: 'Industries Served' },
-  { value: 2, suffix: '+ Years', label: 'Brand Building Experience' },
-]
+import { useEffect, useRef, useState } from 'react'
+import { getSiteSettings } from '@/lib/content'
 
 function Counter({ value, suffix, index }: { value: number; suffix: string; index: number }) {
   const count = useMotionValue(0)
@@ -36,6 +30,30 @@ function Counter({ value, suffix, index }: { value: number; suffix: string; inde
 }
 
 export default function ImpactStats() {
+  const [settings, setSettings] = useState<any>(null)
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const data = await getSiteSettings()
+      if (data) {
+        setSettings(data)
+      }
+    }
+    fetchData()
+  }, [])
+
+  const stats = settings?.impactStats ? [
+    { value: settings.impactStats.brandsCollaborated, suffix: '+', label: 'Brands Collaborated' },
+    { value: settings.impactStats.successfulLaunches, suffix: '+', label: 'Successful Launches' },
+    { value: settings.impactStats.industriesServed, suffix: '+', label: 'Industries Served' },
+    { value: settings.impactStats.yearsExperience, suffix: '+ Years', label: 'Brand Building Experience' },
+  ] : [
+    { value: 20, suffix: '+', label: 'Brands Collaborated' },
+    { value: 10, suffix: '+', label: 'Successful Launches' },
+    { value: 4, suffix: '+', label: 'Industries Served' },
+    { value: 2, suffix: '+ Years', label: 'Brand Building Experience' },
+  ]
+
   return (
     <section className="relative py-32 bg-earl-gray overflow-hidden">
       {/* Subtle overlay for container feel */}

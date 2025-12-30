@@ -17,7 +17,7 @@ export default function BrandForm() {
     category: 'JEWELLERY',
     label: '',
     order: 0,
-    image: { url: '', publicId: '' },
+    image: { url: '', mediaId: '' },
   })
   const [loading, setLoading] = useState(false)
   const [uploading, setUploading] = useState(false)
@@ -30,20 +30,16 @@ export default function BrandForm() {
 
   const fetchBrand = async () => {
     try {
-      // For editing, we should have a GET /api/brands/:id endpoint
-      // For now, fetch all and find the one we need
-      const response = await api.getBrands()
+      const response = await api.getBrand(id)
       if (response.success && response.data) {
-        const brand = response.data.find((b: any) => b._id === id)
-        if (brand) {
-          setFormData({
-            name: brand.name,
-            category: brand.category,
-            label: brand.label || '',
-            order: brand.order || 0,
-            image: brand.image || { url: '', publicId: '' },
-          })
-        }
+        const brand = response.data
+        setFormData({
+          name: brand.name || '',
+          category: brand.category || 'JEWELLERY',
+          label: brand.label || '',
+          order: brand.order || 0,
+            image: brand.image || { url: '', mediaId: '' },
+        })
       } else {
         console.error('Failed to fetch brand:', response.message)
       }
@@ -64,7 +60,7 @@ export default function BrandForm() {
           ...formData,
           image: {
             url: response.data.url,
-            publicId: response.data.publicId,
+            mediaId: response.data._id || response.data.mediaId || '',
           },
         })
       }
@@ -102,8 +98,9 @@ export default function BrandForm() {
   }
 
   return (
-    <div>
-      <h1 className="text-3xl font-bold text-dark-choc mb-8">
+    <div className="min-h-screen bg-dark-choc/5 py-8">
+      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+        <h1 className="text-3xl font-bold text-dark-choc mb-8">
         {isEdit ? 'Edit Brand' : 'Create Brand'}
       </h1>
 
@@ -209,6 +206,7 @@ export default function BrandForm() {
           </button>
         </div>
       </form>
+      </div>
     </div>
   )
 }

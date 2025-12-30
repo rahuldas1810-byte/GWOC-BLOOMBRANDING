@@ -5,59 +5,130 @@ import Link from "next/link";
 import { motion, AnimatePresence } from "framer-motion";
 import SectionReveal from "@/components/SectionReveal";
 import ExperienceSection from "@/components/ExperienceSection";
-import { getTestimonials, getClients } from "@/lib/content";
-import { homepageContent } from "@/content/homepage";
+import { getTestimonials, getClients, getHomepageContent, getServices, getSiteSettings } from "@/lib/content";
 import type { Testimonial, Client } from "@/types";
-
-const services = [
-  {
-    title: "Brand Identity",
-    description: "Complete visual identity systems that define who you are.",
-  },
-  {
-    title: "Visual Design",
-    description: "Stunning design that communicates your brand story.",
-  },
-  {
-    title: "Social Media Branding",
-    description: "Cohesive brand presence across all social platforms.",
-  },
-  {
-    title: "Content Strategy",
-    description: "Strategic messaging that resonates with your audience.",
-  },
-  {
-    title: "Creative Direction",
-    description: "End-to-end creative vision for your brand.",
-  },
-  {
-    title: "Marketing Campaigns",
-    description: "Data-driven campaigns designed to amplify reach and impact.",
-  },
-];
 
 export default function Home() {
   const [testimonials, setTestimonials] = useState<Testimonial[]>([]);
   const [clients, setClients] = useState<Client[]>([]);
+  const [services, setServices] = useState<any[]>([]);
+  const [homepageContent, setHomepageContent] = useState({
+    heroHeadline: 'We craft brand identities that resonate.',
+    heroSubheading: 'Bringing synergy of aesthetics and expertise to help your brand bloom.',
+    aboutPreview: 'Bloom Branding is a strategic branding agency focused on helping modern companies build confident, clear brand identities.',
+    tagline: 'Helping Brands Bloom',
+    heroVideo: null as string | null,
+    backgroundVideo: null as string | null,
+    sectionVideo: null as string | null,
+    clientsLabel: 'Our Clients',
+    clientsTitle: 'Trusted By',
+  });
   const [hoveredService, setHoveredService] = useState<number | null>(null);
   const [videoEnded, setVideoEnded] = useState(false);
+  const [heroVideoReady, setHeroVideoReady] = useState(false);
   const videoRef = useRef<HTMLVideoElement>(null);
+  const backgroundVideoRef = useRef<HTMLVideoElement>(null);
 
   useEffect(() => {
     const fetchData = async () => {
-      const [testimonialsData, clientsData] = await Promise.all([
-        getTestimonials(),
-        getClients(),
-      ]);
-      setTestimonials(testimonialsData);
-      setClients(clientsData);
+      try {
+        const [testimonialsData, clientsData, homepageData, servicesData, siteSettings] = await Promise.all([
+          getTestimonials(),
+          getClients(),
+          getHomepageContent(),
+          getServices(),
+          getSiteSettings(),
+        ]);
+        setTestimonials(testimonialsData);
+        setClients(clientsData);
+        
+        // Transform services for homepage (only title and description)
+        if (servicesData && servicesData.length > 0) {
+          const homepageServices = servicesData.slice(0, 6).map((service: any) => ({
+            title: service.title,
+            description: service.description,
+          }));
+          setServices(homepageServices);
+        } else {
+          // Fallback services
+          setServices([
+            { title: "Brand Identity", description: "Complete visual identity systems that define who you are." },
+            { title: "Visual Design", description: "Stunning design that communicates your brand story." },
+            { title: "Social Media Branding", description: "Cohesive brand presence across all social platforms." },
+            { title: "Content Strategy", description: "Strategic messaging that resonates with your audience." },
+            { title: "Creative Direction", description: "End-to-end creative vision for your brand." },
+            { title: "Marketing Campaigns", description: "Data-driven campaigns designed to amplify reach and impact." },
+          ]);
+        }
+        
+        // Use API data for homepage content - always update from API
+        if (homepageData) {
+          setHomepageContent({
+            heroHeadline: homepageData.heroHeadline || 'We craft brand identities that resonate.',
+            heroSubheading: homepageData.heroSubheading || 'Bringing synergy of aesthetics and expertise to help your brand bloom.',
+            aboutPreview: homepageData.aboutPreview || 'Bloom Branding is a strategic branding agency focused on helping modern companies build confident, clear brand identities.',
+            tagline: homepageData.tagline || 'Helping Brands Bloom',
+            heroVideo: typeof homepageData.heroVideo === 'string' ? homepageData.heroVideo : (homepageData.heroVideo?.url || null),
+            backgroundVideo: typeof homepageData.backgroundVideo === 'string' ? homepageData.backgroundVideo : (homepageData.backgroundVideo?.url || null),
+            sectionVideo: typeof homepageData.sectionVideo === 'string' ? homepageData.sectionVideo : (homepageData.sectionVideo?.url || null),
+            clientsLabel: siteSettings?.homepageSections?.clientsLabel || 'Our Clients',
+            clientsTitle: siteSettings?.homepageSections?.clientsTitle || 'Trusted By',
+          });
+        }
+      } catch (error) {
+        console.error('Error fetching homepage data:', error);
+      }
     };
     fetchData();
+    
+    // Refresh data every 30 seconds to catch admin updates
+    const interval = setInterval(fetchData, 30000);
+    return () => clearInterval(interval);
   }, []);
 
+  // Handle video sequencing - reset when videos change
   useEffect(() => {
+    // If there's no hero video but there's a background video, show background immediately
+    if (!homepageContent.heroVideo && homepageContent.backgroundVideo) {
+      setVideoEnded(true);
+      setHeroVideoReady(true);
+      return;
+    }
+    
+    // If there's no hero video at all, show content immediately
+    if (!homepageContent.heroVideo) {
+      setVideoEnded(true);
+      setHeroVideoReady(true);
+      return;
+    }
+    
+    // Reset states when hero video changes - hero video should play first
+    setVideoEnded(false);
+    setHeroVideoReady(false);
+  }, [homepageContent.heroVideo, homepageContent.backgroundVideo]);
+
+  // Handle hero video events and ensure it plays
+  useEffect(() => {
+    if (!homepageContent.heroVideo) return;
+    
     const video = videoRef.current;
     if (!video) return;
+
+    const handleVideoLoaded = () => {
+      setHeroVideoReady(true);
+      // Ensure video plays when loaded
+      video.play().catch((error) => {
+        console.error('Error playing hero video:', error);
+      });
+    };
+
+    const handleVideoCanPlay = () => {
+      setHeroVideoReady(true);
+      // Ensure video plays when it can play
+      video.play().catch((error) => {
+        console.error('Error playing hero video:', error);
+      });
+    };
 
     const handleVideoEnd = () => {
       setVideoEnded(true);
@@ -65,55 +136,112 @@ export default function Home() {
 
     const handleVideoError = () => {
       // If video fails to load, show content after a short delay
+      setHeroVideoReady(true);
       setTimeout(() => {
         setVideoEnded(true);
       }, 500);
     };
-
+    
+    video.addEventListener("loadeddata", handleVideoLoaded);
+    video.addEventListener("canplay", handleVideoCanPlay);
     video.addEventListener("ended", handleVideoEnd);
     video.addEventListener("error", handleVideoError);
 
+    // Check if video is already loaded and play it
+    if (video.readyState >= 2) {
+      setHeroVideoReady(true);
+      video.play().catch((error) => {
+        console.error('Error playing hero video:', error);
+      });
+    } else {
+      // Try to load and play
+      video.load();
+    }
+
     return () => {
+      video.removeEventListener("loadeddata", handleVideoLoaded);
+      video.removeEventListener("canplay", handleVideoCanPlay);
       video.removeEventListener("ended", handleVideoEnd);
       video.removeEventListener("error", handleVideoError);
     };
-  }, []);
+  }, [homepageContent.heroVideo]);
+
+  // Handle background video playback - only start after hero video ends
+  useEffect(() => {
+    const bgVideo = backgroundVideoRef.current;
+    if (!bgVideo || !homepageContent.backgroundVideo) return;
+
+    if (videoEnded || !homepageContent.heroVideo) {
+      // Start background video when hero ends or if no hero video
+      // Add a small delay to ensure smooth transition
+      const playTimeout = setTimeout(() => {
+        bgVideo.play().catch((error) => {
+          console.error('Error playing background video:', error);
+        });
+      }, 100);
+      
+      return () => clearTimeout(playTimeout);
+    } else {
+      // Pause and reset background video if hero video is playing
+      bgVideo.pause();
+      bgVideo.currentTime = 0;
+    }
+  }, [videoEnded, homepageContent.heroVideo, homepageContent.backgroundVideo]);
 
   return (
     <div className="min-h-screen relative">
       {/* ================= HERO SECTION ================= */}
       <section className="relative h-screen overflow-hidden">
-        {/* Video - plays first, then disappears */}
-        <video
-          ref={videoRef}
-          className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-1000 ${videoEnded ? "opacity-0 pointer-events-none" : "opacity-100"
-            }`}
-          autoPlay
-          muted
-          playsInline
-          preload="auto"
-        >
-          <source src="/videos/video1.mp4" type="video/mp4" />
-        </video>
+        {/* Hero Video - plays first, then disappears when it ends */}
+        {homepageContent.heroVideo && (
+          <video
+            ref={videoRef}
+            className={`absolute inset-0 w-full h-full object-cover z-30 transition-opacity duration-1000 ${videoEnded ? "opacity-0 pointer-events-none z-0" : "opacity-100 z-30"
+              }`}
+            autoPlay
+            muted
+            playsInline
+            preload="auto"
+            style={{ visibility: videoEnded ? 'hidden' : 'visible' }}
+          >
+            <source src={homepageContent.heroVideo} type="video/mp4" />
+            <source src={homepageContent.heroVideo} type="video/webm" />
+          </video>
+        )}
 
-        {/* Background Video - appears after intro video */}
-        <video
-          className={`absolute inset-0 w-full h-full object-cover scale-[1.35] transition-opacity duration-1000 ${videoEnded ? "opacity-100" : "opacity-0"
-            }`}
-          autoPlay
-          loop
-          muted
-          playsInline
-        >
-          <source src="/background.mp4" type="video/mp4" />
-        </video>
+        {/* Background Video - appears ONLY after hero video ends, or immediately if no hero video */}
+        {homepageContent.backgroundVideo && (
+          <video
+            ref={backgroundVideoRef}
+            className={`absolute inset-0 w-full h-full object-cover scale-[1.35] z-10 transition-opacity duration-1000 ${videoEnded || !homepageContent.heroVideo ? "opacity-100 z-10" : "opacity-0 z-0 pointer-events-none"
+              }`}
+            autoPlay={!homepageContent.heroVideo}
+            loop
+            muted
+            playsInline
+            preload={homepageContent.heroVideo ? "metadata" : "auto"}
+            style={{ 
+              visibility: homepageContent.heroVideo && !videoEnded ? 'hidden' : 'visible',
+              pointerEvents: homepageContent.heroVideo && !videoEnded ? 'none' : 'auto'
+            }}
+          >
+            <source src={homepageContent.backgroundVideo} type="video/mp4" />
+            <source src={homepageContent.backgroundVideo} type="video/webm" />
+          </video>
+        )}
+        
+        {/* Fallback: If no videos at all, show a background */}
+        {!homepageContent.heroVideo && !homepageContent.backgroundVideo && (
+          <div className="absolute inset-0 w-full h-full bg-gradient-to-br from-dark-choc via-earl-gray to-butter-yellow z-10" />
+        )}
 
 
 
-        {/* Content - only visible after video ends */}
+        {/* Content - only visible after hero video ends or if no hero video */}
         <div
-          className={`relative z-10 h-full flex items-center transition-opacity duration-1000 ${videoEnded ? "opacity-100" : "opacity-0 pointer-events-none"
+          className={`relative z-20 h-full flex items-center transition-opacity duration-1000 ${videoEnded || !homepageContent.heroVideo ? "opacity-100" : "opacity-0 pointer-events-none"
             }`}
+          style={{ visibility: videoEnded || !homepageContent.heroVideo ? 'visible' : 'hidden' }}
         >
           <div className="container-custom">
             <motion.div
@@ -125,16 +253,13 @@ export default function Home() {
               className="max-w-5xl"
             >
               <p className="label-text mb-8 text-dark-choc/70">
-                Helping Brands Bloom
+                {homepageContent.tagline}
               </p>
               <h1
                 className="font-serif text-dark-choc leading-tight mb-10"
                 style={{ fontSize: "clamp(6rem, 8vw, 8rem)" }}
               >
-                We craft brand
-                <br />
-                identities that{" "}
-                <span className="text-[#892F1A]">resonate.</span>
+                {homepageContent.heroHeadline || 'We craft brand identities that resonate.'}
               </h1>
               <p className="body-text max-w-xl mb-14 text-dark-choc/80">
                 {homepageContent.heroSubheading}
@@ -270,17 +395,20 @@ export default function Home() {
       </div>
 
       {/* ================= VIDEO BREAK ================= */}
-      <section className="w-screen h-screen overflow-hidden bg-black">
-        <video
-          className="w-full h-full object-cover"
-          autoPlay
-          loop
-          muted
-          playsInline
-        >
-          <source src="/videos/video.mp4" type="video/mp4" />
-        </video>
-      </section>
+      {homepageContent.sectionVideo && (
+        <section className="w-screen h-screen overflow-hidden bg-black">
+          <video
+            className="w-full h-full object-cover"
+            autoPlay
+            loop
+            muted
+            playsInline
+          >
+            <source src={homepageContent.sectionVideo} type="video/mp4" />
+            <source src={homepageContent.sectionVideo} type="video/webm" />
+          </video>
+        </section>
+      )}
 
       {/* ================= CLIENTS ================= */}
       {clients.length > 0 && (
@@ -330,7 +458,7 @@ export default function Home() {
                   viewport={{ once: true }}
                   transition={{ duration: 0.6, delay: 0.1 }}
                 >
-                  Our Clients
+                  {homepageContent.clientsLabel || 'Our Clients'}
                 </motion.p>
                 <motion.h2
                   className="heading-2"
@@ -339,7 +467,7 @@ export default function Home() {
                   viewport={{ once: true }}
                   transition={{ duration: 0.6, delay: 0.2 }}
                 >
-                  Trusted By
+                  {homepageContent.clientsTitle || 'Trusted By'}
                 </motion.h2>
               </div>
               <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-12">

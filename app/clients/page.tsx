@@ -8,10 +8,31 @@ import ClientShowcase from '@/components/clientshowcase'
 import ImpactStats from '@/components/ImpactStats'
 import ClientApproach from '@/components/ClientApproach'
 import ClientSocialProof from '@/components/ClientSocialProof'
-import { getClients } from '@/lib/content'
+import { getClients, getSiteSettings } from '@/lib/content'
 
 export default function Clients() {
-  
+  const [settings, setSettings] = useState<any>(null)
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const data = await getSiteSettings()
+      if (data) {
+        setSettings(data)
+      }
+    }
+    fetchData()
+    
+    // Refresh every 30 seconds
+    const interval = setInterval(fetchData, 30000)
+    return () => clearInterval(interval)
+  }, [])
+
+  const hero = settings?.clientsHero || {
+    label: 'Our Clients',
+    title: 'Brands Who Trusted Us',
+    description: 'Each collaboration reflects our approach to building clear, confident brand identities.',
+    subtitle: 'Trusted by founders, startups, and growing D2C brands.',
+  }
 
   return (
     <div className="min-h-screen">
@@ -25,7 +46,7 @@ export default function Clients() {
               transition={{ duration: 0.6, ease: 'easeOut' }}
               className="label-text mb-8"
             >
-              Our Clients
+              {hero.label}
             </motion.p>
             <motion.h1 
               initial={{ opacity: 0, y: 20, filter: 'blur(5px)' }}
@@ -33,7 +54,7 @@ export default function Clients() {
               transition={{ duration: 0.6, ease: 'easeOut' }}
               className="heading-1 mb-10"
             >
-              Brands Who Trusted Us
+              {hero.title}
             </motion.h1>
             <motion.p 
               initial={{ opacity: 0, y: 20, filter: 'blur(5px)' }}
@@ -41,7 +62,7 @@ export default function Clients() {
               transition={{ duration: 0.6, delay: 0.1, ease: 'easeOut' }}
               className="body-text max-w-2xl"
             >
-              Each collaboration reflects our approach to building clear, confident brand identities.
+              {hero.description}
             </motion.p>
             <motion.p 
               initial={{ opacity: 0, y: 20, filter: 'blur(5px)' }}
@@ -49,7 +70,7 @@ export default function Clients() {
               transition={{ duration: 0.6, delay: 0.2, ease: 'easeOut' }}
               className="text-near-black/60 font-sans mt-6 text-sm tracking-wide"
             >
-              Trusted by founders, startups, and growing D2C brands.
+              {hero.subtitle}
             </motion.p>
           </div>
         </div>

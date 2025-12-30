@@ -5,9 +5,12 @@ import Image from 'next/image'
 import HorizontalMarquee from '@/components/HorizontalMarquee'
 import HoverCard from '@/components/HoverCard'
 import { motion, useScroll, useTransform, useMotionValue, useSpring, useMotionTemplate } from 'framer-motion'
-import { useRef, useState } from 'react'
+import { useRef, useState, useEffect } from 'react'
+import { getOurStory, getSiteSettings } from '@/lib/content'
 
 export default function OurStory() {
+  const [ourStoryData, setOurStoryData] = useState<any>(null)
+  const [siteSettings, setSiteSettings] = useState<any>(null)
 
   // Parallax Logic for Hero
   const containerRef = useRef<HTMLDivElement>(null)
@@ -29,6 +32,80 @@ export default function OurStory() {
   // Philosophy State
   const [activeCard, setActiveCard] = useState<string | null>(null)
 
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const [data, settings] = await Promise.all([
+          getOurStory(),
+          getSiteSettings(),
+        ])
+        if (data) {
+          // Ensure purposeStats is properly structured with numbers
+          // Use explicit checks to handle 0 values correctly (don't use || which treats 0 as falsy)
+          setOurStoryData({
+            ...data,
+            purposeStats: data.purposeStats ? {
+              brandsBuilt: data.purposeStats.brandsBuilt !== undefined && data.purposeStats.brandsBuilt !== null
+                ? Number(data.purposeStats.brandsBuilt)
+                : 30,
+              satisfaction: data.purposeStats.satisfaction !== undefined && data.purposeStats.satisfaction !== null
+                ? Number(data.purposeStats.satisfaction)
+                : 100,
+            } : { brandsBuilt: 30, satisfaction: 100 },
+          })
+        }
+        if (settings) {
+          setSiteSettings(settings)
+        }
+      } catch (error) {
+        console.error('Error fetching Our Story data:', error)
+      }
+    }
+    fetchData()
+    
+    // Refresh every 3 seconds to catch admin updates quickly
+    const interval = setInterval(fetchData, 3000)
+    return () => clearInterval(interval)
+  }, [])
+
+  // Merge API data with fallback, ensuring proper structure
+  const data = {
+    heroLabel: ourStoryData?.heroLabel || 'Established 2024',
+    heroTitle: ourStoryData?.heroTitle || 'OUR STORY',
+    heroSubtitle: ourStoryData?.heroSubtitle || 'Building brands that leave a legacy through clarity, confidence, and craft.',
+    heroBackgroundImage: ourStoryData?.heroBackgroundImage || { url: '/who-we-are.jpg' },
+    purposeTitle: ourStoryData?.purposeTitle || 'A studio built on clarity.',
+    purposeDescription: ourStoryData?.purposeDescription || 'Bloom Branding is a strategic branding agency for those ready to make a noise.',
+    purposeStats: {
+      brandsBuilt: ourStoryData?.purposeStats?.brandsBuilt !== undefined 
+        ? Number(ourStoryData.purposeStats.brandsBuilt) 
+        : 30,
+      satisfaction: ourStoryData?.purposeStats?.satisfaction !== undefined 
+        ? Number(ourStoryData.purposeStats.satisfaction) 
+        : 100,
+    },
+    philosophyTitle: ourStoryData?.philosophyTitle || 'Our Philosophy',
+    philosophyDescription: ourStoryData?.philosophyDescription || 'What we believe.',
+    philosophyCards: ourStoryData?.philosophyCards || [
+      { id: '01', title: 'Clarity Over Complexity', description: 'The best brands are simple, clear, and easy to understand. We strip away the noise.' },
+      { id: '02', title: 'Strategy First', description: 'Every design decision we make is backed by strategic thinking. We create brands that work.' },
+      { id: '03', title: 'Confidence, Not Flash', description: 'Premium doesn\'t mean flashy. We build brands that represent quiet confidence.' },
+    ],
+  }
+
+  // Ensure philosophyCards have proper structure
+  const philosophyCards = (data.philosophyCards && data.philosophyCards.length > 0 
+    ? data.philosophyCards.map((card: any) => ({
+        id: card.id || card._id || '01',
+        title: card.title || '',
+        description: card.description || card.text || '',
+      }))
+    : [
+        { id: '01', title: 'Clarity Over Complexity', description: 'The best brands are simple, clear, and easy to understand. We strip away the noise.' },
+        { id: '02', title: 'Strategy First', description: 'Every design decision we make is backed by strategic thinking. We create brands that work.' },
+        { id: '03', title: 'Confidence, Not Flash', description: 'Premium doesn\'t mean flashy. We build brands that represent quiet confidence.' },
+      ])
+
   return (
     <div className="min-h-screen">
 
@@ -41,11 +118,12 @@ export default function OurStory() {
           className="absolute inset-0 z-0"
         >
           <Image
-            src="/who-we-are.jpg"
+            src={data.heroBackgroundImage?.url || "/who-we-are.jpg"}
             alt="Bloom Branding studio"
             fill
             className="object-cover opacity-50"
             priority
+            unoptimized={data.heroBackgroundImage?.url?.startsWith('http') || false}
           />
           {/* Gradient Overlay for Text Readability */}
           <div className="absolute inset-0 bg-gradient-to-t from-dark-choc via-dark-choc/30 to-transparent" />
@@ -63,7 +141,7 @@ export default function OurStory() {
               transition={{ duration: 0.8, delay: 0.2 }}
               className="label-text mb-8 tracking-[0.4em] text-earl-gray/80"
             >
-              Established 2024
+              {data.heroLabel}
             </motion.p>
 
             {/* Massive Editorial Title */}
@@ -75,7 +153,7 @@ export default function OurStory() {
                   transition={{ duration: 1, ease: [0.16, 1, 0.3, 1] }}
                   className="block text-[15vw] lg:text-[14rem]"
                 >
-                  OUR
+                  {data.heroTitle.split(' ')[0]}
                 </motion.span>
               </div>
               <div className="overflow-hidden">
@@ -85,7 +163,7 @@ export default function OurStory() {
                   transition={{ duration: 1, delay: 0.1, ease: [0.16, 1, 0.3, 1] }}
                   className="block text-[15vw] lg:text-[14rem] italic pl-[10vw] lg:pl-32"
                 >
-                  STORY
+                  {data.heroTitle.split(' ').slice(1).join(' ')}
                 </motion.span>
               </div>
             </h1>
@@ -96,7 +174,7 @@ export default function OurStory() {
               transition={{ duration: 1, delay: 0.8 }}
               className="body-text text-xl md:text-2xl max-w-lg mt-12 text-earl-gray/80"
             >
-              Building brands that leave a legacy through clarity, confidence, and craft.
+              {data.heroSubtitle}
             </motion.p>
           </motion.div>
         </div>
@@ -111,7 +189,7 @@ export default function OurStory() {
             {/* Sticky Left Column */}
             <div className="lg:col-span-5 lg:sticky lg:top-32 self-start">
               <SectionReveal>
-                <p className="label-text mb-8 text-dark-choc/60">Who We Are</p>
+                <p className="label-text mb-8 text-dark-choc/60">{siteSettings?.ourStoryAdditional?.whoWeAreLabel || 'Who We Are'}</p>
               </SectionReveal>
 
               <div className="overflow-hidden mb-8">
@@ -122,7 +200,7 @@ export default function OurStory() {
                   transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
                   className="heading-2 text-6xl md:text-7xl leading-[1.1] text-dark-choc"
                 >
-                  A studio built <br /> on <span className="text-electric-blue">clarity.</span>
+                  {data.purposeTitle}
                 </motion.h2>
               </div>
 
@@ -140,26 +218,24 @@ export default function OurStory() {
             <div className="lg:col-span-6 lg:col-start-7 space-y-12 lg:pt-32">
               <SectionReveal delay={0.2}>
                 <p className="body-text text-2xl md:text-3xl leading-relaxed text-dark-choc indent-12">
-                  Bloom Branding is a strategic branding agency for those ready to make a noise.
+                  {data.purposeDescription}
                 </p>
               </SectionReveal>
 
               <SectionReveal delay={0.3}>
                 <p className="body-text text-lg md:text-xl leading-relaxed text-dark-choc/70">
-                  We work with startups, D2C brands, and creators who are ready to make a real impact.
-                  Our team combines strategic thinking with clean, confident design. We don&apos;t chase trends.
-                  We build brands that stand the test of time.
+                  {siteSettings?.ourStoryAdditional?.additionalParagraph || 'We work with startups, D2C brands, and creators who are ready to make a real impact. Our team combines strategic thinking with clean, confident design. We don\'t chase trends. We build brands that stand the test of time.'}
                 </p>
               </SectionReveal>
 
               <SectionReveal delay={0.4}>
                 <div className="grid grid-cols-2 gap-8 pt-8 border-t border-dark-choc/10">
                   <div>
-                    <span className="block text-4xl font-serif text-electric-blue mb-2">30+</span>
+                    <span className="block text-4xl font-serif text-electric-blue mb-2">{data.purposeStats.brandsBuilt}+</span>
                     <span className="text-sm font-mono uppercase tracking-wider text-dark-choc/60">Brands Built</span>
                   </div>
                   <div>
-                    <span className="block text-4xl font-serif text-electric-blue mb-2">100%</span>
+                    <span className="block text-4xl font-serif text-electric-blue mb-2">{data.purposeStats.satisfaction}%</span>
                     <span className="text-sm font-mono uppercase tracking-wider text-dark-choc/60">Satisfaction</span>
                   </div>
                 </div>
@@ -175,28 +251,12 @@ export default function OurStory() {
         <div className="container-custom">
 
           <div className="text-center mb-24">
-            <p className="label-text mb-5 text-dark-choc/60">Our Philosophy</p>
-            <h2 className="heading-2 text-dark-choc">What we believe.</h2>
+            <p className="label-text mb-5 text-dark-choc/60">{data.philosophyTitle}</p>
+            <h2 className="heading-2 text-dark-choc">{data.philosophyDescription}</h2>
           </div>
 
           <div className="flex flex-col md:flex-row gap-6 justify-center">
-            {[
-              {
-                id: '01',
-                title: 'Clarity Over Complexity',
-                text: 'The best brands are simple, clear, and easy to understand. We strip away the noise.'
-              },
-              {
-                id: '02',
-                title: 'Strategy First',
-                text: 'Every design decision we make is backed by strategic thinking. We create brands that work.'
-              },
-              {
-                id: '03',
-                title: 'Confidence, Not Flash',
-                text: 'Premium doesn’t mean flashy. We build brands that represent quiet confidence.'
-              }
-            ].map((item, i) => (
+            {philosophyCards.map((item: any, i: number) => (
               <motion.div
                 key={i}
                 layout
@@ -238,7 +298,7 @@ export default function OurStory() {
                                   ${activeCard === item.id
                         ? 'opacity-90 text-white'
                         : 'opacity-80 group-hover:opacity-90 group-hover:text-white'}`}>
-                    {item.text}
+                    {item.description || item.text}
                   </motion.p>
                 </motion.div>
               </motion.div>

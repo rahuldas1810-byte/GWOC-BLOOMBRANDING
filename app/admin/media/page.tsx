@@ -65,10 +65,11 @@ export default function MediaPage() {
   }
 
   return (
-    <div>
-      <h1 className="text-3xl font-bold text-dark-choc mb-8">Media Manager</h1>
+    <div className="min-h-screen bg-dark-choc/5 py-8">
+      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+        <h1 className="text-3xl font-bold text-dark-choc mb-8">Media Manager</h1>
 
-      <div className="bg-white rounded-lg shadow-md p-6 border border-dark-choc/10 mb-6">
+        <div className="bg-white rounded-lg shadow-md p-6 border border-dark-choc/10 mb-6">
         <h2 className="text-xl font-bold text-dark-choc mb-4">Upload Media</h2>
         <div className="flex items-center gap-4">
           <label className="flex items-center justify-center px-4 py-3 border-2 border-dashed border-dark-choc/30 rounded-lg cursor-pointer hover:border-electric-blue transition-colors">
@@ -93,9 +94,9 @@ export default function MediaPage() {
             </button>
           )}
         </div>
-      </div>
+        </div>
 
-      <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
         {media.length === 0 ? (
           <div className="col-span-full text-center text-dark-choc/60 py-12">
             No media files. Upload your first file!
@@ -138,6 +139,7 @@ export default function MediaPage() {
             </div>
           ))
         )}
+        </div>
       </div>
     </div>
   )

@@ -39,65 +39,66 @@ export default function AdminDashboard() {
   }
 
   return (
-    <div>
-      <h1 className="text-3xl font-bold text-dark-choc mb-8">Dashboard</h1>
+    <div className="min-h-screen bg-dark-choc/5 py-8">
+      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+        <h1 className="text-3xl font-bold text-dark-choc mb-8">Dashboard</h1>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        {statCards.map((stat) => {
-          const Icon = stat.icon
-          return (
-            <div
-              key={stat.label}
-              className="bg-white rounded-lg shadow-md p-6 border border-dark-choc/10"
-            >
-              <div className="flex items-center justify-between">
-                <div>
-                  <p className="text-dark-choc/60 text-sm mb-1">{stat.label}</p>
-                  <p className="text-3xl font-bold text-dark-choc">{stat.value}</p>
-                </div>
-                <div className={`${stat.color} p-3 rounded-lg`}>
-                  <Icon className="w-6 h-6 text-white" />
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {statCards.map((stat) => {
+            const Icon = stat.icon
+            return (
+              <div
+                key={stat.label}
+                className="bg-white rounded-lg shadow-md p-6 border border-dark-choc/10"
+              >
+                <div className="flex items-center justify-between">
+                  <div>
+                    <p className="text-dark-choc/60 text-sm mb-1">{stat.label}</p>
+                    <p className="text-3xl font-bold text-dark-choc">{stat.value}</p>
+                  </div>
+                  <div className={`${stat.color} p-3 rounded-lg`}>
+                    <Icon className="w-6 h-6 text-white" />
+                  </div>
                 </div>
               </div>
-            </div>
-          )
-        })}
-      </div>
+            )
+          })}
+        </div>
 
-      <div className="mt-8 bg-white rounded-lg shadow-md p-6 border border-dark-choc/10">
-        <h2 className="text-xl font-bold text-dark-choc mb-4">Quick Actions</h2>
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-          <a
-            href="/admin/brands/new"
-            className="p-4 border border-dark-choc/20 rounded-lg hover:bg-earl-gray transition-colors text-center"
-          >
-            <FileText className="w-6 h-6 mx-auto mb-2 text-electric-blue" />
-            <span className="text-dark-choc">Add Brand</span>
-          </a>
-          <a
-            href="/admin/testimonials/new"
-            className="p-4 border border-dark-choc/20 rounded-lg hover:bg-earl-gray transition-colors text-center"
-          >
-            <MessageSquare className="w-6 h-6 mx-auto mb-2 text-electric-blue" />
-            <span className="text-dark-choc">Add Testimonial</span>
-          </a>
-          <a
-            href="/admin/media"
-            className="p-4 border border-dark-choc/20 rounded-lg hover:bg-earl-gray transition-colors text-center"
-          >
-            <Film className="w-6 h-6 mx-auto mb-2 text-electric-blue" />
-            <span className="text-dark-choc">Upload Media</span>
-          </a>
-          <a
-            href="/admin/enquiries"
-            className="p-4 border border-dark-choc/20 rounded-lg hover:bg-earl-gray transition-colors text-center"
-          >
-            <Mail className="w-6 h-6 mx-auto mb-2 text-electric-blue" />
-            <span className="text-dark-choc">View Enquiries</span>
-          </a>
+        <div className="mt-8 bg-white rounded-lg shadow-md p-6 border border-dark-choc/10">
+          <h2 className="text-xl font-bold text-dark-choc mb-4">Quick Actions</h2>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+            <a
+              href="/admin/brands/new"
+              className="p-4 border border-dark-choc/20 rounded-lg hover:bg-earl-gray transition-colors text-center"
+            >
+              <FileText className="w-6 h-6 mx-auto mb-2 text-electric-blue" />
+              <span className="text-dark-choc">Add Brand</span>
+            </a>
+            <a
+              href="/admin/testimonials/new"
+              className="p-4 border border-dark-choc/20 rounded-lg hover:bg-earl-gray transition-colors text-center"
+            >
+              <MessageSquare className="w-6 h-6 mx-auto mb-2 text-electric-blue" />
+              <span className="text-dark-choc">Add Testimonial</span>
+            </a>
+            <a
+              href="/admin/media"
+              className="p-4 border border-dark-choc/20 rounded-lg hover:bg-earl-gray transition-colors text-center"
+            >
+              <Film className="w-6 h-6 mx-auto mb-2 text-electric-blue" />
+              <span className="text-dark-choc">Upload Media</span>
+            </a>
+            <a
+              href="/admin/enquiries"
+              className="p-4 border border-dark-choc/20 rounded-lg hover:bg-earl-gray transition-colors text-center"
+            >
+              <Mail className="w-6 h-6 mx-auto mb-2 text-electric-blue" />
+              <span className="text-dark-choc">View Enquiries</span>
+            </a>
+          </div>
         </div>
       </div>
     </div>
   )
 }
-

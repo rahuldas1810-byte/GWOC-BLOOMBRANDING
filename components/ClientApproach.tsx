@@ -1,8 +1,32 @@
 'use client'
 
 import { motion } from 'framer-motion'
+import { useEffect, useState } from 'react'
+import { getSiteSettings } from '@/lib/content'
 
 export default function ClientApproach() {
+  const [settings, setSettings] = useState<any>(null)
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const data = await getSiteSettings()
+      if (data) {
+        setSettings(data)
+      }
+    }
+    fetchData()
+  }, [])
+
+  const approach = settings?.clientApproach || {
+    eyebrow: 'Our Approach',
+    title: 'Design meaningful connections.',
+    statements: [
+      'We partner directly with founders.',
+      'We prioritize clarity over trends.',
+      'We build brands that are ready to scale.',
+    ],
+  }
+
   return (
     <section className="py-24 md:py-32 bg-earl-gray overflow-hidden">
       <div className="container-custom">
@@ -41,7 +65,7 @@ export default function ClientApproach() {
                 transition={{ duration: 0.6, delay: 0.2 }} // Divider starts 0.1, this roughly follows
                 className="font-mono text-xs uppercase tracking-widest text-dark-choc/60 block mb-6"
               >
-                Our Approach
+                {approach.eyebrow}
               </motion.span>
 
               {/* Headline */}
@@ -52,16 +76,12 @@ export default function ClientApproach() {
                 transition={{ duration: 0.8, delay: 0.25, ease: 'easeOut' }} // 0.15s after divider (0.1)
                 className="font-serif text-3xl md:text-4xl text-dark-choc leading-tight mb-8"
               >
-                Design meaningful connections.
+                {approach.title}
               </motion.h2>
 
               {/* Staggered Statements */}
               <div className="space-y-3 md:pl-1">
-                {[
-                  "We partner directly with founders.",
-                  "We prioritize clarity over trends.",
-                  "We build brands that are ready to scale."
-                ].map((text, i) => (
+                {approach.statements.map((text: string, i: number) => (
                   <motion.p
                     key={i}
                     initial={{ opacity: 0, y: 12 }}

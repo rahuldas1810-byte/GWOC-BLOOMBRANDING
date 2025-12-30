@@ -14,18 +14,26 @@ import {
   Mail,
   LogOut,
   Menu,
-  X
+  X,
+  Briefcase,
+  BookOpen,
+  Phone,
+  Settings
 } from 'lucide-react'
 
 const navigation = [
   { name: 'Dashboard', href: '/admin/dashboard', icon: LayoutDashboard },
+  { name: 'Homepage', href: '/admin/homepage', icon: FileText },
+  { name: 'Services', href: '/admin/services', icon: Briefcase },
+  { name: 'Our Story', href: '/admin/our-story', icon: BookOpen },
+  { name: 'Contact', href: '/admin/contact', icon: Phone },
+  { name: 'Site Settings', href: '/admin/site-settings', icon: Settings },
   { name: 'Brands', href: '/admin/brands', icon: Users },
   { name: 'Testimonials', href: '/admin/testimonials', icon: MessageSquare },
   { name: 'Banners', href: '/admin/banners', icon: Image },
   { name: 'Clients', href: '/admin/clients', icon: Users },
   { name: 'Media Manager', href: '/admin/media', icon: Film },
   { name: 'Enquiries', href: '/admin/enquiries', icon: Mail },
-  { name: 'Homepage', href: '/admin/homepage', icon: FileText },
 ]
 
 export default function AdminLayout({ children }: { children: React.ReactNode }) {

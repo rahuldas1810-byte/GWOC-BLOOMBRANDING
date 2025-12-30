@@ -5,7 +5,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { motion, AnimatePresence } from "framer-motion";
 import SectionReveal from "@/components/SectionReveal";
-import { getTestimonials } from "@/lib/content";
+import { getTestimonials, getBrands, getSiteSettings } from "@/lib/content";
 import type { Testimonial } from "@/types";
 import SliceReveal from "@/components/SliceReveal";
 import MagneticButton from "@/components/MagneticButton";
@@ -13,46 +13,52 @@ import MagneticButton from "@/components/MagneticButton";
 
 export default function Testimonials() {
   const [testimonials, setTestimonials] = useState<Testimonial[]>([]);
+  const [brands, setBrands] = useState<any[]>([]);
+  const [siteSettings, setSiteSettings] = useState<any>(null);
   const [activeIndex, setActiveIndex] = useState<number>(0);
-  const [activeCategory, setActiveCategory] = useState<BrandCategory>("JEWELLERY");
-
-const brandData = {
-  JEWELLERY: [
-    { name: "Dhruv Gems", label: "Luxury jewellery brand", image: "/brands/dhruv.jpg" },
-    { name: "AMBC Gems", label: "Fine diamond jewellery", image: "/brands/ambc.jpg" },
-    { name: "Vardhaman Diam", label: "Diamond brand", image: "/brands/vardhaman.jpg" },
-  ],
-  FASHION: [
-    { name: "The Right Cut", label: "Contemporary fashion label", image: "/brands/the-right-cut.jpg" },
-    { name: "Binal Patel", label: "Designer wear brand", image: "/brands/binal-patel.jpg" },
-    { name: "Mansi Nagdev", label: "Ethnic fashion brand", image: "/brands/mansi-nagdev.jpg" },
-  ],
-  "CAFE & RESTAURANTS": [
-    { name: "Thyme and Whisk", label: "Cafe & bistro", image: "/brands/thyme.jpg" },
-    { name: "KAFFYN", label: "Specialty coffee brand", image: "/brands/kaffyn.jpg" },
-    { name: "Amar Fastfood Center", label: "Quick service restaurant", image: "/brands/amar.jpg" },
-  ],
-  "HOME FURNISHING": [
-    { name: "Fine Decor", label: "Home decor brand", image: "/brands/fine-decor.jpg" },
-    { name: "Moire Rugs", label: "Handcrafted rugs", image: "/brands/moire-rugs.jpg" },
-    { name: "Bafna Marble", label: "Luxury marble & stone", image: "/brands/bafna-marble.jpg" },
-  ],
-  LIFESTYLE: [
-    { name: "Life’s A Beach", label: "Lifestyle brand", image: "/brands/beach.jpg" },
-    { name: "ShoP", label: "Concept retail brand", image: "/brands/shop.jpg" },
-    { name: "B’there", label: "Innerwear brand", image: "/brands/bthere.jpg" },
-  ],
-} as const;
-
-type BrandCategory = keyof typeof brandData;
+  const [activeCategory, setActiveCategory] = useState<string>("");
 
   useEffect(() => {
-    const fetchTestimonials = async () => {
-      const testimonialsData = await getTestimonials();
+    const fetchData = async () => {
+      const [testimonialsData, brandsData, settings] = await Promise.all([
+        getTestimonials(),
+        getBrands(),
+        getSiteSettings(),
+      ]);
       setTestimonials(testimonialsData);
+      setBrands(brandsData);
+      setSiteSettings(settings);
+      
+      // Set first category if brands exist
+      if (brandsData.length > 0) {
+        const categories = [...new Set(brandsData.map((b: any) => b.category).filter(Boolean))];
+        if (categories.length > 0) {
+          setActiveCategory(categories[0]);
+        }
+      }
     };
-    fetchTestimonials();
+    fetchData();
+    
+    // Refresh every 30 seconds
+    const interval = setInterval(fetchData, 30000);
+    return () => clearInterval(interval);
   }, []);
+
+  // Group brands by category
+  const brandData = brands.reduce((acc: any, brand: any) => {
+    const category = brand.category || 'OTHER';
+    if (!acc[category]) {
+      acc[category] = [];
+    }
+    acc[category].push({
+      name: brand.name,
+      label: brand.description || brand.name,
+      image: brand.image?.url || brand.logo?.url || '/brands/default.jpg',
+    });
+    return acc;
+  }, {});
+
+  type BrandCategory = keyof typeof brandData;
 
   const heroItem = {
     hidden: { opacity: 0, y: 40 },
@@ -132,27 +138,27 @@ type BrandCategory = keyof typeof brandData;
        variants={heroItem}
        className="text-[11px] tracking-[0.35em] uppercase mb-10 opacity-70 text-white"
        >
-        Our Partners
+        {siteSettings?.testimonialsHero?.label || 'Our Partners'}
       </motion.p>
 
                 {/* MAIN heading */}
                 <motion.h1 variants={heroItem}
                   className="font-serif text-[clamp(4.5rem,8vw,8rem)] leading-[0.98] mb-10 text-white">
-                  Testimonials
+                  {siteSettings?.testimonialsHero?.title || 'Testimonials'}
                 </motion.h1>
 
                 {/* Description */}
                 <motion.p
                   variants={heroItem}
                   className="text-lg md:text-xl max-w-xl opacity-90 mb-14 text-white">
-                  Hear from companies who have worked with us to build their brand identity.
+                  {siteSettings?.testimonialsHero?.description || 'Hear from companies who have worked with us to build their brand identity.'}
                 </motion.p>
 
                 {/* Button */}
                 <motion.div variants={heroItem}>
                   <MagneticButton
                     className="px-14 py-6 border border-white/60 rounded-full text-[11px] tracking-[0.3em] uppercase hover:bg-white hover:text-black transition-all duration-300">
-                    Client Stories
+                    {siteSettings?.testimonialsHero?.buttonText || 'Client Stories'}
                   </MagneticButton>
                 </motion.div>
               </motion.div>
@@ -182,6 +188,7 @@ type BrandCategory = keyof typeof brandData;
       </section>
 
       {/* ================= BRAND CATEGORIES ================= */}
+{Object.keys(brandData).length > 0 && (
 <section className="py-24 bg-earl-gray">
   <div className="flex justify-center gap-6 mb-14 -mt-8">
   {(Object.keys(brandData) as BrandCategory[]).map((category) => {
@@ -207,6 +214,7 @@ type BrandCategory = keyof typeof brandData;
 
 
     {/* Brand Cards */}
+    {activeCategory && brandData[activeCategory] && brandData[activeCategory].length > 0 && (
     <AnimatePresence mode="wait">
   <motion.div
     key={activeCategory}
@@ -217,7 +225,7 @@ type BrandCategory = keyof typeof brandData;
     className="grid grid-cols-1 md:grid-cols-3 gap-14 max-w-7xl xl:max-w-[85rem] mx-auto px-6"
   >
 
-      {brandData[activeCategory].map((brand) => (
+      {brandData[activeCategory].map((brand: any) => (
         <motion.div
         key={brand.name}
         variants={cardItem}
@@ -263,6 +271,7 @@ type BrandCategory = keyof typeof brandData;
   <div className="h-6 md:h-10" />
 
 </section>
+)}
 
       
       {/* ================= SPLIT TESTIMONIALS ================= */}
