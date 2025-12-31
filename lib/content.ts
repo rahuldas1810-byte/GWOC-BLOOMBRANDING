@@ -10,7 +10,6 @@ export const getTestimonials = async (retries = 3): Promise<Testimonial[]> => {
     const baseUrl = typeof window !== 'undefined' 
       ? '' 
       : process.env.NEXT_PUBLIC_SITE_URL || 'http://localhost:3000'
-<<<<<<< Updated upstream
     
     const fetchWithRetry = async (attempt: number): Promise<Response> => {
       try {
@@ -38,14 +37,6 @@ export const getTestimonials = async (retries = 3): Promise<Testimonial[]> => {
     }
 
     const response = await fetchWithRetry(1)
-=======
-    const response = await fetch(`${baseUrl}/api/testimonials?t=${Date.now()}`, {
-      cache: 'no-store', // Always fetch fresh data
-      headers: {
-        'Cache-Control': 'no-cache',
-      },
-    })
->>>>>>> Stashed changes
 
     if (!response.ok) {
       console.warn('Failed to fetch testimonials from API, returning empty array')
@@ -84,7 +75,7 @@ export const getClients = async (): Promise<Client[]> => {
     const baseUrl = typeof window !== 'undefined' 
       ? '' 
       : process.env.NEXT_PUBLIC_SITE_URL || 'http://localhost:3000'
-    const response = await fetch(`${baseUrl}/api/clients?t=${Date.now()}`, {
+    const response = await fetch(`${baseUrl}/api/public/clients?t=${Date.now()}`, {
       cache: 'no-store', // Always fetch fresh data
       headers: {
         'Cache-Control': 'no-cache',
@@ -129,7 +120,6 @@ export const getHomepageContent = async (retries = 3): Promise<HomepageContent> 
     const baseUrl = typeof window !== 'undefined' 
       ? '' 
       : process.env.NEXT_PUBLIC_SITE_URL || 'http://localhost:3000'
-<<<<<<< Updated upstream
     
     const fetchWithRetry = async (attempt: number): Promise<Response> => {
       try {
@@ -157,14 +147,6 @@ export const getHomepageContent = async (retries = 3): Promise<HomepageContent> 
     }
 
     const response = await fetchWithRetry(1)
-=======
-    const response = await fetch(`${baseUrl}/api/homepage?t=${Date.now()}`, {
-      cache: 'no-store', // Always fetch fresh data
-      headers: {
-        'Cache-Control': 'no-cache',
-      },
-    })
->>>>>>> Stashed changes
 
     if (!response.ok) {
       console.warn('Failed to fetch homepage from API, returning default content')
@@ -218,7 +200,7 @@ export const getServices = async () => {
     const baseUrl = typeof window !== 'undefined' 
       ? '' 
       : process.env.NEXT_PUBLIC_SITE_URL || 'http://localhost:3000'
-    const response = await fetch(`${baseUrl}/api/services?t=${Date.now()}`, {
+    const response = await fetch(`${baseUrl}/api/public/services?t=${Date.now()}`, {
       cache: 'no-store',
       headers: {
         'Cache-Control': 'no-cache',
@@ -246,7 +228,7 @@ export const getOurStory = async () => {
     const baseUrl = typeof window !== 'undefined' 
       ? '' 
       : process.env.NEXT_PUBLIC_SITE_URL || 'http://localhost:3000'
-    const response = await fetch(`${baseUrl}/api/our-story?t=${Date.now()}`, {
+    const response = await fetch(`${baseUrl}/api/public/our-story?t=${Date.now()}`, {
       cache: 'no-store',
       headers: {
         'Cache-Control': 'no-cache',
@@ -274,7 +256,7 @@ export const getContact = async () => {
     const baseUrl = typeof window !== 'undefined' 
       ? '' 
       : process.env.NEXT_PUBLIC_SITE_URL || 'http://localhost:3000'
-    const response = await fetch(`${baseUrl}/api/contact?t=${Date.now()}`, {
+    const response = await fetch(`${baseUrl}/api/public/contact?t=${Date.now()}`, {
       cache: 'no-store',
       headers: {
         'Cache-Control': 'no-cache',
@@ -302,7 +284,7 @@ export const getSiteSettings = async () => {
     const baseUrl = typeof window !== 'undefined' 
       ? '' 
       : process.env.NEXT_PUBLIC_SITE_URL || 'http://localhost:3000'
-    const response = await fetch(`${baseUrl}/api/site-settings?t=${Date.now()}`, {
+    const response = await fetch(`${baseUrl}/api/public/site-settings?t=${Date.now()}`, {
       cache: 'no-store',
       headers: {
         'Cache-Control': 'no-cache',
@@ -331,7 +313,6 @@ export const getBrands = async (category?: string, retries = 3) => {
       ? '' 
       : process.env.NEXT_PUBLIC_SITE_URL || 'http://localhost:3000'
     const query = category ? `?category=${category}` : ''
-<<<<<<< Updated upstream
     
     const fetchWithRetry = async (attempt: number): Promise<Response> => {
       try {
@@ -359,14 +340,6 @@ export const getBrands = async (category?: string, retries = 3) => {
     }
 
     const response = await fetchWithRetry(1)
-=======
-    const response = await fetch(`${baseUrl}/api/brands${query}?t=${Date.now()}`, {
-      cache: 'no-store',
-      headers: {
-        'Cache-Control': 'no-cache',
-      },
-    })
->>>>>>> Stashed changes
 
     if (!response.ok) {
       console.warn('Failed to fetch brands from API')
