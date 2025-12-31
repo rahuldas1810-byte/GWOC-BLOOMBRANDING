@@ -19,7 +19,6 @@ export default function Testimonials() {
 
   useEffect(() => {
     const fetchData = async () => {
-<<<<<<< Updated upstream
       try {
         const [testimonialsData, brandsData, settings] = await Promise.all([
           getTestimonials(),
@@ -32,28 +31,12 @@ export default function Testimonials() {
         
         // Set first category if brands exist
         if (brandsData && brandsData.length > 0) {
-          const categories = [...new Set(brandsData.map((b: any) => b.category).filter(Boolean))];
+          const categories = Array.from(
+            new Set(brandsData.map((b: any) => b.category).filter(Boolean))
+          ) as string[];
           if (categories.length > 0) {
             setActiveCategory(categories[0]);
           }
-=======
-      const [testimonialsData, brandsData, settings] = await Promise.all([
-        getTestimonials(),
-        getBrands(),
-        getSiteSettings(),
-      ]);
-      setTestimonials(testimonialsData);
-      setBrands(brandsData);
-      setSiteSettings(settings);
-
-      // Set first category if brands exist
-      if (brandsData.length > 0) {
-        const categories = Array.from(
-          new Set(brandsData.map((b: any) => b.category).filter(Boolean))
-        ) as string[];
-        if (categories.length > 0) {
-          setActiveCategory(categories[0]);
->>>>>>> Stashed changes
         }
       } catch (error) {
         console.error('Error fetching testimonials page data:', error);
@@ -67,28 +50,17 @@ export default function Testimonials() {
   }, []);
 
   // Group brands by category
-<<<<<<< Updated upstream
   const brandData = (brands || []).reduce((acc: any, brand: any) => {
     if (!brand) return acc;
     const category = brand.category || 'OTHER';
-=======
-  const brandData = brands.reduce((acc: any, brand: any) => {
-    const category = brand.category || "OTHER";
->>>>>>> Stashed changes
     if (!acc[category]) {
       acc[category] = [];
     }
     const imageUrl = brand.image?.url || brand.logo?.url || brand.image || brand.logo || '/brands/default.jpg';
     acc[category].push({
-<<<<<<< Updated upstream
       name: brand.name || 'Unknown Brand',
       label: brand.description || brand.name || 'Brand',
       image: imageUrl,
-=======
-      name: brand.name,
-      label: brand.description || brand.name,
-      image: brand.image?.url || brand.logo?.url || "/brands/default.jpg",
->>>>>>> Stashed changes
     });
     return acc;
   }, {} as Record<string, any[]>);
@@ -166,18 +138,7 @@ export default function Testimonials() {
                   variants={heroItem}
                   className="text-[11px] tracking-[0.35em] uppercase mb-10 opacity-70 text-white"
                 >
-<<<<<<< Updated upstream
                   {siteSettings?.testimonialsHero?.label || 'Our Partners'}
-                </motion.p>
-
-                {/* MAIN heading */}
-                <motion.h1 
-                  variants={heroItem}
-                  className="font-serif text-[clamp(4.5rem,8vw,8rem)] leading-[0.98] mb-10 text-white"
-                >
-                  {siteSettings?.testimonialsHero?.title || 'Testimonials'}
-=======
-                  {siteSettings?.testimonialsHero?.label || "Our Partners"}
                 </motion.p>
 
                 {/* MAIN heading */}
@@ -185,8 +146,7 @@ export default function Testimonials() {
                   variants={heroItem}
                   className="font-serif text-[clamp(4.5rem,8vw,8rem)] leading-[0.98] mb-10 text-white"
                 >
-                  {siteSettings?.testimonialsHero?.title || "Testimonials"}
->>>>>>> Stashed changes
+                  {siteSettings?.testimonialsHero?.title || 'Testimonials'}
                 </motion.h1>
 
                 {/* Description */}
@@ -194,26 +154,13 @@ export default function Testimonials() {
                   variants={heroItem}
                   className="text-lg md:text-xl max-w-xl opacity-90 mb-14 text-white"
                 >
-<<<<<<< Updated upstream
                   {siteSettings?.testimonialsHero?.description || 'Hear from companies who have worked with us to build their brand identity.'}
-=======
-                  {siteSettings?.testimonialsHero?.description ||
-                    "Hear from companies who have worked with us to build their brand identity."}
->>>>>>> Stashed changes
                 </motion.p>
 
                 {/* Button */}
                 <motion.div variants={heroItem}>
-<<<<<<< Updated upstream
-                  <MagneticButton
-                    className="px-14 py-6 border border-white/60 rounded-full text-[11px] tracking-[0.3em] uppercase hover:bg-white hover:text-black transition-all duration-300"
-                  >
-                    {siteSettings?.testimonialsHero?.buttonText || 'Client Stories'}
-=======
                   <MagneticButton className="px-14 py-6 border border-white/60 rounded-full text-[11px] tracking-[0.3em] uppercase hover:bg-white hover:text-black transition-all duration-300">
-                    {siteSettings?.testimonialsHero?.buttonText ||
-                      "Client Stories"}
->>>>>>> Stashed changes
+                    {siteSettings?.testimonialsHero?.buttonText || 'Client Stories'}
                   </MagneticButton>
                 </motion.div>
               </motion.div>
@@ -244,14 +191,14 @@ export default function Testimonials() {
       {Object.keys(brandData).length > 0 && (
         <section className="py-24 bg-earl-gray">
           <div className="flex justify-center gap-6 mb-14 -mt-8">
-<<<<<<< Updated upstream
-            {(Object.keys(brandData) as BrandCategory[]).map((category) => {
-              const isActive = activeCategory === category;
+            {Object.keys(brandData).map((category) => {
+              const categoryKey = category as string;
+              const isActive = activeCategory === categoryKey;
 
               return (
                 <motion.button
-                  key={category}
-                  onClick={() => setActiveCategory(category)}
+                  key={categoryKey}
+                  onClick={() => setActiveCategory(categoryKey)}
                   whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.95 }}
                   className={`px-7 py-2.5 rounded-full text-[11px] tracking-[0.25em] uppercase transition-all duration-300 font-medium
@@ -262,34 +209,13 @@ export default function Testimonials() {
                     }
                   `}
                 >
-                  {category}
-                </motion.button>
-=======
-            {Object.keys(brandData).map((category) => {
-              const categoryKey = category as string;
-              const isActive = activeCategory === categoryKey;
-
-              return (
-                <button
-                  key={categoryKey}
-                  onClick={() => setActiveCategory(categoryKey)}
-                  className={`px-7 py-2.5 rounded-full text-[11px] tracking-[0.25em] uppercase transition-all duration-300
-                    ${
-                      isActive
-                        ? "bg-dark-choc text-white"
-                        : "border border-dark-choc/30 text-dark-choc hover:border-dark-choc"
-                    }
-                  `}
-                >
                   {categoryKey}
-                </button>
->>>>>>> Stashed changes
+                </motion.button>
               );
             })}
           </div>
 
           {/* Brand Cards */}
-<<<<<<< Updated upstream
           {activeCategory && brandData[activeCategory] && brandData[activeCategory].length > 0 && (
             <AnimatePresence mode="wait">
               <motion.div
@@ -311,33 +237,10 @@ export default function Testimonials() {
                     {/* Image */}
                     <div className="relative w-full h-[460px] rounded-xl overflow-hidden bg-dark-choc/10 mb-4 shadow-lg group-hover:shadow-2xl transition-all duration-500">
                       {brand.image && (
-=======
-          {activeCategory &&
-            brandData[activeCategory] &&
-            brandData[activeCategory].length > 0 && (
-              <AnimatePresence mode="wait">
-                <motion.div
-                  key={activeCategory}
-                  variants={cardContainer}
-                  initial="hidden"
-                  animate="show"
-                  exit="hidden"
-                  className="grid grid-cols-1 md:grid-cols-3 gap-14 max-w-7xl xl:max-w-[85rem] mx-auto px-6"
-                >
-                  {brandData[activeCategory].map((brand: any) => (
-                    <motion.div
-                      key={brand.name}
-                      variants={cardItem}
-                      className="text-center"
-                    >
-                      {/* Image */}
-                      <div className="relative w-full h-[460px] rounded-xl overflow-hidden bg-dark-choc/10 mb-4">
->>>>>>> Stashed changes
                         <Image
                           src={brand.image}
                           alt={brand.name}
                           fill
-<<<<<<< Updated upstream
                           className="object-contain object-center transition-transform duration-700 ease-out group-hover:scale-[1.05]"
                           unoptimized={typeof brand.image === 'string' && brand.image.startsWith('http') || false}
                           onError={(e) => {
@@ -368,40 +271,10 @@ export default function Testimonials() {
               </motion.div>
             </AnimatePresence>
           )}
-=======
-                          className="object-cover transition-transform duration-700 ease-out group-hover:scale-[1.06]"
-                        />
-
-                        {/* Soft overlay */}
-                        <div className="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-colors duration-500" />
-                      </div>
-
-                      {/* Brand Name (clickable) */}
-                      <Link
-                        href="#"
-                        className="block font-serif text-xl text-dark-choc hover:underline transition-colors"
-                      >
-                        {brand.name}
-                      </Link>
-
-                      {/* Small Label */}
-                      <p className="mt-2 text-sm tracking-wide text-dark-choc/60">
-                        {brand.label}
-                      </p>
-                    </motion.div>
-                  ))}
-                </motion.div>
-              </AnimatePresence>
-            )}
->>>>>>> Stashed changes
           <div className="h-6 md:h-10" />
         </section>
       )}
 
-<<<<<<< Updated upstream
-      
-=======
->>>>>>> Stashed changes
       {/* ================= SPLIT TESTIMONIALS ================= */}
       {testimonials.length > 0 && (
         <section id="client-reviews" className="relative bg-white pb-20">
@@ -410,7 +283,6 @@ export default function Testimonials() {
             <div className="sticky top-[20vh] w-[55%] h-[60vh] bg-earl-gray/30 flex items-center justify-center p-12 md:p-16 lg:p-20">
               <div className="relative w-full h-full pr-24">
                 {testimonials.map((testimonial, index) => {
-<<<<<<< Updated upstream
                   if (!testimonial || !testimonial.image) return null;
                   
                   const imageUrl = typeof testimonial.image === 'string' 
@@ -419,10 +291,6 @@ export default function Testimonials() {
                   
                   if (!imageUrl) return null;
                   
-=======
-                  if (!testimonial.image) return null;
-
->>>>>>> Stashed changes
                   return (
                     <motion.div
                       key={testimonial.id || index}

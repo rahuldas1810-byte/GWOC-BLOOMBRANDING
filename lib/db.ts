@@ -23,14 +23,6 @@ if (!global.mongoose) {
 async function connectDB() {
   console.log("🧪 [RUNTIME ENV CHECK] START");
 
-  console.log("🧪 NODE_ENV:", process.env.NODE_ENV);
-  console.log("🧪 MONGODB_URI:", process.env.MONGODB_URI);
-  console.log("🧪 JWT_SECRET:", process.env.JWT_SECRET);
-  console.log("🧪 JWT_EXPIRES_IN:", process.env.JWT_EXPIRES_IN);
-  console.log("🧪 CLOUDINARY_CLOUD_NAME:", process.env.CLOUDINARY_CLOUD_NAME);
-  console.log("🧪 CLOUDINARY_API_KEY:", process.env.CLOUDINARY_API_KEY);
-  console.log("🧪 CLOUDINARY_API_SECRET:", process.env.CLOUDINARY_API_SECRET);
-
   console.log(
     "🧪 ALL ENV KEYS (filtered):",
     Object.keys(process.env).filter((k) =>
