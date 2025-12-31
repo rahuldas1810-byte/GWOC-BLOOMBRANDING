@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server'
-import connectDB from '@/backend/db'
+import connectDB from '@/lib/db'
 import Media from '@/models/Media'
 
 // GET - Public API: Get single media item (read-only)

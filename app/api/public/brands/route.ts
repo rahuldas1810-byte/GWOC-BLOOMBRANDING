@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server'
-import connectDB from '@/backend/db'
+import connectDB from '@/lib/db'
 import Brand from '@/models/Brand'
 
 // GET - Public API: List active brands (read-only)

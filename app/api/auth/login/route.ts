@@ -1,6 +1,9 @@
+console.log("[ENV CHECK]", process.env.MONGODB_URI ? "FOUND" : "MISSING");
+
 import { NextRequest, NextResponse } from 'next/server';
 import bcrypt from 'bcryptjs';
-import { connectDB, signToken, setAuthCookie } from '@/backend';
+import { signToken, setAuthCookie } from '@/backend';
+import connectDB from '@/lib/db';
 import Admin from '@/models/Admin';
 
 export async function POST(request: NextRequest) {

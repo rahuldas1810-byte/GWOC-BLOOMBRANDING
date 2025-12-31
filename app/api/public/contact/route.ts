@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server'
-import connectDB from '@/backend/db'
+import connectDB from '@/lib/db'
 import Contact from '@/models/Contact'
 
 // Force dynamic rendering

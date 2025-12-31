@@ -1,4 +1,4 @@
-import connectDB from '../backend/db';
+import connectDB from '../lib/db';
 import Admin from '../models/Admin';
 
 async function resetAdminPassword() {

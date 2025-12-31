@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server'
-import connectDB from '@/backend/db'
+import connectDB from '@/lib/db'
 import Testimonial from '@/models/Testimonial'
 
 // Force dynamic rendering - disable caching

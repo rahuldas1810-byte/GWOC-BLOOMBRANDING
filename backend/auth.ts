@@ -63,7 +63,7 @@ export function verifyAuthToken(request: NextRequest): { userId: string; email: 
 export async function authenticate(request: NextRequest): Promise<AuthResult> {
   try {
     // Lazy import to avoid Edge Runtime issues
-    const connectDB = (await import('@/backend/db')).default;
+    const connectDB = (await import('@/lib/db')).default;
     const Admin = (await import('@/models/Admin')).default;
 
     let token: string | null = null;

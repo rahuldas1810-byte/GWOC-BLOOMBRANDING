@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { authenticate } from '@/backend'
-import connectDB from '@/backend/db'
+import connectDB from '@/lib/db'
 import Brand from '@/models/Brand'
 import Testimonial from '@/models/Testimonial'
 import Banner from '@/models/Banner'

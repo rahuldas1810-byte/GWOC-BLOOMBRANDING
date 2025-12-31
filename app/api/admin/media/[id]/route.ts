@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { authenticate } from '@/backend'
-import connectDB from '@/backend/db'
+import connectDB from '@/lib/db'
 import Media from '@/models/Media'
 import { deleteFromCloudinary } from '@/backend/cloudinary'
 

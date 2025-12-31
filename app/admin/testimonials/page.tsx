@@ -60,13 +60,13 @@ export default function TestimonialsPage() {
         <div className="flex items-center justify-between mb-8">
           <h1 className="text-3xl font-bold text-dark-choc">Testimonials</h1>
           <Link
-          href="/admin/testimonials/new"
-          className="flex items-center gap-2 bg-electric-blue text-white px-4 py-2 rounded-lg hover:bg-electric-blue/90 transition-colors"
-        >
-          <Plus className="w-5 h-5" />
-          Add Testimonial
-        </Link>
-      </div>
+            href="/admin/testimonials/new"
+            className="flex items-center gap-2 bg-electric-blue text-white px-4 py-2 rounded-lg hover:bg-electric-blue/90 transition-colors"
+          >
+            <Plus className="w-5 h-5" />
+            Add Testimonial
+          </Link>
+        </div>
 
       <div className="bg-white rounded-lg shadow-md border border-dark-choc/10 overflow-hidden">
         <table className="w-full">
