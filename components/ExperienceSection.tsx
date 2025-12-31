@@ -94,12 +94,14 @@ export default function ExperienceSection() {
                         whileInView={{ opacity: 1, x: 0 }}
                         viewport={{ once: true }}
                         transition={{ duration: 0.8, delay: 0.2 }}
+                        whileHover={{ scale: 1.05, borderColor: 'rgba(46, 74, 167, 0.5)' }}
                         className="
               relative w-[280px] h-[280px] md:w-[320px] md:h-[320px] 
               rounded-full border border-dark-choc/30 
               flex flex-col justify-center items-center text-center p-6
               bg-transparent z-10
               mb-[-40px] md:mb-0 md:mr-[-40px]
+              transition-all duration-300 cursor-default
             "
                     >
                         <span className="font-serif text-5xl md:text-6xl text-electric-blue font-bold mb-2">
@@ -116,12 +118,14 @@ export default function ExperienceSection() {
                         whileInView={{ opacity: 1, y: 0 }}
                         viewport={{ once: true }}
                         transition={{ duration: 0.8 }}
+                        whileHover={{ scale: 1.05, borderColor: 'rgba(46, 74, 167, 0.5)' }}
                         className="
               relative w-[280px] h-[280px] md:w-[320px] md:h-[320px] 
               rounded-full border border-dark-choc/30 
               flex flex-col justify-center items-center text-center p-6
               bg-transparent z-20
               mb-[-40px] md:mb-0
+              transition-all duration-300 cursor-default
             "
                     >
                         <span className="font-sans text-sm md:text-base tracking-widest text-near-black uppercase font-medium mb-2">
@@ -141,12 +145,14 @@ export default function ExperienceSection() {
                         whileInView={{ opacity: 1, x: 0 }}
                         viewport={{ once: true }}
                         transition={{ duration: 0.8, delay: 0.2 }}
+                        whileHover={{ scale: 1.05, borderColor: 'rgba(46, 74, 167, 0.5)' }}
                         className="
               relative w-[280px] h-[280px] md:w-[320px] md:h-[320px] 
               rounded-full border border-dark-choc/30 
               flex flex-col justify-center items-center text-center p-6
               bg-transparent z-10
               md:ml-[-40px]
+              transition-all duration-300 cursor-default
             "
                     >
                         <span className="font-serif text-5xl md:text-6xl text-electric-blue font-bold mb-2">

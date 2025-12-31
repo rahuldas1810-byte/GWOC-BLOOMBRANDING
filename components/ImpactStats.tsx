@@ -68,7 +68,8 @@ export default function ImpactStats() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, margin: '-50px' }}
               transition={{ duration: 0.8, delay: index * 0.15, ease: 'easeOut' }}
-              className="flex flex-col items-start group"
+              whileHover={{ y: -4 }}
+              className="flex flex-col items-start group cursor-default"
             >
               {/* Micro visual anchor - vertical line */}
               <motion.div 

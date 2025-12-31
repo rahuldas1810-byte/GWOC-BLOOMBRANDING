@@ -86,8 +86,8 @@ export default function ClientShowcase() {
                 }
                 className={`absolute rounded-2xl overflow-hidden shadow-2xl transition-all duration-500 ${
                   isCenter
-                    ? 'w-[420px] h-[520px] bg-white'
-                    : 'w-72 h-[420px] bg-gradient-to-br from-pink-400 to-yellow-300 opacity-60' // Keeping original side style
+                    ? 'w-[420px] h-[520px] bg-white hover:shadow-3xl'
+                    : 'w-72 h-[420px] bg-gradient-to-br from-pink-400 to-yellow-300 opacity-60 hover:opacity-70' // Keeping original side style
                 }`}
                 style={{ zIndex }}
               >

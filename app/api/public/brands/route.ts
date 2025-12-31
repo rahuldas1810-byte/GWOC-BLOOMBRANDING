@@ -5,7 +5,17 @@ import Brand from '@/models/Brand'
 // GET - Public API: List active brands (read-only)
 export async function GET(request: NextRequest) {
   try {
-    await connectDB()
+    // Connect to database with retry
+    try {
+      await connectDB()
+    } catch (dbError: any) {
+      console.error('Database connection failed:', dbError.message)
+      // Return empty array if DB connection fails
+      return NextResponse.json({
+        success: true,
+        data: [],
+      })
+    }
 
     const { searchParams } = new URL(request.url)
     const category = searchParams.get('category')

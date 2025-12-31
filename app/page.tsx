@@ -277,12 +277,17 @@ export default function Home() {
               <p className="body-text max-w-xl mb-14 text-dark-choc/80">
                 {homepageContent.heroSubheading}
               </p>
-              <Link
-                href="/contact"
-                className="btn-primary bg-[#892F1A] border-[#892F1A] hover:bg-[#6d2514] hover:border-[#6d2514]"
+              <motion.div
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
               >
-                Start Your Project
-              </Link>
+                <Link
+                  href="/contact"
+                  className="btn-primary bg-[#892F1A] border-[#892F1A] hover:bg-[#6d2514] hover:border-[#6d2514] inline-block"
+                >
+                  Start Your Project
+                </Link>
+              </motion.div>
             </motion.div>
           </div>
         </div>
@@ -350,7 +355,7 @@ export default function Home() {
                     transition={{ duration: 0.5, delay: index * 0.1 }}
                     onHoverStart={() => setHoveredService(index)}
                     onHoverEnd={() => setHoveredService(null)}
-                    className="group relative border-b border-dark-choc/20 py-10 md:py-12 cursor-pointer transition-colors duration-500 hover:bg-dark-choc"
+                    className="group relative border-b border-dark-choc/20 py-10 md:py-12 cursor-pointer transition-all duration-500 hover:bg-dark-choc hover:pl-4"
                   >
                     <div className="flex flex-col md:flex-row md:items-baseline justify-between gap-4 md:gap-12 relative z-10">
                       {/* Header Group */}
@@ -364,11 +369,18 @@ export default function Home() {
                       </div>
 
                       {/* Arrow */}
-                      <div className={`hidden md:flex items-center justify-center w-12 h-12 rounded-full border transition-all duration-500 ${hoveredService === index ? "border-earl-gray bg-earl-gray text-dark-choc rotate-[-45deg]" : "border-dark-choc/20 text-dark-choc/40"}`}>
+                      <motion.div 
+                        className={`hidden md:flex items-center justify-center w-12 h-12 rounded-full border transition-all duration-500 ${hoveredService === index ? "border-earl-gray bg-earl-gray text-dark-choc" : "border-dark-choc/20 text-dark-choc/40"}`}
+                        animate={{ 
+                          rotate: hoveredService === index ? -45 : 0,
+                          scale: hoveredService === index ? 1.1 : 1
+                        }}
+                        transition={{ duration: 0.3, ease: 'easeOut' }}
+                      >
                         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                           <path d="M5 12H19M19 12L12 5M19 12L12 19" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
                         </svg>
-                      </div>
+                      </motion.div>
                     </div>
 
                     {/* Expandable Description */}

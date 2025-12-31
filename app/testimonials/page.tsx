@@ -203,19 +203,21 @@ export default function Testimonials() {
               const isActive = activeCategory === category;
 
               return (
-                <button
+                <motion.button
                   key={category}
                   onClick={() => setActiveCategory(category)}
-                  className={`px-7 py-2.5 rounded-full text-[11px] tracking-[0.25em] uppercase transition-all duration-300
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.95 }}
+                  className={`px-7 py-2.5 rounded-full text-[11px] tracking-[0.25em] uppercase transition-all duration-300 font-medium
                     ${
                       isActive
-                        ? "bg-dark-choc text-white"
-                        : "border border-dark-choc/30 text-dark-choc hover:border-dark-choc"
+                        ? "bg-dark-choc text-white shadow-md"
+                        : "border border-dark-choc/30 text-dark-choc hover:border-dark-choc hover:bg-dark-choc/5"
                     }
                   `}
                 >
                   {category}
-                </button>
+                </motion.button>
               );
             })}
           </div>
@@ -235,16 +237,18 @@ export default function Testimonials() {
                   <motion.div
                     key={brand.name}
                     variants={cardItem}
-                    className="text-center"
+                    className="text-center group"
+                    whileHover={{ y: -8 }}
+                    transition={{ duration: 0.3, ease: 'easeOut' }}
                   >
                     {/* Image */}
-                    <div className="relative w-full h-[460px] rounded-xl overflow-hidden bg-dark-choc/10 mb-4">
+                    <div className="relative w-full h-[460px] rounded-xl overflow-hidden bg-dark-choc/10 mb-4 shadow-lg group-hover:shadow-2xl transition-all duration-500">
                       {brand.image && (
                         <Image
                           src={brand.image}
                           alt={brand.name}
                           fill
-                          className="object-cover transition-transform duration-700 ease-out group-hover:scale-[1.06]"
+                          className="object-contain object-center transition-transform duration-700 ease-out group-hover:scale-[1.05]"
                           unoptimized={typeof brand.image === 'string' && brand.image.startsWith('http') || false}
                           onError={(e) => {
                             console.error('Error loading brand image:', brand.image);
@@ -260,7 +264,7 @@ export default function Testimonials() {
                     {/* Brand Name (clickable) */}
                     <Link
                       href="#"
-                      className="block font-serif text-xl text-dark-choc hover:underline transition-colors"
+                      className="block font-serif text-xl text-dark-choc hover:text-electric-blue transition-colors duration-300 group-hover:translate-y-[-2px] inline-block"
                     >
                       {brand.name}
                     </Link>
@@ -310,7 +314,7 @@ export default function Testimonials() {
                           src={imageUrl}
                           alt={`${testimonial.clientName || 'Client'} from ${testimonial.company || 'Company'}`}
                           fill
-                          className="object-cover transition-transform duration-[1200ms] group-hover:scale-[1.04]"
+                          className="object-contain object-center transition-transform duration-[1200ms] group-hover:scale-[1.03]"
                           sizes="(max-width: 768px) 100vw, 50vw"
                           priority={index === 0}
                           unoptimized={imageUrl.startsWith('http') || false}

@@ -19,9 +19,16 @@ if (!global.mongoose) {
   global.mongoose = cached;
 }
 
-async function connectDB() {
+async function connectDB(retries = 3) {
   if (cached.conn) {
-    return cached.conn;
+    // Check if connection is still alive
+    if (mongoose.connection.readyState === 1) {
+      return cached.conn;
+    } else {
+      // Connection is dead, reset cache
+      cached.conn = null;
+      cached.promise = null;
+    }
   }
 
   const MONGODB_URI = process.env.MONGODB_URI;
@@ -33,11 +40,16 @@ async function connectDB() {
   if (!cached.promise) {
     const opts = {
       bufferCommands: false,
+      serverSelectionTimeoutMS: 10000, // 10 second timeout
+      socketTimeoutMS: 45000,
     };
 
     cached.promise = mongoose.connect(MONGODB_URI, opts).then((mongoose) => {
       console.log('✅ MongoDB connected successfully');
       return mongoose;
+    }).catch((error) => {
+      cached.promise = null;
+      throw error;
     });
   }
 
@@ -46,6 +58,13 @@ async function connectDB() {
   } catch (e: any) {
     cached.promise = null;
     console.error('❌ MongoDB connection error:', e.message);
+
+    // Retry logic
+    if (retries > 0 && (e.message.includes('ECONNREFUSED') || e.message.includes('timeout'))) {
+      console.log(`Retrying MongoDB connection (${retries} attempts remaining)...`);
+      await new Promise(resolve => setTimeout(resolve, 2000)); // Wait 2 seconds before retry
+      return connectDB(retries - 1);
+    }
 
     if (e.message.includes('ECONNREFUSED')) {
       throw new Error(

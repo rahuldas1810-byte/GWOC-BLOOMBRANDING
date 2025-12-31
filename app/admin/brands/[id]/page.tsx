@@ -4,7 +4,10 @@ import { useEffect, useState } from 'react'
 import { useRouter, useParams } from 'next/navigation'
 import { api } from '@/lib/api'
 import Image from 'next/image'
-import { Upload } from 'lucide-react'
+import { Upload, ArrowLeft, X } from 'lucide-react'
+import Link from 'next/link'
+import LoadingSpinner from '@/components/admin/LoadingSpinner'
+import { toast } from '@/components/admin/Toast'
 
 export default function BrandForm() {
   const router = useRouter()
@@ -63,10 +66,13 @@ export default function BrandForm() {
             mediaId: response.data._id || response.data.mediaId || '',
           },
         })
+        toast.success('Image uploaded successfully')
+      } else {
+        toast.error('Failed to upload image')
       }
     } catch (error) {
       console.error('Upload failed:', error)
-      alert('Failed to upload image')
+      toast.error('Failed to upload image')
     } finally {
       setUploading(false)
     }
@@ -85,26 +91,48 @@ export default function BrandForm() {
       }
 
       if (response.success) {
-        router.push('/admin/brands')
+        toast.success(isEdit ? 'Brand updated successfully' : 'Brand created successfully')
+        setTimeout(() => {
+          router.push('/admin/brands')
+        }, 500)
       } else {
-        alert(response.message || 'Failed to save brand')
+        toast.error(response.message || 'Failed to save brand')
       }
     } catch (error) {
       console.error('Save failed:', error)
-      alert('Failed to save brand')
+      toast.error('Failed to save brand')
     } finally {
       setLoading(false)
     }
   }
 
-  return (
-    <div className="min-h-screen bg-dark-choc/5 py-8">
-      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-        <h1 className="text-3xl font-bold text-dark-choc mb-8">
-        {isEdit ? 'Edit Brand' : 'Create Brand'}
-      </h1>
+  const handleRemoveImage = () => {
+    setFormData({
+      ...formData,
+      image: { url: '', mediaId: '' },
+    })
+  }
 
-      <form onSubmit={handleSubmit} className="bg-white rounded-lg shadow-md p-6 border border-dark-choc/10 space-y-6">
+  return (
+    <div className="space-y-6">
+      <div className="flex items-center gap-4">
+        <Link
+          href="/admin/brands"
+          className="p-2 hover:bg-earl-gray rounded-lg transition-colors"
+        >
+          <ArrowLeft className="w-5 h-5 text-dark-choc" />
+        </Link>
+        <div>
+          <h1 className="text-3xl font-bold text-dark-choc">
+            {isEdit ? 'Edit Brand' : 'Create Brand'}
+          </h1>
+          <p className="text-dark-choc/60 mt-1">
+            {isEdit ? 'Update brand information' : 'Add a new brand to your portfolio'}
+          </p>
+        </div>
+      </div>
+
+      <form onSubmit={handleSubmit} className="bg-white rounded-xl shadow-sm p-8 border border-dark-choc/10 space-y-6">
         <div>
           <label className="block text-sm font-medium text-dark-choc mb-2">
             Brand Name *
@@ -154,19 +182,41 @@ export default function BrandForm() {
             Image *
           </label>
           {formData.image.url ? (
-            <div className="mb-4">
+            <div className="mb-4 relative inline-block">
               <img
                 src={formData.image.url}
                 alt="Brand"
-                className="w-32 h-32 object-cover rounded-lg"
+                className="w-40 h-40 object-cover rounded-xl border-2 border-dark-choc/10"
               />
+              <button
+                type="button"
+                onClick={handleRemoveImage}
+                className="absolute -top-2 -right-2 bg-red-500 text-white rounded-full p-1 hover:bg-red-600 transition-colors shadow-lg"
+              >
+                <X className="w-4 h-4" />
+              </button>
             </div>
           ) : null}
-          <label className="flex items-center justify-center w-full px-4 py-3 border-2 border-dashed border-dark-choc/30 rounded-lg cursor-pointer hover:border-electric-blue transition-colors">
-            <Upload className="w-5 h-5 mr-2 text-dark-choc/60" />
-            <span className="text-dark-choc">
-              {uploading ? 'Uploading...' : formData.image.url ? 'Change Image' : 'Upload Image'}
-            </span>
+          <label className={`flex items-center justify-center w-full px-4 py-4 border-2 border-dashed rounded-xl cursor-pointer transition-all ${
+            uploading
+              ? 'border-electric-blue bg-electric-blue/5'
+              : formData.image.url
+              ? 'border-dark-choc/20 hover:border-electric-blue hover:bg-electric-blue/5'
+              : 'border-dark-choc/30 hover:border-electric-blue hover:bg-electric-blue/5'
+          }`}>
+            {uploading ? (
+              <>
+                <LoadingSpinner size="sm" />
+                <span className="ml-3 text-dark-choc font-medium">Uploading...</span>
+              </>
+            ) : (
+              <>
+                <Upload className="w-5 h-5 mr-2 text-dark-choc/60" />
+                <span className="text-dark-choc font-medium">
+                  {formData.image.url ? 'Change Image' : 'Upload Image'}
+                </span>
+              </>
+            )}
             <input
               type="file"
               accept="image/*"
@@ -175,6 +225,9 @@ export default function BrandForm() {
               disabled={uploading}
             />
           </label>
+          {!formData.image.url && (
+            <p className="mt-2 text-sm text-dark-choc/50">Image is required for the brand</p>
+          )}
         </div>
 
         <div>
@@ -189,24 +242,30 @@ export default function BrandForm() {
           />
         </div>
 
-        <div className="flex gap-4">
+        <div className="flex gap-4 pt-4 border-t border-dark-choc/10">
           <button
             type="submit"
-            disabled={loading || !formData.image.url}
-            className="flex-1 bg-electric-blue text-white py-3 rounded-lg font-medium hover:bg-electric-blue/90 transition-colors disabled:opacity-50"
+            disabled={loading || !formData.image.url || !formData.name}
+            className="flex-1 bg-electric-blue text-white py-3 rounded-lg font-medium hover:bg-electric-blue/90 transition-colors disabled:opacity-50 disabled:cursor-not-allowed shadow-sm hover:shadow-md flex items-center justify-center gap-2"
           >
-            {loading ? 'Saving...' : 'Save Brand'}
+            {loading ? (
+              <>
+                <LoadingSpinner size="sm" />
+                <span>Saving...</span>
+              </>
+            ) : (
+              <span>{isEdit ? 'Update Brand' : 'Create Brand'}</span>
+            )}
           </button>
           <button
             type="button"
             onClick={() => router.back()}
-            className="px-6 py-3 border border-dark-choc/20 rounded-lg text-dark-choc hover:bg-earl-gray transition-colors"
+            className="px-6 py-3 border border-dark-choc/20 rounded-lg text-dark-choc hover:bg-earl-gray transition-colors font-medium"
           >
             Cancel
           </button>
         </div>
       </form>
-      </div>
     </div>
   )
 }

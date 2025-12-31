@@ -9,7 +9,17 @@ export const revalidate = 0
 // GET - Public API: List active testimonials (read-only)
 export async function GET(request: NextRequest) {
   try {
-    await connectDB()
+    // Connect to database with retry
+    try {
+      await connectDB()
+    } catch (dbError: any) {
+      console.error('Database connection failed:', dbError.message)
+      // Return empty array if DB connection fails
+      return NextResponse.json({
+        success: true,
+        data: [],
+      })
+    }
 
     const testimonials = await Testimonial.find({ isActive: true })
       .sort({ order: 1, createdAt: -1 })

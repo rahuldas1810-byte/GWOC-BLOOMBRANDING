@@ -58,7 +58,7 @@ export default function Footer() {
               Say hello
             </h3>
             <div className="flex flex-col gap-4">
-              <a href="mailto:hello@bloombranding.com" className="font-[family-name:var(--font-inter)] font-normal text-[15px] leading-[1.6] text-white/85 hover:text-white transition-colors">
+              <a href="mailto:hello@bloombranding.com" className="font-[family-name:var(--font-inter)] font-normal text-[15px] leading-[1.6] text-white/85 hover:text-white transition-colors hover:translate-x-1 inline-block">
                 Email us
               </a>
               <a
@@ -78,20 +78,20 @@ export default function Footer() {
               Explore
             </h3>
             <nav className="flex flex-col gap-3">
-              <Link href="/" className="font-[family-name:var(--font-inter)] font-normal text-[15px] leading-[1.6] text-white/85 hover:text-white transition-colors">
+              <Link href="/" className="font-[family-name:var(--font-inter)] font-normal text-[15px] leading-[1.6] text-white/85 hover:text-white transition-colors hover:translate-x-1 inline-block">
                 Home
               </Link>
-              <Link href="/about" className="font-[family-name:var(--font-inter)] font-normal text-[15px] leading-[1.6] text-white/85 hover:text-white transition-colors">
-                About
+              <Link href="/our-story" className="font-[family-name:var(--font-inter)] font-normal text-[15px] leading-[1.6] text-white/85 hover:text-white transition-colors hover:translate-x-1 inline-block">
+                Our Story
               </Link>
-              <Link href="/services" className="font-[family-name:var(--font-inter)] font-normal text-[15px] leading-[1.6] text-white/85 hover:text-white transition-colors">
+              <Link href="/services" className="font-[family-name:var(--font-inter)] font-normal text-[15px] leading-[1.6] text-white/85 hover:text-white transition-colors hover:translate-x-1 inline-block">
                 Services
               </Link>
-              <Link href="/clients" className="font-[family-name:var(--font-inter)] font-normal text-[15px] leading-[1.6] text-white/85 hover:text-white transition-colors">
+              <Link href="/clients" className="font-[family-name:var(--font-inter)] font-normal text-[15px] leading-[1.6] text-white/85 hover:text-white transition-colors hover:translate-x-1 inline-block">
                 Clients
               </Link>
-              <Link href="/faqs" className="font-[family-name:var(--font-inter)] font-normal text-[15px] leading-[1.6] text-white/85 hover:text-white transition-colors">
-                FAQs
+              <Link href="/testimonials" className="font-[family-name:var(--font-inter)] font-normal text-[15px] leading-[1.6] text-white/85 hover:text-white transition-colors hover:translate-x-1 inline-block">
+                Testimonials
               </Link>
             </nav>
           </div>
@@ -113,7 +113,7 @@ export default function Footer() {
             <div>
               <Link
                 href="/contact"
-                className="inline-block bg-[#1A1A1A] hover:bg-black text-[#FDF6EE] font-[family-name:var(--font-inter)] font-medium text-[14px] px-7 py-[14px] rounded-full transition-colors duration-300"
+                className="inline-block bg-[#1A1A1A] hover:bg-black text-[#FDF6EE] font-[family-name:var(--font-inter)] font-medium text-[14px] px-7 py-[14px] rounded-full transition-all duration-300 hover:scale-105 active:scale-95"
               >
                 Book a Consultation
               </Link>

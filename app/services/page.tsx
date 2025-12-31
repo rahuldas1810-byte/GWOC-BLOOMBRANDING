@@ -135,7 +135,14 @@ export default function Services() {
   const displayServices = services.length > 0 ? services : fallbackServices
 
   if (displayServices.length === 0) {
-    return <div className="min-h-screen flex items-center justify-center">Loading services...</div>
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="text-center">
+          <div className="w-12 h-12 border-4 border-electric-blue/20 border-t-electric-blue rounded-full mx-auto mb-4 animate-spin" />
+          <p className="text-dark-choc/60 font-mono text-xs uppercase tracking-wider">Loading services...</p>
+        </div>
+      </div>
+    )
   }
 
   return (
@@ -193,7 +200,7 @@ export default function Services() {
             >
               <div className="relative z-10">
                 {/* 4 IMAGES */}
-                {service.images && service.images.length > 0 && (
+                    {service.images && service.images.length > 0 && (
                   <div className="grid grid-cols-2 gap-4 mb-16">
                     {service.images.slice(0, 4).map((src: string, i: number) => (
                       <motion.div
@@ -201,9 +208,15 @@ export default function Services() {
                         initial={{ opacity: 0, scale: 0.9 }}
                         whileInView={{ opacity: 1, scale: 1 }}
                         transition={{ duration: 0.5, delay: i * 0.1 }}
-                        className="relative h-40 rounded-lg overflow-hidden"
+                        whileHover={{ scale: 1.05, zIndex: 10 }}
+                        className="relative h-40 rounded-lg overflow-hidden shadow-md hover:shadow-xl transition-shadow duration-300 cursor-pointer"
                       >
-                        <Image src={src} alt="" fill className="object-cover" />
+                        <Image 
+                          src={src} 
+                          alt={`${service.title} - Image ${i + 1}`} 
+                          fill 
+                          className="object-cover transition-transform duration-500 hover:scale-110" 
+                        />
                       </motion.div>
                     ))}
                   </div>

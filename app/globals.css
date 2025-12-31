@@ -70,13 +70,15 @@
   
   /* Brand Buttons - More Refined */
   .btn-primary {
-    @apply inline-flex items-center justify-center px-10 py-5 font-mono text-xs uppercase text-white bg-electric-blue hover:bg-electric-blue-dark transition-all duration-500 ease-out;
+    @apply inline-flex items-center justify-center px-10 py-5 font-mono text-xs uppercase text-white bg-electric-blue hover:bg-electric-blue-dark transition-all duration-300 ease-out rounded-full;
     letter-spacing: 0.2em;
+    @apply shadow-md hover:shadow-lg active:scale-95;
   }
   
   .btn-secondary {
-    @apply inline-flex items-center justify-center px-10 py-5 font-mono text-xs uppercase text-electric-blue bg-transparent border border-electric-blue/40 hover:border-electric-blue hover:bg-electric-blue hover:text-white transition-all duration-500 ease-out;
+    @apply inline-flex items-center justify-center px-10 py-5 font-mono text-xs uppercase text-electric-blue bg-transparent border border-electric-blue/40 hover:border-electric-blue hover:bg-electric-blue hover:text-white transition-all duration-300 ease-out rounded-full;
     letter-spacing: 0.2em;
+    @apply shadow-sm hover:shadow-md active:scale-95;
   }
 
   /* Card Styles - Cleaner */
@@ -118,6 +120,75 @@
   button {
     transform: none !important;
   }
+}
+
+/* Smooth focus styles for accessibility */
+*:focus-visible {
+  @apply outline-2 outline-offset-2 outline-electric-blue;
+}
+
+/* Better link hover transitions */
+a {
+  @apply transition-colors duration-200;
+}
+
+/* Smooth image loading */
+img {
+  @apply transition-opacity duration-300;
+}
+
+img[loading="lazy"] {
+  opacity: 0;
+  animation: fadeIn 0.3s ease-in-out forwards;
+}
+
+@keyframes fadeIn {
+  to {
+    opacity: 1;
+  }
+}
+
+/* Better scrollbar styling */
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+::-webkit-scrollbar-track {
+  @apply bg-earl-gray;
+}
+
+::-webkit-scrollbar-thumb {
+  @apply bg-dark-choc/20 rounded-full;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  @apply bg-dark-choc/40;
+}
+
+/* Smooth transitions for interactive elements */
+button, a, input, textarea, select {
+  @apply transition-all duration-200;
+}
+
+/* Loading skeleton animation */
+@keyframes shimmer {
+  0% {
+    background-position: -1000px 0;
+  }
+  100% {
+    background-position: 1000px 0;
+  }
+}
+
+.skeleton {
+  background: linear-gradient(
+    90deg,
+    rgba(98, 74, 65, 0.1) 0%,
+    rgba(98, 74, 65, 0.2) 50%,
+    rgba(98, 74, 65, 0.1) 100%
+  );
+  background-size: 1000px 100%;
+  animation: shimmer 2s infinite;
 }
 
 

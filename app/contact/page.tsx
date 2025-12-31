@@ -101,6 +101,10 @@ export default function Contact() {
       if (result.success) {
         setSubmitStatus('success')
         reset()
+        // Auto-hide success message after 5 seconds
+        setTimeout(() => {
+          setSubmitStatus('idle')
+        }, 5000)
       } else {
         setSubmitStatus('error')
         setErrorMessage(result.message || 'Something went wrong. Please try again.')
@@ -231,25 +235,46 @@ export default function Contact() {
 
                   {submitStatus === 'success' && (
                     <motion.div
-  initial={{ opacity: 0, y: 12 }}
-  animate={{ opacity: 1, y: 0 }}
-  transition={{ duration: 0.6, ease: [0.25, 0.1, 0.25, 1] }}
-  className="mb-10 p-8 bg-butter-yellow/50"
->
-
-                      
-                      <p className="font-sans text-dark-choc">
-                        Thank you! Your message has been sent. We&apos;ll get back to you soon.
-                      </p>
+                      initial={{ opacity: 0, y: 12, scale: 0.95 }}
+                      animate={{ opacity: 1, y: 0, scale: 1 }}
+                      exit={{ opacity: 0, scale: 0.95 }}
+                      transition={{ duration: 0.4, ease: [0.25, 0.1, 0.25, 1] }}
+                      className="mb-10 p-6 bg-green-50 border-2 border-green-200 rounded-xl"
+                    >
+                      <div className="flex items-start gap-3">
+                        <svg className="w-6 h-6 text-green-600 flex-shrink-0 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                        </svg>
+                        <div>
+                          <p className="font-sans font-semibold text-green-800 mb-1">Message sent successfully!</p>
+                          <p className="font-sans text-sm text-green-700">
+                            Thank you! We&apos;ll get back to you within 24 hours.
+                          </p>
+                        </div>
+                      </div>
                     </motion.div>
                   )}
 
                   {submitStatus === 'error' && (
-                    <div className="mb-10 p-8 bg-white border-l-2 border-dark-choc">
-                      <p className="font-sans text-dark-choc">
-                        {errorMessage || 'Something went wrong. Please try again.'}
-                      </p>
-                    </div>
+                    <motion.div
+                      initial={{ opacity: 0, y: 12, scale: 0.95 }}
+                      animate={{ opacity: 1, y: 0, scale: 1 }}
+                      exit={{ opacity: 0, scale: 0.95 }}
+                      transition={{ duration: 0.4, ease: [0.25, 0.1, 0.25, 1] }}
+                      className="mb-10 p-6 bg-red-50 border-2 border-red-200 rounded-xl"
+                    >
+                      <div className="flex items-start gap-3">
+                        <svg className="w-6 h-6 text-red-600 flex-shrink-0 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                        </svg>
+                        <div>
+                          <p className="font-sans font-semibold text-red-800 mb-1">Error sending message</p>
+                          <p className="font-sans text-sm text-red-700">
+                            {errorMessage || 'Something went wrong. Please try again.'}
+                          </p>
+                        </div>
+                      </div>
+                    </motion.div>
                   )}
 
                   <form onSubmit={handleSubmit(onSubmit)} className="space-y-8">
@@ -261,12 +286,24 @@ export default function Contact() {
                         type="text"
                         id="name"
                         {...register('name')}
-                        className="w-full px-0 py-5 bg-transparent border-0 border-b border-dark-choc/20 focus:border-electric-blue outline-none transition-all duration-300 focus:pl-1 font-sans text-lg text-near-black placeholder:text-near-black/30"
-
+                        className={`w-full px-0 py-5 bg-transparent border-0 border-b outline-none transition-all duration-300 focus:pl-1 font-sans text-lg text-near-black placeholder:text-near-black/30 ${
+                          errors.name 
+                            ? 'border-red-400 focus:border-red-500' 
+                            : 'border-dark-choc/20 focus:border-electric-blue'
+                        }`}
                         placeholder="Your name"
                       />
                       {errors.name && (
-                        <p className="mt-3 font-sans text-sm text-dark-choc">{errors.name.message}</p>
+                        <motion.p 
+                          initial={{ opacity: 0, y: -5 }}
+                          animate={{ opacity: 1, y: 0 }}
+                          className="mt-3 font-sans text-sm text-red-600 flex items-center gap-2"
+                        >
+                          <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                          </svg>
+                          {errors.name.message}
+                        </motion.p>
                       )}
                     </div>
 
@@ -278,12 +315,24 @@ export default function Contact() {
                         type="email"
                         id="email"
                         {...register('email')}
-                       className="w-full px-0 py-5 bg-transparent border-0 border-b border-dark-choc/20 focus:border-electric-blue outline-none transition-all duration-300 focus:pl-1 font-sans text-lg text-near-black placeholder:text-near-black/30"
-
+                        className={`w-full px-0 py-5 bg-transparent border-0 border-b outline-none transition-all duration-300 focus:pl-1 font-sans text-lg text-near-black placeholder:text-near-black/30 ${
+                          errors.email 
+                            ? 'border-red-400 focus:border-red-500' 
+                            : 'border-dark-choc/20 focus:border-electric-blue'
+                        }`}
                         placeholder="your@email.com"
                       />
                       {errors.email && (
-                        <p className="mt-3 font-sans text-sm text-dark-choc">{errors.email.message}</p>
+                        <motion.p 
+                          initial={{ opacity: 0, y: -5 }}
+                          animate={{ opacity: 1, y: 0 }}
+                          className="mt-3 font-sans text-sm text-red-600 flex items-center gap-2"
+                        >
+                          <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                          </svg>
+                          {errors.email.message}
+                        </motion.p>
                       )}
                     </div>
 
@@ -309,23 +358,62 @@ export default function Contact() {
                         id="message"
                         {...register('message')}
                         rows={5}
-                       className="w-full px-0 py-5 bg-transparent border-0 border-b border-dark-choc/20 focus:border-electric-blue outline-none transition-all duration-300 focus:pl-1 font-sans text-lg text-near-black placeholder:text-near-black/30"
-
+                        className={`w-full px-0 py-5 bg-transparent border-0 border-b outline-none transition-all duration-300 focus:pl-1 font-sans text-lg text-near-black placeholder:text-near-black/30 resize-none ${
+                          errors.message 
+                            ? 'border-red-400 focus:border-red-500' 
+                            : 'border-dark-choc/20 focus:border-electric-blue'
+                        }`}
                         placeholder="Tell us about your project..."
                       />
                       {errors.message && (
-                        <p className="mt-3 font-sans text-sm text-dark-choc">{errors.message.message}</p>
+                        <motion.p 
+                          initial={{ opacity: 0, y: -5 }}
+                          animate={{ opacity: 1, y: 0 }}
+                          className="mt-3 font-sans text-sm text-red-600 flex items-center gap-2"
+                        >
+                          <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                          </svg>
+                          {errors.message.message}
+                        </motion.p>
                       )}
                     </div>
 
-                    <button
+                    <motion.button
                       type="submit"
                       disabled={isPending}
-                      className="btn-primary w-full mt-6 disabled:opacity-50 disabled:cursor-not-allowed"
+                      whileHover={!isPending ? { scale: 1.02 } : {}}
+                      whileTap={!isPending ? { scale: 0.98 } : {}}
+                      className="btn-primary w-full mt-6 disabled:opacity-50 disabled:cursor-not-allowed relative overflow-hidden group"
                     >
-                      {isPending ? 'Sending...' : 'Start the Conversation'}
-
-                    </button>
+                      <span className="relative z-10 flex items-center justify-center gap-2">
+                        {isPending ? (
+                          <>
+                            <motion.div
+                              className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full"
+                              animate={{ rotate: 360 }}
+                              transition={{ duration: 0.8, repeat: Infinity, ease: 'linear' }}
+                            />
+                            Sending...
+                          </>
+                        ) : (
+                          <>
+                            Start the Conversation
+                            <motion.svg
+                              className="w-4 h-4"
+                              fill="none"
+                              viewBox="0 0 24 24"
+                              stroke="currentColor"
+                              initial={{ x: 0 }}
+                              whileHover={{ x: 4 }}
+                              transition={{ type: 'spring', stiffness: 400, damping: 17 }}
+                            >
+                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7l5 5m0 0l-5 5m5-5H6" />
+                            </motion.svg>
+                          </>
+                        )}
+                      </span>
+                    </motion.button>
                   </form>
                 </div>
               </div>

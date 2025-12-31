@@ -98,12 +98,14 @@ export default function ClientSocialProof() {
               style={{ width: "fit-content" }}
             >
               {[...brands, ...brands, ...brands, ...brands].map((brand, i) => (
-                <div 
+                <motion.div 
                   key={i}
-                  className={`text-3xl md:text-4xl text-dark-choc/70 hover:text-dark-choc transition-all duration-[250ms] ease-out cursor-default select-none transform hover:scale-[1.04] hover:-translate-y-[3px] hover:drop-shadow-sm ${brand.font}`}
+                  className={`text-3xl md:text-4xl text-dark-choc/70 hover:text-dark-choc transition-all duration-[250ms] ease-out cursor-default select-none ${brand.font}`}
+                  whileHover={{ scale: 1.08, y: -4 }}
+                  transition={{ duration: 0.2, ease: 'easeOut' }}
                 >
                   {brand.name}
-                </div>
+                </motion.div>
               ))}
             </motion.div>
           </div>
@@ -114,19 +116,24 @@ export default function ClientSocialProof() {
           <AnimatePresence mode="wait">
             <motion.div
               key={activeBrand.name} // Triggers animation on change
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              transition={{ duration: 0.5, ease: "easeInOut" }}
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -20 }}
+              transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
               className="flex flex-col items-center"
             >
               <h3 className="font-serif text-2xl md:text-3xl text-dark-choc/90 italic leading-relaxed mb-6 max-w-2xl">
-                “{activeBrand.quote}”
+                "{activeBrand.quote}"
               </h3>
               {activeBrand.author && (
-                <p className="font-mono text-xs uppercase tracking-[0.2em] text-dark-choc/40">
+                <motion.p 
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  transition={{ delay: 0.2 }}
+                  className="font-mono text-xs uppercase tracking-[0.2em] text-dark-choc/40"
+                >
                   — {activeBrand.author}
-                </p>
+                </motion.p>
               )}
             </motion.div>
           </AnimatePresence>

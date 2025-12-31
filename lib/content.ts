@@ -1,21 +1,42 @@
 import type { Testimonial, Client, HomepageContent } from '@/types'
 
 /**
- * Fetch testimonials from API
+ * Fetch testimonials from API with retry logic
  * Falls back to empty array if API fails (graceful degradation)
  */
-export const getTestimonials = async (): Promise<Testimonial[]> => {
+export const getTestimonials = async (retries = 3): Promise<Testimonial[]> => {
   try {
     // Use relative path for both server and client
     const baseUrl = typeof window !== 'undefined' 
       ? '' 
       : process.env.NEXT_PUBLIC_SITE_URL || 'http://localhost:3000'
-    const response = await fetch(`${baseUrl}/api/public/testimonials?t=${Date.now()}`, {
-      cache: 'no-store', // Always fetch fresh data
-      headers: {
-        'Cache-Control': 'no-cache',
-      },
-    })
+    
+    const fetchWithRetry = async (attempt: number): Promise<Response> => {
+      try {
+        const controller = new AbortController()
+        const timeoutId = setTimeout(() => controller.abort(), 10000) // 10 second timeout
+        
+        const response = await fetch(`${baseUrl}/api/public/testimonials?t=${Date.now()}`, {
+          cache: 'no-store',
+          headers: {
+            'Cache-Control': 'no-cache',
+          },
+          signal: controller.signal,
+        })
+        
+        clearTimeout(timeoutId)
+        return response
+      } catch (error: any) {
+        if (attempt < retries && (error.name === 'AbortError' || error.name === 'TypeError' || error.message?.includes('fetch'))) {
+          console.warn(`Testimonials fetch attempt ${attempt} failed, retrying...`)
+          await new Promise(resolve => setTimeout(resolve, 1000 * attempt)) // Exponential backoff
+          return fetchWithRetry(attempt + 1)
+        }
+        throw error
+      }
+    }
+
+    const response = await fetchWithRetry(1)
 
     if (!response.ok) {
       console.warn('Failed to fetch testimonials from API, returning empty array')
@@ -90,21 +111,42 @@ export const getClients = async (): Promise<Client[]> => {
 }
 
 /**
- * Fetch homepage content from API
+ * Fetch homepage content from API with retry logic
  * Falls back to default content if API fails
  */
-export const getHomepageContent = async (): Promise<HomepageContent> => {
+export const getHomepageContent = async (retries = 3): Promise<HomepageContent> => {
   try {
     // Use relative path for both server and client
     const baseUrl = typeof window !== 'undefined' 
       ? '' 
       : process.env.NEXT_PUBLIC_SITE_URL || 'http://localhost:3000'
-    const response = await fetch(`${baseUrl}/api/public/homepage?t=${Date.now()}`, {
-      cache: 'no-store', // Always fetch fresh data
-      headers: {
-        'Cache-Control': 'no-cache',
-      },
-    })
+    
+    const fetchWithRetry = async (attempt: number): Promise<Response> => {
+      try {
+        const controller = new AbortController()
+        const timeoutId = setTimeout(() => controller.abort(), 10000) // 10 second timeout
+        
+        const response = await fetch(`${baseUrl}/api/public/homepage?t=${Date.now()}`, {
+          cache: 'no-store',
+          headers: {
+            'Cache-Control': 'no-cache',
+          },
+          signal: controller.signal,
+        })
+        
+        clearTimeout(timeoutId)
+        return response
+      } catch (error: any) {
+        if (attempt < retries && (error.name === 'AbortError' || error.name === 'TypeError' || error.message?.includes('fetch'))) {
+          console.warn(`Homepage fetch attempt ${attempt} failed, retrying...`)
+          await new Promise(resolve => setTimeout(resolve, 1000 * attempt)) // Exponential backoff
+          return fetchWithRetry(attempt + 1)
+        }
+        throw error
+      }
+    }
+
+    const response = await fetchWithRetry(1)
 
     if (!response.ok) {
       console.warn('Failed to fetch homepage from API, returning default content')
@@ -263,20 +305,41 @@ export const getSiteSettings = async () => {
 }
 
 /**
- * Fetch brands from API (public)
+ * Fetch brands from API (public) with retry logic
  */
-export const getBrands = async (category?: string) => {
+export const getBrands = async (category?: string, retries = 3) => {
   try {
     const baseUrl = typeof window !== 'undefined' 
       ? '' 
       : process.env.NEXT_PUBLIC_SITE_URL || 'http://localhost:3000'
     const query = category ? `?category=${category}` : ''
-    const response = await fetch(`${baseUrl}/api/public/brands${query}?t=${Date.now()}`, {
-      cache: 'no-store',
-      headers: {
-        'Cache-Control': 'no-cache',
-      },
-    })
+    
+    const fetchWithRetry = async (attempt: number): Promise<Response> => {
+      try {
+        const controller = new AbortController()
+        const timeoutId = setTimeout(() => controller.abort(), 10000) // 10 second timeout
+        
+        const response = await fetch(`${baseUrl}/api/public/brands${query}?t=${Date.now()}`, {
+          cache: 'no-store',
+          headers: {
+            'Cache-Control': 'no-cache',
+          },
+          signal: controller.signal,
+        })
+        
+        clearTimeout(timeoutId)
+        return response
+      } catch (error: any) {
+        if (attempt < retries && (error.name === 'AbortError' || error.name === 'TypeError' || error.message?.includes('fetch'))) {
+          console.warn(`Brands fetch attempt ${attempt} failed, retrying...`)
+          await new Promise(resolve => setTimeout(resolve, 1000 * attempt)) // Exponential backoff
+          return fetchWithRetry(attempt + 1)
+        }
+        throw error
+      }
+    }
+
+    const response = await fetchWithRetry(1)
 
     if (!response.ok) {
       console.warn('Failed to fetch brands from API')

@@ -7,6 +7,7 @@ import Banner from '@/models/Banner'
 import Client from '@/models/Client'
 import Media from '@/models/Media'
 import Enquiry from '@/models/Enquiry'
+import Service from '@/models/Service'
 
 // GET - Get admin dashboard statistics
 export async function GET(request: NextRequest) {
@@ -21,8 +22,9 @@ export async function GET(request: NextRequest) {
 
     await connectDB()
 
-    const [brands, testimonials, banners, clients, media, newEnquiries] = await Promise.all([
+    const [brands, services, testimonials, banners, clients, media, newEnquiries] = await Promise.all([
       Brand.countDocuments(),
+      Service.countDocuments(),
       Testimonial.countDocuments(),
       Banner.countDocuments(),
       Client.countDocuments(),
@@ -34,6 +36,7 @@ export async function GET(request: NextRequest) {
       success: true,
       data: {
         brands,
+        services,
         testimonials,
         banners,
         clients,

@@ -10,14 +10,12 @@
     "setup": "npm install",
     "create-admin": "tsx scripts/createAdminUser.ts",
     "reset-admin-password": "tsx --env-file .env.local scripts/resetAdminPassword.ts",
-    "setup-env": "tsx scripts/setupEnv.ts",
-    "test-db": "tsx --env-file .env.local scripts/testConnection.ts",
-    "test-email": "tsx --env-file .env.local scripts/testEmail.ts",
     "seed-testimonials": "tsx --env-file .env.local scripts/seedTestimonials.ts",
     "seed-brands": "tsx --env-file .env.local scripts/seedBrands.ts",
     "seed-clients": "tsx --env-file .env.local scripts/seedClients.ts",
     "seed-banners": "tsx --env-file .env.local scripts/seedBanners.ts",
-    "seed-all": "npm run seed-brands && npm run seed-clients && npm run seed-testimonials && npm run seed-banners"
+    "seed-services": "tsx --env-file .env.local scripts/seedServices.ts",
+    "seed-all": "npm run seed-brands && npm run seed-clients && npm run seed-testimonials && npm run seed-banners && npm run seed-services"
   },
   "dependencies": {
     "@hookform/resolvers": "^3.3.2",
