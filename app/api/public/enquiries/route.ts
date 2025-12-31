@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import connectDB from '@/lib/db'
 import Enquiry from '@/models/Enquiry'
+import { sendQueryConfirmationEmail } from '@/backend/email'
 
 // POST - Public API: Submit enquiry
 export async function POST(request: NextRequest) {
@@ -25,6 +26,15 @@ export async function POST(request: NextRequest) {
       message,
       status: 'new',
     })
+
+    // Send confirmation email to the user
+    try {
+      await sendQueryConfirmationEmail(email, name)
+    } catch (emailError) {
+      // Log email error but don't fail the request
+      console.error('❌ Failed to send confirmation email:', emailError)
+      // Continue with success response even if email fails
+    }
 
     return NextResponse.json({
       success: true,
