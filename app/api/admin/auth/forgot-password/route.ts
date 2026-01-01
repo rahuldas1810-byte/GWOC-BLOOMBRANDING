@@ -1,8 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import connectDB from '@/backend/db'
 import Admin from '@/models/Admin'
-import { sendPasswordResetEmail } from '@/backend/email'
-import crypto from 'crypto'
+import { sendOtpEmail } from '@/backend/email'
 
 export async function POST(request: NextRequest) {
   try {
@@ -29,39 +28,48 @@ export async function POST(request: NextRequest) {
     })
 
     // For security, always return success even if user doesn't exist
-    // This prevents email enumeration attacks
+    console.log('🧪 Forgot Password Lookup:', {
+  inputEmail: normalizedEmail,
+  adminFound: !!admin,
+  adminEmail: admin?.email,
+  isActive: admin?.isActive,
+})
+
+    
     if (!admin) {
       return NextResponse.json(
         {
           success: true,
-          message: 'If an account with that email exists, a password reset link has been sent.',
+          message: 'If an account with that email exists, an OTP has been sent.',
         },
         { status: 200 }
       )
     }
 
-    // Generate reset token
-    const resetToken = crypto.randomBytes(32).toString('hex')
-    const resetTokenExpiry = new Date(Date.now() + 3600000) // 1 hour from now
+    // Generate 4-digit OTP
+    const otp = Math.floor(1000 + Math.random() * 9000).toString()
+    const otpExpiry = new Date(Date.now() + 5 * 60 * 1000) // 5 minutes
 
-    // Save reset token to admin document
-    admin.resetPasswordToken = resetToken
-    admin.resetPasswordExpiry = resetTokenExpiry
+    // Save OTP to admin document
+    admin.otp = otp
+    admin.otpExpiry = otpExpiry
+    admin.otpAttempts = 0
     await admin.save()
 
-    // Send password reset email
-    const emailSent = await sendPasswordResetEmail(admin.email, resetToken)
+    console.log('📧 Sending OTP email to:', admin.email)
+    console.log('🔢 OTP:', otp)
 
-    // If email failed to send, log it but still return success (security best practice)
+
+    const emailSent = await sendOtpEmail(admin.email, otp)
+
     if (!emailSent) {
-      console.error(`Failed to send password reset email to ${admin.email}`)
-      // Still return success to prevent email enumeration
+      console.error(`Failed to send OTP email to ${admin.email}`)
     }
 
     return NextResponse.json(
       {
         success: true,
-        message: 'If an account with that email exists, a password reset link has been sent.',
+        message: 'If an account with that email exists, an OTP has been sent.',
       },
       { status: 200 }
     )

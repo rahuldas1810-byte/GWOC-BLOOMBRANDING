@@ -9,6 +9,9 @@ export interface IAdmin extends Document {
   isActive: boolean
   resetPasswordToken?: string
   resetPasswordExpiry?: Date
+  otp?: string
+  otpExpiry?: Date
+  otpAttempts?: number
   comparePassword(candidatePassword: string): Promise<boolean>
   createdAt: Date
   updatedAt: Date
@@ -48,6 +51,19 @@ const AdminSchema = new Schema<IAdmin>(
     },
     resetPasswordExpiry: {
       type: Date,
+      select: false,
+    },
+    otp: {
+      type: String,
+      select: false,
+    },
+    otpExpiry: {
+      type: Date,
+      select: false,
+    },
+    otpAttempts: {
+      type: Number,
+      default: 0,
       select: false,
     },
   },
