@@ -22,6 +22,8 @@ export default function Home() {
     sectionVideo: null as string | null,
     clientsLabel: 'Our Clients',
     clientsTitle: 'Trusted By',
+    testimonialsLabel: 'Testimonials',
+    testimonialsHeading: 'What Clients Say',
   });
   const [hoveredService, setHoveredService] = useState<number | null>(null);
   const [videoEnded, setVideoEnded] = useState(false);
@@ -43,7 +45,6 @@ export default function Home() {
           getServices(),
           getSiteSettings(),
         ]);
-        setTestimonials(testimonialsData);
         setClients(clientsData);
         
         // Transform services for homepage (only title and description)
@@ -78,7 +79,22 @@ export default function Home() {
             sectionVideo: typeof homepageData.sectionVideo === 'string' ? homepageData.sectionVideo : (homepageData.sectionVideo?.url || null),
             clientsLabel: siteSettings?.homepageSections?.clientsLabel || 'Our Clients',
             clientsTitle: siteSettings?.homepageSections?.clientsTitle || 'Trusted By',
+            testimonialsLabel: homepageData.testimonialsLabel !== undefined && homepageData.testimonialsLabel !== null ? homepageData.testimonialsLabel : 'Testimonials',
+            testimonialsHeading: homepageData.testimonialsHeading !== undefined && homepageData.testimonialsHeading !== null ? homepageData.testimonialsHeading : 'What Clients Say',
           });
+          
+          // Filter testimonials based on homepage selection
+          if (homepageData.homepageTestimonialIds && Array.isArray(homepageData.homepageTestimonialIds) && homepageData.homepageTestimonialIds.length > 0) {
+            // Show only selected testimonials
+            const selectedTestimonials = testimonialsData.filter((t: any) => 
+              homepageData.homepageTestimonialIds.includes(t._id || t.id)
+            );
+            setTestimonials(selectedTestimonials);
+          } else {
+            // If no selection, show all active testimonials (backward compatible)
+            setTestimonials(testimonialsData);
+          }
+          
           // Mark content as loaded
           setContentLoaded(true);
           // If no hero video, show content immediately
@@ -762,7 +778,7 @@ export default function Home() {
                   viewport={{ once: true }}
                   transition={{ duration: 0.6, delay: 0.1 }}
                 >
-                  Testimonials
+                  {homepageContent.testimonialsLabel}
                 </motion.p>
                 <motion.h2
                   className="heading-2"
@@ -771,7 +787,7 @@ export default function Home() {
                   viewport={{ once: true }}
                   transition={{ duration: 0.6, delay: 0.2 }}
                 >
-                  What Clients Say
+                  {homepageContent.testimonialsHeading}
                 </motion.h2>
               </div>
 
