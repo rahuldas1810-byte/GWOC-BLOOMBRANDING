@@ -10,18 +10,23 @@ export async function middleware(request: NextRequest) {
     return NextResponse.next();
   }
 
+  const publicAdminRoutes = [
+  '/admin/login',
+  '/admin/verify-otp',
+  '/admin/reset-password',
+]
   // Protect admin PAGE routes only (not API routes)
   // Only redirect page routes to login, never API routes
-  if (pathname.startsWith('/admin') && !pathname.startsWith('/admin/login')) {
-    // Edge Runtime compatible: Just check if auth cookie exists
-    // Full JWT verification happens in API routes (Node.js runtime)
-    const token = request.cookies.get('adminToken')?.value;
+  if (
+  pathname.startsWith('/admin') &&
+  !publicAdminRoutes.some(route => pathname.startsWith(route))
+) {
+  const token = request.cookies.get('adminToken')?.value;
 
-    if (!token || token.trim() === '') {
-      // Only redirect PAGE routes, never API routes
-      return NextResponse.redirect(new URL('/admin/login', request.url));
-    }
+  if (!token || token.trim() === '') {
+    return NextResponse.redirect(new URL('/admin/login', request.url));
   }
+}
 
   return NextResponse.next();
 }

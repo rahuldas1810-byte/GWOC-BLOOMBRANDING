@@ -78,6 +78,13 @@ class ApiClient {
     });
   }
 
+  async verifyOtp(email: string, otp: string) {
+    return this.request<{ resetToken: string }>('/admin/auth/verify-otp', {
+      method: 'POST',
+      body: JSON.stringify({ email, otp }),
+    });
+  }
+
   async validateResetToken(token: string) {
     return this.request('/admin/auth/validate-reset-token', {
       method: 'POST',
@@ -202,11 +209,11 @@ class ApiClient {
   // Media (Admin)
   async uploadMedia(file: File, folder?: string, tags?: string, altText?: string, usedIn?: string) {
     const formData = new FormData();
-      formData.append('file', file);
-      if (folder) formData.append('folder', folder);
-      if (tags) formData.append('tags', tags);
-      if (altText) formData.append('altText', altText);
-      if (usedIn) formData.append('usedIn', usedIn);
+    formData.append('file', file);
+    if (folder) formData.append('folder', folder);
+    if (tags) formData.append('tags', tags);
+    if (altText) formData.append('altText', altText);
+    if (usedIn) formData.append('usedIn', usedIn);
 
     const url = `${this.baseUrl}/admin/media/upload`;
 

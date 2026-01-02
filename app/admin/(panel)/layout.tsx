@@ -84,9 +84,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
     )
   }
 
-  if (pathname === '/admin/login') {
-    return <>{children}</>
-  }
+
 
   return (
     <div className="min-h-screen bg-earl-gray flex">
