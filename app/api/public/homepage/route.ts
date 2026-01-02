@@ -37,7 +37,7 @@ export async function GET(request: NextRequest) {
     }
 
     const homepage = await Homepage.findOne().select(
-      'heroHeadline heroSubheading heroImage heroVideo backgroundVideo sectionVideo aboutPreview tagline servicesPreview sections createdAt'
+      'heroHeadline heroSubheading heroImage heroVideo backgroundVideo sectionVideo aboutPreview tagline servicesPreview sections homepageTestimonialIds testimonialsLabel testimonialsHeading createdAt'
     )
 
     if (!homepage) {

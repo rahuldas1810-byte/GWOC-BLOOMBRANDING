@@ -47,11 +47,9 @@ export async function POST(request: NextRequest) {
       )
     }
 
-    // Hash the new password
-    const hashedPassword = await bcrypt.hash(newPassword, 12)
-
     // Update password and clear reset token fields
-    admin.password = hashedPassword
+    admin.password = newPassword
+    
     admin.resetPasswordToken = undefined
     admin.resetPasswordExpiry = undefined
     await admin.save()
@@ -75,4 +73,3 @@ export async function POST(request: NextRequest) {
     )
   }
 }
-
