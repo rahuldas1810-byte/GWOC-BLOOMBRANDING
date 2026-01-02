@@ -31,7 +31,6 @@ const navigation = [
   { name: 'Our Story', href: '/admin/our-story', icon: BookOpen },
   { name: 'Contact', href: '/admin/contact', icon: Phone },
   { name: 'Site Settings', href: '/admin/site-settings', icon: Settings },
-  { name: 'Brands', href: '/admin/brands', icon: Users },
   { name: 'Testimonials', href: '/admin/testimonials', icon: MessageSquare },
   { name: 'Clients', href: '/admin/clients', icon: Users },
   { name: 'Media Manager', href: '/admin/media', icon: Film },
@@ -84,9 +83,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
     )
   }
 
-  if (pathname === '/admin/login') {
-    return <>{children}</>
-  }
+
 
   return (
     <div className="min-h-screen bg-earl-gray flex">

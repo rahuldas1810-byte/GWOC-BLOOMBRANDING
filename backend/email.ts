@@ -1,3 +1,4 @@
+import "server-only";
 import nodemailer from 'nodemailer'
 
 interface EmailOptions {
@@ -9,9 +10,17 @@ interface EmailOptions {
 
 // Create reusable transporter
 const createTransporter = () => {
+
+console.log('🧪 SMTP ENV CHECK:', {
+  SMTP_HOST: process.env.SMTP_HOST,
+  SMTP_EMAIL: process.env.SMTP_EMAIL,
+  SMTP_PASSWORD_EXISTS: !!process.env.SMTP_PASSWORD,
+  SMTP_PORT: process.env.SMTP_PORT,
+})
+
   // Check if email is configured
   const emailHost = process.env.SMTP_HOST
-  const emailUser = process.env.SMTP_USER
+  const emailUser = process.env.SMTP_EMAIL
   const emailPass = process.env.SMTP_PASSWORD
   const emailPort = process.env.SMTP_PORT || '587'
 
@@ -19,7 +28,7 @@ const createTransporter = () => {
   if (!emailHost || !emailUser || !emailPass) {
     return null
   }
-
+ 
   return nodemailer.createTransport({
     host: emailHost,
     port: parseInt(emailPort),
@@ -37,14 +46,9 @@ export const sendEmail = async (options: EmailOptions): Promise<boolean> => {
 
     // If no email config, log to console (for development)
     if (!transporter) {
-      console.log('📧 Email not configured. Would send email:')
-      console.log('To:', options.to)
-      console.log('Subject:', options.subject)
-      console.log('Body:', options.text || options.html)
-      console.log('\n💡 To enable email sending, configure SMTP settings in .env.local')
-      console.log('   See EMAIL_SETUP.md for instructions\n')
-      return true // Return true so the flow continues
-    }
+  console.error('❌ SMTP not configured properly')
+  return false
+}
 
     const mailOptions = {
       from: `"Bloom Branding" <${process.env.SMTP_FROM || process.env.SMTP_USER}>`,
@@ -159,6 +163,77 @@ Bloom Branding Team
   })
 }
 
+
+export const sendOtpEmail = async (
+  email: string,
+  otp: string
+): Promise<boolean> => {
+  const html = `
+    <!DOCTYPE html>
+    <html>
+      <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Password Reset OTP - Bloom Branding</title>
+      </head>
+      <body style="font-family: Arial, sans-serif; line-height: 1.6; color: #333; max-width: 600px; margin: 0 auto; padding: 20px;">
+        <div style="background-color: #2C4494; color: white; padding: 20px; text-align: center; border-radius: 8px 8px 0 0;">
+          <h1 style="margin: 0; font-size: 24px;">Bloom Branding</h1>
+        </div>
+        
+        <div style="background-color: #f9f9f9; padding: 30px; border: 1px solid #e0e0e0; border-top: none; border-radius: 0 0 8px 8px;">
+          <h2 style="color: #624A41; margin-top: 0;">Password Reset OTP</h2>
+          
+          <p>Hello,</p>
+          
+          <p>You requested to reset your password. Use the following One-Time Password (OTP) to proceed:</p>
+          
+          <div style="text-align: center; margin: 30px 0;">
+            <div style="display: inline-block; background-color: #f0f0f0; color: #2C4494; padding: 15px 30px; border-radius: 5px; font-weight: bold; font-size: 32px; letter-spacing: 5px; border: 2px dashed #2C4494;">
+              ${otp}
+            </div>
+          </div>
+          
+          <p style="color: #666; font-size: 14px; margin-top: 30px;">
+            <strong>Important:</strong> This OTP will expire in 5 minutes. If you didn't request a password reset, please ignore this email.
+          </p>
+          
+          <p style="color: #666; font-size: 14px; margin-top: 20px;">
+            Best regards,<br>
+            <strong>Bloom Branding Team</strong>
+          </p>
+        </div>
+        
+        <div style="text-align: center; margin-top: 20px; color: #999; font-size: 12px;">
+          <p>This is an automated message. Please do not reply to this email.</p>
+        </div>
+      </body>
+    </html>
+  `
+
+  const text = `
+Password Reset OTP - Bloom Branding
+
+Hello,
+
+You requested to reset your password. Use the following One-Time Password (OTP) to proceed:
+
+${otp}
+
+This OTP will expire in 5 minutes. If you didn't request a password reset, please ignore this email.
+
+Best regards,
+Bloom Branding Team
+  `
+
+  return await sendEmail({
+    to: email,
+    subject: 'Password Reset OTP - Bloom Branding Admin',
+    html,
+    text,
+  })
+}
+
 export const sendQueryConfirmationEmail = async (
   email: string,
   name: string
@@ -216,4 +291,3 @@ This is an automated message. Please do not reply to this email.
     text,
   })
 }
-

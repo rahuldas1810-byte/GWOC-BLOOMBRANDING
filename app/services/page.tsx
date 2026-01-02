@@ -148,9 +148,8 @@ export default function Services() {
   return (
     <div className="min-h-screen bg-gradient-to-b from-earl-gray via-white to-earl-gray">
       {/* HERO */}
-      <section className="py-32 md:py-40 lg:py-48 bg-gradient-to-br from-earl-gray via-butter-yellow/8 to-electric-blue/5 relative overflow-hidden">
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_30%_20%,rgba(44,68,148,0.05),transparent_50%)] pointer-events-none"></div>
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_70%_80%,rgba(189,175,98,0.08),transparent_50%)] pointer-events-none"></div>
+      <section className="py-32 md:py-40 lg:py-48 bg-gradient-to-br from-earl-gray via-white to-butter-yellow/10 relative overflow-hidden">
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_30%_20%,rgba(44,68,148,0.03),transparent_50%)] pointer-events-none"></div>
         <div className="container-custom relative z-10">
           <SectionReveal>
             <div className="max-w-5xl">
@@ -169,9 +168,9 @@ export default function Services() {
       </section>
 
       {/* DESKTOP SPLIT */}
-      <section className="hidden lg:flex relative items-start bg-gradient-to-b from-white via-earl-gray/20 to-butter-yellow/6">
+      <section className="hidden lg:flex relative items-start bg-gradient-to-b from-white to-earl-gray/30">
         {/* LEFT STICKY */}
-        <div className="w-1/2 sticky top-0 h-screen flex flex-col justify-center px-12 xl:px-24 border-r-2 border-electric-blue/10 bg-gradient-to-br from-earl-gray/90 via-butter-yellow/8 to-electric-blue/6 z-20 shadow-[4px_0_20px_rgba(44,68,148,0.04)]">
+        <div className="w-1/2 sticky top-0 h-screen flex flex-col justify-center px-12 xl:px-24 border-r-2 border-dark-choc/10 bg-gradient-to-br from-earl-gray via-white to-butter-yellow/5 z-20 shadow-[4px_0_20px_rgba(0,0,0,0.02)]">
           <AnimatePresence mode="wait">
             <motion.div
               key={activeServiceIndex}
@@ -182,7 +181,7 @@ export default function Services() {
               className="max-w-xl"
             >
               <span className="font-mono text-sm md:text-base text-electric-blue/70 mb-8 block tracking-[0.3em] font-semibold">
-                0{activeServiceIndex + 1}
+                0{activeServiceIndex + 1} / 0{displayServices.length}
               </span>
               <h2 className="font-serif text-dark-choc font-bold text-4xl xl:text-5xl mb-10 leading-tight tracking-tight">
                 {displayServices[activeServiceIndex]?.title}
@@ -196,21 +195,11 @@ export default function Services() {
 
         {/* RIGHT SCROLL */}
         <div className="w-1/2">
-          {displayServices.map((service, index) => {
-            // Create varied background colors using site palette
-            const bgVariations = [
-              'bg-gradient-to-br from-white via-earl-gray/30 to-butter-yellow/5',
-              'bg-gradient-to-br from-electric-blue/4 via-white to-earl-gray/40',
-              'bg-gradient-to-br from-butter-yellow/6 via-white to-electric-blue/3',
-              'bg-gradient-to-br from-earl-gray/50 via-butter-yellow/4 to-white',
-              'bg-gradient-to-br from-white via-electric-blue/5 to-butter-yellow/8',
-            ]
-            const bgClass = bgVariations[index % bgVariations.length]
-            
-            return (
+          {displayServices.map((service, index) => (
             <motion.div
               key={service.title || index}
-              className={`min-h-[100vh] flex flex-col justify-center px-12 xl:px-24 py-32 relative ${bgClass}`}
+              className={`min-h-[100vh] flex flex-col justify-center px-12 xl:px-24 py-32 relative ${index % 2 === 0 ? 'bg-white' : 'bg-gradient-to-br from-earl-gray/50 to-white'
+                }`}
               onViewportEnter={() => setActiveServiceIndex(index)}
               viewport={{ amount: 0.55 }}
             >
@@ -257,30 +246,18 @@ export default function Services() {
                 </ul>
               </div>
             </motion.div>
-            )
-          })}
+          ))}
         </div>
       </section>
 
       {/* MOBILE STACK */}
       <section className="lg:hidden">
-        {displayServices.map((service, index) => {
-          // Create varied background colors using site palette
-          const mobileBgVariations = [
-            'bg-gradient-to-br from-white via-butter-yellow/6 to-earl-gray/20',
-            'bg-gradient-to-br from-electric-blue/5 via-white to-butter-yellow/4',
-            'bg-gradient-to-br from-earl-gray/40 via-butter-yellow/5 to-white',
-            'bg-gradient-to-br from-white via-earl-gray/30 to-electric-blue/4',
-            'bg-gradient-to-br from-butter-yellow/8 via-white to-earl-gray/25',
-          ]
-          const mobileBgClass = mobileBgVariations[index % mobileBgVariations.length]
-          
-          return (
+        {displayServices.map((service, index) => (
           <SectionReveal key={service.title || index}>
-            <div className={`py-20 md:py-28 ${mobileBgClass}`}>
+            <div className={`py-20 md:py-28 ${index % 2 === 0 ? 'bg-white' : 'bg-gradient-to-br from-earl-gray/50 to-white'}`}>
               <div className="container-custom">
                 <span className="font-mono text-sm text-electric-blue/70 mb-6 block tracking-[0.3em] font-semibold">
-                  0{index + 1}
+                  0{index + 1} / 0{displayServices.length}
                 </span>
                 <h2 className="font-serif text-dark-choc font-bold text-3xl md:text-4xl mb-8 leading-tight tracking-tight">
                   {service.title}
@@ -319,8 +296,7 @@ export default function Services() {
               </div>
             </div>
           </SectionReveal>
-          )
-        })}
+        ))}
       </section>
     </div>
   )

@@ -4,10 +4,13 @@ import { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 import { api } from '@/lib/api'
 import { Eye, EyeOff, Lock } from 'lucide-react'
+import { useSearchParams } from 'next/navigation'
 
 export default function ResetPassword() {
   const router = useRouter()
-  const [token, setToken] = useState<string | null>(null)
+
+  const searchParams = useSearchParams()
+  const token = searchParams.get('token')
 
   const [password, setPassword] = useState('')
   const [confirmPassword, setConfirmPassword] = useState('')
@@ -19,24 +22,14 @@ export default function ResetPassword() {
   const [validatingToken, setValidatingToken] = useState(true)
   const [tokenValid, setTokenValid] = useState(false)
 
-  useEffect(() => {
-    // Get token from URL query params
-    if (typeof window !== 'undefined') {
-      const params = new URLSearchParams(window.location.search)
-      const urlToken = params.get('token')
-      setToken(urlToken)
-    }
-  }, [])
 
   useEffect(() => {
-    const validateToken = async () => {
+    
       if (!token) {
         setValidatingToken(false)
-        setTokenValid(false)
-        setError('Invalid or missing reset token.')
         return
       }
-
+      const validateToken = async () => {
       try {
         const response = await api.validateResetToken(token)
         if (response.success) {

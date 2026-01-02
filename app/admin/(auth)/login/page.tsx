@@ -46,11 +46,8 @@ export default function AdminLogin() {
       const response = await api.forgotPassword(forgotPasswordEmail)
       
       if (response.success) {
-        setForgotPasswordMessage('Password reset instructions have been sent to your email.')
-        setTimeout(() => {
-          setShowForgotPassword(false)
-          setForgotPasswordEmail('')
-        }, 3000)
+        setForgotPasswordMessage('OTP sent successfully.')
+        router.push(`/admin/verify-otp?email=${encodeURIComponent(forgotPasswordEmail)}`)
       } else {
         setForgotPasswordMessage(response.message || 'Failed to send reset email. Please try again.')
       }
