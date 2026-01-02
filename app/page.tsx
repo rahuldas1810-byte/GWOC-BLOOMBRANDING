@@ -26,6 +26,10 @@ export default function Home() {
   const [hoveredService, setHoveredService] = useState<number | null>(null);
   const [videoEnded, setVideoEnded] = useState(false);
   const [heroVideoReady, setHeroVideoReady] = useState(false);
+  const [isInitialLoad, setIsInitialLoad] = useState(true);
+  const [contentLoaded, setContentLoaded] = useState(false);
+  const [isTransitioning, setIsTransitioning] = useState(false);
+  const [backgroundVideoReady, setBackgroundVideoReady] = useState(false);
   const videoRef = useRef<HTMLVideoElement>(null);
   const backgroundVideoRef = useRef<HTMLVideoElement>(null);
 
@@ -63,17 +67,37 @@ export default function Home() {
         
         // Use API data for homepage content - always update from API
         if (homepageData) {
+          const heroVideoUrl = typeof homepageData.heroVideo === 'string' ? homepageData.heroVideo : (homepageData.heroVideo?.url || null);
           setHomepageContent({
             heroHeadline: homepageData.heroHeadline || 'We craft brand identities that resonate.',
             heroSubheading: homepageData.heroSubheading || 'Bringing synergy of aesthetics and expertise to help your brand bloom.',
             aboutPreview: homepageData.aboutPreview || 'Bloom Branding is a strategic branding agency focused on helping modern companies build confident, clear brand identities.',
             tagline: homepageData.tagline || 'Helping Brands Bloom',
-            heroVideo: typeof homepageData.heroVideo === 'string' ? homepageData.heroVideo : (homepageData.heroVideo?.url || null),
+            heroVideo: heroVideoUrl,
             backgroundVideo: typeof homepageData.backgroundVideo === 'string' ? homepageData.backgroundVideo : (homepageData.backgroundVideo?.url || null),
             sectionVideo: typeof homepageData.sectionVideo === 'string' ? homepageData.sectionVideo : (homepageData.sectionVideo?.url || null),
             clientsLabel: siteSettings?.homepageSections?.clientsLabel || 'Our Clients',
             clientsTitle: siteSettings?.homepageSections?.clientsTitle || 'Trusted By',
           });
+          // Mark content as loaded
+          setContentLoaded(true);
+          // If no hero video, show content immediately
+          if (!heroVideoUrl) {
+            setVideoEnded(true);
+            setIsInitialLoad(false);
+            setHeroVideoReady(true); // Mark as ready since there's no video
+          } else {
+            // If hero video exists, keep content hidden until video ends
+            setVideoEnded(false);
+            setIsInitialLoad(true);
+            setHeroVideoReady(false); // Will be set to true when video loads
+          }
+        } else {
+          // If no data, mark as loaded but keep content hidden
+          setContentLoaded(true);
+          setVideoEnded(false);
+          setIsInitialLoad(true);
+          setHeroVideoReady(false);
         }
       } catch (error) {
         console.error('Error fetching homepage data:', error);
@@ -88,10 +112,15 @@ export default function Home() {
 
   // Handle video sequencing - reset when videos change
   useEffect(() => {
+    // Only process if content has been loaded
+    if (!contentLoaded) return;
+    
     // If there's no hero video but there's a background video, show background immediately
     if (!homepageContent.heroVideo && homepageContent.backgroundVideo) {
       setVideoEnded(true);
       setHeroVideoReady(true);
+      setIsInitialLoad(false);
+      setIsTransitioning(false);
       return;
     }
     
@@ -99,20 +128,24 @@ export default function Home() {
     if (!homepageContent.heroVideo) {
       setVideoEnded(true);
       setHeroVideoReady(true);
+      setIsInitialLoad(false);
+      setIsTransitioning(false);
       return;
     }
     
     // Reset states when hero video changes - hero video should play first
     // Always start with hero video playing, background video hidden
     setVideoEnded(false);
-    setHeroVideoReady(false);
+    setIsInitialLoad(true);
+    setIsTransitioning(false);
+    setHeroVideoReady(false); // Reset to false so black background shows while loading
     
     // Ensure background video is paused and reset when hero video is present
     if (backgroundVideoRef.current && homepageContent.heroVideo) {
       backgroundVideoRef.current.pause();
       backgroundVideoRef.current.currentTime = 0;
     }
-  }, [homepageContent.heroVideo, homepageContent.backgroundVideo]);
+  }, [homepageContent.heroVideo, homepageContent.backgroundVideo, contentLoaded]);
 
   // Handle hero video events and ensure it plays
   useEffect(() => {
@@ -138,7 +171,14 @@ export default function Home() {
     };
 
     const handleVideoEnd = () => {
-      setVideoEnded(true);
+      // Start smooth transition
+      setIsTransitioning(true);
+      // Small delay to ensure background video is ready, then complete transition
+      setTimeout(() => {
+        setVideoEnded(true);
+        setIsInitialLoad(false);
+        setIsTransitioning(false);
+      }, 200);
     };
 
     const handleVideoError = () => {
@@ -146,6 +186,7 @@ export default function Home() {
       setHeroVideoReady(true);
       setTimeout(() => {
         setVideoEnded(true);
+        setIsInitialLoad(false);
       }, 500);
     };
     
@@ -154,18 +195,49 @@ export default function Home() {
     video.addEventListener("ended", handleVideoEnd);
     video.addEventListener("error", handleVideoError);
 
-    // Check if video is already loaded and play it
+    // Immediately try to play the video
+    const attemptPlay = () => {
+      if (video.paused) {
+        video.play().catch((error) => {
+          // Video might not be ready yet, that's okay
+          console.log('Video play attempt:', error.message);
+        });
+      }
+    };
+    
+    // Check if video is already loaded and play it immediately
     if (video.readyState >= 2) {
       setHeroVideoReady(true);
-      video.play().catch((error) => {
-        console.error('Error playing hero video:', error);
-      });
+      attemptPlay();
+    } else if (video.readyState >= 1) {
+      // Video has metadata, try to play
+      attemptPlay();
     } else {
       // Try to load and play
       video.load();
     }
-
+    
+    // Multiple play attempts to ensure video starts
+    const forcePlayTimeout1 = setTimeout(() => {
+      attemptPlay();
+    }, 50);
+    
+    const forcePlayTimeout2 = setTimeout(() => {
+      if (video.paused && video.readyState >= 1) {
+        attemptPlay();
+      }
+    }, 200);
+    
+    const forcePlayTimeout3 = setTimeout(() => {
+      if (video.paused) {
+        attemptPlay();
+      }
+    }, 500);
+    
     return () => {
+      clearTimeout(forcePlayTimeout1);
+      clearTimeout(forcePlayTimeout2);
+      clearTimeout(forcePlayTimeout3);
       video.removeEventListener("loadeddata", handleVideoLoaded);
       video.removeEventListener("canplay", handleVideoCanPlay);
       video.removeEventListener("ended", handleVideoEnd);
@@ -173,47 +245,142 @@ export default function Home() {
     };
   }, [homepageContent.heroVideo]);
 
-  // Handle background video playback - only start after hero video ends
+  // Preload and prepare background video while hero video is playing
+  useEffect(() => {
+    const bgVideo = backgroundVideoRef.current;
+    if (!bgVideo || !homepageContent.backgroundVideo) return;
+
+    if (homepageContent.heroVideo && !videoEnded) {
+      // Preload background video while hero is playing for smooth transition
+      bgVideo.preload = "auto";
+      bgVideo.load();
+      
+      // Prepare video to be ready when needed
+      const handleCanPlay = () => {
+        setBackgroundVideoReady(true);
+        // Keep it paused but ready
+        if (!bgVideo.paused) {
+          bgVideo.pause();
+        }
+      };
+      
+      bgVideo.addEventListener("canplay", handleCanPlay, { once: true });
+      
+      return () => {
+        bgVideo.removeEventListener("canplay", handleCanPlay);
+      };
+    }
+  }, [homepageContent.heroVideo, homepageContent.backgroundVideo, videoEnded]);
+
+  // Handle background video playback - start smoothly when hero ends
   useEffect(() => {
     const bgVideo = backgroundVideoRef.current;
     if (!bgVideo || !homepageContent.backgroundVideo) return;
 
     if (videoEnded || !homepageContent.heroVideo) {
-      // Start background video when hero ends or if no hero video
-      // Add a small delay to ensure smooth transition
-      const playTimeout = setTimeout(() => {
-        bgVideo.load(); // Reload to ensure it starts fresh
-        bgVideo.play().catch((error) => {
-          console.error('Error playing background video:', error);
-        });
-      }, 300);
+      // Start background video smoothly
+      const startBackgroundVideo = () => {
+        if (bgVideo.readyState >= 2) {
+          // Video is ready, play it
+          bgVideo.play().catch((error) => {
+            console.error('Error playing background video:', error);
+          });
+        } else {
+          // Wait for video to be ready
+          const handleReady = () => {
+            bgVideo.play().catch(console.error);
+          };
+          bgVideo.addEventListener("canplay", handleReady, { once: true });
+          bgVideo.load();
+        }
+      };
       
-      return () => clearTimeout(playTimeout);
+      // Start slightly before hero ends for seamless transition, or immediately if no hero
+      if (isTransitioning || !homepageContent.heroVideo) {
+        startBackgroundVideo();
+      } else {
+        const playTimeout = setTimeout(startBackgroundVideo, 100);
+        return () => clearTimeout(playTimeout);
+      }
     } else {
-      // Pause and reset background video if hero video is playing
-      bgVideo.pause();
+      // Reset background video if hero video is playing
+      if (!bgVideo.paused) {
+        bgVideo.pause();
+      }
       bgVideo.currentTime = 0;
-      bgVideo.load(); // Reset the video
     }
-  }, [videoEnded, homepageContent.heroVideo, homepageContent.backgroundVideo]);
+  }, [videoEnded, homepageContent.heroVideo, homepageContent.backgroundVideo, isTransitioning]);
 
   return (
     <div className="min-h-screen relative">
       {/* ================= HERO SECTION ================= */}
       <section className="relative h-screen overflow-hidden">
-        {/* Hero Video - plays first, then disappears when it ends */}
+        {/* Hero Video - plays first, then fades out smoothly when it ends */}
         {homepageContent.heroVideo && (
           <video
             ref={videoRef}
-            className={`absolute inset-0 w-full h-full object-cover z-30 transition-opacity duration-1000 ${videoEnded ? "opacity-0 pointer-events-none z-0" : "opacity-100 z-30"
-              }`}
+            className={`absolute inset-0 w-full h-full object-cover z-40 transition-opacity duration-[1500ms] ease-in-out ${
+              videoEnded || isTransitioning ? "opacity-0 pointer-events-none z-0" : "opacity-100 z-40"
+            }`}
             autoPlay
             muted
             playsInline
             preload="auto"
             style={{ 
+              transition: 'opacity 1.5s cubic-bezier(0.4, 0, 0.2, 1)',
               visibility: videoEnded ? 'hidden' : 'visible',
-              display: videoEnded ? 'none' : 'block'
+              display: videoEnded ? 'none' : 'block',
+              zIndex: videoEnded || isTransitioning ? 0 : 40
+            }}
+            onLoadStart={() => {
+              // Video started loading - try to play immediately
+              if (videoRef.current && videoRef.current.paused) {
+                videoRef.current.play().catch(() => {
+                  // Ignore errors, will retry when ready
+                });
+              }
+            }}
+            onLoadedMetadata={() => {
+              // Video metadata loaded - try to play
+              if (videoRef.current && videoRef.current.paused) {
+                videoRef.current.play().catch(() => {
+                  // Ignore errors, will retry when ready
+                });
+              }
+            }}
+            onLoadedData={() => {
+              setHeroVideoReady(true);
+              // Ensure video plays immediately when loaded
+              if (videoRef.current) {
+                videoRef.current.play().catch(console.error);
+              }
+            }}
+            onCanPlay={() => {
+              setHeroVideoReady(true);
+              // Force play when video can play
+              if (videoRef.current && videoRef.current.paused) {
+                videoRef.current.play().catch(console.error);
+              }
+            }}
+            onCanPlayThrough={() => {
+              setHeroVideoReady(true);
+              // Video can play through - ensure it's playing
+              if (videoRef.current && videoRef.current.paused) {
+                videoRef.current.play().catch(console.error);
+              }
+            }}
+            onPlaying={() => {
+              setHeroVideoReady(true);
+            }}
+            onTimeUpdate={() => {
+              // Start transition slightly before video ends for seamless crossfade
+              if (videoRef.current && !isTransitioning && !videoEnded && videoRef.current.duration) {
+                const timeRemaining = videoRef.current.duration - videoRef.current.currentTime;
+                // Start transition 0.8 seconds before end for smooth crossfade
+                if (timeRemaining <= 0.8 && timeRemaining > 0.1) {
+                  setIsTransitioning(true);
+                }
+              }
             }}
           >
             <source src={homepageContent.heroVideo} type="video/mp4" />
@@ -221,21 +388,30 @@ export default function Home() {
           </video>
         )}
 
-        {/* Background Video - appears ONLY after hero video ends, or immediately if no hero video */}
+        {/* Background Video - fades in smoothly after hero video ends */}
         {homepageContent.backgroundVideo && (
           <video
             ref={backgroundVideoRef}
-            className={`absolute inset-0 w-full h-full object-cover scale-[1.35] z-10 transition-opacity duration-1000 ${videoEnded || !homepageContent.heroVideo ? "opacity-100 z-10" : "opacity-0 z-0 pointer-events-none"
-              }`}
-            autoPlay={!homepageContent.heroVideo || videoEnded}
+            className={`absolute inset-0 w-full h-full object-cover scale-[1.35] z-10 transition-opacity duration-[1500ms] ease-in-out ${
+              videoEnded || isTransitioning || !homepageContent.heroVideo ? "opacity-100 z-10" : "opacity-0 z-0 pointer-events-none"
+            }`}
+            autoPlay={!homepageContent.heroVideo || videoEnded || isTransitioning}
             loop
             muted
             playsInline
-            preload={homepageContent.heroVideo ? "none" : "auto"}
+            preload={homepageContent.heroVideo ? "auto" : "auto"}
             style={{ 
-              visibility: homepageContent.heroVideo && !videoEnded ? 'hidden' : 'visible',
-              display: homepageContent.heroVideo && !videoEnded ? 'none' : 'block',
-              pointerEvents: homepageContent.heroVideo && !videoEnded ? 'none' : 'auto'
+              transition: 'opacity 1.5s cubic-bezier(0.4, 0, 0.2, 1)',
+              visibility: homepageContent.heroVideo && !videoEnded && !isTransitioning ? 'hidden' : 'visible',
+              display: homepageContent.heroVideo && !videoEnded && !isTransitioning ? 'none' : 'block',
+              pointerEvents: homepageContent.heroVideo && !videoEnded && !isTransitioning ? 'none' : 'auto'
+            }}
+            onCanPlay={() => {
+              setBackgroundVideoReady(true);
+              // If we're transitioning or video has ended, ensure it plays
+              if ((isTransitioning || videoEnded || !homepageContent.heroVideo) && backgroundVideoRef.current?.paused) {
+                backgroundVideoRef.current.play().catch(console.error);
+              }
             }}
           >
             <source src={homepageContent.backgroundVideo} type="video/mp4" />
@@ -243,26 +419,43 @@ export default function Home() {
           </video>
         )}
         
-        {/* Fallback: If no videos at all, show a background */}
-        {!homepageContent.heroVideo && !homepageContent.backgroundVideo && (
+        {/* Fallback: Only show gradient if no videos at all AND content is loaded AND we've confirmed no hero video */}
+        {contentLoaded && !homepageContent.heroVideo && !homepageContent.backgroundVideo && videoEnded && (
           <div className="absolute inset-0 w-full h-full bg-gradient-to-br from-dark-choc via-earl-gray to-butter-yellow z-10" />
         )}
 
 
 
-        {/* Content - only visible after hero video ends or if no hero video */}
+        {/* Content - fades in smoothly after hero video ends or if no hero video (and content is loaded) */}
         <div
-          className={`relative z-20 h-full flex items-center transition-opacity duration-1000 ${videoEnded || !homepageContent.heroVideo ? "opacity-100" : "opacity-0 pointer-events-none"
-            }`}
-          style={{ visibility: videoEnded || !homepageContent.heroVideo ? 'visible' : 'hidden' }}
+          className={`relative z-20 h-full flex items-center transition-opacity duration-[1500ms] ease-in-out ${
+            contentLoaded && (
+              (homepageContent.heroVideo && (videoEnded || isTransitioning)) || 
+              (!homepageContent.heroVideo && !isInitialLoad)
+            ) ? "opacity-100" : "opacity-0 pointer-events-none"
+          }`}
+          style={{ 
+            transition: 'opacity 1.5s cubic-bezier(0.4, 0, 0.2, 1)',
+            visibility: contentLoaded && (
+              (homepageContent.heroVideo && (videoEnded || isTransitioning)) || 
+              (!homepageContent.heroVideo && !isInitialLoad)
+            ) ? 'visible' : 'hidden',
+            display: contentLoaded && (
+              (homepageContent.heroVideo && (videoEnded || isTransitioning)) || 
+              (!homepageContent.heroVideo && !isInitialLoad)
+            ) ? 'flex' : 'none'
+          }}
         >
           <div className="container-custom">
             <motion.div
               initial={{ opacity: 0, y: 12 }}
               animate={
-                videoEnded ? { opacity: 1, y: 0 } : { opacity: 0, y: 12 }
+                contentLoaded && (
+                  (homepageContent.heroVideo && (videoEnded || isTransitioning)) || 
+                  (!homepageContent.heroVideo && !isInitialLoad)
+                ) ? { opacity: 1, y: 0 } : { opacity: 0, y: 12 }
               }
-              transition={{ duration: 0.8 }}
+              transition={{ duration: 1.2, ease: [0.4, 0, 0.2, 1] }}
               className="max-w-5xl"
             >
               <p className="label-text mb-8 text-dark-choc/70">
