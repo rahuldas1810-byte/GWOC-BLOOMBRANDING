@@ -2,7 +2,7 @@
 import { motion } from "framer-motion";
 import Image from "next/image";
 import Link from "next/link";
-import { Instagram, Linkedin, Facebook } from "lucide-react";
+import { Instagram, Linkedin, Facebook, Mail, MapPin, Phone } from "lucide-react";
 
 import { useState, useTransition, useEffect } from "react";
 import { useForm } from "react-hook-form";
@@ -26,36 +26,49 @@ function FAQ({ items }: { items: FAQItem[] }) {
   };
 
   return (
-    <div className="space-y-3">
+    <div className="space-y-2">
       {items.map((item, index) => {
         const isOpen = openIndex === index;
         return (
-          <div
+          <motion.div
             key={index}
-            className="border-b border-dark-choc/10 pb-4 last:border-b-0 last:pb-0"
+            initial={false}
+            className="border border-dark-choc/10 rounded-lg bg-white/50 hover:bg-white/80 transition-all duration-200 overflow-hidden"
           >
-            <button
+            <motion.button
               onClick={() => toggleFAQ(index)}
-              className="w-full flex items-start justify-between gap-4 text-left group"
+              className="w-full flex items-start justify-between gap-4 text-left group p-4 md:p-5"
               aria-expanded={isOpen}
+              whileHover={{ backgroundColor: "rgba(46, 74, 167, 0.02)" }}
+              whileTap={{ scale: 0.998 }}
             >
-              <h3 className="font-sans text-base md:text-lg text-near-black pr-8 group-hover:text-dark-choc transition-colors duration-150">
+              <h3 className="font-sans text-base md:text-lg text-near-black pr-8 group-hover:text-dark-choc transition-colors duration-200 font-medium flex-1">
                 {item.question}
               </h3>
-              <span className="flex-shrink-0 font-mono text-xl text-dark-choc/60 group-hover:text-dark-choc transition-all duration-150 mt-0.5">
-                {isOpen ? "−" : "+"}
-              </span>
-            </button>
-            <div
-              className={`overflow-hidden transition-all duration-150 ease-in-out ${
-                isOpen ? "max-h-96 opacity-100 mt-4" : "max-h-0 opacity-0"
-              }`}
+              <motion.span
+                className="flex-shrink-0 font-mono text-2xl text-dark-choc/50 group-hover:text-electric-blue transition-colors duration-200 mt-0.5 w-6 h-6 flex items-center justify-center rounded-full bg-dark-choc/5 group-hover:bg-electric-blue/10"
+                animate={{ rotate: isOpen ? 45 : 0 }}
+                transition={{ duration: 0.2 }}
+              >
+                +
+              </motion.span>
+            </motion.button>
+            <motion.div
+              initial={false}
+              animate={{
+                height: isOpen ? "auto" : 0,
+                opacity: isOpen ? 1 : 0,
+              }}
+              transition={{ duration: 0.3, ease: [0.4, 0, 0.2, 1] }}
+              className="overflow-hidden"
             >
-              <p className="font-sans text-sm md:text-base text-near-black/70 leading-relaxed">
-                {item.answer}
-              </p>
-            </div>
-          </div>
+              <div className="px-4 md:px-5 pb-4 md:pb-5">
+                <p className="font-sans text-sm md:text-base text-near-black/70 leading-relaxed pt-2">
+                  {item.answer}
+                </p>
+              </div>
+            </motion.div>
+          </motion.div>
         );
       })}
     </div>
@@ -249,6 +262,7 @@ export default function Contact() {
       </section>
 
       {/* Contact Form */}
+<<<<<<< HEAD
       <section className="py-8 md:py-10 bg-white">
         <div className="max-w-6xl mx-auto px-0 sm:px-6 lg:px-8">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12">
@@ -259,66 +273,203 @@ export default function Contact() {
                 <p className="label-text mb-5">FAQ</p>
                 <h2 className="heading-2 mb-6">Frequently Asked Questions</h2>
                 <FAQ items={(data.faqs && data.faqs.length > 0) ? data.faqs : defaultFaqs} />
+=======
+      <section className="py-16 md:py-20 lg:py-24 bg-white">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 xl:gap-20">
+            {/* LEFT COLUMN */}
+            <div className="space-y-12">
+              {/* FAQs */}
+              <div>
+                <p className="label-text mb-4 text-dark-choc/60">FAQ</p>
+                <h2 className="heading-2 mb-8">Frequently Asked Questions</h2>
+                {data?.faqs && Array.isArray(data.faqs) && data.faqs.length > 0 ? (
+                  <FAQ items={data.faqs} />
+                ) : (
+                  <FAQ items={faqData} />
+                )}
               </div>
 
+              {/* Send us a message */}
+              <div className="pt-8 border-t border-dark-choc/10">
+                <p className="label-text mb-4 text-dark-choc/60">
+                  {siteSettings?.contactLabels?.formLabel || "Contact"}
+                </p>
+
+                <h2 className="heading-2 mb-6">
+                  {siteSettings?.contactLabels?.formTitle ||
+                    data.formTitle ||
+                    "Send us a message."}
+                </h2>
+
+                <p className="body-text text-near-black/80 leading-relaxed">
+                  {siteSettings?.contactLabels?.formDescription ||
+                    data.formDescription ||
+                    "Tell us about your project and we'll get back to you within 24 hours."}
+                </p>
+>>>>>>> 89c84e874b065174e9c2e019f3f598317560d459
+              </div>
+
+<<<<<<< HEAD
               {/* Contact Info (Moved here from Right Column) */}
               <div className="w-full max-w-md">
                 <div className="space-y-4">
+=======
+            {/* RIGHT COLUMN */}
+            <div className="flex items-start justify-end">
+              <div className="w-full max-w-lg">
+                {/* Contact Info */}
+                <div className="mb-8 space-y-6 p-6 rounded-xl bg-earl-gray/30 border border-dark-choc/5">
+>>>>>>> 89c84e874b065174e9c2e019f3f598317560d459
                   {data.email && (
-                    <div>
-                      <p className="font-mono text-xs uppercase tracking-[0.2em] text-dark-choc/60 mb-3">
-                        Email
-                      </p>
-                      <p className="font-sans text-lg text-near-black">
-                        {data.email}
-                      </p>
-                    </div>
-                  )}
-                  {data.socialLinks?.instagram && (
-                    <div>
-                      <p className="font-mono text-xs uppercase tracking-[0.2em] text-dark-choc/60 mb-3">
-                        Instagram
-                      </p>
-                      <Link
-                        href={data.socialLinks.instagram}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="group inline-flex items-center gap-3 font-sans text-lg text-near-black"
-                      >
-                        <Instagram
+                    <motion.a
+                      href={`mailto:${data.email}`}
+                      className="group flex items-start gap-4"
+                      whileHover={{ x: 2 }}
+                      transition={{ type: "spring", stiffness: 400, damping: 25 }}
+                    >
+                      <div className="flex-shrink-0 w-10 h-10 rounded-lg bg-electric-blue/10 flex items-center justify-center group-hover:bg-electric-blue/20 transition-colors">
+                        <Mail
                           size={18}
                           strokeWidth={1.5}
-                          className="opacity-70 transition-opacity duration-300 group-hover:opacity-100"
+                          className="text-electric-blue"
                         />
-                        <span className="relative">
-                          {data.socialLinks.instagram.includes("instagram.com/")
-                            ? "@" +
-                              data.socialLinks.instagram
-                                .split("instagram.com/")[1]
-                                ?.replace("/", "")
-                            : "@bloom.branding_"}
-                          <span className="absolute left-0 -bottom-1 h-[1px] w-0 bg-near-black transition-all duration-300 group-hover:w-full" />
-                        </span>
-                      </Link>
+                      </div>
+                      <div className="flex-1 min-w-0">
+                        <p className="font-mono text-xs uppercase tracking-[0.2em] text-dark-choc/60 mb-1">
+                          Email
+                        </p>
+                        <p className="font-sans text-base text-near-black break-all group-hover:text-electric-blue transition-colors">
+                          {data.email}
+                        </p>
+                      </div>
+                    </motion.a>
+                  )}
+<<<<<<< HEAD
+=======
+                  {data.phone && (
+                    <motion.a
+                      href={`tel:${data.phone}`}
+                      className="group flex items-start gap-4"
+                      whileHover={{ x: 2 }}
+                      transition={{ type: "spring", stiffness: 400, damping: 25 }}
+                    >
+                      <div className="flex-shrink-0 w-10 h-10 rounded-lg bg-electric-blue/10 flex items-center justify-center group-hover:bg-electric-blue/20 transition-colors">
+                        <Phone
+                          size={18}
+                          strokeWidth={1.5}
+                          className="text-electric-blue"
+                        />
+                      </div>
+                      <div className="flex-1 min-w-0">
+                        <p className="font-mono text-xs uppercase tracking-[0.2em] text-dark-choc/60 mb-1">
+                          Phone
+                        </p>
+                        <p className="font-sans text-base text-near-black group-hover:text-electric-blue transition-colors">
+                          {data.phone}
+                        </p>
+                      </div>
+                    </motion.a>
+                  )}
+>>>>>>> 89c84e874b065174e9c2e019f3f598317560d459
+                  {data.address && (
+                    <div className="flex items-start gap-4">
+                      <div className="flex-shrink-0 w-10 h-10 rounded-lg bg-electric-blue/10 flex items-center justify-center">
+                        <MapPin
+                          size={18}
+                          strokeWidth={1.5}
+                          className="text-electric-blue"
+                        />
+                      </div>
+                      <div className="flex-1 min-w-0">
+                        <p className="font-mono text-xs uppercase tracking-[0.2em] text-dark-choc/60 mb-2">
+                          Address
+                        </p>
+                        <address className="font-sans text-base text-near-black not-italic leading-relaxed space-y-1">
+                          {data.address.line1 && <p>{data.address.line1}</p>}
+                          {data.address.line2 && <p>{data.address.line2}</p>}
+                          {data.address.line3 && <p>{data.address.line3}</p>}
+                          {data.address.line4 && <p>{data.address.line4}</p>}
+                        </address>
+                      </div>
                     </div>
                   )}
-                  {data.address && (
-                    <div>
-                      <p className="font-mono text-xs uppercase tracking-[0.2em] text-dark-choc/60 mb-3">
-                        Address
-                      </p>
-                      <address className="font-sans text-lg text-near-black not-italic">
-                        {data.address.line1 && <p>{data.address.line1}</p>}
-                        {data.address.line2 && <p>{data.address.line2}</p>}
-                        {data.address.line3 && <p>{data.address.line3}</p>}
-                        {data.address.line4 && <p>{data.address.line4}</p>}
-                      </address>
+                  {(data.socialLinks?.instagram || data.socialLinks?.linkedin || data.socialLinks?.facebook) && (
+                    <div className="flex items-start gap-4 pt-2">
+                      <div className="flex-shrink-0 w-10 h-10 rounded-lg bg-electric-blue/10 flex items-center justify-center">
+                        <div className="w-4 h-4 rounded-full bg-electric-blue/20"></div>
+                      </div>
+                      <div className="flex-1 min-w-0">
+                        <p className="font-mono text-xs uppercase tracking-[0.2em] text-dark-choc/60 mb-3">
+                          Follow Us
+                        </p>
+                        <div className="flex flex-wrap items-center gap-4">
+                          {data.socialLinks?.instagram && (
+                            <Link
+                              href={data.socialLinks.instagram}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="group inline-flex items-center gap-2"
+                            >
+                              <div className="w-9 h-9 rounded-lg bg-white/80 flex items-center justify-center group-hover:bg-white group-hover:shadow-md transition-all">
+                                <Instagram
+                                  size={16}
+                                  strokeWidth={1.5}
+                                  className="text-dark-choc group-hover:text-electric-blue transition-colors"
+                                />
+                              </div>
+                              <span className="font-sans text-sm text-near-black/70 group-hover:text-near-black transition-colors hidden sm:inline">
+                                Instagram
+                              </span>
+                            </Link>
+                          )}
+                          {data.socialLinks?.linkedin && (
+                            <Link
+                              href={data.socialLinks.linkedin}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="group inline-flex items-center gap-2"
+                            >
+                              <div className="w-9 h-9 rounded-lg bg-white/80 flex items-center justify-center group-hover:bg-white group-hover:shadow-md transition-all">
+                                <Linkedin
+                                  size={16}
+                                  strokeWidth={1.5}
+                                  className="text-dark-choc group-hover:text-electric-blue transition-colors"
+                                />
+                              </div>
+                              <span className="font-sans text-sm text-near-black/70 group-hover:text-near-black transition-colors hidden sm:inline">
+                                LinkedIn
+                              </span>
+                            </Link>
+                          )}
+                          {data.socialLinks?.facebook && (
+                            <Link
+                              href={data.socialLinks.facebook}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="group inline-flex items-center gap-2"
+                            >
+                              <div className="w-9 h-9 rounded-lg bg-white/80 flex items-center justify-center group-hover:bg-white group-hover:shadow-md transition-all">
+                                <Facebook
+                                  size={16}
+                                  strokeWidth={1.5}
+                                  className="text-dark-choc group-hover:text-electric-blue transition-colors"
+                                />
+                              </div>
+                              <span className="font-sans text-sm text-near-black/70 group-hover:text-near-black transition-colors hidden sm:inline">
+                                Facebook
+                              </span>
+                            </Link>
+                          )}
+                        </div>
+                      </div>
                     </div>
                   )}
                 </div>
               </div>
             </div>
 
+<<<<<<< HEAD
             {/* RIGHT COLUMN: Form Title/Desc + Form */}
             <div>
               {/* Send us a message (Moved here from Left Column) */}
@@ -372,6 +523,41 @@ export default function Contact() {
                           Thank you! We&apos;ll get back to you within 24
                           hours.
                         </p>
+=======
+                {/* Form Container */}
+                <div className="relative bg-earl-gray p-6 md:p-8 rounded-2xl shadow-[0_20px_60px_rgba(0,0,0,0.08)] hover:shadow-[0_30px_80px_rgba(0,0,0,0.12)] transition-shadow duration-300">
+                  {submitStatus === "success" && (
+                    <motion.div
+                      initial={{ opacity: 0, y: 12, scale: 0.95 }}
+                      animate={{ opacity: 1, y: 0, scale: 1 }}
+                      exit={{ opacity: 0, scale: 0.95 }}
+                      transition={{ duration: 0.4, ease: [0.25, 0.1, 0.25, 1] }}
+                      className="mb-8 p-5 bg-green-50 border-2 border-green-200 rounded-xl"
+                    >
+                      <div className="flex items-start gap-3">
+                        <svg
+                          className="w-6 h-6 text-green-600 flex-shrink-0 mt-0.5"
+                          fill="none"
+                          viewBox="0 0 24 24"
+                          stroke="currentColor"
+                        >
+                          <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            strokeWidth={2}
+                            d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"
+                          />
+                        </svg>
+                        <div>
+                          <p className="font-sans font-semibold text-green-800 mb-1">
+                            Message sent successfully!
+                          </p>
+                          <p className="font-sans text-sm text-green-700">
+                            Thank you! We&apos;ll get back to you within 24
+                            hours.
+                          </p>
+                        </div>
+>>>>>>> 89c84e874b065174e9c2e019f3f598317560d459
                       </div>
                     </div>
                   </motion.div>
@@ -452,6 +638,7 @@ export default function Contact() {
                     )}
                   </div>
 
+<<<<<<< HEAD
                   <div>
                     <label htmlFor="email" className="block label-text mb-3">
                       Email <span className="text-electric-blue">*</span>
@@ -598,6 +785,195 @@ export default function Contact() {
                     </span>
                   </motion.button>
                 </form>
+=======
+                  <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
+                    <div>
+                      <label htmlFor="name" className="block label-text mb-3 text-dark-choc/80">
+                        Name <span className="text-electric-blue">*</span>
+                      </label>
+                      <input
+                        type="text"
+                        id="name"
+                        {...register("name")}
+                        className={`w-full px-0 py-4 bg-transparent border-0 border-b-2 outline-none transition-all duration-300 focus:pl-2 font-sans text-base md:text-lg text-near-black placeholder:text-near-black/30 ${
+                          errors.name
+                            ? "border-red-400 focus:border-red-500"
+                            : "border-dark-choc/20 focus:border-electric-blue"
+                        }`}
+                        placeholder="Your name"
+                      />
+                      {errors.name && (
+                        <motion.p
+                          initial={{ opacity: 0, y: -5 }}
+                          animate={{ opacity: 1, y: 0 }}
+                          className="mt-2 font-sans text-sm text-red-600 flex items-center gap-2"
+                        >
+                          <svg
+                            className="w-4 h-4 flex-shrink-0"
+                            fill="none"
+                            viewBox="0 0 24 24"
+                            stroke="currentColor"
+                          >
+                            <path
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                              strokeWidth={2}
+                              d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+                            />
+                          </svg>
+                          {errors.name.message}
+                        </motion.p>
+                      )}
+                    </div>
+
+                    <div>
+                      <label htmlFor="email" className="block label-text mb-3 text-dark-choc/80">
+                        Email <span className="text-electric-blue">*</span>
+                      </label>
+                      <input
+                        type="email"
+                        id="email"
+                        {...register("email")}
+                        className={`w-full px-0 py-4 bg-transparent border-0 border-b-2 outline-none transition-all duration-300 focus:pl-2 font-sans text-base md:text-lg text-near-black placeholder:text-near-black/30 ${
+                          errors.email
+                            ? "border-red-400 focus:border-red-500"
+                            : "border-dark-choc/20 focus:border-electric-blue"
+                        }`}
+                        placeholder="your@email.com"
+                      />
+                      {errors.email && (
+                        <motion.p
+                          initial={{ opacity: 0, y: -5 }}
+                          animate={{ opacity: 1, y: 0 }}
+                          className="mt-2 font-sans text-sm text-red-600 flex items-center gap-2"
+                        >
+                          <svg
+                            className="w-4 h-4 flex-shrink-0"
+                            fill="none"
+                            viewBox="0 0 24 24"
+                            stroke="currentColor"
+                          >
+                            <path
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                              strokeWidth={2}
+                              d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+                            />
+                          </svg>
+                          {errors.email.message}
+                        </motion.p>
+                      )}
+                    </div>
+
+                    <div>
+                      <label
+                        htmlFor="company"
+                        className="block label-text mb-3 text-dark-choc/80"
+                      >
+                        Company
+                      </label>
+                      <input
+                        type="text"
+                        id="company"
+                        {...register("company")}
+                        className="w-full px-0 py-4 bg-transparent border-0 border-b-2 border-dark-choc/20 focus:border-electric-blue outline-none transition-all duration-300 focus:pl-2 font-sans text-base md:text-lg text-near-black placeholder:text-near-black/30"
+                        placeholder="Your company (optional)"
+                      />
+                    </div>
+
+                    <div>
+                      <label
+                        htmlFor="message"
+                        className="block label-text mb-3 text-dark-choc/80"
+                      >
+                        Message <span className="text-electric-blue">*</span>
+                      </label>
+                      <textarea
+                        id="message"
+                        {...register("message")}
+                        rows={5}
+                        className={`w-full px-0 py-4 bg-transparent border-0 border-b-2 outline-none transition-all duration-300 focus:pl-2 font-sans text-base md:text-lg text-near-black placeholder:text-near-black/30 resize-none ${
+                          errors.message
+                            ? "border-red-400 focus:border-red-500"
+                            : "border-dark-choc/20 focus:border-electric-blue"
+                        }`}
+                        placeholder="Tell us about your project..."
+                      />
+                      {errors.message && (
+                        <motion.p
+                          initial={{ opacity: 0, y: -5 }}
+                          animate={{ opacity: 1, y: 0 }}
+                          className="mt-2 font-sans text-sm text-red-600 flex items-center gap-2"
+                        >
+                          <svg
+                            className="w-4 h-4 flex-shrink-0"
+                            fill="none"
+                            viewBox="0 0 24 24"
+                            stroke="currentColor"
+                          >
+                            <path
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                              strokeWidth={2}
+                              d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+                            />
+                          </svg>
+                          {errors.message.message}
+                        </motion.p>
+                      )}
+                    </div>
+
+                    <motion.button
+                      type="submit"
+                      disabled={isPending}
+                      whileHover={!isPending ? { scale: 1.01, y: -2 } : {}}
+                      whileTap={!isPending ? { scale: 0.99 } : {}}
+                      className="btn-primary w-full mt-8 disabled:opacity-50 disabled:cursor-not-allowed relative overflow-hidden group py-4 md:py-5 text-base md:text-lg font-medium shadow-lg hover:shadow-xl transition-shadow duration-300"
+                    >
+                      <span className="relative z-10 flex items-center justify-center gap-3">
+                        {isPending ? (
+                          <>
+                            <motion.div
+                              className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full"
+                              animate={{ rotate: 360 }}
+                              transition={{
+                                duration: 0.8,
+                                repeat: Infinity,
+                                ease: "linear",
+                              }}
+                            />
+                            Sending...
+                          </>
+                        ) : (
+                          <>
+                            Start the Conversation
+                            <motion.svg
+                              className="w-5 h-5"
+                              fill="none"
+                              viewBox="0 0 24 24"
+                              stroke="currentColor"
+                              initial={{ x: 0 }}
+                              animate={{ x: 0 }}
+                              transition={{
+                                type: "spring",
+                                stiffness: 400,
+                                damping: 17,
+                              }}
+                            >
+                              <path
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
+                                strokeWidth={2}
+                                d="M13 7l5 5m0 0l-5 5m5-5H6"
+                              />
+                            </motion.svg>
+                          </>
+                        )}
+                      </span>
+                    </motion.button>
+                  </form>
+                </div>
+>>>>>>> 89c84e874b065174e9c2e019f3f598317560d459
               </div>
             </div>
           </div>

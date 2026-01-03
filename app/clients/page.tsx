@@ -6,7 +6,6 @@ import SectionReveal from '@/components/SectionReveal'
 import { motion } from 'framer-motion'
 import ClientShowcase from '@/components/clientshowcase'
 import ImpactStats from '@/components/ImpactStats'
-import ClientApproach from '@/components/ClientApproach'
 import ClientSocialProof from '@/components/ClientSocialProof'
 import { getClients, getSiteSettings } from '@/lib/content'
 
@@ -37,41 +36,67 @@ export default function Clients() {
   return (
     <div className="min-h-screen">
       {/* Hero */}
-      <section className="py-32 md:py-40 lg:py-48 bg-earl-gray">
-        <div className="container-custom">
-          <div className="max-w-4xl">
-            <motion.p 
-              initial={{ opacity: 0, y: 20, filter: 'blur(5px)' }}
+      <section className="relative py-36 md:py-48 lg:py-56 overflow-hidden bg-gradient-to-br from-earl-gray via-earl-gray/95 to-butter-yellow/20">
+        {/* Subtle background pattern */}
+        <div className="absolute inset-0 opacity-5">
+          <div className="absolute inset-0" style={{
+            backgroundImage: `radial-gradient(circle at 2px 2px, rgba(59, 47, 47, 0.15) 1px, transparent 0)`,
+            backgroundSize: '40px 40px'
+          }} />
+        </div>
+        
+        {/* Gradient overlay for depth */}
+        <div className="absolute inset-0 bg-gradient-to-t from-white/10 via-transparent to-transparent pointer-events-none" />
+        
+        <div className="container-custom relative z-10">
+          <div className="max-w-5xl mx-auto text-center">
+            <motion.div
+              initial={{ opacity: 0, y: 30, filter: 'blur(10px)' }}
               animate={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
-              transition={{ duration: 0.6, ease: 'easeOut' }}
-              className="label-text mb-8"
+              transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
+              className="inline-block"
             >
-              {hero.label}
-            </motion.p>
+              <p className="label-text mb-6 md:mb-8 text-dark-choc/70 font-mono text-sm md:text-base uppercase tracking-[0.3em] font-semibold">
+                {hero.label}
+              </p>
+            </motion.div>
+            
             <motion.h1 
-              initial={{ opacity: 0, y: 20, filter: 'blur(5px)' }}
+              initial={{ opacity: 0, y: 40, filter: 'blur(10px)' }}
               animate={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
-              transition={{ duration: 0.6, ease: 'easeOut' }}
-              className="heading-1 mb-10"
+              transition={{ duration: 0.9, delay: 0.1, ease: [0.22, 1, 0.36, 1] }}
+              className="font-serif text-5xl md:text-6xl lg:text-7xl xl:text-8xl text-dark-choc mb-8 md:mb-12 leading-[1.1] tracking-tight font-light"
             >
               {hero.title}
             </motion.h1>
-            <motion.p 
-              initial={{ opacity: 0, y: 20, filter: 'blur(5px)' }}
+            
+            <motion.div
+              initial={{ opacity: 0, y: 30, filter: 'blur(8px)' }}
               animate={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
-              transition={{ duration: 0.6, delay: 0.1, ease: 'easeOut' }}
-              className="body-text max-w-2xl"
+              transition={{ duration: 0.8, delay: 0.2, ease: [0.22, 1, 0.36, 1] }}
+              className="max-w-3xl mx-auto"
             >
-              {hero.description}
-            </motion.p>
+              <p className="body-text text-lg md:text-xl lg:text-2xl text-dark-choc/80 leading-relaxed mb-8 font-sans">
+                {hero.description}
+              </p>
+            </motion.div>
+            
             <motion.p 
               initial={{ opacity: 0, y: 20, filter: 'blur(5px)' }}
               animate={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
-              transition={{ duration: 0.6, delay: 0.2, ease: 'easeOut' }}
-              className="text-near-black/60 font-sans mt-6 text-sm tracking-wide"
+              transition={{ duration: 0.7, delay: 0.3, ease: [0.22, 1, 0.36, 1] }}
+              className="text-dark-choc/60 font-sans text-base md:text-lg tracking-wide max-w-2xl mx-auto"
             >
               {hero.subtitle}
             </motion.p>
+
+            {/* Decorative line */}
+            <motion.div
+              initial={{ scaleX: 0, opacity: 0 }}
+              animate={{ scaleX: 1, opacity: 1 }}
+              transition={{ duration: 1, delay: 0.5, ease: [0.22, 1, 0.36, 1] }}
+              className="mt-12 md:mt-16 h-px w-24 mx-auto bg-gradient-to-r from-transparent via-dark-choc/20 to-transparent"
+            />
           </div>
         </div>
       </section>
@@ -81,9 +106,6 @@ export default function Clients() {
 
       {/* Client Showcase */}
       <ClientShowcase />
-
-      {/* Approach Micro-Section */}
-      <ClientApproach />
 
       {/* Linked Social Proof (Logos + Testimonials) */}
       <ClientSocialProof />
