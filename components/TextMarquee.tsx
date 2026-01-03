@@ -20,7 +20,7 @@ export default function TextMarquee({ text, className = "", repeat = 4 }: TextMa
         }}
       >
         {Array.from({ length: repeat * 2 }).map((_, index) => (
-          <span key={index} className="font-mono text-xl md:text-2xl tracking-widest text-dark-choc uppercase opacity-80">
+          <span key={index} className="font-mono text-4xl md:text-64xl tracking-widest text-dark-choc uppercase opacity-80">
             {text}
           </span>
         ))}

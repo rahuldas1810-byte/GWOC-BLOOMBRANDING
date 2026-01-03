@@ -516,7 +516,7 @@ export default function Home() {
       {/* ================= SERVICES ================= */}
       <div className="-mt-[1px] relative z-20">
         <SectionReveal>
-          <section className="bg-earl-gray relative overflow-hidden pb-20 pt-20">
+          <section className="bg-earl-gray relative overflow-hidden pb-10 pt-20">
             
             {/* MARQUEE */}
             <div className="mb-20">
@@ -540,12 +540,12 @@ export default function Home() {
               ></motion.div>
             </div>
 
-            <div className="container-custom relative z-10">
-              <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20 items-start">
+            <div className="w-full max-w-[95%] mx-auto px-4 relative z-10">
+              <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-16 items-start">
                 
-                {/* LEFT COLUMN: Accordion */}
-                <div className="flex flex-col pt-4">
-                  <div className="flex flex-col border-t border-dark-choc/20">
+                {/* LEFT COLUMN: Grid of Services */}
+                <div className="lg:col-span-7 flex flex-col pt-4">
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-8 border-t border-dark-choc/20 pt-8">
                   {services.map((service, index) => (
                     <motion.div
                       key={service.title}
@@ -553,71 +553,48 @@ export default function Home() {
                       whileInView={{ opacity: 1, y: 0 }}
                       viewport={{ once: true }}
                       transition={{ duration: 0.5, delay: index * 0.1 }}
+                      onClick={() => setHoveredService(index)}
                       onHoverStart={() => setHoveredService(index)}
-                      className={`group relative border-b border-dark-choc/20 py-8 md:py-10 cursor-pointer transition-all duration-500 ${hoveredService === index ? "bg-dark-choc pl-6 -mx-2 px-2 md:-mx-6 md:px-6 rounded-lg border-transparent shadow-lg" : "hover:bg-dark-choc/5"}`}
+                      className={`group relative border border-dark-choc/20 rounded-2xl p-8 md:p-10 cursor-pointer transition-all duration-500 h-full flex flex-col justify-between ${hoveredService === index ? "bg-dark-choc shadow-xl scale-[1.01]" : "hover:bg-dark-choc/5 hover:border-dark-choc/40"}`}
                     >
-                      <div className="flex flex-col md:flex-row md:items-baseline justify-between gap-4 relative z-10">
+                      <div className="flex flex-col gap-6 relative z-10">
                         {/* Header Group */}
-                        <div className="flex items-baseline gap-6">
-                          <span className={`font-serif text-lg transition-all duration-300 ${hoveredService === index ? "text-earl-gray/30" : "text-dark-choc/40"}`}>
+                        <div className="flex items-center justify-between">
+                           <span className={`font-serif text-xl transition-all duration-300 ${hoveredService === index ? "text-earl-gray/30" : "text-dark-choc/40"}`}>
                             0{index + 1}
                           </span>
-                          <h3 className={`heading-3 text-2xl md:text-3xl lg:text-4xl transition-all duration-300 ${hoveredService === index ? "text-earl-gray" : "text-dark-choc"}`}>
-                            {service.title}
-                          </h3>
+                           {/* Arrow (Visible on hover/active) */}
+                          <motion.div 
+                            className={`flex items-center justify-center w-10 h-10 rounded-full border transition-all duration-300 ${hoveredService === index ? "border-earl-gray bg-earl-gray text-dark-choc" : "border-dark-choc/20 text-dark-choc/40 group-hover:border-dark-choc group-hover:text-dark-choc opacity-50 group-hover:opacity-100"}`}
+                            animate={{ 
+                              rotate: hoveredService === index ? -45 : 0,
+                            }}
+                          >
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                              <path d="M5 12H19M19 12L12 5M19 12L12 19" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+                            </svg>
+                          </motion.div>
                         </div>
 
-                        {/* Arrow */}
-                        <motion.div 
-                          className={`hidden md:flex items-center justify-center w-10 h-10 rounded-full border transition-all duration-300 ${hoveredService === index ? "border-earl-gray bg-earl-gray text-dark-choc" : "border-dark-choc/20 text-dark-choc/40 group-hover:border-dark-choc group-hover:text-dark-choc max-md:opacity-0"}`}
-                          animate={{ 
-                            rotate: hoveredService === index ? -45 : 0,
-                            scale: hoveredService === index ? 1 : 0.9
-                          }}
-                        >
-                          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <path d="M5 12H19M19 12L12 5M19 12L12 19" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-                          </svg>
-                        </motion.div>
+                         <h3 className={`heading-3 text-3xl md:text-4xl transition-all duration-300 ${hoveredService === index ? "text-earl-gray" : "text-dark-choc"}`}>
+                            {service.title}
+                          </h3>
                       </div>
 
-                      {/* Expandable Description */}
-                      <AnimatePresence>
-                        {hoveredService === index && (
-                          <motion.div
-                            initial={{ height: 0, opacity: 0 }}
-                            animate={{ height: "auto", opacity: 1 }}
-                            exit={{ height: 0, opacity: 0 }}
-                            transition={{ duration: 0.3, ease: "easeInOut" }}
-                            className="overflow-hidden"
-                          >
-                            <div className="pt-4 md:pl-16 max-w-xl">
-                              <p className="body-text text-base md:text-lg text-earl-gray/80 leading-relaxed">
-                                {service.description}
-                              </p>
-                              <Link href="/services" className="inline-block mt-4 md:mt-6 group/link">
-                                <span className="font-mono text-xs uppercase tracking-[0.2em] text-earl-gray font-semibold hover:text-white transition-colors flex items-center gap-2">
-                                  Explore Service
-                                  <motion.span 
-                                    className="block h-[1px] w-8 bg-earl-gray"
-                                    initial={{ width: 0 }}
-                                    animate={{ width: 32 }}
-                                    transition={{ delay: 0.2 }}
-                                  />
-                                </span>
-                              </Link>
-                            </div>
-                          </motion.div>
-                        )}
-                      </AnimatePresence>
+                      {/* Description */}
+                      <div className="mt-6">
+                         <p className={`body-text text-lg md:text-xl leading-relaxed transition-all duration-300 ${hoveredService === index ? "text-earl-gray/80" : "text-dark-choc/60 line-clamp-3"}`}>
+                             {service.description}
+                         </p>
+                      </div>
                     </motion.div>
                   ))}
                   </div>
                 </div>
 
                 {/* RIGHT COLUMN: Dynamic Image (Sticky) */}
-                <div className="hidden lg:block relative h-[75vh] min-h-[600px] sticky top-24 ml-auto w-full max-w-lg">
-                   <div className="relative w-full h-full rounded-2xl overflow-hidden shadow-2xl bg-dark-choc/5">
+                <div className="hidden lg:block lg:col-span-5 relative h-[60vh] max-h-[550px] sticky top-32 w-full flex flex-col justify-center">
+                   <div className="relative w-full h-full rounded-3xl overflow-hidden shadow-2xl bg-dark-choc/5">
                     <AnimatePresence mode="wait">
                       <motion.div
                         key={hoveredService || 0}
@@ -637,13 +614,13 @@ export default function Home() {
                          {/* Subtle Overlay */}
                          <div className="absolute inset-0 bg-dark-choc/10 mix-blend-multiply" />
                          
-                         {/* Text Overlay (Optional - adds depth) */}
-                         <div className="absolute bottom-10 left-8 z-10">
+                         {/* Text Overlay */}
+                         <div className="absolute bottom-10 left-10 z-10 w-3/4">
                             <motion.p 
                               initial={{ y: 20, opacity: 0 }}
                               animate={{ y: 0, opacity: 1 }}
                               transition={{ delay: 0.2 }}
-                              className="font-serif text-4xl text-white/90"
+                              className="font-serif text-4xl md:text-5xl text-white/90 leading-tight"
                             >
                                {services[hoveredService || 0]?.title}
                             </motion.p>
