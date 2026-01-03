@@ -1,6 +1,7 @@
 'use server'
 
 import { z } from 'zod'
+import { sendQueryConfirmationEmail } from '@/backend/email'
 
 const contactSchema = z.object({
   name: z.string().min(2, 'Name must be at least 2 characters'),
@@ -48,6 +49,20 @@ export async function submitContactForm(formData: FormData) {
     const result = await response.json()
 
     if (result.success) {
+      // Send confirmation email to user (non-blocking)
+      sendQueryConfirmationEmail(validatedData.email, validatedData.name)
+        .then((emailSent) => {
+          if (emailSent) {
+            console.log('✅ Confirmation email sent to:', validatedData.email)
+          } else {
+            console.warn('⚠️ Failed to send confirmation email to:', validatedData.email)
+          }
+        })
+        .catch((error) => {
+          console.error('❌ Error sending confirmation email:', error)
+          // Don't throw - email failure shouldn't block form submission
+        })
+
       return {
         success: true,
         message: 'Thank you! Your message has been sent successfully.',
