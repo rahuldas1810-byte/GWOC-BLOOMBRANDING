@@ -24,6 +24,10 @@ export interface IContact extends Document {
   }
   email: string
   phone: string
+  faqs: {
+    question: string
+    answer: string
+  }[]
   createdAt: Date
   updatedAt: Date
 }
@@ -104,6 +108,18 @@ const ContactSchema = new Schema<IContact>(
       type: String,
       default: '+91 1234567890',
     },
+    faqs: [
+      {
+        question: {
+          type: String,
+          required: true,
+        },
+        answer: {
+          type: String,
+          required: true,
+        },
+      },
+    ],
   },
   {
     timestamps: true,

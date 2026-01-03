@@ -21,19 +21,6 @@ if (!global.mongoose) {
 }
 
 async function connectDB() {
-  console.log("🧪 [RUNTIME ENV CHECK] START");
-
-  console.log(
-    "🧪 ALL ENV KEYS (filtered):",
-    Object.keys(process.env).filter((k) =>
-      k.includes("MONGO") ||
-      k.includes("JWT") ||
-      k.includes("CLOUDINARY")
-    )
-  );
-
-  console.log("🧪 [RUNTIME ENV CHECK] END");
-
 
   if (cached.conn) {
     return cached.conn;

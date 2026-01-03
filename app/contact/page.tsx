@@ -71,7 +71,7 @@ const contactSchema = z.object({
 
 type ContactFormData = z.infer<typeof contactSchema>;
 
-const faqData: FAQItem[] = [
+const defaultFaqs: FAQItem[] = [
   {
     question: "What services does Bloom Branding offer?",
     answer:
@@ -252,38 +252,18 @@ export default function Contact() {
       <section className="py-8 md:py-10 bg-white">
         <div className="max-w-6xl mx-auto px-0 sm:px-6 lg:px-8">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12">
-            {/* LEFT COLUMN */}
-            <div>
+            {/* LEFT COLUMN: FAQs + Contact Info */}
+            <div className="flex flex-col gap-12">
               {/* FAQs */}
-              <p className="label-text mb-5">FAQ</p>
-              <h2 className="heading-2 mb-6">Frequently Asked Questions</h2>
-              <FAQ items={faqData} />
-
-              {/* Send us a message */}
-              <div className="mt-12">
-                <p className="label-text mb-5">
-                  {siteSettings?.contactLabels?.formLabel || "Contact"}
-                </p>
-
-                <h2 className="heading-2 mb-6 whitespace-nowrap">
-                  {siteSettings?.contactLabels?.formTitle ||
-                    data.formTitle ||
-                    "Send us a message."}
-                </h2>
-
-                <p className="body-text mb-6">
-                  {siteSettings?.contactLabels?.formDescription ||
-                    data.formDescription ||
-                    "Tell us about your project and we'll get back to you within 24 hours."}
-                </p>
+              <div>
+                <p className="label-text mb-5">FAQ</p>
+                <h2 className="heading-2 mb-6">Frequently Asked Questions</h2>
+                <FAQ items={(data.faqs && data.faqs.length > 0) ? data.faqs : defaultFaqs} />
               </div>
-            </div>
 
-            {/* RIGHT COLUMN */}
-            <div className="flex items-start justify-end">
+              {/* Contact Info (Moved here from Right Column) */}
               <div className="w-full max-w-md">
-                {/* Contact Info */}
-                <div className="mb-6 space-y-4">
+                <div className="space-y-4">
                   {data.email && (
                     <div>
                       <p className="font-mono text-xs uppercase tracking-[0.2em] text-dark-choc/60 mb-3">
@@ -322,60 +302,6 @@ export default function Contact() {
                       </Link>
                     </div>
                   )}
-                  {data.socialLinks?.linkedin && (
-                    <div>
-                      <p className="font-mono text-xs uppercase tracking-[0.2em] text-dark-choc/60 mb-3">
-                        LinkedIn
-                      </p>
-                      <Link
-                        href={data.socialLinks.linkedin}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="group inline-flex items-center gap-3 font-sans text-lg text-near-black"
-                      >
-                        <Linkedin
-                          size={18}
-                          strokeWidth={1.5}
-                          className="opacity-70 transition-opacity duration-300 group-hover:opacity-100"
-                        />
-                        <span className="relative">
-                          {data.socialLinks.linkedin.includes("linkedin.com/")
-                            ? data.socialLinks.linkedin
-                                .split("linkedin.com/")[1]
-                                ?.replace("/", "")
-                            : data.socialLinks.linkedin}
-                          <span className="absolute left-0 -bottom-1 h-[1px] w-0 bg-near-black transition-all duration-300 group-hover:w-full" />
-                        </span>
-                      </Link>
-                    </div>
-                  )}
-                  {data.socialLinks?.facebook && (
-                    <div>
-                      <p className="font-mono text-xs uppercase tracking-[0.2em] text-dark-choc/60 mb-3">
-                        Facebook
-                      </p>
-                      <Link
-                        href={data.socialLinks.facebook}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="group inline-flex items-center gap-3 font-sans text-lg text-near-black"
-                      >
-                        <Facebook
-                          size={18}
-                          strokeWidth={1.5}
-                          className="opacity-70 transition-opacity duration-300 group-hover:opacity-100"
-                        />
-                        <span className="relative">
-                          {data.socialLinks.facebook.includes("facebook.com/")
-                            ? data.socialLinks.facebook
-                                .split("facebook.com/")[1]
-                                ?.replace("/", "")
-                            : data.socialLinks.facebook}
-                          <span className="absolute left-0 -bottom-1 h-[1px] w-0 bg-near-black transition-all duration-300 group-hover:w-full" />
-                        </span>
-                      </Link>
-                    </div>
-                  )}
                   {data.address && (
                     <div>
                       <p className="font-mono text-xs uppercase tracking-[0.2em] text-dark-choc/60 mb-3">
@@ -390,55 +316,126 @@ export default function Contact() {
                     </div>
                   )}
                 </div>
+              </div>
+            </div>
 
-                {/* Yellow Form */}
-                <div className="relative bg-earl-gray p-5 md:p-6 rounded-2xl shadow-[0_40px_100px_rgba(0,0,0,0.12)]">
-                  {submitStatus === "success" && (
-                    <motion.div
-                      initial={{ opacity: 0, y: 12, scale: 0.95 }}
-                      animate={{ opacity: 1, y: 0, scale: 1 }}
-                      exit={{ opacity: 0, scale: 0.95 }}
-                      transition={{ duration: 0.4, ease: [0.25, 0.1, 0.25, 1] }}
-                      className="mb-8 p-5 bg-green-50 border-2 border-green-200 rounded-xl"
-                    >
-                      <div className="flex items-start gap-3">
-                        <svg
-                          className="w-6 h-6 text-green-600 flex-shrink-0 mt-0.5"
-                          fill="none"
-                          viewBox="0 0 24 24"
-                          stroke="currentColor"
-                        >
-                          <path
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            strokeWidth={2}
-                            d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"
-                          />
-                        </svg>
-                        <div>
-                          <p className="font-sans font-semibold text-green-800 mb-1">
-                            Message sent successfully!
-                          </p>
-                          <p className="font-sans text-sm text-green-700">
-                            Thank you! We&apos;ll get back to you within 24
-                            hours.
-                          </p>
-                        </div>
+            {/* RIGHT COLUMN: Form Title/Desc + Form */}
+            <div>
+              {/* Send us a message (Moved here from Left Column) */}
+              <div className="mb-8">
+                <p className="label-text mb-5">
+                  {siteSettings?.contactLabels?.formLabel || "Contact"}
+                </p>
+
+                <h2 className="heading-2 mb-6 whitespace-nowrap">
+                  {siteSettings?.contactLabels?.formTitle ||
+                    data.formTitle ||
+                    "Send us a message."}
+                </h2>
+
+                <p className="body-text mb-6">
+                  {siteSettings?.contactLabels?.formDescription ||
+                    data.formDescription ||
+                    "Tell us about your project and we'll get back to you within 24 hours."}
+                </p>
+              </div>
+
+              {/* Yellow Form */}
+              <div className="relative bg-earl-gray p-5 md:p-6 rounded-2xl shadow-[0_40px_100px_rgba(0,0,0,0.12)]">
+                {submitStatus === "success" && (
+                  <motion.div
+                    initial={{ opacity: 0, y: 12, scale: 0.95 }}
+                    animate={{ opacity: 1, y: 0, scale: 1 }}
+                    exit={{ opacity: 0, scale: 0.95 }}
+                    transition={{ duration: 0.4, ease: [0.25, 0.1, 0.25, 1] }}
+                    className="mb-8 p-5 bg-green-50 border-2 border-green-200 rounded-xl"
+                  >
+                    <div className="flex items-start gap-3">
+                      <svg
+                        className="w-6 h-6 text-green-600 flex-shrink-0 mt-0.5"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        stroke="currentColor"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth={2}
+                          d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"
+                        />
+                      </svg>
+                      <div>
+                        <p className="font-sans font-semibold text-green-800 mb-1">
+                          Message sent successfully!
+                        </p>
+                        <p className="font-sans text-sm text-green-700">
+                          Thank you! We&apos;ll get back to you within 24
+                          hours.
+                        </p>
                       </div>
-                    </motion.div>
-                  )}
+                    </div>
+                  </motion.div>
+                )}
 
-                  {submitStatus === "error" && (
-                    <motion.div
-                      initial={{ opacity: 0, y: 12, scale: 0.95 }}
-                      animate={{ opacity: 1, y: 0, scale: 1 }}
-                      exit={{ opacity: 0, scale: 0.95 }}
-                      transition={{ duration: 0.4, ease: [0.25, 0.1, 0.25, 1] }}
-                      className="mb-8 p-5 bg-red-50 border-2 border-red-200 rounded-xl"
-                    >
-                      <div className="flex items-start gap-3">
+                {submitStatus === "error" && (
+                  <motion.div
+                    initial={{ opacity: 0, y: 12, scale: 0.95 }}
+                    animate={{ opacity: 1, y: 0, scale: 1 }}
+                    exit={{ opacity: 0, scale: 0.95 }}
+                    transition={{ duration: 0.4, ease: [0.25, 0.1, 0.25, 1] }}
+                    className="mb-8 p-5 bg-red-50 border-2 border-red-200 rounded-xl"
+                  >
+                    <div className="flex items-start gap-3">
+                      <svg
+                        className="w-6 h-6 text-red-600 flex-shrink-0 mt-0.5"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        stroke="currentColor"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth={2}
+                          d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+                        />
+                      </svg>
+                      <div>
+                        <p className="font-sans font-semibold text-red-800 mb-1">
+                          Error sending message
+                        </p>
+                        <p className="font-sans text-sm text-red-700">
+                          {errorMessage ||
+                            "Something went wrong. Please try again."}
+                        </p>
+                      </div>
+                    </div>
+                  </motion.div>
+                )}
+
+                <form onSubmit={handleSubmit(onSubmit)} className="space-y-5">
+                  <div>
+                    <label htmlFor="name" className="block label-text mb-3">
+                      Name <span className="text-electric-blue">*</span>
+                    </label>
+                    <input
+                      type="text"
+                      id="name"
+                      {...register("name")}
+                      className={`w-full px-0 py-4 bg-transparent border-0 border-b outline-none transition-all duration-300 focus:pl-1 font-sans text-lg text-near-black placeholder:text-near-black/30 ${
+                        errors.name
+                          ? "border-red-400 focus:border-red-500"
+                          : "border-dark-choc/20 focus:border-electric-blue"
+                      }`}
+                      placeholder="Your name"
+                    />
+                    {errors.name && (
+                      <motion.p
+                        initial={{ opacity: 0, y: -5 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        className="mt-3 font-sans text-sm text-red-600 flex items-center gap-2"
+                      >
                         <svg
-                          className="w-6 h-6 text-red-600 flex-shrink-0 mt-0.5"
+                          className="w-4 h-4"
                           fill="none"
                           viewBox="0 0 24 24"
                           stroke="currentColor"
@@ -450,206 +447,157 @@ export default function Contact() {
                             d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
                           />
                         </svg>
-                        <div>
-                          <p className="font-sans font-semibold text-red-800 mb-1">
-                            Error sending message
-                          </p>
-                          <p className="font-sans text-sm text-red-700">
-                            {errorMessage ||
-                              "Something went wrong. Please try again."}
-                          </p>
-                        </div>
-                      </div>
-                    </motion.div>
-                  )}
+                        {errors.name.message}
+                      </motion.p>
+                    )}
+                  </div>
 
-                  <form onSubmit={handleSubmit(onSubmit)} className="space-y-5">
-                    <div>
-                      <label htmlFor="name" className="block label-text mb-3">
-                        Name <span className="text-electric-blue">*</span>
-                      </label>
-                      <input
-                        type="text"
-                        id="name"
-                        {...register("name")}
-                        className={`w-full px-0 py-4 bg-transparent border-0 border-b outline-none transition-all duration-300 focus:pl-1 font-sans text-lg text-near-black placeholder:text-near-black/30 ${
-                          errors.name
-                            ? "border-red-400 focus:border-red-500"
-                            : "border-dark-choc/20 focus:border-electric-blue"
-                        }`}
-                        placeholder="Your name"
-                      />
-                      {errors.name && (
-                        <motion.p
-                          initial={{ opacity: 0, y: -5 }}
-                          animate={{ opacity: 1, y: 0 }}
-                          className="mt-3 font-sans text-sm text-red-600 flex items-center gap-2"
-                        >
-                          <svg
-                            className="w-4 h-4"
-                            fill="none"
-                            viewBox="0 0 24 24"
-                            stroke="currentColor"
-                          >
-                            <path
-                              strokeLinecap="round"
-                              strokeLinejoin="round"
-                              strokeWidth={2}
-                              d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
-                            />
-                          </svg>
-                          {errors.name.message}
-                        </motion.p>
-                      )}
-                    </div>
-
-                    <div>
-                      <label htmlFor="email" className="block label-text mb-3">
-                        Email <span className="text-electric-blue">*</span>
-                      </label>
-                      <input
-                        type="email"
-                        id="email"
-                        {...register("email")}
-                        className={`w-full px-0 py-4 bg-transparent border-0 border-b outline-none transition-all duration-300 focus:pl-1 font-sans text-lg text-near-black placeholder:text-near-black/30 ${
-                          errors.email
-                            ? "border-red-400 focus:border-red-500"
-                            : "border-dark-choc/20 focus:border-electric-blue"
-                        }`}
-                        placeholder="your@email.com"
-                      />
-                      {errors.email && (
-                        <motion.p
-                          initial={{ opacity: 0, y: -5 }}
-                          animate={{ opacity: 1, y: 0 }}
-                          className="mt-3 font-sans text-sm text-red-600 flex items-center gap-2"
-                        >
-                          <svg
-                            className="w-4 h-4"
-                            fill="none"
-                            viewBox="0 0 24 24"
-                            stroke="currentColor"
-                          >
-                            <path
-                              strokeLinecap="round"
-                              strokeLinejoin="round"
-                              strokeWidth={2}
-                              d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
-                            />
-                          </svg>
-                          {errors.email.message}
-                        </motion.p>
-                      )}
-                    </div>
-
-                    <div>
-                      <label
-                        htmlFor="company"
-                        className="block label-text mb-3"
+                  <div>
+                    <label htmlFor="email" className="block label-text mb-3">
+                      Email <span className="text-electric-blue">*</span>
+                    </label>
+                    <input
+                      type="email"
+                      id="email"
+                      {...register("email")}
+                      className={`w-full px-0 py-4 bg-transparent border-0 border-b outline-none transition-all duration-300 focus:pl-1 font-sans text-lg text-near-black placeholder:text-near-black/30 ${
+                        errors.email
+                          ? "border-red-400 focus:border-red-500"
+                          : "border-dark-choc/20 focus:border-electric-blue"
+                      }`}
+                      placeholder="your@email.com"
+                    />
+                    {errors.email && (
+                      <motion.p
+                        initial={{ opacity: 0, y: -5 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        className="mt-3 font-sans text-sm text-red-600 flex items-center gap-2"
                       >
-                        Company
-                      </label>
-                      <input
-                        type="text"
-                        id="company"
-                        {...register("company")}
-                        className="w-full px-0 py-4 bg-transparent border-0 border-b border-dark-choc/20 focus:border-electric-blue outline-none transition-all duration-300 focus:pl-1 font-sans text-lg text-near-black placeholder:text-near-black/30"
-                        placeholder="Your company (optional)"
-                      />
-                    </div>
-
-                    <div>
-                      <label
-                        htmlFor="message"
-                        className="block label-text mb-3"
-                      >
-                        Message <span className="text-electric-blue">*</span>
-                      </label>
-                      <textarea
-                        id="message"
-                        {...register("message")}
-                        rows={4}
-                        className={`w-full px-0 py-4 bg-transparent border-0 border-b outline-none transition-all duration-300 focus:pl-1 font-sans text-lg text-near-black placeholder:text-near-black/30 resize-none ${
-                          errors.message
-                            ? "border-red-400 focus:border-red-500"
-                            : "border-dark-choc/20 focus:border-electric-blue"
-                        }`}
-                        placeholder="Tell us about your project..."
-                      />
-                      {errors.message && (
-                        <motion.p
-                          initial={{ opacity: 0, y: -5 }}
-                          animate={{ opacity: 1, y: 0 }}
-                          className="mt-3 font-sans text-sm text-red-600 flex items-center gap-2"
+                        <svg
+                          className="w-4 h-4"
+                          fill="none"
+                          viewBox="0 0 24 24"
+                          stroke="currentColor"
                         >
-                          <svg
-                            className="w-4 h-4"
-                            fill="none"
-                            viewBox="0 0 24 24"
-                            stroke="currentColor"
-                          >
-                            <path
-                              strokeLinecap="round"
-                              strokeLinejoin="round"
-                              strokeWidth={2}
-                              d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
-                            />
-                          </svg>
-                          {errors.message.message}
-                        </motion.p>
-                      )}
-                    </div>
+                          <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            strokeWidth={2}
+                            d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+                          />
+                        </svg>
+                        {errors.email.message}
+                      </motion.p>
+                    )}
+                  </div>
 
-                    <motion.button
-                      type="submit"
-                      disabled={isPending}
-                      whileHover={!isPending ? { scale: 1.02 } : {}}
-                      whileTap={!isPending ? { scale: 0.98 } : {}}
-                      className="btn-primary w-full mt-5 disabled:opacity-50 disabled:cursor-not-allowed relative overflow-hidden group"
+                  <div>
+                    <label
+                      htmlFor="company"
+                      className="block label-text mb-3"
                     >
-                      <span className="relative z-10 flex items-center justify-center gap-2">
-                        {isPending ? (
-                          <>
-                            <motion.div
-                              className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full"
-                              animate={{ rotate: 360 }}
-                              transition={{
-                                duration: 0.8,
-                                repeat: Infinity,
-                                ease: "linear",
-                              }}
+                      Company
+                    </label>
+                    <input
+                      type="text"
+                      id="company"
+                      {...register("company")}
+                      className="w-full px-0 py-4 bg-transparent border-0 border-b border-dark-choc/20 focus:border-electric-blue outline-none transition-all duration-300 focus:pl-1 font-sans text-lg text-near-black placeholder:text-near-black/30"
+                      placeholder="Your company (optional)"
+                    />
+                  </div>
+
+                  <div>
+                    <label
+                      htmlFor="message"
+                      className="block label-text mb-3"
+                    >
+                      Message <span className="text-electric-blue">*</span>
+                    </label>
+                    <textarea
+                      id="message"
+                      {...register("message")}
+                      rows={4}
+                      className={`w-full px-0 py-4 bg-transparent border-0 border-b outline-none transition-all duration-300 focus:pl-1 font-sans text-lg text-near-black placeholder:text-near-black/30 resize-none ${
+                        errors.message
+                          ? "border-red-400 focus:border-red-500"
+                          : "border-dark-choc/20 focus:border-electric-blue"
+                      }`}
+                      placeholder="Tell us about your project..."
+                    />
+                    {errors.message && (
+                      <motion.p
+                        initial={{ opacity: 0, y: -5 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        className="mt-3 font-sans text-sm text-red-600 flex items-center gap-2"
+                      >
+                        <svg
+                          className="w-4 h-4"
+                          fill="none"
+                          viewBox="0 0 24 24"
+                          stroke="currentColor"
+                        >
+                          <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            strokeWidth={2}
+                            d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+                          />
+                        </svg>
+                        {errors.message.message}
+                      </motion.p>
+                    )}
+                  </div>
+
+                  <motion.button
+                    type="submit"
+                    disabled={isPending}
+                    whileHover={!isPending ? { scale: 1.02 } : {}}
+                    whileTap={!isPending ? { scale: 0.98 } : {}}
+                    className="btn-primary w-full mt-5 disabled:opacity-50 disabled:cursor-not-allowed relative overflow-hidden group"
+                  >
+                    <span className="relative z-10 flex items-center justify-center gap-2">
+                      {isPending ? (
+                        <>
+                          <motion.div
+                            className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full"
+                            animate={{ rotate: 360 }}
+                            transition={{
+                              duration: 0.8,
+                              repeat: Infinity,
+                              ease: "linear",
+                            }}
+                          />
+                          Sending...
+                        </>
+                      ) : (
+                        <>
+                          Start the Conversation
+                          <motion.svg
+                            className="w-4 h-4"
+                            fill="none"
+                            viewBox="0 0 24 24"
+                            stroke="currentColor"
+                            initial={{ x: 0 }}
+                            whileHover={{ x: 4 }}
+                            transition={{
+                              type: "spring",
+                              stiffness: 400,
+                              damping: 17,
+                            }}
+                          >
+                            <path
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                              strokeWidth={2}
+                              d="M13 7l5 5m0 0l-5 5m5-5H6"
                             />
-                            Sending...
-                          </>
-                        ) : (
-                          <>
-                            Start the Conversation
-                            <motion.svg
-                              className="w-4 h-4"
-                              fill="none"
-                              viewBox="0 0 24 24"
-                              stroke="currentColor"
-                              initial={{ x: 0 }}
-                              whileHover={{ x: 4 }}
-                              transition={{
-                                type: "spring",
-                                stiffness: 400,
-                                damping: 17,
-                              }}
-                            >
-                              <path
-                                strokeLinecap="round"
-                                strokeLinejoin="round"
-                                strokeWidth={2}
-                                d="M13 7l5 5m0 0l-5 5m5-5H6"
-                              />
-                            </motion.svg>
-                          </>
-                        )}
-                      </span>
-                    </motion.button>
-                  </form>
-                </div>
+                          </motion.svg>
+                        </>
+                      )}
+                    </span>
+                  </motion.button>
+                </form>
               </div>
             </div>
           </div>
