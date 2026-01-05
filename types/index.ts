@@ -22,9 +22,12 @@ export interface HomepageContent {
   aboutPreview: string
   servicesPreview: string[]
   tagline?: string
-  heroVideo?: { url: string; mediaId?: string } | null
-  backgroundVideo?: { url: string; mediaId?: string } | null
-  sectionVideo?: { url: string; mediaId?: string } | null
+  heroVideo?: string | { url: string; mediaId?: string } | null
+  backgroundVideo?: string | { url: string; mediaId?: string } | null
+  sectionVideo?: string | { url: string; mediaId?: string } | null
+  testimonialsLabel?: string
+  testimonialsHeading?: string
+  homepageTestimonialIds?: string[]
 }
 
 export interface ContactSubmission {

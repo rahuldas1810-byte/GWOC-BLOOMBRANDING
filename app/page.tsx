@@ -9,6 +9,7 @@ import ExperienceSection from "@/components/ExperienceSection";
 import { getTestimonials, getClients, getHomepageContent, getServices, getSiteSettings } from "@/lib/content";
 import type { Testimonial, Client } from "@/types";
 import TextMarquee from "@/components/TextMarquee";
+import TestimonialsSection from "@/components/homepage/TestimonialsSection";
 
 const SERVICE_IMAGES = [
   "https://images.unsplash.com/photo-1600508774634-4e11d34730e2?q=80&w=2070&auto=format&fit=crop", // Brand Identity
@@ -593,8 +594,8 @@ export default function Home() {
                 </div>
 
                 {/* RIGHT COLUMN: Dynamic Image (Sticky) */}
-                <div className="hidden lg:block lg:col-span-5 relative h-[60vh] max-h-[550px] sticky top-32 w-full flex flex-col justify-center">
-                   <div className="relative w-full h-full rounded-3xl overflow-hidden shadow-2xl bg-dark-choc/5">
+                <div className="hidden lg:flex lg:col-span-5 sticky top-0 h-screen flex-col justify-center">
+                   <div className="relative w-full h-[60vh] max-h-[600px] rounded-3xl overflow-hidden shadow-2xl bg-dark-choc/5">
                     <AnimatePresence mode="wait">
                       <motion.div
                         key={hoveredService || 0}
@@ -732,127 +733,14 @@ export default function Home() {
         <ExperienceSection />
       </SectionReveal>
 
+
       {/* ================= TESTIMONIALS SLIDER ================= */}
       {testimonials.length > 0 && (
-        <SectionReveal>
-          <section className="section-padding bg-butter-yellow/40 overflow-hidden relative">
-            {/* Animated gradient overlay */}
-            <motion.div
-              className="absolute inset-0 bg-gradient-to-r from-electric-blue/5 via-transparent to-dark-choc/5"
-              animate={{
-                backgroundPosition: ["0% 50%", "100% 50%"],
-              }}
-              transition={{
-                duration: 15,
-                repeat: Infinity,
-                repeatType: "reverse",
-                ease: "easeInOut",
-              }}
-            ></motion.div>
-            {/* Decorative circles */}
-            <motion.div
-              className="absolute top-20 left-10 w-32 h-32 bg-electric-blue/10 rounded-full blur-2xl"
-              animate={{
-                scale: [1, 1.3, 1],
-                x: [0, 30, 0],
-                y: [0, -20, 0],
-              }}
-              transition={{
-                duration: 12,
-                repeat: Infinity,
-                ease: "easeInOut",
-              }}
-            ></motion.div>
-            <motion.div
-              className="absolute bottom-20 right-10 w-40 h-40 bg-dark-choc/10 rounded-full blur-3xl"
-              animate={{
-                scale: [1, 1.2, 1],
-                x: [0, -25, 0],
-                y: [0, 25, 0],
-              }}
-              transition={{
-                duration: 18,
-                repeat: Infinity,
-                ease: "easeInOut",
-                delay: 1,
-              }}
-            ></motion.div>
-            <div className="container-custom relative z-10">
-              <div className="mb-20">
-                <motion.p
-                  className="label-text mb-5"
-                  initial={{ opacity: 0, y: 20 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ duration: 0.6, delay: 0.1 }}
-                >
-                  {homepageContent.testimonialsLabel}
-                </motion.p>
-                <motion.h2
-                  className="heading-2"
-                  initial={{ opacity: 0, y: 20 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ duration: 0.6, delay: 0.2 }}
-                >
-                  {homepageContent.testimonialsHeading}
-                </motion.h2>
-              </div>
-
-              <motion.div
-                className="flex gap-8"
-                animate={{ x: ["0%", "-100%"] }}
-                transition={{
-                  duration: 40,
-                  ease: "linear",
-                  repeat: Infinity,
-                }}
-                drag="x"
-                dragConstraints={{ left: -1000, right: 0 }}
-              >
-                {[...testimonials, ...testimonials].map((t, i) => (
-                  <motion.div
-                    key={`${t.id}-${i}`}
-                    className="
-                      relative min-w-[90%] md:min-w-[45%]
-                      bg-white p-10 md:p-14
-                      rounded-2xl
-                      max-w-[520px]
-                      border border-dark-choc/5
-                      shadow-[0_10px_40px_rgba(0,0,0,0.06)]
-                      hover:shadow-[0_20px_60px_rgba(0,0,0,0.08)]
-                      hover:-translate-y-1
-                      transition-all duration-500
-  "
-                    initial={{ opacity: 0, y: 20 }}
-                    whileInView={{ opacity: 1, y: 0 }}
-                    viewport={{ once: true }}
-                    transition={{
-                      duration: 0.6,
-                      ease: "easeOut", // ✅ CORRECT
-                    }}
-                  >
-                    {/* Decorative Quote */}
-                    <span className="absolute -top-6 -left-4 text-[6rem] leading-none font-serif text-electric-blue/10"></span>
-
-                    <p className="font-serif text-[1.75rem] leading-snug text-dark-choc mb-10">
-                      {t.quote}
-                    </p>
-
-                    <div className="border-t border-dark-choc/10 pt-6">
-                      <p className="font-mono text-xs uppercase tracking-[0.2em] text-dark-choc">
-                        {t.clientName}
-                      </p>
-                      <p className="text-sm text-near-black/50 mt-1">
-                        {t.company}
-                      </p>
-                    </div>
-                  </motion.div>
-                ))}
-              </motion.div>
-            </div>
-          </section>
-        </SectionReveal>
+        <TestimonialsSection
+          testimonials={testimonials}
+          label={homepageContent.testimonialsLabel}
+          heading={homepageContent.testimonialsHeading}
+        />
       )}
 
       <SectionReveal>

@@ -167,23 +167,7 @@ export default function Testimonials() {
             </div>
           </div>
 
-          {/* Scroll Arrow */}
-          <motion.button
-            onClick={() => {
-              document
-                .getElementById("client-reviews")
-                ?.scrollIntoView({ behavior: "smooth" });
-            }}
-            animate={{ y: [0, 8, 0] }}
-            transition={{
-              duration: 1.8,
-              ease: [0.22, 1, 0.36, 1],
-              repeat: Infinity,
-            }}
-            className="absolute bottom-20 right-20 z-20 w-20 h-20 rounded-full border border-white/60 flex items-center justify-center text-white hover:border-white hover:scale-105 transition-transform duration-300"
-          >
-            <span className="text-2xl">↓</span>
-          </motion.button>
+
         </div>
       </section>
 
