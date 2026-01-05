@@ -7,15 +7,15 @@ import type { Testimonial, Client, HomepageContent } from '@/types'
 export const getTestimonials = async (retries = 3): Promise<Testimonial[]> => {
   try {
     // Use relative path for both server and client
-    const baseUrl = typeof window !== 'undefined' 
-      ? '' 
+    const baseUrl = typeof window !== 'undefined'
+      ? ''
       : process.env.NEXT_PUBLIC_SITE_URL || 'http://localhost:3000'
-    
+
     const fetchWithRetry = async (attempt: number): Promise<Response> => {
       try {
         const controller = new AbortController()
         const timeoutId = setTimeout(() => controller.abort(), 10000) // 10 second timeout
-        
+
         const response = await fetch(`${baseUrl}/api/public/testimonials?t=${Date.now()}`, {
           cache: 'no-store',
           headers: {
@@ -23,7 +23,7 @@ export const getTestimonials = async (retries = 3): Promise<Testimonial[]> => {
           },
           signal: controller.signal,
         })
-        
+
         clearTimeout(timeoutId)
         return response
       } catch (error: any) {
@@ -44,7 +44,7 @@ export const getTestimonials = async (retries = 3): Promise<Testimonial[]> => {
     }
 
     const result = await response.json()
-    
+
     if (result.success && Array.isArray(result.data)) {
       // Transform API response to match frontend interface
       return result.data.map((item: any) => ({
@@ -72,8 +72,8 @@ export const getTestimonials = async (retries = 3): Promise<Testimonial[]> => {
 export const getClients = async (): Promise<Client[]> => {
   try {
     // Use relative path for both server and client
-    const baseUrl = typeof window !== 'undefined' 
-      ? '' 
+    const baseUrl = typeof window !== 'undefined'
+      ? ''
       : process.env.NEXT_PUBLIC_SITE_URL || 'http://localhost:3000'
     const response = await fetch(`${baseUrl}/api/public/clients?t=${Date.now()}`, {
       cache: 'no-store', // Always fetch fresh data
@@ -88,7 +88,7 @@ export const getClients = async (): Promise<Client[]> => {
     }
 
     const result = await response.json()
-    
+
     if (result.success && Array.isArray(result.data)) {
       // Transform API response to match frontend interface
       return result.data
@@ -117,15 +117,15 @@ export const getClients = async (): Promise<Client[]> => {
 export const getHomepageContent = async (retries = 3): Promise<HomepageContent> => {
   try {
     // Use relative path for both server and client
-    const baseUrl = typeof window !== 'undefined' 
-      ? '' 
+    const baseUrl = typeof window !== 'undefined'
+      ? ''
       : process.env.NEXT_PUBLIC_SITE_URL || 'http://localhost:3000'
-    
+
     const fetchWithRetry = async (attempt: number): Promise<Response> => {
       try {
         const controller = new AbortController()
         const timeoutId = setTimeout(() => controller.abort(), 10000) // 10 second timeout
-        
+
         const response = await fetch(`${baseUrl}/api/public/homepage?t=${Date.now()}`, {
           cache: 'no-store',
           headers: {
@@ -133,7 +133,7 @@ export const getHomepageContent = async (retries = 3): Promise<HomepageContent> 
           },
           signal: controller.signal,
         })
-        
+
         clearTimeout(timeoutId)
         return response
       } catch (error: any) {
@@ -154,7 +154,7 @@ export const getHomepageContent = async (retries = 3): Promise<HomepageContent> 
     }
 
     const result = await response.json()
-    
+
     if (result.success && result.data) {
       return {
         id: result.data._id || result.data.id || 'homepage',
@@ -166,6 +166,9 @@ export const getHomepageContent = async (retries = 3): Promise<HomepageContent> 
         heroVideo: result.data.heroVideo?.url || result.data.heroVideo || null,
         backgroundVideo: result.data.backgroundVideo?.url || result.data.backgroundVideo || null,
         sectionVideo: result.data.sectionVideo?.url || result.data.sectionVideo || null,
+        testimonialsLabel: result.data.testimonialsLabel,
+        testimonialsHeading: result.data.testimonialsHeading,
+        homepageTestimonialIds: result.data.homepageTestimonialIds,
       }
     }
 
@@ -197,8 +200,8 @@ function getDefaultHomepageContent(): HomepageContent {
  */
 export const getServices = async () => {
   try {
-    const baseUrl = typeof window !== 'undefined' 
-      ? '' 
+    const baseUrl = typeof window !== 'undefined'
+      ? ''
       : process.env.NEXT_PUBLIC_SITE_URL || 'http://localhost:3000'
     const response = await fetch(`${baseUrl}/api/public/services?t=${Date.now()}`, {
       cache: 'no-store',
@@ -225,8 +228,8 @@ export const getServices = async () => {
  */
 export const getOurStory = async () => {
   try {
-    const baseUrl = typeof window !== 'undefined' 
-      ? '' 
+    const baseUrl = typeof window !== 'undefined'
+      ? ''
       : process.env.NEXT_PUBLIC_SITE_URL || 'http://localhost:3000'
     const response = await fetch(`${baseUrl}/api/public/our-story?t=${Date.now()}`, {
       cache: 'no-store',
@@ -253,8 +256,8 @@ export const getOurStory = async () => {
  */
 export const getContact = async () => {
   try {
-    const baseUrl = typeof window !== 'undefined' 
-      ? '' 
+    const baseUrl = typeof window !== 'undefined'
+      ? ''
       : process.env.NEXT_PUBLIC_SITE_URL || 'http://localhost:3000'
     const response = await fetch(`${baseUrl}/api/public/contact?t=${Date.now()}`, {
       cache: 'no-store',
@@ -281,8 +284,8 @@ export const getContact = async () => {
  */
 export const getSiteSettings = async () => {
   try {
-    const baseUrl = typeof window !== 'undefined' 
-      ? '' 
+    const baseUrl = typeof window !== 'undefined'
+      ? ''
       : process.env.NEXT_PUBLIC_SITE_URL || 'http://localhost:3000'
     const response = await fetch(`${baseUrl}/api/public/site-settings?t=${Date.now()}`, {
       cache: 'no-store',
@@ -309,16 +312,16 @@ export const getSiteSettings = async () => {
  */
 export const getBrands = async (category?: string, retries = 3) => {
   try {
-    const baseUrl = typeof window !== 'undefined' 
-      ? '' 
+    const baseUrl = typeof window !== 'undefined'
+      ? ''
       : process.env.NEXT_PUBLIC_SITE_URL || 'http://localhost:3000'
     const query = category ? `?category=${category}` : ''
-    
+
     const fetchWithRetry = async (attempt: number): Promise<Response> => {
       try {
         const controller = new AbortController()
         const timeoutId = setTimeout(() => controller.abort(), 10000) // 10 second timeout
-        
+
         const response = await fetch(`${baseUrl}/api/public/brands${query}?t=${Date.now()}`, {
           cache: 'no-store',
           headers: {
@@ -326,7 +329,7 @@ export const getBrands = async (category?: string, retries = 3) => {
           },
           signal: controller.signal,
         })
-        
+
         clearTimeout(timeoutId)
         return response
       } catch (error: any) {
