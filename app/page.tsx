@@ -2,11 +2,23 @@
 
 import { useEffect, useState, useRef } from "react";
 import Link from "next/link";
+import Image from "next/image";
 import { motion, AnimatePresence } from "framer-motion";
 import SectionReveal from "@/components/SectionReveal";
 import ExperienceSection from "@/components/ExperienceSection";
 import { getTestimonials, getClients, getHomepageContent, getServices, getSiteSettings } from "@/lib/content";
 import type { Testimonial, Client } from "@/types";
+import TextMarquee from "@/components/TextMarquee";
+import TestimonialsSection from "@/components/homepage/TestimonialsSection";
+
+const SERVICE_IMAGES = [
+  "https://images.unsplash.com/photo-1600508774634-4e11d34730e2?q=80&w=2070&auto=format&fit=crop", // Brand Identity
+  "https://images.unsplash.com/photo-1542744173-8e7e53415bb0?q=80&w=2070&auto=format&fit=crop", // Visual Design
+  "https://images.unsplash.com/photo-1611162617474-5b21e879e113?q=80&w=1974&auto=format&fit=crop", // Social Media
+  "https://images.unsplash.com/photo-1552664730-d307ca884978?q=80&w=2070&auto=format&fit=crop", // Content Strategy
+  "https://images.unsplash.com/photo-1542744094-24638eff58bb?q=80&w=2070&auto=format&fit=crop", // Creative Direction
+  "https://images.unsplash.com/photo-1460925895917-afdab827c52f?q=80&w=2015&auto=format&fit=crop", // Marketing
+];
 
 export default function Home() {
   const [testimonials, setTestimonials] = useState<Testimonial[]>([]);
@@ -505,9 +517,15 @@ export default function Home() {
       {/* ================= SERVICES ================= */}
       <div className="-mt-[1px] relative z-20">
         <SectionReveal>
-          <section className="section-padding bg-earl-gray relative overflow-hidden">
+          <section className="bg-earl-gray relative overflow-hidden pb-10 pt-20">
+            
+            {/* MARQUEE */}
+            <div className="mb-20">
+              <TextMarquee text="WHY BRANDS CHOOSE US • BLOOM BRANDING • " />
+            </div>
+
             {/* Decorative background elements */}
-            <div className="absolute inset-0 opacity-[0.03]">
+            <div className="absolute inset-0 opacity-[0.03] pointer-events-none">
               <motion.div
                 className="absolute top-0 right-0 w-96 h-96 bg-electric-blue rounded-full blur-3xl transform translate-x-1/2 -translate-y-1/2"
                 animate={{
@@ -521,107 +539,98 @@ export default function Home() {
                   ease: "easeInOut",
                 }}
               ></motion.div>
-              <motion.div
-                className="absolute bottom-0 left-0 w-96 h-96 bg-butter-yellow rounded-full blur-3xl transform -translate-x-1/2 translate-y-1/2"
-                animate={{
-                  scale: [1, 1.15, 1],
-                  x: ["-50%", "-45%", "-50%"],
-                  y: ["50%", "55%", "50%"],
-                }}
-                transition={{
-                  duration: 25,
-                  repeat: Infinity,
-                  ease: "easeInOut",
-                  delay: 2,
-                }}
-              ></motion.div>
             </div>
-            {/* Subtle pattern overlay */}
-            <div
-              className="absolute inset-0 opacity-[0.02]"
-              style={{
-                backgroundImage: `radial-gradient(circle at 2px 2px, #624A41 1px, transparent 0)`,
-                backgroundSize: "40px 40px",
-              }}
-            ></div>
-            <div className="container-custom relative z-10">
-              <div className="mb-20">
-                <p className="label-text mb-5">What We Do</p>
-                <h2 className="heading-2 mb-8">Our Services</h2>
-                <p className="body-text max-w-2xl">
-                  Strategic branding services designed for companies ready to make
-                  an impact.
-                </p>
-              </div>
 
-              <div className="flex flex-col border-t border-dark-choc/20">
-                {services.map((service, index) => (
-                  <motion.div
-                    key={service.title}
-                    initial={{ opacity: 0, y: 12 }}
-                    whileInView={{ opacity: 1, y: 0 }}
-                    viewport={{ once: true }}
-                    transition={{ duration: 0.5, delay: index * 0.1 }}
-                    onHoverStart={() => setHoveredService(index)}
-                    onHoverEnd={() => setHoveredService(null)}
-                    className="group relative border-b border-dark-choc/20 py-10 md:py-12 cursor-pointer transition-all duration-500 hover:bg-dark-choc hover:pl-4"
-                  >
-                    <div className="flex flex-col md:flex-row md:items-baseline justify-between gap-4 md:gap-12 relative z-10">
-                      {/* Header Group */}
-                      <div className="flex items-baseline gap-6 md:gap-10">
-                        <span className={`font-serif text-lg transition-all duration-500 ${hoveredService === index ? "text-earl-gray/20 translate-x-1" : "text-dark-choc/40"}`}>
-                          0{index + 1}
-                        </span>
-                        <h3 className={`heading-3 text-3xl md:text-5xl transition-all duration-500 ${hoveredService === index ? "text-earl-gray translate-x-2" : "text-dark-choc"}`}>
-                          {service.title}
-                        </h3>
+            <div className="w-full max-w-[95%] mx-auto px-4 relative z-10">
+              <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-16 items-start">
+                
+                {/* LEFT COLUMN: Grid of Services */}
+                <div className="lg:col-span-7 flex flex-col pt-4">
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-8 border-t border-dark-choc/20 pt-8">
+                  {services.map((service, index) => (
+                    <motion.div
+                      key={service.title}
+                      initial={{ opacity: 0, y: 12 }}
+                      whileInView={{ opacity: 1, y: 0 }}
+                      viewport={{ once: true }}
+                      transition={{ duration: 0.5, delay: index * 0.1 }}
+                      onClick={() => setHoveredService(index)}
+                      onHoverStart={() => setHoveredService(index)}
+                      className={`group relative border border-dark-choc/20 rounded-2xl p-8 md:p-10 cursor-pointer transition-all duration-500 h-full flex flex-col justify-between ${hoveredService === index ? "bg-dark-choc shadow-xl scale-[1.01]" : "hover:bg-dark-choc/5 hover:border-dark-choc/40"}`}
+                    >
+                      <div className="flex flex-col gap-6 relative z-10">
+                        {/* Header Group */}
+                        <div className="flex items-center justify-between">
+                           <span className={`font-serif text-xl transition-all duration-300 ${hoveredService === index ? "text-earl-gray/30" : "text-dark-choc/40"}`}>
+                            0{index + 1}
+                          </span>
+                           {/* Arrow (Visible on hover/active) */}
+                          <motion.div 
+                            className={`flex items-center justify-center w-10 h-10 rounded-full border transition-all duration-300 ${hoveredService === index ? "border-earl-gray bg-earl-gray text-dark-choc" : "border-dark-choc/20 text-dark-choc/40 group-hover:border-dark-choc group-hover:text-dark-choc opacity-50 group-hover:opacity-100"}`}
+                            animate={{ 
+                              rotate: hoveredService === index ? -45 : 0,
+                            }}
+                          >
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                              <path d="M5 12H19M19 12L12 5M19 12L12 19" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+                            </svg>
+                          </motion.div>
+                        </div>
+
+                         <h3 className={`heading-3 text-3xl md:text-4xl transition-all duration-300 ${hoveredService === index ? "text-earl-gray" : "text-dark-choc"}`}>
+                            {service.title}
+                          </h3>
                       </div>
 
-                      {/* Arrow */}
-                      <motion.div 
-                        className={`hidden md:flex items-center justify-center w-12 h-12 rounded-full border transition-all duration-500 ${hoveredService === index ? "border-earl-gray bg-earl-gray text-dark-choc" : "border-dark-choc/20 text-dark-choc/40"}`}
-                        animate={{ 
-                          rotate: hoveredService === index ? -45 : 0,
-                          scale: hoveredService === index ? 1.1 : 1
-                        }}
-                        transition={{ duration: 0.3, ease: 'easeOut' }}
-                      >
-                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                          <path d="M5 12H19M19 12L12 5M19 12L12 19" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-                        </svg>
-                      </motion.div>
-                    </div>
+                      {/* Description */}
+                      <div className="mt-6">
+                         <p className={`body-text text-lg md:text-xl leading-relaxed transition-all duration-300 ${hoveredService === index ? "text-earl-gray/80" : "text-dark-choc/60 line-clamp-3"}`}>
+                             {service.description}
+                         </p>
+                      </div>
+                    </motion.div>
+                  ))}
+                  </div>
+                </div>
 
-                    {/* Expandable Description */}
-                    <AnimatePresence>
-                      {hoveredService === index && (
-                        <motion.div
-                          initial={{ height: 0, opacity: 0 }}
-                          animate={{ height: "auto", opacity: 1 }}
-                          exit={{ height: 0, opacity: 0 }}
-                          transition={{ duration: 0.4, ease: [0.04, 0.62, 0.23, 0.98] }}
-                          className="overflow-hidden"
-                        >
-                          <div className="pt-6 md:pl-20 max-w-2xl">
-                            <p className="body-text text-lg text-earl-gray/70">
-                              {service.description}
-                            </p>
-                            <Link href="/services" className="inline-block">
-                              <motion.div
-                                initial={{ opacity: 0, x: -10 }}
-                                animate={{ opacity: 1, x: 0 }}
-                                transition={{ delay: 0.1 }}
-                                className="mt-6 flex items-center gap-2 font-mono text-xs uppercase tracking-[0.2em] text-earl-gray font-semibold hover:text-white transition-colors"
-                              >
-                                Explore Service
-                              </motion.div>
-                            </Link>
-                          </div>
-                        </motion.div>
-                      )}
+                {/* RIGHT COLUMN: Dynamic Image (Sticky) */}
+                <div className="hidden lg:flex lg:col-span-5 sticky top-0 h-screen flex-col justify-center">
+                   <div className="relative w-full h-[60vh] max-h-[600px] rounded-3xl overflow-hidden shadow-2xl bg-dark-choc/5">
+                    <AnimatePresence mode="wait">
+                      <motion.div
+                        key={hoveredService || 0}
+                        initial={{ opacity: 0, scale: 1.05 }}
+                        animate={{ opacity: 1, scale: 1 }}
+                        exit={{ opacity: 0 }}
+                        transition={{ duration: 0.5, ease: "easeInOut" }}
+                        className="absolute inset-0"
+                      >
+                         <Image
+                          src={SERVICE_IMAGES[(hoveredService || 0) % SERVICE_IMAGES.length]}
+                          alt="Service visualization"
+                          fill
+                          className="object-cover"
+                          priority
+                        />
+                         {/* Subtle Overlay */}
+                         <div className="absolute inset-0 bg-dark-choc/10 mix-blend-multiply" />
+                         
+                         {/* Text Overlay */}
+                         <div className="absolute bottom-10 left-10 z-10 w-3/4">
+                            <motion.p 
+                              initial={{ y: 20, opacity: 0 }}
+                              animate={{ y: 0, opacity: 1 }}
+                              transition={{ delay: 0.2 }}
+                              className="font-serif text-4xl md:text-5xl text-white/90 leading-tight"
+                            >
+                               {services[hoveredService || 0]?.title}
+                            </motion.p>
+                         </div>
+                      </motion.div>
                     </AnimatePresence>
-                  </motion.div>
-                ))}
+                   </div>
+                </div>
+                
               </div>
             </div>
           </section>
@@ -724,127 +733,14 @@ export default function Home() {
         <ExperienceSection />
       </SectionReveal>
 
+
       {/* ================= TESTIMONIALS SLIDER ================= */}
       {testimonials.length > 0 && (
-        <SectionReveal>
-          <section className="section-padding bg-butter-yellow/40 overflow-hidden relative">
-            {/* Animated gradient overlay */}
-            <motion.div
-              className="absolute inset-0 bg-gradient-to-r from-electric-blue/5 via-transparent to-dark-choc/5"
-              animate={{
-                backgroundPosition: ["0% 50%", "100% 50%"],
-              }}
-              transition={{
-                duration: 15,
-                repeat: Infinity,
-                repeatType: "reverse",
-                ease: "easeInOut",
-              }}
-            ></motion.div>
-            {/* Decorative circles */}
-            <motion.div
-              className="absolute top-20 left-10 w-32 h-32 bg-electric-blue/10 rounded-full blur-2xl"
-              animate={{
-                scale: [1, 1.3, 1],
-                x: [0, 30, 0],
-                y: [0, -20, 0],
-              }}
-              transition={{
-                duration: 12,
-                repeat: Infinity,
-                ease: "easeInOut",
-              }}
-            ></motion.div>
-            <motion.div
-              className="absolute bottom-20 right-10 w-40 h-40 bg-dark-choc/10 rounded-full blur-3xl"
-              animate={{
-                scale: [1, 1.2, 1],
-                x: [0, -25, 0],
-                y: [0, 25, 0],
-              }}
-              transition={{
-                duration: 18,
-                repeat: Infinity,
-                ease: "easeInOut",
-                delay: 1,
-              }}
-            ></motion.div>
-            <div className="container-custom relative z-10">
-              <div className="mb-20">
-                <motion.p
-                  className="label-text mb-5"
-                  initial={{ opacity: 0, y: 20 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ duration: 0.6, delay: 0.1 }}
-                >
-                  {homepageContent.testimonialsLabel}
-                </motion.p>
-                <motion.h2
-                  className="heading-2"
-                  initial={{ opacity: 0, y: 20 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ duration: 0.6, delay: 0.2 }}
-                >
-                  {homepageContent.testimonialsHeading}
-                </motion.h2>
-              </div>
-
-              <motion.div
-                className="flex gap-8"
-                animate={{ x: ["0%", "-100%"] }}
-                transition={{
-                  duration: 40,
-                  ease: "linear",
-                  repeat: Infinity,
-                }}
-                drag="x"
-                dragConstraints={{ left: -1000, right: 0 }}
-              >
-                {[...testimonials, ...testimonials].map((t, i) => (
-                  <motion.div
-                    key={`${t.id}-${i}`}
-                    className="
-                      relative min-w-[90%] md:min-w-[45%]
-                      bg-white p-10 md:p-14
-                      rounded-2xl
-                      max-w-[520px]
-                      border border-dark-choc/5
-                      shadow-[0_10px_40px_rgba(0,0,0,0.06)]
-                      hover:shadow-[0_20px_60px_rgba(0,0,0,0.08)]
-                      hover:-translate-y-1
-                      transition-all duration-500
-  "
-                    initial={{ opacity: 0, y: 20 }}
-                    whileInView={{ opacity: 1, y: 0 }}
-                    viewport={{ once: true }}
-                    transition={{
-                      duration: 0.6,
-                      ease: "easeOut", // ✅ CORRECT
-                    }}
-                  >
-                    {/* Decorative Quote */}
-                    <span className="absolute -top-6 -left-4 text-[6rem] leading-none font-serif text-electric-blue/10"></span>
-
-                    <p className="font-serif text-[1.75rem] leading-snug text-dark-choc mb-10">
-                      {t.quote}
-                    </p>
-
-                    <div className="border-t border-dark-choc/10 pt-6">
-                      <p className="font-mono text-xs uppercase tracking-[0.2em] text-dark-choc">
-                        {t.clientName}
-                      </p>
-                      <p className="text-sm text-near-black/50 mt-1">
-                        {t.company}
-                      </p>
-                    </div>
-                  </motion.div>
-                ))}
-              </motion.div>
-            </div>
-          </section>
-        </SectionReveal>
+        <TestimonialsSection
+          testimonials={testimonials}
+          label={homepageContent.testimonialsLabel}
+          heading={homepageContent.testimonialsHeading}
+        />
       )}
 
       <SectionReveal>
