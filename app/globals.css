@@ -7,6 +7,14 @@
     scroll-behavior: smooth;
   }
   
+  html.lenis {
+    height: auto;
+  }
+  
+  .lenis.lenis-smooth {
+    scroll-behavior: auto;
+  }
+  
   body {
     @apply bg-earl-gray text-near-black font-sans;
     font-size: 16px;
