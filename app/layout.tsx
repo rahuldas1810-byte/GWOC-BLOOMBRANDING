@@ -3,13 +3,13 @@ import { Playfair_Display, Lekton } from 'next/font/google'
 import './globals.css'
 import ConditionalLayout from '@/components/ConditionalLayout'
 
-const playfair = Playfair_Display({ 
+const playfair = Playfair_Display({
   subsets: ['latin'],
   variable: '--font-playfair',
   display: 'swap',
 })
 
-const lekton = Lekton({ 
+const lekton = Lekton({
   subsets: ['latin'],
   weight: ['400', '700'],
   variable: '--font-lekton',
@@ -19,6 +19,9 @@ const lekton = Lekton({
 export const metadata: Metadata = {
   title: 'Bloom Branding | Strategic Brand Identity',
   description: 'We help startups, D2C brands, and creators build confident, strategic brand identities that resonate.',
+  icons: {
+    icon: '/favicon-blue.png',
+  },
 }
 
 export default function RootLayout({

@@ -36,15 +36,15 @@ export default function OurStoryPage() {
       const response = await api.getOurStory()
       if (response.success && response.data) {
         const data = response.data
-        
+
         // Properly handle purposeStats - ensure numbers are preserved
         const purposeStats = data.purposeStats && typeof data.purposeStats === 'object'
           ? {
-              brandsBuilt: Number(data.purposeStats.brandsBuilt) || 0,
-              satisfaction: Number(data.purposeStats.satisfaction) || 0,
-            }
+            brandsBuilt: Number(data.purposeStats.brandsBuilt) || 0,
+            satisfaction: Number(data.purposeStats.satisfaction) || 0,
+          }
           : { brandsBuilt: 30, satisfaction: 100 }
-        
+
         setFormData({
           heroLabel: data.heroLabel || '',
           heroTitle: data.heroTitle || '',
@@ -58,11 +58,11 @@ export default function OurStoryPage() {
           philosophyDescription: data.philosophyDescription || '',
           philosophyCards: Array.isArray(data.philosophyCards) && data.philosophyCards.length > 0
             ? data.philosophyCards.map((card: any) => ({
-                id: card.id || '',
-                title: card.title || '',
-                description: card.description || '',
-                icon: card.icon || '',
-              }))
+              id: card.id || '',
+              title: card.title || '',
+              description: card.description || '',
+              icon: card.icon || '',
+            }))
             : [],
         })
       }
@@ -106,7 +106,7 @@ export default function OurStoryPage() {
           icon: card.icon || '',
         })),
       }
-      
+
       const response = await api.updateOurStory(payload)
       if (response.success) {
         setSaveStatus('success')
@@ -186,7 +186,7 @@ export default function OurStoryPage() {
               )}
             </button>
           </div>
-          
+
           {/* Status Message */}
           {saveStatus === 'success' && (
             <div className="mt-4 flex items-center gap-2 text-green-600 bg-green-50 border border-green-200 rounded-lg p-3">
@@ -243,7 +243,7 @@ export default function OurStoryPage() {
               <div>
                 <MediaSelector
                   type="image"
-                  value={formData.heroBackgroundImage}
+                  value={formData.heroBackgroundImage || undefined}
                   onChange={(media) => setFormData({ ...formData, heroBackgroundImage: media })}
                   label="Hero Background Image"
                 />
@@ -281,12 +281,12 @@ export default function OurStoryPage() {
               <div>
                 <MediaSelector
                   type="image"
-                  value={formData.purposeImage}
+                  value={formData.purposeImage || undefined}
                   onChange={(media) => setFormData({ ...formData, purposeImage: media })}
                   label="Purpose Image"
                 />
               </div>
-              
+
               {/* Stats Section */}
               <div className="bg-gray-50 rounded-lg p-5 border border-gray-200">
                 <h3 className="text-lg font-semibold text-dark-choc mb-4">Statistics</h3>
@@ -375,7 +375,7 @@ export default function OurStoryPage() {
                   placeholder="We believe in building brands..."
                 />
               </div>
-              
+
               {/* Philosophy Cards */}
               {formData.philosophyCards.length > 0 && (
                 <div className="space-y-4 mt-6">
