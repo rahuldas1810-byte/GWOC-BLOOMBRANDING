@@ -53,7 +53,7 @@ export default function ImpactStats() {
   ]
 
   return (
-    <section className="relative py-32 md:py-40 bg-earl-gray overflow-hidden">
+    <section className="relative py-32 md:py-40 bg-[#F0EBE5] overflow-hidden">
       {/* Subtle overlay for container feel */}
       <div className="absolute inset-0 bg-gradient-to-b from-dark-choc/[0.03] to-transparent pointer-events-none" />
       

@@ -69,9 +69,9 @@ export default function ClientSocialProof() {
   const activeBrand = brands[activeIndex]
 
   return (
-    <section className="py-24 relative overflow-hidden bg-earl-gray">
+    <section className="py-24 relative overflow-hidden bg-[#F0EBE5]">
       {/* Subtle vertical gradient background for depth */}
-      <div className="absolute inset-0 bg-gradient-to-b from-earl-gray via-[#EAE1D5] to-earl-gray opacity-50 pointer-events-none" />
+      <div className="absolute inset-0 bg-gradient-to-b from-[#F0EBE5] via-[#EAE1D5] to-[#F0EBE5] opacity-50 pointer-events-none" />
       
       <div className="container-custom mb-12 flex justify-center relative z-10">
         <span className="font-mono text-xs uppercase tracking-[0.25em] text-dark-choc/60">
@@ -83,8 +83,8 @@ export default function ClientSocialProof() {
         {/* LOGO MARQUEE */}
         <div className="relative w-full flex mb-8"> {/* Reduced gap */}
           {/* Side Gradients */}
-          <div className="absolute left-0 top-0 bottom-0 w-32 bg-gradient-to-r from-earl-gray to-transparent z-10 pointer-events-none" />
-          <div className="absolute right-0 top-0 bottom-0 w-32 bg-gradient-to-l from-earl-gray to-transparent z-10 pointer-events-none" />
+          <div className="absolute left-0 top-0 bottom-0 w-32 bg-gradient-to-r from-[#F0EBE5] to-transparent z-10 pointer-events-none" />
+          <div className="absolute right-0 top-0 bottom-0 w-32 bg-gradient-to-l from-[#F0EBE5] to-transparent z-10 pointer-events-none" />
 
           <div className="flex overflow-hidden group">
             <motion.div

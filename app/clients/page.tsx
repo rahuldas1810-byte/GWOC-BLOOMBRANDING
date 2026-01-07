@@ -3,7 +3,7 @@
 import { useEffect, useState } from 'react'
 import Link from 'next/link'
 import SectionReveal from '@/components/SectionReveal'
-import { motion } from 'framer-motion'
+import { motion, useMotionValue, useSpring } from 'framer-motion'
 import ClientShowcase from '@/components/clientshowcase'
 import ImpactStats from '@/components/ImpactStats'
 import ClientSocialProof from '@/components/ClientSocialProof'
@@ -11,6 +11,31 @@ import { getClients, getSiteSettings } from '@/lib/content'
 
 export default function Clients() {
   const [settings, setSettings] = useState<any>(null)
+  
+  // Custom Cursor Logic
+  const cursorX = useMotionValue(-100)
+  const cursorY = useMotionValue(-100)
+  const springConfig = { damping: 25, stiffness: 120 } // Slightly "laggy" feel
+  const springX = useSpring(cursorX, springConfig)
+  const springY = useSpring(cursorY, springConfig)
+
+  useEffect(() => {
+    // Hide default cursor on mount
+    document.body.style.cursor = 'none'
+
+    const moveCursor = (e: MouseEvent) => {
+      cursorX.set(e.clientX)
+      cursorY.set(e.clientY)
+    }
+
+    window.addEventListener('mousemove', moveCursor)
+
+    return () => {
+      // Restore default cursor on unmount
+      document.body.style.cursor = 'auto'
+      window.removeEventListener('mousemove', moveCursor)
+    }
+  }, [cursorX, cursorY])
 
   useEffect(() => {
     const fetchData = async () => {
@@ -26,17 +51,30 @@ export default function Clients() {
     return () => clearInterval(interval)
   }, [])
 
-  const hero = settings?.clientsHero || {
-    label: 'Our Clients',
-    title: 'Brands Who Trusted Us',
-    description: 'Each collaboration reflects our approach to building clear, confident brand identities.',
-    subtitle: 'Trusted by founders, startups, and growing D2C brands.',
-  }
-
   return (
-    <div className="min-h-screen">
+    <div className="min-h-screen relative cursor-none">
+      {/* Custom Cursor */}
+       <motion.div
+        className="fixed top-0 left-0 w-3 h-3 bg-dark-choc rounded-full pointer-events-none z-[9999]"
+        style={{
+          x: cursorX,
+          y: cursorY,
+          translateX: '-50%',
+          translateY: '-50%'
+        }}
+      />
+      <motion.div
+        className="fixed top-0 left-0 w-12 h-12 border border-dark-choc rounded-full pointer-events-none z-[9998]"
+        style={{
+          x: springX,
+          y: springY,
+          translateX: '-50%',
+          translateY: '-50%'
+        }}
+      />
+
       {/* Hero */}
-      <section className="relative py-36 md:py-48 lg:py-56 overflow-hidden bg-gradient-to-br from-earl-gray via-earl-gray/95 to-butter-yellow/20">
+      <section className="relative py-36 md:py-48 lg:py-56 overflow-hidden bg-[#F0EBE5]">
         {/* Subtle background pattern */}
         <div className="absolute inset-0 opacity-5">
           <div className="absolute inset-0" style={{
@@ -57,7 +95,7 @@ export default function Clients() {
               className="inline-block"
             >
               <p className="label-text mb-6 md:mb-8 text-dark-choc/70 font-mono text-sm md:text-base uppercase tracking-[0.3em] font-semibold">
-                {hero.label}
+                Our Clients
               </p>
             </motion.div>
             
@@ -65,9 +103,21 @@ export default function Clients() {
               initial={{ opacity: 0, y: 40, filter: 'blur(10px)' }}
               animate={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
               transition={{ duration: 0.9, delay: 0.1, ease: [0.22, 1, 0.36, 1] }}
-              className="font-serif text-5xl md:text-6xl lg:text-7xl xl:text-8xl text-dark-choc mb-8 md:mb-12 leading-[1.1] tracking-tight font-light"
+              className="font-serif text-5xl md:text-6xl lg:text-7xl xl:text-8xl text-dark-choc mb-8 md:mb-12 leading-[1.1] tracking-tight"
             >
-              {hero.title}
+              We build <span className="relative inline-block">
+                <span className="italic font-serif relative z-10">Legacies</span>
+                <motion.svg 
+                  className="absolute -bottom-1 left-0 w-full h-[0.25em] text-dark-choc/30 -z-0 pointer-events-none"
+                  viewBox="0 0 100 15" 
+                  fill="none"
+                  initial={{ pathLength: 0, opacity: 0 }}
+                  animate={{ pathLength: 1, opacity: 1 }}
+                  transition={{ duration: 1, delay: 0.5, ease: "easeOut" }}
+                >
+                  <path d="M2 5 Q 50 12, 98 5" stroke="currentColor" strokeWidth="4" strokeLinecap="round" />
+                </motion.svg>
+              </span> not just Logos.
             </motion.h1>
             
             <motion.div
@@ -77,18 +127,11 @@ export default function Clients() {
               className="max-w-3xl mx-auto"
             >
               <p className="body-text text-lg md:text-xl lg:text-2xl text-dark-choc/80 leading-relaxed mb-8 font-sans">
-                {hero.description}
+                Bloom Branding is a strategic design partner for ambitious founders who want to define the next generation of culture.
               </p>
             </motion.div>
             
-            <motion.p 
-              initial={{ opacity: 0, y: 20, filter: 'blur(5px)' }}
-              animate={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
-              transition={{ duration: 0.7, delay: 0.3, ease: [0.22, 1, 0.36, 1] }}
-              className="text-dark-choc/60 font-sans text-base md:text-lg tracking-wide max-w-2xl mx-auto"
-            >
-              {hero.subtitle}
-            </motion.p>
+
 
             {/* Decorative line */}
             <motion.div
@@ -110,88 +153,20 @@ export default function Clients() {
       {/* Linked Social Proof (Logos + Testimonials) */}
       <ClientSocialProof />
 
-      {/* CTA */}
-      {/* CTA - Emotional Peak */}
-      <motion.section 
-        className="min-h-[70vh] flex items-center justify-center relative overflow-hidden"
-        initial="hidden"
-        whileInView="visible"
-        viewport={{ once: true, margin: "-10%" }}
-        variants={{
-          hidden: { opacity: 0 },
-          visible: { 
-            opacity: 1,
-            transition: { 
-              duration: 0.9, 
-              ease: "easeOut",
-              staggerChildren: 0.15 
-            }
-          }
-        }}
-      >
-        {/* Option A - Soft Gradient Canvas */}
-        <div className="absolute inset-0 bg-earl-gray" />
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,_var(--tw-gradient-stops))] from-butter-yellow/60 via-earl-gray/50 to-earl-gray opacity-80" />
-
-        <div className="container-custom relative z-10 text-center">
-          <div className="max-w-4xl mx-auto flex flex-col items-center">
-            
-            {/* Eyebrow */}
-            <motion.span 
-              variants={{
-                hidden: { opacity: 0, y: 20 },
-                visible: { opacity: 1, y: 0 }
-              }}
-              transition={{ duration: 0.8, ease: "easeOut" }}
-              className="font-mono text-xs uppercase tracking-[0.3em] text-dark-choc/60 mb-8 block"
-            >
-              Let&apos;s Build Together
-            </motion.span>
-            
-            {/* Headline */}
-            <motion.h2 
-              variants={{
-                hidden: { opacity: 0, y: 30 },
-                visible: { opacity: 1, y: 0 }
-              }}
-              transition={{ duration: 0.8, ease: "easeOut" }}
-              className="font-serif text-5xl md:text-6xl lg:text-7xl text-dark-choc mb-10 leading-[1.1] tracking-tight"
-            >
-              Ready to work together?
-            </motion.h2>
-            
-            {/* Supporting Text */}
-            <motion.p 
-              variants={{
-                hidden: { opacity: 0, y: 20 },
-                visible: { opacity: 1, y: 0 }
-              }}
-              transition={{ duration: 0.8, ease: "easeOut" }}
-              className="font-sans text-lg md:text-xl text-near-black/60 max-w-xl mb-16 leading-relaxed"
-            >
-              We build brands that founders are proud to lead.
-            </motion.p>
-            
-            {/* Premium Button */}
-            <motion.div
-              variants={{
-                hidden: { opacity: 0, scale: 0.95 },
-                visible: { opacity: 1, scale: 1 }
-              }}
-              whileHover={{ scale: 1.03, y: -3 }}
-              whileTap={{ scale: 0.97 }}
-              transition={{ duration: 0.25, ease: "easeOut" }}
-            >
-              <Link 
-                href="/contact" 
-                className="inline-block bg-dark-choc text-white px-14 py-6 rounded-full text-sm uppercase tracking-[0.2em] font-medium shadow-2xl shadow-dark-choc/10 hover:shadow-dark-choc/20 transition-shadow duration-300"
-              >
-                Get Started
-              </Link>
-            </motion.div>
+      {/* CTA - Fill on Hover */}
+      <Link href="/contact" className="block">
+        <section className="relative h-[60vh] flex items-center justify-center bg-dark-choc overflow-hidden cursor-pointer group">
+          {/* Expanding Background Bubble */}
+          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-0 h-0 bg-[#F0EBE5] rounded-full transition-all duration-[800ms] ease-[cubic-bezier(0.32,0.72,0,1)] group-hover:w-[150%] group-hover:h-[150%]" />
+          
+          {/* Content */}
+          <div className="relative z-10 text-center mix-blend-normal">
+            <h2 className="font-serif text-6xl md:text-8xl lg:text-9xl text-[#F0EBE5] transition-all duration-[800ms] ease-[cubic-bezier(0.32,0.72,0,1)] group-hover:text-dark-choc group-hover:scale-110 group-hover:tracking-widest group-hover:italic">
+              Let&apos;s Talk.
+            </h2>
           </div>
-        </div>
-      </motion.section>
+        </section>
+      </Link>
     </div>
   )
 }
