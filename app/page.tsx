@@ -58,7 +58,7 @@ export default function Home() {
           getSiteSettings(),
         ]);
         setClients(clientsData);
-        
+
         // Transform services for homepage (only title and description)
         if (servicesData && servicesData.length > 0) {
           const homepageServices = servicesData.slice(0, 6).map((service: any) => ({
@@ -77,7 +77,7 @@ export default function Home() {
             { title: "Marketing Campaigns", description: "Data-driven campaigns designed to amplify reach and impact." },
           ]);
         }
-        
+
         // Use API data for homepage content - always update from API
         if (homepageData) {
           const heroVideoUrl = typeof homepageData.heroVideo === 'string' ? homepageData.heroVideo : (homepageData.heroVideo?.url || null);
@@ -94,19 +94,19 @@ export default function Home() {
             testimonialsLabel: homepageData.testimonialsLabel !== undefined && homepageData.testimonialsLabel !== null ? homepageData.testimonialsLabel : 'Testimonials',
             testimonialsHeading: homepageData.testimonialsHeading !== undefined && homepageData.testimonialsHeading !== null ? homepageData.testimonialsHeading : 'What Clients Say',
           });
-          
+
           // Filter testimonials based on homepage selection
           if (homepageData.homepageTestimonialIds && Array.isArray(homepageData.homepageTestimonialIds) && homepageData.homepageTestimonialIds.length > 0) {
             // Show only selected testimonials
-            const selectedTestimonials = testimonialsData.filter((t: any) => 
-              homepageData.homepageTestimonialIds.includes(t._id || t.id)
+            const selectedTestimonials = testimonialsData.filter((t: any) =>
+              homepageData.homepageTestimonialIds?.includes(t._id || t.id)
             );
             setTestimonials(selectedTestimonials);
           } else {
             // If no selection, show all active testimonials (backward compatible)
             setTestimonials(testimonialsData);
           }
-          
+
           // Mark content as loaded
           setContentLoaded(true);
           // If no hero video, show content immediately
@@ -132,7 +132,7 @@ export default function Home() {
       }
     };
     fetchData();
-    
+
     // Refresh data every 30 seconds to catch admin updates
     const interval = setInterval(fetchData, 30000);
     return () => clearInterval(interval);
@@ -142,7 +142,7 @@ export default function Home() {
   useEffect(() => {
     // Only process if content has been loaded
     if (!contentLoaded) return;
-    
+
     // If there's no hero video but there's a background video, show background immediately
     if (!homepageContent.heroVideo && homepageContent.backgroundVideo) {
       setVideoEnded(true);
@@ -151,7 +151,7 @@ export default function Home() {
       setIsTransitioning(false);
       return;
     }
-    
+
     // If there's no hero video at all, show content immediately
     if (!homepageContent.heroVideo) {
       setVideoEnded(true);
@@ -160,14 +160,14 @@ export default function Home() {
       setIsTransitioning(false);
       return;
     }
-    
+
     // Reset states when hero video changes - hero video should play first
     // Always start with hero video playing, background video hidden
     setVideoEnded(false);
     setIsInitialLoad(true);
     setIsTransitioning(false);
     setHeroVideoReady(false); // Reset to false so black background shows while loading
-    
+
     // Ensure background video is paused and reset when hero video is present
     if (backgroundVideoRef.current && homepageContent.heroVideo) {
       backgroundVideoRef.current.pause();
@@ -178,7 +178,7 @@ export default function Home() {
   // Handle hero video events and ensure it plays
   useEffect(() => {
     if (!homepageContent.heroVideo) return;
-    
+
     const video = videoRef.current;
     if (!video) return;
 
@@ -217,7 +217,7 @@ export default function Home() {
         setIsInitialLoad(false);
       }, 500);
     };
-    
+
     video.addEventListener("loadeddata", handleVideoLoaded);
     video.addEventListener("canplay", handleVideoCanPlay);
     video.addEventListener("ended", handleVideoEnd);
@@ -232,7 +232,7 @@ export default function Home() {
         });
       }
     };
-    
+
     // Check if video is already loaded and play it immediately
     if (video.readyState >= 2) {
       setHeroVideoReady(true);
@@ -244,24 +244,24 @@ export default function Home() {
       // Try to load and play
       video.load();
     }
-    
+
     // Multiple play attempts to ensure video starts
     const forcePlayTimeout1 = setTimeout(() => {
       attemptPlay();
     }, 50);
-    
+
     const forcePlayTimeout2 = setTimeout(() => {
       if (video.paused && video.readyState >= 1) {
         attemptPlay();
       }
     }, 200);
-    
+
     const forcePlayTimeout3 = setTimeout(() => {
       if (video.paused) {
         attemptPlay();
       }
     }, 500);
-    
+
     return () => {
       clearTimeout(forcePlayTimeout1);
       clearTimeout(forcePlayTimeout2);
@@ -282,7 +282,7 @@ export default function Home() {
       // Preload background video while hero is playing for smooth transition
       bgVideo.preload = "auto";
       bgVideo.load();
-      
+
       // Prepare video to be ready when needed
       const handleCanPlay = () => {
         setBackgroundVideoReady(true);
@@ -291,9 +291,9 @@ export default function Home() {
           bgVideo.pause();
         }
       };
-      
+
       bgVideo.addEventListener("canplay", handleCanPlay, { once: true });
-      
+
       return () => {
         bgVideo.removeEventListener("canplay", handleCanPlay);
       };
@@ -322,7 +322,7 @@ export default function Home() {
           bgVideo.load();
         }
       };
-      
+
       // Start slightly before hero ends for seamless transition, or immediately if no hero
       if (isTransitioning || !homepageContent.heroVideo) {
         startBackgroundVideo();
@@ -347,14 +347,13 @@ export default function Home() {
         {homepageContent.heroVideo && (
           <video
             ref={videoRef}
-            className={`absolute inset-0 w-full h-full object-cover z-40 transition-opacity duration-[1500ms] ease-in-out ${
-              videoEnded || isTransitioning ? "opacity-0 pointer-events-none z-0" : "opacity-100 z-40"
-            }`}
+            className={`absolute inset-0 w-full h-full object-cover z-40 transition-opacity duration-[1500ms] ease-in-out ${videoEnded || isTransitioning ? "opacity-0 pointer-events-none z-0" : "opacity-100 z-40"
+              }`}
             autoPlay
             muted
             playsInline
             preload="auto"
-            style={{ 
+            style={{
               transition: 'opacity 1.5s cubic-bezier(0.4, 0, 0.2, 1)',
               visibility: videoEnded ? 'hidden' : 'visible',
               display: videoEnded ? 'none' : 'block',
@@ -420,15 +419,14 @@ export default function Home() {
         {homepageContent.backgroundVideo && (
           <video
             ref={backgroundVideoRef}
-            className={`absolute inset-0 w-full h-full object-cover scale-[1.35] z-10 transition-opacity duration-[1500ms] ease-in-out ${
-              videoEnded || isTransitioning || !homepageContent.heroVideo ? "opacity-100 z-10" : "opacity-0 z-0 pointer-events-none"
-            }`}
+            className={`absolute inset-0 w-full h-full object-cover scale-[1.35] z-10 transition-opacity duration-[1500ms] ease-in-out ${videoEnded || isTransitioning || !homepageContent.heroVideo ? "opacity-100 z-10" : "opacity-0 z-0 pointer-events-none"
+              }`}
             autoPlay={!homepageContent.heroVideo || videoEnded || isTransitioning}
             loop
             muted
             playsInline
             preload={homepageContent.heroVideo ? "auto" : "auto"}
-            style={{ 
+            style={{
               transition: 'opacity 1.5s cubic-bezier(0.4, 0, 0.2, 1)',
               visibility: homepageContent.heroVideo && !videoEnded && !isTransitioning ? 'hidden' : 'visible',
               display: homepageContent.heroVideo && !videoEnded && !isTransitioning ? 'none' : 'block',
@@ -446,7 +444,7 @@ export default function Home() {
             <source src={homepageContent.backgroundVideo} type="video/webm" />
           </video>
         )}
-        
+
         {/* Fallback: Only show gradient if no videos at all AND content is loaded AND we've confirmed no hero video */}
         {contentLoaded && !homepageContent.heroVideo && !homepageContent.backgroundVideo && videoEnded && (
           <div className="absolute inset-0 w-full h-full bg-gradient-to-br from-dark-choc via-earl-gray to-butter-yellow z-10" />
@@ -456,20 +454,19 @@ export default function Home() {
 
         {/* Content - fades in smoothly after hero video ends or if no hero video (and content is loaded) */}
         <div
-          className={`relative z-20 h-full flex items-center transition-opacity duration-[1500ms] ease-in-out ${
-            contentLoaded && (
-              (homepageContent.heroVideo && (videoEnded || isTransitioning)) || 
-              (!homepageContent.heroVideo && !isInitialLoad)
-            ) ? "opacity-100" : "opacity-0 pointer-events-none"
-          }`}
-          style={{ 
+          className={`relative z-20 h-full flex items-center transition-opacity duration-[1500ms] ease-in-out ${contentLoaded && (
+            (homepageContent.heroVideo && (videoEnded || isTransitioning)) ||
+            (!homepageContent.heroVideo && !isInitialLoad)
+          ) ? "opacity-100" : "opacity-0 pointer-events-none"
+            }`}
+          style={{
             transition: 'opacity 1.5s cubic-bezier(0.4, 0, 0.2, 1)',
             visibility: contentLoaded && (
-              (homepageContent.heroVideo && (videoEnded || isTransitioning)) || 
+              (homepageContent.heroVideo && (videoEnded || isTransitioning)) ||
               (!homepageContent.heroVideo && !isInitialLoad)
             ) ? 'visible' : 'hidden',
             display: contentLoaded && (
-              (homepageContent.heroVideo && (videoEnded || isTransitioning)) || 
+              (homepageContent.heroVideo && (videoEnded || isTransitioning)) ||
               (!homepageContent.heroVideo && !isInitialLoad)
             ) ? 'flex' : 'none'
           }}
@@ -479,7 +476,7 @@ export default function Home() {
               initial={{ opacity: 0, y: 12 }}
               animate={
                 contentLoaded && (
-                  (homepageContent.heroVideo && (videoEnded || isTransitioning)) || 
+                  (homepageContent.heroVideo && (videoEnded || isTransitioning)) ||
                   (!homepageContent.heroVideo && !isInitialLoad)
                 ) ? { opacity: 1, y: 0 } : { opacity: 0, y: 12 }
               }
@@ -518,7 +515,7 @@ export default function Home() {
       <div className="-mt-[1px] relative z-20">
         <SectionReveal>
           <section className="bg-earl-gray relative overflow-hidden pb-10 pt-20">
-            
+
             {/* MARQUEE */}
             <div className="mb-20">
               <TextMarquee text="WHY BRANDS CHOOSE US • BLOOM BRANDING • " />
@@ -543,59 +540,59 @@ export default function Home() {
 
             <div className="w-full max-w-[95%] mx-auto px-4 relative z-10">
               <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-16 items-start">
-                
+
                 {/* LEFT COLUMN: Grid of Services */}
                 <div className="lg:col-span-7 flex flex-col pt-4">
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-8 border-t border-dark-choc/20 pt-8">
-                  {services.map((service, index) => (
-                    <motion.div
-                      key={service.title}
-                      initial={{ opacity: 0, y: 12 }}
-                      whileInView={{ opacity: 1, y: 0 }}
-                      viewport={{ once: true }}
-                      transition={{ duration: 0.5, delay: index * 0.1 }}
-                      onClick={() => setHoveredService(index)}
-                      onHoverStart={() => setHoveredService(index)}
-                      className={`group relative border border-dark-choc/20 rounded-2xl p-8 md:p-10 cursor-pointer transition-all duration-500 h-full flex flex-col justify-between ${hoveredService === index ? "bg-dark-choc shadow-xl scale-[1.01]" : "hover:bg-dark-choc/5 hover:border-dark-choc/40"}`}
-                    >
-                      <div className="flex flex-col gap-6 relative z-10">
-                        {/* Header Group */}
-                        <div className="flex items-center justify-between">
-                           <span className={`font-serif text-xl transition-all duration-300 ${hoveredService === index ? "text-earl-gray/30" : "text-dark-choc/40"}`}>
-                            0{index + 1}
-                          </span>
-                           {/* Arrow (Visible on hover/active) */}
-                          <motion.div 
-                            className={`flex items-center justify-center w-10 h-10 rounded-full border transition-all duration-300 ${hoveredService === index ? "border-earl-gray bg-earl-gray text-dark-choc" : "border-dark-choc/20 text-dark-choc/40 group-hover:border-dark-choc group-hover:text-dark-choc opacity-50 group-hover:opacity-100"}`}
-                            animate={{ 
-                              rotate: hoveredService === index ? -45 : 0,
-                            }}
-                          >
-                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                              <path d="M5 12H19M19 12L12 5M19 12L12 19" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-                            </svg>
-                          </motion.div>
-                        </div>
+                    {services.map((service, index) => (
+                      <motion.div
+                        key={service.title}
+                        initial={{ opacity: 0, y: 12 }}
+                        whileInView={{ opacity: 1, y: 0 }}
+                        viewport={{ once: true }}
+                        transition={{ duration: 0.5, delay: index * 0.1 }}
+                        onClick={() => setHoveredService(index)}
+                        onHoverStart={() => setHoveredService(index)}
+                        className={`group relative border border-dark-choc/20 rounded-2xl p-8 md:p-10 cursor-pointer transition-all duration-500 h-full flex flex-col justify-between ${hoveredService === index ? "bg-dark-choc shadow-xl scale-[1.01]" : "hover:bg-dark-choc/5 hover:border-dark-choc/40"}`}
+                      >
+                        <div className="flex flex-col gap-6 relative z-10">
+                          {/* Header Group */}
+                          <div className="flex items-center justify-between">
+                            <span className={`font-serif text-xl transition-all duration-300 ${hoveredService === index ? "text-earl-gray/30" : "text-dark-choc/40"}`}>
+                              0{index + 1}
+                            </span>
+                            {/* Arrow (Visible on hover/active) */}
+                            <motion.div
+                              className={`flex items-center justify-center w-10 h-10 rounded-full border transition-all duration-300 ${hoveredService === index ? "border-earl-gray bg-earl-gray text-dark-choc" : "border-dark-choc/20 text-dark-choc/40 group-hover:border-dark-choc group-hover:text-dark-choc opacity-50 group-hover:opacity-100"}`}
+                              animate={{
+                                rotate: hoveredService === index ? -45 : 0,
+                              }}
+                            >
+                              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M5 12H19M19 12L12 5M19 12L12 19" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+                              </svg>
+                            </motion.div>
+                          </div>
 
-                         <h3 className={`heading-3 text-3xl md:text-4xl transition-all duration-300 ${hoveredService === index ? "text-earl-gray" : "text-dark-choc"}`}>
+                          <h3 className={`heading-3 text-3xl md:text-4xl transition-all duration-300 ${hoveredService === index ? "text-earl-gray" : "text-dark-choc"}`}>
                             {service.title}
                           </h3>
-                      </div>
+                        </div>
 
-                      {/* Description */}
-                      <div className="mt-6">
-                         <p className={`body-text text-lg md:text-xl leading-relaxed transition-all duration-300 ${hoveredService === index ? "text-earl-gray/80" : "text-dark-choc/60 line-clamp-3"}`}>
-                             {service.description}
-                         </p>
-                      </div>
-                    </motion.div>
-                  ))}
+                        {/* Description */}
+                        <div className="mt-6">
+                          <p className={`body-text text-lg md:text-xl leading-relaxed transition-all duration-300 ${hoveredService === index ? "text-earl-gray/80" : "text-dark-choc/60 line-clamp-3"}`}>
+                            {service.description}
+                          </p>
+                        </div>
+                      </motion.div>
+                    ))}
                   </div>
                 </div>
 
                 {/* RIGHT COLUMN: Dynamic Image (Sticky) */}
                 <div className="hidden lg:flex lg:col-span-5 sticky top-0 h-screen flex-col justify-center">
-                   <div className="relative w-full h-[60vh] max-h-[600px] rounded-3xl overflow-hidden shadow-2xl bg-dark-choc/5">
+                  <div className="relative w-full h-[60vh] max-h-[600px] rounded-3xl overflow-hidden shadow-2xl bg-dark-choc/5">
                     <AnimatePresence mode="wait">
                       <motion.div
                         key={hoveredService || 0}
@@ -605,32 +602,32 @@ export default function Home() {
                         transition={{ duration: 0.5, ease: "easeInOut" }}
                         className="absolute inset-0"
                       >
-                         <Image
+                        <Image
                           src={SERVICE_IMAGES[(hoveredService || 0) % SERVICE_IMAGES.length]}
                           alt="Service visualization"
                           fill
                           className="object-cover"
                           priority
                         />
-                         {/* Subtle Overlay */}
-                         <div className="absolute inset-0 bg-dark-choc/10 mix-blend-multiply" />
-                         
-                         {/* Text Overlay */}
-                         <div className="absolute bottom-10 left-10 z-10 w-3/4">
-                            <motion.p 
-                              initial={{ y: 20, opacity: 0 }}
-                              animate={{ y: 0, opacity: 1 }}
-                              transition={{ delay: 0.2 }}
-                              className="font-serif text-4xl md:text-5xl text-white/90 leading-tight"
-                            >
-                               {services[hoveredService || 0]?.title}
-                            </motion.p>
-                         </div>
+                        {/* Subtle Overlay */}
+                        <div className="absolute inset-0 bg-dark-choc/10 mix-blend-multiply" />
+
+                        {/* Text Overlay */}
+                        <div className="absolute bottom-10 left-10 z-10 w-3/4">
+                          <motion.p
+                            initial={{ y: 20, opacity: 0 }}
+                            animate={{ y: 0, opacity: 1 }}
+                            transition={{ delay: 0.2 }}
+                            className="font-serif text-4xl md:text-5xl text-white/90 leading-tight"
+                          >
+                            {services[hoveredService || 0]?.title}
+                          </motion.p>
+                        </div>
                       </motion.div>
                     </AnimatePresence>
-                   </div>
+                  </div>
                 </div>
-                
+
               </div>
             </div>
           </section>

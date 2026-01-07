@@ -7,6 +7,9 @@ import HoverCard from '@/components/HoverCard'
 import { motion, useScroll, useTransform, useMotionValue, useSpring, useMotionTemplate } from 'framer-motion'
 import { useRef, useState, useEffect } from 'react'
 import { getOurStory, getSiteSettings } from '@/lib/content'
+import FoundersMap from '@/components/FoundersMap'
+
+
 
 export default function OurStory() {
   const [ourStoryData, setOurStoryData] = useState<any>(null)
@@ -62,7 +65,7 @@ export default function OurStory() {
       }
     }
     fetchData()
-    
+
     // Refresh every 3 seconds to catch admin updates quickly
     const interval = setInterval(fetchData, 3000)
     return () => clearInterval(interval)
@@ -77,11 +80,11 @@ export default function OurStory() {
     purposeTitle: ourStoryData?.purposeTitle || 'A studio built on clarity.',
     purposeDescription: ourStoryData?.purposeDescription || 'Bloom Branding is a strategic branding agency for those ready to make a noise.',
     purposeStats: {
-      brandsBuilt: ourStoryData?.purposeStats?.brandsBuilt !== undefined 
-        ? Number(ourStoryData.purposeStats.brandsBuilt) 
+      brandsBuilt: ourStoryData?.purposeStats?.brandsBuilt !== undefined
+        ? Number(ourStoryData.purposeStats.brandsBuilt)
         : 30,
-      satisfaction: ourStoryData?.purposeStats?.satisfaction !== undefined 
-        ? Number(ourStoryData.purposeStats.satisfaction) 
+      satisfaction: ourStoryData?.purposeStats?.satisfaction !== undefined
+        ? Number(ourStoryData.purposeStats.satisfaction)
         : 100,
     },
     philosophyTitle: ourStoryData?.philosophyTitle || 'Our Philosophy',
@@ -94,17 +97,17 @@ export default function OurStory() {
   }
 
   // Ensure philosophyCards have proper structure
-  const philosophyCards = (data.philosophyCards && data.philosophyCards.length > 0 
+  const philosophyCards = (data.philosophyCards && data.philosophyCards.length > 0
     ? data.philosophyCards.map((card: any) => ({
-        id: card.id || card._id || '01',
-        title: card.title || '',
-        description: card.description || card.text || '',
-      }))
+      id: card.id || card._id || '01',
+      title: card.title || '',
+      description: card.description || card.text || '',
+    }))
     : [
-        { id: '01', title: 'Clarity Over Complexity', description: 'The best brands are simple, clear, and easy to understand. We strip away the noise.' },
-        { id: '02', title: 'Strategy First', description: 'Every design decision we make is backed by strategic thinking. We create brands that work.' },
-        { id: '03', title: 'Confidence, Not Flash', description: 'Premium doesn\'t mean flashy. We build brands that represent quiet confidence.' },
-      ])
+      { id: '01', title: 'Clarity Over Complexity', description: 'The best brands are simple, clear, and easy to understand. We strip away the noise.' },
+      { id: '02', title: 'Strategy First', description: 'Every design decision we make is backed by strategic thinking. We create brands that work.' },
+      { id: '03', title: 'Confidence, Not Flash', description: 'Premium doesn\'t mean flashy. We build brands that represent quiet confidence.' },
+    ])
 
   return (
     <div className="min-h-screen">
@@ -245,6 +248,11 @@ export default function OurStory() {
           </div>
         </div>
       </section>
+
+
+
+      {/* ================= FOUNDERS MAP ================= */}
+      <FoundersMap />
 
       {/* Philosophy - INTERACTIVE CARDS */}
       <section className="section-padding bg-earl-gray relative z-20">
@@ -427,7 +435,7 @@ export default function OurStory() {
         </section>
       </SectionReveal>
 
-    </div>
+    </div >
   )
 }
 

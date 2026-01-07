@@ -27,7 +27,7 @@ export default function MediaSelector({ type, value, onChange, label }: MediaSel
       const filter: any = { limit: 100 }
       if (type === 'image') filter.type = 'image'
       if (type === 'video') filter.type = 'video'
-      
+
       const response = await api.getMedia(filter)
       if (response.success && response.data) {
         setMedia(response.data)
@@ -48,8 +48,8 @@ export default function MediaSelector({ type, value, onChange, label }: MediaSel
       const folder = type === 'video' ? 'bloom-branding/videos' : 'bloom-branding/images'
       const isVideo = selectedFile.type.startsWith('video/')
       const usedIn = isVideo ? 'video' : 'image'
-      
-      const response = await api.uploadMedia(selectedFile, folder, [], '', usedIn)
+
+      const response = await api.uploadMedia(selectedFile, folder, '', '', usedIn)
       if (response.success && response.data) {
         const newMedia = {
           url: response.data.url,

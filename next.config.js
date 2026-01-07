@@ -15,6 +15,13 @@ const nextConfig = {
         port: "",
         pathname: "/**",
       },
+      // Added for founder dummy images
+      {
+        protocol: "https",
+        hostname: "i.pravatar.cc",
+        port: "",
+        pathname: "/**",
+      },
     ],
   },
 };
