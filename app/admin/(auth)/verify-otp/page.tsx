@@ -7,7 +7,7 @@ import { Shield, ArrowRight, Loader2, AlertCircle, ArrowLeft, Mail } from 'lucid
 import { motion, AnimatePresence } from 'framer-motion'
 import { Inter } from 'next/font/google'
 
-const inter = Inter({ 
+const inter = Inter({
   subsets: ['latin'],
   variable: '--font-inter',
   display: 'swap',
@@ -77,7 +77,7 @@ export default function VerifyOtp() {
       if (i < 4) newOtp[i] = char
     })
     setOtp(newOtp)
-    
+
     // Focus last filled input or next empty
     const filledCount = pastedData.length
     if (filledCount < 4) {
@@ -102,7 +102,7 @@ export default function VerifyOtp() {
 
     try {
       const response = await api.verifyOtp(email, otpString)
-      
+
       if (response.success && response.data?.resetToken) {
         router.push(`/admin/reset-password?token=${response.data.resetToken}`)
       } else {
@@ -119,10 +119,10 @@ export default function VerifyOtp() {
 
   const handleResend = async () => {
     if (resendCooldown > 0 || !email) return
-    
+
     setResendLoading(true)
     setError('')
-    
+
     try {
       const response = await api.forgotPassword(email)
       if (response.success) {
@@ -144,7 +144,7 @@ export default function VerifyOtp() {
       {/* Professional Background Image Layer */}
       <div className="absolute inset-0 z-0">
         {/* Base Background with Professional Pattern */}
-        <div 
+        <div
           className="absolute inset-0"
           style={{
             backgroundImage: `
@@ -160,9 +160,9 @@ export default function VerifyOtp() {
             backgroundRepeat: 'repeat',
           }}
         />
-        
+
         {/* Professional Abstract Geometric Pattern */}
-        <div 
+        <div
           className="absolute inset-0 opacity-40"
           style={{
             backgroundImage: `
@@ -174,13 +174,13 @@ export default function VerifyOtp() {
             backgroundPosition: '0% 0%, 50% 50%, 100% 100%',
           }}
         />
-        
+
         {/* Gradient Overlay for Depth */}
         <div className="absolute inset-0 bg-gradient-to-br from-slate-950/90 via-slate-900/85 to-indigo-950/90" />
         <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-black/30" />
         <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-black/40" />
       </div>
-      
+
       {/* Animated Background Elements */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none z-0">
         {/* Gentle Animated Orbs */}
@@ -211,7 +211,7 @@ export default function VerifyOtp() {
           }}
           className="absolute -bottom-40 -left-40 w-[800px] h-[800px] bg-gradient-to-tr from-indigo-500/12 via-purple-500/10 to-pink-500/12 rounded-full blur-3xl"
         />
-        
+
         {/* Subtle Shimmer Effect */}
         <motion.div
           animate={{
@@ -236,7 +236,7 @@ export default function VerifyOtp() {
         <div className="bg-white/70 backdrop-blur-xl rounded-2xl shadow-[0_8px_32px_rgba(0,0,0,0.08)] border border-white/50 p-10 md:p-12 relative overflow-hidden">
           {/* Subtle Inner Glow */}
           <div className="absolute inset-0 bg-gradient-to-br from-blue-50/30 via-transparent to-indigo-50/20 rounded-2xl pointer-events-none" />
-          
+
           {/* Content */}
           <div className="relative">
             {/* Header */}
