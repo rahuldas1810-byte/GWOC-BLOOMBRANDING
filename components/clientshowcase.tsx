@@ -65,7 +65,7 @@ export default function ClientShowcase() {
   ]
 
   return (
-    <section className="py-20 bg-[#E0D2C2]">
+    <section className="py-20 bg-[#F0EBE5]">
       <div className="relative w-full">
         <div className="relative flex items-center justify-center h-[700px] w-screen max-w-none overflow-visible">
           {visibleClients.map((client, i) => {
