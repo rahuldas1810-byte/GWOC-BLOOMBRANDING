@@ -7,6 +7,7 @@ import Link from 'next/link';
 import { ArrowRight } from 'lucide-react';
 import SectionReveal from '@/components/SectionReveal';
 import { getSiteSettings } from '@/lib/content';
+import Hero from '@/components/Hero-services';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -103,24 +104,7 @@ export default function ServicesPage() {
     <main ref={containerRef} className="bg-[#F2F0E9] min-h-screen text-[#2c2420] overflow-hidden">
 
       {/* HERO SECTION */}
-      <section className="py-32 md:py-40 lg:py-48 bg-gradient-to-br from-earl-gray via-white to-butter-yellow/10 relative overflow-hidden">
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_30%_20%,rgba(44,68,148,0.03),transparent_50%)] pointer-events-none"></div>
-        <div className="container-custom relative z-10">
-          <SectionReveal>
-            <div className="max-w-5xl">
-              <p className="font-mono text-electric-blue text-sm md:text-base mb-6 md:mb-8 uppercase tracking-[0.25em] font-semibold">
-                {hero?.label || 'What We Do'}
-              </p>
-              <h1 className="font-serif text-dark-choc font-bold text-5xl md:text-6xl lg:text-7xl xl:text-8xl mb-8 md:mb-12 leading-[1.1] tracking-tight">
-                {hero?.title || 'Our Services'}
-              </h1>
-              <p className="text-near-black/90 font-sans text-lg md:text-xl lg:text-2xl max-w-3xl leading-relaxed font-light">
-                {hero?.description || 'Strategic branding services designed for companies ready to make an impact.'}
-              </p>
-            </div>
-          </SectionReveal>
-        </div>
-      </section>
+      <Hero />
 
       {/* TEXT SECTION 1 - FIX: Reduced Padding to close gap */}
       <section className="px-6 md:px-20 pt-10 pb-20 flex flex-col justify-center">
