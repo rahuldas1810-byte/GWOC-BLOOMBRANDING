@@ -883,7 +883,7 @@ export default function Home() {
 
               {/* Google Maps Embed */}
               <motion.div
-                className="w-full h-[400px] md:h-[500px] grayscale contrast-[0.9] sepia-[0.2]"
+                className="relative w-full h-[400px] md:h-[500px]"
                 initial={{ opacity: 0, x: 30, scale: 0.95 }}
                 whileInView={{ opacity: 1, x: 0, scale: 1 }}
                 viewport={{ once: true }}
@@ -900,6 +900,32 @@ export default function Home() {
                   className="w-full h-full rounded-2xl shadow-[0_10px_40px_rgba(0,0,0,0.08)]"
                   title="Bloom Branding Studio Location"
                 />
+                {/* Red Location Marker */}
+                <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 pointer-events-none z-10">
+                  <div className="relative">
+                    {/* Pin Shadow */}
+                    <div className="absolute top-[42px] left-1/2 transform -translate-x-1/2 w-8 h-4 bg-black/20 blur-md rounded-full"></div>
+                    {/* Red Pin */}
+                    <svg 
+                      width="40" 
+                      height="48" 
+                      viewBox="0 0 40 48" 
+                      fill="none" 
+                      xmlns="http://www.w3.org/2000/svg"
+                      className="drop-shadow-lg"
+                    >
+                      <path 
+                        d="M20 0C10.06 0 2 8.06 2 18C2 29 20 48 20 48C20 48 38 29 38 18C38 8.06 29.94 0 20 0Z" 
+                        fill="#dc2626"
+                        className="animate-pulse"
+                      />
+                      <path 
+                        d="M20 12C16.69 12 14 14.69 14 18C14 21.31 16.69 24 20 24C23.31 24 26 21.31 26 18C26 14.69 23.31 12 20 12Z" 
+                        fill="white"
+                      />
+                    </svg>
+                  </div>
+                </div>
               </motion.div>
             </div>
           </div>
