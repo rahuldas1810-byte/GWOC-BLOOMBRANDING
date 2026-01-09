@@ -2,7 +2,7 @@
 import { useEffect, useRef, useState } from 'react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/dist/ScrollTrigger';
-import Lenis from '@studio-freight/lenis';
+
 import Link from 'next/link';
 import { ArrowRight } from 'lucide-react';
 import SectionReveal from '@/components/SectionReveal';
@@ -50,18 +50,6 @@ export default function ServicesPage() {
   }, []);
 
   useEffect(() => {
-    const lenis = new Lenis({
-      duration: 1.2,
-      easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
-      smoothWheel: true,
-      touchMultiplier: 2,
-    });
-    function raf(time: number) {
-      lenis.raf(time);
-      requestAnimationFrame(raf);
-    }
-    requestAnimationFrame(raf);
-
     const ctx = gsap.context(() => {
 
       // TEXT REVEAL LOGIC
@@ -95,13 +83,12 @@ export default function ServicesPage() {
     }, containerRef);
 
     return () => {
-      lenis.destroy();
       ctx.revert();
     };
   }, []);
 
   return (
-    <main ref={containerRef} className="bg-[#F2F0E9] min-h-screen text-[#2c2420] overflow-hidden">
+    <div ref={containerRef} className="bg-[#F2F0E9] min-h-screen text-[#2c2420] overflow-x-hidden">
 
       {/* HERO SECTION */}
       <Hero />
@@ -177,6 +164,6 @@ export default function ServicesPage() {
       {/* FIX: Increased Bottom Spacer to 50vh to ensure text scrolls into view */}
       <div className="h-[50vh]"></div>
 
-    </main>
+    </div>
   );
 }
