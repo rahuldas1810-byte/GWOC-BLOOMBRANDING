@@ -33,6 +33,8 @@ function FAQ({ items }: { items: FAQItem[] }) {
           <motion.div
             key={index}
             initial={false}
+            onMouseEnter={() => setOpenIndex(index)}
+            onMouseLeave={() => setOpenIndex(null)}
             className={`border rounded-xl transition-all duration-300 overflow-hidden group ${isOpen ? "bg-white border-electric-blue/20 shadow-lg" : "bg-white/50 border-dark-choc/10 hover:border-dark-choc/30"}`}
           >
             <motion.button
