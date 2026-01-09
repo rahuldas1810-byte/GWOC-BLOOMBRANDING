@@ -3,7 +3,7 @@
 import { useState, useRef, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { MessageCircle, X, Send, Minus } from "lucide-react";
-
+import ReactMarkdown from "react-markdown";
 
 export default function Chatbot() {
     const [isOpen, setIsOpen] = useState(false);
@@ -40,7 +40,11 @@ export default function Chatbot() {
             const response = await fetch("/api/chat", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ messages: [...messages, { text: userText, isUser: true }] }),
+                body: JSON.stringify({ 
+                    messages: [...messages, { text: userText, isUser: true }],
+                    // CHANGE 1: Sending the current URL path for context awareness
+                    currentPath: window.location.pathname 
+                }),
             });
 
             const data = await response.json();
@@ -68,10 +72,10 @@ export default function Chatbot() {
                         animate={{ opacity: 1, y: 0, scale: 1 }}
                         exit={{ opacity: 0, y: 20, scale: 0.9 }}
                         transition={{ type: "spring", damping: 25, stiffness: 300 }}
-                        className="mb-4 bg-zinc-900 border border-white/10 rounded-2xl shadow-2xl w-[350px] sm:w-[380px] overflow-hidden pointer-events-auto flex flex-col max-h-[600px]"
+                        className="mb-4 bg-white border border-gray-100 rounded-2xl shadow-xl w-[350px] sm:w-[380px] overflow-hidden pointer-events-auto flex flex-col max-h-[600px]"
                     >
                         {/* Header */}
-                        <div className="bg-[#1E4DFF] p-4 flex items-center justify-between">
+                        <div className="bg-[#7C3AED] p-4 flex items-center justify-between">
                             <div className="flex items-center gap-3">
                                 <div className="w-8 h-8 rounded-full bg-white/20 flex items-center justify-center">
                                     <MessageCircle className="w-5 h-5 text-white" />
@@ -80,7 +84,7 @@ export default function Chatbot() {
                                     <h3 className="font-bold text-white text-sm">Bloom Support</h3>
                                     <div className="flex items-center gap-1.5">
                                         <span className="w-2 h-2 rounded-full bg-green-400 animate-pulse" />
-                                        <span className="text-xs text-white/80">Online</span>
+                                        <span className="text-xs text-white/90">Online</span>
                                     </div>
                                 </div>
                             </div>
@@ -93,7 +97,7 @@ export default function Chatbot() {
                         </div>
 
                         {/* Messages Area */}
-                        <div className="flex-1 overflow-y-auto p-4 space-y-4 min-h-[300px] max-h-[400px] bg-zinc-900 scrollbar-thin scrollbar-thumb-zinc-700 scrollbar-track-transparent">
+                        <div className="flex-1 overflow-y-auto p-4 space-y-4 min-h-[300px] max-h-[400px] bg-white scrollbar-thin scrollbar-thumb-gray-200 scrollbar-track-transparent">
                             {messages.map((msg, idx) => (
                                 <motion.div
                                     key={idx}
@@ -102,12 +106,28 @@ export default function Chatbot() {
                                     className={`flex ${msg.isUser ? "justify-end" : "justify-start"}`}
                                 >
                                     <div
-                                        className={`max-w-[80%] p-3 rounded-2xl text-sm leading-relaxed ${msg.isUser
-                                            ? "bg-[#1E4DFF] text-white rounded-br-sm"
-                                            : "bg-zinc-800 text-zinc-100 rounded-bl-sm border border-white/5"
+                                        className={`max-w-[80%] p-3 rounded-2xl text-sm leading-relaxed shadow-sm ${msg.isUser
+                                                ? "bg-[#7C3AED] text-white rounded-br-sm"
+                                                : "bg-[#F3F4F6] text-gray-800 rounded-bl-sm"
                                             }`}
                                     >
-                                        {msg.text}
+                                        <div className="markdown-content">
+                                            <ReactMarkdown
+                                                components={{
+                                                    // CHANGE 2: Updated button text color to Purple (#7C3AED) to match theme
+                                                    a: ({ node, ...props }) => (
+                                                        <a 
+                                                            {...props} 
+                                                            className="inline-block mt-2 px-4 py-2 bg-white text-[#7C3AED] font-bold rounded-lg text-xs hover:bg-gray-100 transition-colors shadow-sm border border-gray-200"
+                                                            target="_blank" 
+                                                            rel="noopener noreferrer"
+                                                        />
+                                                    )
+                                                }}
+                                            >
+                                                {msg.text}
+                                            </ReactMarkdown>
+                                        </div>
                                     </div>
                                 </motion.div>
                             ))}
@@ -117,11 +137,11 @@ export default function Chatbot() {
                                     animate={{ opacity: 1, y: 0 }}
                                     className="flex justify-start"
                                 >
-                                    <div className="bg-zinc-800 text-zinc-100 rounded-bl-sm rounded-2xl border border-white/5 p-3">
+                                    <div className="bg-[#F3F4F6] text-gray-800 rounded-bl-sm rounded-2xl p-3">
                                         <div className="flex gap-1">
-                                            <span className="w-1.5 h-1.5 bg-zinc-500 rounded-full animate-bounce [animation-delay:-0.3s]"></span>
-                                            <span className="w-1.5 h-1.5 bg-zinc-500 rounded-full animate-bounce [animation-delay:-0.15s]"></span>
-                                            <span className="w-1.5 h-1.5 bg-zinc-500 rounded-full animate-bounce"></span>
+                                            <span className="w-1.5 h-1.5 bg-gray-400 rounded-full animate-bounce [animation-delay:-0.3s]"></span>
+                                            <span className="w-1.5 h-1.5 bg-gray-400 rounded-full animate-bounce [animation-delay:-0.15s]"></span>
+                                            <span className="w-1.5 h-1.5 bg-gray-400 rounded-full animate-bounce"></span>
                                         </div>
                                     </div>
                                 </motion.div>
@@ -130,25 +150,25 @@ export default function Chatbot() {
                         </div>
 
                         {/* Input Area */}
-                        <form onSubmit={handleSendMessage} className="p-3 bg-zinc-900 border-t border-white/10">
+                        <form onSubmit={handleSendMessage} className="p-3 bg-white border-t border-gray-100">
                             <div className="relative flex items-center gap-2">
                                 <input
                                     type="text"
                                     value={inputValue}
                                     onChange={(e) => setInputValue(e.target.value)}
                                     placeholder="Type a message..."
-                                    className="w-full bg-zinc-800/50 text-zinc-100 placeholder-zinc-500 rounded-xl py-3 pl-4 pr-12 text-sm focus:outline-none focus:ring-1 focus:ring-[#1E4DFF]/50 border border-white/5 transition-all"
+                                    className="w-full bg-gray-50 text-gray-800 placeholder-gray-400 rounded-xl py-3 pl-4 pr-12 text-sm focus:outline-none focus:ring-2 focus:ring-[#7C3AED]/20 focus:border-[#7C3AED] border border-gray-200 transition-all"
                                 />
                                 <button
                                     type="submit"
                                     disabled={!inputValue.trim()}
-                                    className="absolute right-2 p-1.5 bg-[#1E4DFF] text-white rounded-lg hover:bg-blue-600 disabled:opacity-50 disabled:hover:bg-[#1E4DFF] transition-colors"
+                                    className="absolute right-2 p-1.5 bg-[#7C3AED] text-white rounded-lg hover:bg-[#6D28D9] disabled:opacity-50 disabled:hover:bg-[#7C3AED] transition-colors"
                                 >
                                     <Send className="w-4 h-4" />
                                 </button>
                             </div>
                             <div className="text-center mt-2">
-                                <p className="text-[10px] text-zinc-500">Powered by Bloom AI</p>
+                                <p className="text-[10px] text-gray-400">Powered by Bloom AI</p>
                             </div>
                         </form>
                     </motion.div>
@@ -162,9 +182,8 @@ export default function Chatbot() {
                 onMouseLeave={() => setIsHovered(false)}
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
-                className="pointer-events-auto w-14 h-14 rounded-full bg-[#1E4DFF] shadow-lg shadow-blue-900/40 flex items-center justify-center text-white relative group overflow-hidden"
+                className="pointer-events-auto w-14 h-14 rounded-full bg-[#7C3AED] shadow-lg shadow-[#7C3AED]/30 flex items-center justify-center text-white relative group overflow-hidden"
             >
-                {/* Wave effect implementation */}
                 {isHovered && !isOpen && (
                     <span className="absolute inset-0 rounded-full border-2 border-white/30 animate-ping" />
                 )}
