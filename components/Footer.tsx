@@ -133,6 +133,7 @@ export default function Footer() {
                 { href: '/services', label: 'Services' },
                 { href: '/clients', label: 'Clients' },
                 { href: '/testimonials', label: 'Testimonials' },
+                { href: '/contact', label: 'Contact' },
               ].map((item, index) => (
                 <motion.div
                   key={item.href}
