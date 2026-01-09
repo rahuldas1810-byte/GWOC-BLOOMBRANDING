@@ -16,11 +16,8 @@ export const getTestimonials = async (retries = 3): Promise<Testimonial[]> => {
         const controller = new AbortController()
         const timeoutId = setTimeout(() => controller.abort(), 10000) // 10 second timeout
 
-        const response = await fetch(`${baseUrl}/api/public/testimonials?t=${Date.now()}`, {
-          cache: 'no-store',
-          headers: {
-            'Cache-Control': 'no-cache',
-          },
+        const response = await fetch(`${baseUrl}/api/public/testimonials`, {
+          next: { revalidate: 300 }, // Cache for 5 minutes
           signal: controller.signal,
         })
 
@@ -75,11 +72,8 @@ export const getClients = async (): Promise<Client[]> => {
     const baseUrl = typeof window !== 'undefined'
       ? ''
       : process.env.NEXT_PUBLIC_SITE_URL || 'http://localhost:3000'
-    const response = await fetch(`${baseUrl}/api/public/clients?t=${Date.now()}`, {
-      cache: 'no-store', // Always fetch fresh data
-      headers: {
-        'Cache-Control': 'no-cache',
-      },
+    const response = await fetch(`${baseUrl}/api/public/clients`, {
+      next: { revalidate: 300 }, // Cache for 5 minutes
     })
 
     if (!response.ok) {
@@ -126,11 +120,8 @@ export const getHomepageContent = async (retries = 3): Promise<HomepageContent> 
         const controller = new AbortController()
         const timeoutId = setTimeout(() => controller.abort(), 10000) // 10 second timeout
 
-        const response = await fetch(`${baseUrl}/api/public/homepage?t=${Date.now()}`, {
-          cache: 'no-store',
-          headers: {
-            'Cache-Control': 'no-cache',
-          },
+        const response = await fetch(`${baseUrl}/api/public/homepage`, {
+          next: { revalidate: 300 }, // Cache for 5 minutes
           signal: controller.signal,
         })
 
@@ -203,11 +194,8 @@ export const getServices = async () => {
     const baseUrl = typeof window !== 'undefined'
       ? ''
       : process.env.NEXT_PUBLIC_SITE_URL || 'http://localhost:3000'
-    const response = await fetch(`${baseUrl}/api/public/services?t=${Date.now()}`, {
-      cache: 'no-store',
-      headers: {
-        'Cache-Control': 'no-cache',
-      },
+    const response = await fetch(`${baseUrl}/api/public/services`, {
+      next: { revalidate: 300 }, // Cache for 5 minutes
     })
 
     if (!response.ok) {
@@ -231,11 +219,8 @@ export const getOurStory = async () => {
     const baseUrl = typeof window !== 'undefined'
       ? ''
       : process.env.NEXT_PUBLIC_SITE_URL || 'http://localhost:3000'
-    const response = await fetch(`${baseUrl}/api/public/our-story?t=${Date.now()}`, {
-      cache: 'no-store',
-      headers: {
-        'Cache-Control': 'no-cache',
-      },
+    const response = await fetch(`${baseUrl}/api/public/our-story`, {
+      next: { revalidate: 300 }, // Cache for 5 minutes
     })
 
     if (!response.ok) {
@@ -259,11 +244,8 @@ export const getContact = async () => {
     const baseUrl = typeof window !== 'undefined'
       ? ''
       : process.env.NEXT_PUBLIC_SITE_URL || 'http://localhost:3000'
-    const response = await fetch(`${baseUrl}/api/public/contact?t=${Date.now()}`, {
-      cache: 'no-store',
-      headers: {
-        'Cache-Control': 'no-cache',
-      },
+    const response = await fetch(`${baseUrl}/api/public/contact`, {
+      next: { revalidate: 300 }, // Cache for 5 minutes
     })
 
     if (!response.ok) {
@@ -287,11 +269,8 @@ export const getSiteSettings = async () => {
     const baseUrl = typeof window !== 'undefined'
       ? ''
       : process.env.NEXT_PUBLIC_SITE_URL || 'http://localhost:3000'
-    const response = await fetch(`${baseUrl}/api/public/site-settings?t=${Date.now()}`, {
-      cache: 'no-store',
-      headers: {
-        'Cache-Control': 'no-cache',
-      },
+    const response = await fetch(`${baseUrl}/api/public/site-settings`, {
+      next: { revalidate: 300 }, // Cache for 5 minutes
     })
 
     if (!response.ok) {
@@ -322,11 +301,8 @@ export const getBrands = async (category?: string, retries = 3) => {
         const controller = new AbortController()
         const timeoutId = setTimeout(() => controller.abort(), 10000) // 10 second timeout
 
-        const response = await fetch(`${baseUrl}/api/public/brands${query}?t=${Date.now()}`, {
-          cache: 'no-store',
-          headers: {
-            'Cache-Control': 'no-cache',
-          },
+        const response = await fetch(`${baseUrl}/api/public/brands${query}`, {
+          next: { revalidate: 300 }, // Cache for 5 minutes
           signal: controller.signal,
         })
 
