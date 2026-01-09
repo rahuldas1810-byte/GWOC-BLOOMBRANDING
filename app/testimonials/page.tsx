@@ -9,6 +9,7 @@ import { getTestimonials, getBrands, getSiteSettings } from "@/lib/content";
 import type { Testimonial } from "@/types";
 import SliceReveal from "@/components/SliceReveal";
 import MagneticButton from "@/components/MagneticButton";
+import TestimonialsCTA from "@/components/TestimonialsCTA";
 
 export default function Testimonials() {
   const [testimonials, setTestimonials] = useState<Testimonial[]>([]);
@@ -260,7 +261,7 @@ export default function Testimonials() {
 
       {/* ================= SPLIT TESTIMONIALS ================= */}
       {testimonials.length > 0 && (
-        <section id="client-reviews" className="relative bg-white pb-20">
+        <section id="client-reviews" className="relative bg-white pb-0">
           <div className="flex relative">
             {/* Left Sticky Image */}
             <div className="sticky top-[20vh] w-[55%] h-[60vh] bg-earl-gray/30 flex items-center justify-center p-12 md:p-16 lg:p-20">
@@ -338,7 +339,9 @@ export default function Testimonials() {
           </div>
         </section>
       )}
-      <div className="h-[80vh] bg-white w-full" />
+
+      {/* ================= NEW CTA SECTION ================= */}
+      <TestimonialsCTA />
     </div>
   );
 }
