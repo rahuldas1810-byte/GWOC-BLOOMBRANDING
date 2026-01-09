@@ -28,7 +28,7 @@ export default function Testimonials() {
         setTestimonials(testimonialsData || []);
         setBrands(brandsData || []);
         setSiteSettings(settings);
-        
+
         // Set first category if brands exist
         if (brandsData && brandsData.length > 0) {
           const categories = Array.from(
@@ -186,10 +186,9 @@ export default function Testimonials() {
                   whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.95 }}
                   className={`px-7 py-2.5 rounded-full text-[11px] tracking-[0.25em] uppercase transition-all duration-300 font-medium
-                    ${
-                      isActive
-                        ? "bg-dark-choc text-white shadow-md"
-                        : "border border-dark-choc/30 text-dark-choc hover:border-dark-choc hover:bg-dark-choc/5"
+                    ${isActive
+                      ? "bg-dark-choc text-white shadow-md"
+                      : "border border-dark-choc/30 text-dark-choc hover:border-dark-choc hover:bg-dark-choc/5"
                     }
                   `}
                 >
@@ -268,13 +267,13 @@ export default function Testimonials() {
               <div className="relative w-full h-full pr-24">
                 {testimonials.map((testimonial, index) => {
                   if (!testimonial || !testimonial.image) return null;
-                  
-                  const imageUrl = typeof testimonial.image === 'string' 
-                    ? testimonial.image 
+
+                  const imageUrl = typeof testimonial.image === 'string'
+                    ? testimonial.image
                     : (testimonial.image as any)?.url || '';
-                  
+
                   if (!imageUrl) return null;
-                  
+
                   return (
                     <motion.div
                       key={testimonial.id || index}
@@ -339,6 +338,7 @@ export default function Testimonials() {
           </div>
         </section>
       )}
+      <div className="h-[80vh] bg-white w-full" />
     </div>
   );
 }

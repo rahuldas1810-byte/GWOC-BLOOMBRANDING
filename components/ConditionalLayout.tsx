@@ -4,6 +4,7 @@ import { usePathname } from 'next/navigation'
 import Navbar from '@/components/Navbar'
 import Footer from '@/components/Footer'
 import ScrollToTop from '@/components/ScrollToTop'
+import Chatbot from '@/components/Chatbot'
 
 export default function ConditionalLayout({
   children,
@@ -25,6 +26,7 @@ export default function ConditionalLayout({
       <main>{children}</main>
       <Footer />
       <ScrollToTop />
+      <Chatbot />
     </>
   )
 }
