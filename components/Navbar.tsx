@@ -1,192 +1,223 @@
 "use client";
 
-import { useState } from "react";
+import React, { useState } from "react";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
-import { motion, AnimatePresence, useScroll, useMotionValueEvent } from "framer-motion";
 import Image from "next/image";
+import { usePathname } from "next/navigation";
+import { motion, AnimatePresence } from "framer-motion";
+import { Menu, Linkedin, Facebook, Instagram } from "lucide-react";
+import { Playfair_Display, Inter, Bodoni_Moda } from "next/font/google";
 
-const navItems = [
-  { href: "/", label: "Home" },
-  { href: "/our-story", label: "Our Story" },
-  { href: "/services", label: "Services" },
-  { href: "/clients", label: "Clients" },
-  { href: "/testimonials", label: "Testimonials" },
+// 1. Setup Fonts
+const playfair = Playfair_Display({ subsets: ["latin"], variable: "--font-serif" });
+const inter = Inter({ subsets: ["latin"], variable: "--font-sans" });
+const bodoni = Bodoni_Moda({ 
+  subsets: ["latin"], 
+  variable: "--font-bodoni",
+  display: "swap"
+});
+
+// Updated Menu Data
+const menuItems = [
+  { label: "Home", href: "/" },
+  { label: "Our Story", href: "/our-story" },
+  { label: "Services", href: "/services" },
+  { label: "Testimonials", href: "/testimonials" },
+  { label: "Contact", href: "/contact" },
+];
+
+const contactInfo = [
+  { title: "Bloom Industries", lines: ["Rua do Faro 123", "4740-531 Esposende, PT"] },
+  { title: "Factory Hours", lines: ["Monday to Friday", "08:00h – 17:30h*"] },
+  { title: "Customer Service", lines: ["Service by appointment*"] },
+  { title: "Contact", lines: ["comercial@bloombranding.com", "(+351) 933 209 045"] },
 ];
 
 export default function Navbar() {
+  const [isOpen, setIsOpen] = useState(false);
   const pathname = usePathname();
-  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const [isScrolled, setIsScrolled] = useState(false);
-  const { scrollY } = useScroll();
 
-  useMotionValueEvent(scrollY, "change", (latest) => {
-    setIsScrolled(latest > 20);
-  });
+  const toggleMenu = () => setIsOpen(!isOpen);
+
+  // Determine current page label
+  const getCurrentPageLabel = () => {
+    if (pathname === "/") return "HOME";
+    const label = pathname.replace("/", "").replace(/[-_]/g, " ").toUpperCase();
+    return label || "HOME"; 
+  };
+
+  // --- Change Set 3: Pills Color Behavior ---
+  const pillBaseClasses = "bg-[#F3F0E7] text-[#3E2B26] border-[#3E2B26]";
+  const pillActiveClasses = "bg-[#3E2B26] text-[#F3F0E7] border-[#3E2B26]";
+
+  const showpieceClass = pillBaseClasses;
+  const controlPillClass = isOpen ? pillActiveClasses : pillBaseClasses;
 
   return (
-    <>
-      <motion.nav
-        initial={{ y: -100, opacity: 0 }}
-        animate={{ y: 0, opacity: 1 }}
-        transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-        className={`fixed top-0 left-0 w-full z-50 transition-all duration-700 ease-out
-          ${isScrolled
-            ? "bg-[#F6F4F1] py-3 shadow-[0_10px_30px_rgba(0,0,0,0.06)]"
-            : "bg-transparent py-6"
-          }`}
-      >
-        <div className="w-full pl-10 pr-6 lg:pl-16 lg:pr-12">
-          <div className="flex items-center">
-            {/* Logo */}
-            <Link href="/" className="relative z-50 group block">
-              <motion.div
-                animate={{ scale: isScrolled ? 1.0 : 1.15 }}
-                transition={{ duration: 0.5, ease: "easeOut" }}
-                className="relative origin-left"
-              >
-                {/* Nested div for independent hover scaling */}
-                <div className="group-hover:scale-[1.02] transition-transform duration-300 ease-out origin-left">
-                  <Image
-                    src="/bloom-logo.png"
-                    alt="Bloom Branding Logo"
-                    width={260}
-                    height={70}
-                    className="h-full max-h-[56px] w-auto object-contain"
-                    priority
-                  />
-                </div>
-              </motion.div>
-            </Link>
+    <div className={`${playfair.variable} ${inter.variable} ${bodoni.variable} font-sans`}>
+      {/* 
+         --- Top Navigation Bar (Always Visible) --- 
+      */}
+      <nav className="fixed top-0 left-0 w-full z-[60] px-6 md:px-12 py-8 flex justify-between items-center bg-transparent mix-blend-mode-difference text-[#3E2B26] pointer-events-none">
+        
+        {/* Logo */}
+        <Link href="/" className="font-serif text-2xl md:text-3xl tracking-widest uppercase pointer-events-auto mix-blend-difference text-[#3E2B26]">
+          BLOOM BRANDING
+        </Link>
+        
+        {/* Header Controls - Squiggle & Wave Pills */}
+        <div className="flex items-center gap-3 pointer-events-auto mix-blend-normal">
+           
+           {/* Pill 1: Decorative Squiggle (Outlined) */}
+           <div className="hidden md:flex items-center justify-center w-[72px] h-[44px] rounded-full border border-[#3E2B26] text-[#3E2B26] bg-transparent transition-all duration-300">
+             <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+                {/* Abstract 'W' Squiggle */}
+                <path d="M5 13C6.5 13 7.5 10 9.5 10C11.5 10 12.5 14 14.5 14C16.5 14 17.5 10 19 10" />
+             </svg>
+           </div>
 
-            {/* Desktop Navigation */}
-            <div className="hidden lg:flex items-center gap-8 ml-10">
-              {navItems.map((item) => {
-                const isActive = pathname === item.href;
-                return (
-                  <Link
-                    key={item.href}
-                    href={item.href}
-                    className="relative group py-2"
-                  >
-                    <motion.span
-                      className={`block text-[14px] font-semibold uppercase tracking-[0.25em] transition-all duration-300 ${isScrolled
-                        ? isActive
-                          ? "text-[#2E4AA7]"
-                          : "text-[#4B4B4B] group-hover:text-[#2E4AA7]"
-                        : isActive
-                          ? "text-[#2E4AA7]"
-                          : "text-[#3b2f2f] group-hover:text-[#2E4AA7]"
-                        }`}
-
-                      whileHover={{ y: -2 }}
-                    >
-                      {item.label}
-                    </motion.span>
-
-                    {/* Active Indicator */}
-                    {isActive && (
-                      <motion.div
-                        layoutId="active-nav-indicator"
-                        className="absolute -bottom-1 left-0 right-0 h-[1.5px] bg-[#2E4AA7]/30"
-                        transition={{ type: "spring", stiffness: 300, damping: 30 }}
-                      />
-                    )}
-                  </Link>
-                );
-              })}
-            </div>
-
-            {/* CTA & Mobile Toggle */}
-            <div className="flex items-center gap-6 ml-auto">
-              <Link
-                href="/contact"
-                className={`hidden lg:inline-block px-8 py-2.5 text-[12px] font-medium uppercase tracking-[0.25em] transition-all duration-300
-                  ${isScrolled
-                    ? "border border-[#2E4AA7] text-[#2E4AA7] hover:bg-[#2E4AA7] hover:text-white"
-                    : "border border-[#3b2f2f]/30 text-[#3b2f2f] hover:bg-[#3b2f2f] hover:text-white"
-                  }
-                `}
-
-              >
-                Let&apos;s Talk
-              </Link>
-
-              {/* Mobile Menu Button */}
-              <button
-                onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-                className="lg:hidden p-2 text-[#6B6B6B] z-50 relative hover:text-[#2E4AA7] transition-colors"
-                aria-label="Toggle menu"
-              >
-                <svg
-                  className="w-6 h-6"
-                  fill="none"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth="1.5"
-                  viewBox="0 0 24 24"
-                  stroke="currentColor"
-                >
-                  {mobileMenuOpen ? (
-                    <path d="M6 18L18 6M6 6l12 12" />
-                  ) : (
-                    <path d="M4 6h16M4 12h16M4 18h16" />
-                  )}
-                </svg>
-              </button>
-            </div>
-          </div>
+           {/* Pill 2: Page Label (Removed per request) */}
+           
+           {/* Pill 3: Menu Toggle (Solid, Double Wave) */}
+           <button 
+             onClick={toggleMenu}
+             className="flex items-center justify-center w-24 h-[44px] rounded-full bg-[#3E2B26] text-[#F3F0E7] border-none transition-transform duration-300 hover:scale-[1.02] active:scale-95"
+           >
+             <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+               {/* Double Wave/Stream Icon */}
+               <path d="M4 9C7 9 9 11 12 11C15 11 17 9 20 9" />
+               <path d="M4 15C7 15 9 17 12 17C15 17 17 15 20 15" />
+             </svg>
+           </button>
         </div>
+      </nav>
 
-        {/* Mobile Menu */}
-        <AnimatePresence>
-          {mobileMenuOpen && (
+      {/* --- The Menu Overlay --- */}
+      <AnimatePresence>
+        {isOpen && (
+          <>
+            {/* Backdrop */}
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              onClick={toggleMenu}
+              className="fixed inset-0 bg-black/40 z-40 backdrop-blur-sm"
+            />
+
+            {/* Menu Container */}
             <motion.div
               initial={{ height: 0, opacity: 0 }}
-              animate={{ height: "auto", opacity: 1 }}
+              animate={{ height: "70vh", opacity: 1 }}
               exit={{ height: 0, opacity: 0 }}
-              transition={{ duration: 0.4, ease: "easeInOut" }}
-              className="lg:hidden border-t border-black/[0.05] bg-[#F6F4F1]/95 backdrop-blur-xl overflow-hidden"
+              transition={{ duration: 0.8, ease: [0.19, 1, 0.22, 1] }} 
+              className="fixed top-0 left-0 w-full bg-[#EAE8DC] text-[#3E2B26] rounded-b-[3rem] shadow-2xl z-50 overflow-hidden flex flex-col"
             >
-              <div className="container-custom py-10 space-y-6 flex flex-col items-start px-4">
-                {navItems.map((item, i) => (
-                  <motion.div
-                    key={item.href}
-                    initial={{ x: -20, opacity: 0 }}
-                    animate={{ x: 0, opacity: 1 }}
-                    transition={{ delay: i * 0.05 }}
-                  >
-                    <Link
-                      href={item.href}
-                      onClick={() => setMobileMenuOpen(false)}
-                      className={`block font-mono text-sm uppercase tracking-[0.2em] transition-colors duration-300 ${pathname === item.href
-                        ? "text-[#2E4AA7]"
-                        : "text-[#6B6B6B] hover:text-[#2E4AA7]"
-                        }`}
-                    >
-                      {item.label}
-                    </Link>
-                  </motion.div>
-                ))}
-                <motion.div
-                  initial={{ x: -20, opacity: 0 }}
-                  animate={{ x: 0, opacity: 1 }}
-                  transition={{ delay: navItems.length * 0.05 }}
-                  className="pt-4"
-                >
-                  <Link
-                    href="/contact"
-                    onClick={() => setMobileMenuOpen(false)}
-                    className="inline-block font-mono text-[11px] uppercase tracking-[0.2em] text-white bg-[#2E4AA7] px-8 py-3.5 hover:bg-opacity-90 transition-colors"
-                  >
-                    Get Started
-                  </Link>
-                </motion.div>
+              
+              {/* Inner Header - Invisible Ghost Logo */}
+              <div className="flex justify-between items-center px-6 md:px-12 py-8 w-full shrink-0">
+                <Link href="/" onClick={() => setIsOpen(false)} className="font-serif text-2xl md:text-3xl tracking-widest uppercase text-[#3E2B26] invisible">BLOOM BRANDING</Link>
+              </div>
+
+              {/* Grid Layout Content */}
+              <div className="flex-1 grid grid-cols-1 lg:grid-cols-12 px-6 md:px-12 pb-12 pt-4 h-full overflow-y-auto lg:overflow-visible">
+                
+                {/* Column 1: Branding & Visuals (Grouped at Bottom) */}
+                <div className="hidden lg:flex col-span-3 flex-col h-full pr-8 justify-end pb-24 gap-10">
+                  {/* Top: Copyright (Bodoni) */}
+                  <div>
+                    <h2 className="font-bodoni text-3xl mb-2"><span className="mr-1 font-sans text-lg relative -top-[2px]">©</span>2026</h2>
+                    <p className="text-xs text-[#3E2B26]/70 w-3/4 leading-relaxed font-sans">
+                      Bloom Branding Industries. All rights reserved.
+                    </p>
+                  </div>
+
+                  {/* Middle: Socials (Real Links) */}
+                  <div className="flex gap-4">
+                    {[
+                      { Icon: Linkedin, href: "https://in.linkedin.com/company/bloombranding-digital-media-marketing-branding-agency" },
+                      { Icon: Facebook, href: "https://www.facebook.com/hello.bloombranding/" },
+                      { Icon: Instagram, href: "https://www.instagram.com/bloom.branding_/" }
+                    ].map(({ Icon, href }, i) => (
+                      <Link
+                        key={i}
+                        href={href}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="w-10 h-10 rounded-full bg-[#3E2B26] text-[#F3F0E7] flex items-center justify-center hover:bg-[#5A4238] transition duration-300"
+                      >
+                        <Icon size={18} strokeWidth={1.5} />
+                      </Link>
+                    ))}
+                  </div>
+
+                  {/* Bottom: Image (Replaces Video) */}
+                  <div className="w-full max-w-[270px] aspect-video rounded-lg relative overflow-hidden shadow-sm group cursor-pointer">
+                    <Image 
+                      src="/bloom-1.jpg" 
+                      alt="Bloom Branding Visual" 
+                      fill 
+                      className="object-cover group-hover:scale-105 transition duration-700 opacity-90 group-hover:opacity-100" 
+                    />
+                  </div>
+                </div>
+
+                {/* Column 2: Navigation Links (No Italic Active) */}
+                <div className="col-span-1 lg:col-span-5 flex flex-col justify-center lg:pl-12 lg:border-l border-[#3E2B26]/10">
+                  <ul className="flex flex-col pl-16">
+                    {menuItems.map((item, idx) => {
+                      const isActive = pathname === item.href;
+                      return (
+                        <li key={item.label} className="group relative">
+                          <Link 
+                            href={item.href}
+                            onClick={() => setIsOpen(false)}
+                            className={`font-bodoni block transition-all duration-500 antialiased font-normal tracking-[-0.04em] leading-[0.9] py-0
+                              text-5xl md:text-6xl lg:text-[5.5rem]
+                              ${isActive 
+                                ? "text-[#3E2B26] opacity-100 translate-x-4 font-medium" 
+                                : "text-[#3E2B26] opacity-30 hover:opacity-100 hover:translate-x-4"
+                              }`}
+                          >
+                           <span className="inline-block relative">
+                              {/* Arrow Indicator */}
+                              {isActive && (
+                                <span className="absolute -left-16 top-1/2 -translate-y-[45%] text-5xl font-light text-[#3E2B26]">
+                                  ›
+                                </span>
+                              )}
+                              {item.label}
+                           </span>
+                          </Link>
+                        </li>
+                      );
+                    })}
+                  </ul>
+                </div>
+
+                {/* Column 3: Info Details (Compact Typography) */}
+                <div className="hidden lg:flex col-span-3 flex-col justify-center pl-16 space-y-4 text-[#3E2B26]">
+                  {contactInfo.map((info) => (
+                    <div key={info.title}>
+                      {/* Label: Very Small, Muted, Sans, Uppercase */}
+                      <h3 className="font-sans text-xs text-[#3E2B26]/50 mb-0 uppercase tracking-widest">
+                        {info.title}
+                      </h3>
+                      {/* Value: Medium-Large, Clean, Sans */}
+                      {info.lines.map((line, i) => (
+                        <p key={i} className="font-sans text-lg md:text-xl text-[#3E2B26] font-light leading-tight">
+                          {line}
+                        </p>
+                      ))}
+                    </div>
+                  ))}
+                </div>
+
               </div>
             </motion.div>
-          )}
-        </AnimatePresence>
-      </motion.nav>
-    </>
+          </>
+        )}
+      </AnimatePresence>
+    </div>
   );
 }
