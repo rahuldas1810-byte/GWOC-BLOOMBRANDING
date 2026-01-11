@@ -1,5 +1,6 @@
 'use client';
 import { useEffect, useRef, useState } from 'react';
+import { motion } from 'framer-motion';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/dist/ScrollTrigger';
 
@@ -7,7 +8,10 @@ import Link from 'next/link';
 import { ArrowRight } from 'lucide-react';
 import SectionReveal from '@/components/SectionReveal';
 import { getSiteSettings } from '@/lib/content';
+
+
 import Hero from '@/components/Hero-services';
+import PolaroidParallaxSection from '@/components/PolaroidParallaxSection';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -88,10 +92,19 @@ export default function ServicesPage() {
   }, []);
 
   return (
-    <div ref={containerRef} className="bg-[#F2F0E9] min-h-screen text-[#2c2420] overflow-x-hidden">
+    <motion.div 
+      ref={containerRef} 
+      className="bg-[#F2F0E9] min-h-screen text-[#2c2420] overflow-x-hidden"
+      initial={{ opacity: 0, y: 8 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.8, ease: "easeOut" }}
+    >
 
       {/* HERO SECTION */}
       <Hero />
+
+      {/* NEW POLAROID PARALLAX SECTION */}
+      <PolaroidParallaxSection />
 
       {/* TEXT SECTION 1 - FIX: Reduced Padding to close gap */}
       <section className="px-6 md:px-20 pt-10 pb-20 flex flex-col justify-center">
@@ -164,6 +177,6 @@ export default function ServicesPage() {
       {/* FIX: Increased Bottom Spacer to 50vh to ensure text scrolls into view */}
       <div className="h-[50vh]"></div>
 
-    </div>
+    </motion.div>
   );
 }

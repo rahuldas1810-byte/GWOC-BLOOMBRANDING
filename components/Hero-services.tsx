@@ -1,6 +1,7 @@
 'use client';
 
 import { useRef, useEffect } from 'react';
+import { motion } from 'framer-motion';
 import gsap from 'gsap';
 import { useGSAP } from '@gsap/react';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
@@ -75,7 +76,12 @@ export default function Hero() {
         {/* Left Side: Content */}
         {/* Mobile: w-full h-[55%] px-6 | Desktop: w-[45%] h-full pl-[5vw] */}
         <div className="w-full h-[55%] md:w-[45%] md:h-full flex flex-col justify-center px-6 md:px-0 md:pl-[5vw] relative z-20">
-          <h1 className={`${manrope.className} text-[#E8E6DD] text-4xl md:text-[clamp(2rem,3.2vw,4rem)] leading-[1.15] font-normal tracking-tight`}>
+          <motion.h1 
+            initial={{ opacity: 0, y: 8 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, ease: "easeOut" }}
+            className={`${manrope.className} text-[#E8E6DD] text-4xl md:text-[clamp(2rem,3.2vw,4rem)] leading-[1.15] font-normal tracking-tight`}
+          >
             <span className="block">Bloom</span>
             <span className="block">Branding</span>
             <span className="block">manages projects</span>
@@ -83,13 +89,13 @@ export default function Hero() {
             <span className="block">to site for compact</span>
             <span className="block">homes to custom</span>
             <span className="block">superstructures.</span>
-          </h1>
+          </motion.h1>
 
           <div className={`${prata.className} mt-6 md:mt-10 flex items-center gap-4 text-xs uppercase tracking-[0.2em] text-[#E8E6DD] opacity-70`}>
             <svg className="w-6 h-3 stroke-current stroke-[1] fill-none" viewBox="0 0 24 24">
               <path d="M4 12h16M14 6l6 6-6 6" />
             </svg>
-            <span>Comporta, Portugal</span>
+            <span>Gujarat, India</span>
           </div>
         </div>
 
