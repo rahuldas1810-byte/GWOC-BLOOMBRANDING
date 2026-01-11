@@ -96,16 +96,16 @@ export default function ServicesPage() {
       {/* TEXT SECTION 1 - FIX: Reduced Padding to close gap */}
       <section className="px-6 md:px-20 pt-10 pb-20 flex flex-col justify-center">
         <div className="max-w-7xl mx-auto space-y-6">
-          <SplitText className="text-5xl md:text-7xl lg:text-8xl font-serif leading-[1.05]">
+          <SplitText className="text-3xl md:text-5xl lg:text-6xl font-serif leading-[1.05]">
             Effortlessly sustainable.
           </SplitText>
-          <SplitText className="text-5xl md:text-7xl lg:text-8xl font-serif leading-[1.05]">
+          <SplitText className="text-3xl md:text-5xl lg:text-6xl font-serif leading-[1.05]">
             The perfect living space.
           </SplitText>
-          <SplitText className="text-5xl md:text-7xl lg:text-8xl font-serif leading-[1.05] italic">
+          <SplitText className="text-3xl md:text-5xl lg:text-6xl font-serif leading-[1.05] italic">
             Built just like in your mind.
           </SplitText>
-          <SplitText className="text-5xl md:text-7xl lg:text-8xl font-serif leading-[1.05]">
+          <SplitText className="text-3xl md:text-5xl lg:text-6xl font-serif leading-[1.05]">
             Timelessly modern.
           </SplitText>
         </div>
@@ -133,16 +133,16 @@ export default function ServicesPage() {
       <section className="px-6 md:px-20 pt-20 pb-10 flex flex-col justify-center">
         <div className="max-w-7xl mx-auto space-y-6 mb-20">
           {/* UPDATED BRANDING COPY */}
-          <SplitText className="text-5xl md:text-7xl lg:text-8xl font-serif leading-[1.05]">
+          <SplitText className="text-3xl md:text-5xl lg:text-6xl font-serif leading-[1.05]">
             Your narrative is unfolding.
           </SplitText>
-          <SplitText className="text-5xl md:text-7xl lg:text-8xl font-serif leading-[1.05]">
+          <SplitText className="text-3xl md:text-5xl lg:text-6xl font-serif leading-[1.05]">
             Strategic clarity.
           </SplitText>
-          <SplitText className="text-5xl md:text-7xl lg:text-8xl font-serif leading-[1.05] italic">
+          <SplitText className="text-3xl md:text-5xl lg:text-6xl font-serif leading-[1.05] italic">
             Bold, authentic.
           </SplitText>
-          <SplitText className="text-5xl md:text-7xl lg:text-8xl font-serif leading-[1.05]">
+          <SplitText className="text-3xl md:text-5xl lg:text-6xl font-serif leading-[1.05]">
             Let’s turn your vision into reality.
           </SplitText>
         </div>

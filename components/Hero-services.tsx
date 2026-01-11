@@ -22,7 +22,7 @@ export default function Hero() {
   useEffect(() => {
     // Add class immediately when component mounts
     document.body.classList.add('nav-white');
-    
+
     // Cleanup: remove class when user leaves this page
     return () => {
       document.body.classList.remove('nav-white');
@@ -34,9 +34,9 @@ export default function Hero() {
       scrollTrigger: {
         trigger: containerRef.current,
         start: 'top top',
-        end: '+=250%', // Adjusted for perfect pacing
+        end: '+=150%', // Reduced from 250% for faster scroll (1-2 scrolls)
         // SCROLL LAG FIX: Set to 0 for instant, 1:1 response with no delay
-        scrub: 0, 
+        scrub: 0,
         pin: true,
         anticipatePin: 1,
       },
@@ -57,19 +57,19 @@ export default function Hero() {
     }, 0);
 
     tl.to([leftDetailRef.current, rightDetailRef.current], {
-        opacity: 0.6,
-        duration: 1,
-        ease: 'none'
+      opacity: 0.6,
+      duration: 1,
+      ease: 'none'
     }, 0);
 
   }, { scope: containerRef });
 
   return (
     <section ref={containerRef} className="relative w-full h-screen overflow-hidden bg-[#4A3B32]">
-      
+
       {/* Split Layer */}
-      <div 
-        ref={splitLayerRef} 
+      <div
+        ref={splitLayerRef}
         className="absolute top-0 left-0 w-full h-full flex flex-col md:flex-row z-10 bg-[#4A3B32] will-change-[transform,opacity]"
       >
         {/* Left Side: Content */}
@@ -87,7 +87,7 @@ export default function Hero() {
 
           <div className={`${prata.className} mt-6 md:mt-10 flex items-center gap-4 text-xs uppercase tracking-[0.2em] text-[#E8E6DD] opacity-70`}>
             <svg className="w-6 h-3 stroke-current stroke-[1] fill-none" viewBox="0 0 24 24">
-              <path d="M4 12h16M14 6l6 6-6 6"/>
+              <path d="M4 12h16M14 6l6 6-6 6" />
             </svg>
             <span>Comporta, Portugal</span>
           </div>
@@ -96,11 +96,11 @@ export default function Hero() {
         {/* Right Side Video */}
         {/* Mobile: w-full h-[45%] | Desktop: w-[55%] h-full */}
         <div className="w-full h-[45%] md:w-[55%] md:h-full relative overflow-hidden">
-          <video 
-            autoPlay 
-            loop 
-            muted 
-            playsInline 
+          <video
+            autoPlay
+            loop
+            muted
+            playsInline
             className="w-full h-full object-cover brightness-90 sepia-[0.15] will-change-contents"
           >
             <source src="https://videos.pexels.com/video-files/3205626/3205626-hd_1920_1080_25fps.mp4" type="video/mp4" />
@@ -111,12 +111,12 @@ export default function Hero() {
       {/* Aesthetic Details */}
       {/* Hidden on Mobile */}
       <div ref={leftDetailRef} className={`hidden md:block absolute left-[2vw] top-1/2 -translate-y-1/2 z-20 opacity-0 writing-vertical-lr rotate-180 ${manrope.className} text-[#E8E6DD] text-[10px] tracking-[0.3em] uppercase`}>
-         Est. 2024 — Strategic Living
+        Est. 2024 — Strategic Living
       </div>
       {/* Mobile: Safe Padding */}
       <div ref={rightDetailRef} className={`absolute right-6 bottom-8 md:right-[3vw] md:bottom-[5vh] z-20 opacity-0 text-right ${manrope.className} text-[#E8E6DD] text-xs leading-relaxed tracking-widest uppercase`}>
-         <p>Global Reach.</p>
-         <p>Local Roots.</p>
+        <p>Global Reach.</p>
+        <p>Local Roots.</p>
       </div>
 
       {/* Giant B */}
@@ -124,7 +124,7 @@ export default function Hero() {
         {/* Mobile: 80vw | Desktop: 33vw */}
         <div className={`${prata.className} relative text-[80vw] md:text-[33vw] leading-none text-[#F2F0E9]`}>
           <span className="relative z-10">B</span>
-          <span 
+          <span
             ref={patternLayerRef}
             className="absolute top-0 left-0 w-full h-full z-20 text-transparent bg-cover bg-center opacity-0 will-change-[opacity]"
             style={{

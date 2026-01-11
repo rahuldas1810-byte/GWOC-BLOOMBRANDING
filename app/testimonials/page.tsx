@@ -9,6 +9,7 @@ import { getTestimonials, getBrands, getSiteSettings } from "@/lib/content";
 import type { Testimonial } from "@/types";
 import SliceReveal from "@/components/SliceReveal";
 import MagneticButton from "@/components/MagneticButton";
+import TestimonialsCTA from "@/components/TestimonialsCTA";
 
 export default function Testimonials() {
   const [testimonials, setTestimonials] = useState<Testimonial[]>([]);
@@ -28,7 +29,7 @@ export default function Testimonials() {
         setTestimonials(testimonialsData || []);
         setBrands(brandsData || []);
         setSiteSettings(settings);
-        
+
         // Set first category if brands exist
         if (brandsData && brandsData.length > 0) {
           const categories = Array.from(
@@ -186,10 +187,9 @@ export default function Testimonials() {
                   whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.95 }}
                   className={`px-7 py-2.5 rounded-full text-[11px] tracking-[0.25em] uppercase transition-all duration-300 font-medium
-                    ${
-                      isActive
-                        ? "bg-dark-choc text-white shadow-md"
-                        : "border border-dark-choc/30 text-dark-choc hover:border-dark-choc hover:bg-dark-choc/5"
+                    ${isActive
+                      ? "bg-dark-choc text-white shadow-md"
+                      : "border border-dark-choc/30 text-dark-choc hover:border-dark-choc hover:bg-dark-choc/5"
                     }
                   `}
                 >
@@ -261,20 +261,20 @@ export default function Testimonials() {
 
       {/* ================= SPLIT TESTIMONIALS ================= */}
       {testimonials.length > 0 && (
-        <section id="client-reviews" className="relative bg-white pb-20">
+        <section id="client-reviews" className="relative bg-white pb-0">
           <div className="flex relative">
             {/* Left Sticky Image */}
             <div className="sticky top-[20vh] w-[55%] h-[60vh] bg-earl-gray/30 flex items-center justify-center p-12 md:p-16 lg:p-20">
               <div className="relative w-full h-full pr-24">
                 {testimonials.map((testimonial, index) => {
                   if (!testimonial || !testimonial.image) return null;
-                  
-                  const imageUrl = typeof testimonial.image === 'string' 
-                    ? testimonial.image 
+
+                  const imageUrl = typeof testimonial.image === 'string'
+                    ? testimonial.image
                     : (testimonial.image as any)?.url || '';
-                  
+
                   if (!imageUrl) return null;
-                  
+
                   return (
                     <motion.div
                       key={testimonial.id || index}
@@ -339,6 +339,9 @@ export default function Testimonials() {
           </div>
         </section>
       )}
+
+      {/* ================= NEW CTA SECTION ================= */}
+      <TestimonialsCTA />
     </div>
   );
 }
