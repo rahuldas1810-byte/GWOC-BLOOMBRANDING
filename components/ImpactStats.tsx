@@ -22,7 +22,7 @@ function Counter({ value, suffix, index }: { value: number; suffix: string; inde
   }, [count, isInView, value, index])
 
   return (
-    <span ref={ref} className="font-serif text-4xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-8xl text-white tracking-tighter font-light">
+    <span ref={ref} className="font-serif text-4xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-8xl text-dark-choc tracking-tighter font-light">
       <motion.span>{rounded}</motion.span>
       <span className="text-[#BDAF62]">{suffix}</span>
     </span>
@@ -41,13 +41,13 @@ function PolygonEnclosure({ children, index }: { children: React.ReactNode; inde
       >
         <svg
           viewBox="0 0 200 200"
-          className="w-32 h-32 sm:w-40 sm:h-40 md:w-56 md:h-56 lg:w-64 lg:h-64 drop-shadow-[0_0_30px_rgba(30,53,112,0.3)]"
+          className="w-32 h-32 sm:w-40 sm:h-40 md:w-56 md:h-56 lg:w-64 lg:h-64 drop-shadow-[0_0_30px_rgba(189,175,98,0.1)]"
         >
           {/* Main Glass Polygon */}
           <motion.path
             d="M100 20 L170 60 L170 140 L100 180 L30 140 L30 60 Z"
-            fill="rgba(255, 255, 255, 0.03)"
-            stroke="rgba(255, 255, 255, 0.1)"
+            fill="rgba(98, 74, 65, 0.03)"
+            stroke="rgba(98, 74, 65, 0.1)"
             strokeWidth="1"
             className="backdrop-blur-sm"
           />
@@ -121,25 +121,24 @@ export default function ImpactStats() {
   ]
 
   return (
-    <section ref={containerRef} className="relative py-12 md:py-16 lg:py-20 bg-[#0A0A0A] overflow-hidden">
+    <section ref={containerRef} className="relative py-12 md:py-16 lg:py-20 bg-[#FDF6EE] overflow-hidden">
       {/* Cinematic Background Elements */}
       <div className="absolute inset-0 z-0">
-        {/* Deep Radial Glows */}
+        {/* Soft Radial Glows */}
         <motion.div
-          className="absolute top-1/2 left-1/4 w-[60vw] h-[60vw] rounded-full bg-[#1E3570]/10 blur-[150px] -translate-x-1/2 -translate-y-1/2"
+          className="absolute top-1/2 left-1/4 w-[60vw] h-[60vw] rounded-full bg-[#BDAF62]/5 blur-[120px] -translate-x-1/2 -translate-y-1/2"
           animate={{
             x: (mousePosition.x - 0.5) * 50,
             y: (mousePosition.y - 0.5) * 50,
           }}
         />
 
-
         {/* Architectural Mesh */}
-        <div className="absolute inset-0 opacity-[0.05]" style={{
+        <div className="absolute inset-0 opacity-[0.4]" style={{
           backgroundImage: `
-            radial-gradient(circle at 2px 2px, #FDF6EE 1px, transparent 0),
-            linear-gradient(to right, #FDF6EE 1px, transparent 1px),
-            linear-gradient(to bottom, #FDF6EE 1px, transparent 1px)
+            radial-gradient(circle at 2px 2px, rgba(98, 74, 65, 0.05) 1px, transparent 0),
+            linear-gradient(to right, rgba(98, 74, 65, 0.03) 1px, transparent 1px),
+            linear-gradient(to bottom, rgba(98, 74, 65, 0.03) 1px, transparent 1px)
           `,
           backgroundSize: '40px 40px, 200px 200px, 200px 200px',
         }} />
@@ -158,7 +157,7 @@ export default function ImpactStats() {
               <span className="font-mono text-[10px] sm:text-xs uppercase tracking-[0.4em] sm:tracking-[0.6em] text-[#BDAF62] mb-4 sm:mb-6 md:mb-8 block font-black">
                 Experience Served
               </span>
-              <h2 className="font-serif text-4xl sm:text-5xl md:text-7xl lg:text-8xl text-white leading-[0.85] tracking-tighter">
+              <h2 className="font-serif text-4xl sm:text-5xl md:text-7xl lg:text-8xl text-dark-choc leading-[0.85] tracking-tighter">
                 Global<br />
                 <span className="italic relative font-light">
                   Impact.
@@ -166,7 +165,7 @@ export default function ImpactStats() {
                     initial={{ width: 0 }}
                     whileInView={{ width: '100%' }}
                     transition={{ duration: 1.5, delay: 0.5, ease: "circOut" }}
-                    className="absolute -bottom-2 left-0 h-1 bg-[#BDAF62]/30"
+                    className="absolute -bottom-2 left-0 h-1 bg-[#BDAF62]/60"
                   />
                 </span>
               </h2>
@@ -179,8 +178,8 @@ export default function ImpactStats() {
               viewport={{ once: true }}
               className="lg:pb-4"
             >
-              <p className="font-sans text-base sm:text-lg md:text-xl text-white/50 leading-relaxed max-w-md font-light">
-                We don&apos;t just chase numbers; we build <span className="text-white italic">legacies</span>. Every launch is a definitive move in a global brand strategy.
+              <p className="font-sans text-base sm:text-lg md:text-xl text-dark-choc/60 leading-relaxed max-w-md font-light">
+                We don&apos;t just chase numbers; we build <span className="text-dark-choc italic">legacies</span>. Every launch is a definitive move in a global brand strategy.
               </p>
             </motion.div>
           </div>
@@ -197,7 +196,7 @@ export default function ImpactStats() {
                 className={`
                   relative flex flex-col items-center justify-center p-6 sm:p-8 md:p-14
                   group cursor-default
-                  ${index !== 2 ? 'md:border-r border-white/5' : ''}
+                  ${index !== 2 ? 'md:border-r border-dark-choc/5' : ''}
                 `}
               >
                 {/* Polygon Enclosure with Reactive Scaling */}
@@ -213,12 +212,12 @@ export default function ImpactStats() {
 
                 {/* Sub-labeling */}
                 <div className="flex flex-col items-center text-center space-y-1 sm:space-y-2 relative z-10 transition-transform duration-500 group-hover:translate-y-1">
-                  <span className="font-serif text-xl sm:text-2xl text-white/80 italic">{stat.label}</span>
-                  <span className="font-mono text-[8px] sm:text-[9px] uppercase tracking-[0.4em] sm:tracking-[0.5em] text-[#BDAF62] font-black">{stat.sublabel}</span>
+                  <span className="font-serif text-xl sm:text-2xl text-dark-choc/80 italic">{stat.label}</span>
+                  <span className="font-mono text-[8px] sm:text-[9px] uppercase tracking-[0.4em] sm:tracking-[0.5em] text-[#BDAF62]/80 font-black">{stat.sublabel}</span>
                 </div>
 
                 {/* Vertical accent on hover - architectural detail */}
-                <div className="absolute top-0 right-0 w-px h-0 bg-[#BDAF62]/20 group-hover:h-full transition-all duration-1000 hidden md:block" />
+                <div className="absolute top-0 right-0 w-px h-0 bg-[#BDAF62]/40 group-hover:h-full transition-all duration-1000 hidden md:block" />
               </motion.div>
             ))}
           </div>
@@ -226,7 +225,8 @@ export default function ImpactStats() {
       </div >
 
       {/* Edge Shadow Overlays */}
-      < div className="absolute inset-0 pointer-events-none shadow-[inset_0_0_200px_rgba(0,0,0,0.8)]" />
+      < div className="absolute inset-0 pointer-events-none shadow-[inset_0_0_100px_rgba(253,246,238,0.8)]" />
     </section >
   )
 }
+

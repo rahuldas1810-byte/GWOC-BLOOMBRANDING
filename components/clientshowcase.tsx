@@ -118,7 +118,7 @@ export default function ClientShowcase() {
                 }
                 className={`absolute rounded-2xl overflow-hidden shadow-2xl transition-all duration-500 ${isCenter
                   ? 'w-[300px] h-[400px] md:w-[420px] md:h-[520px] bg-white hover:shadow-3xl'
-                  : 'w-56 h-[320px] md:w-72 md:h-[420px] bg-gradient-to-br from-[#1E3570] via-[#2C4494] to-[#BDAF62] opacity-70 hover:opacity-85' // Brand electric blue + butter yellow gradient
+                  : 'w-56 h-[320px] md:w-72 md:h-[420px] bg-[linear-gradient(150deg,#3A2F2A_0%,#C8BBAA_100%)] opacity-70 hover:opacity-85' // Espresso Brown -> Soft Sand
                   }`}
                 style={{ zIndex }}
               >
