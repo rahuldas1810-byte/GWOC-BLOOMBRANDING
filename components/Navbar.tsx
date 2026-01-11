@@ -59,7 +59,7 @@ export default function Navbar() {
       {/* 
          --- Top Navigation Bar (Always Visible) --- 
       */}
-      <nav className="fixed top-0 left-0 w-full z-[60] px-6 md:px-12 py-8 flex justify-between items-center bg-transparent mix-blend-mode-difference text-[#3E2B26] pointer-events-none">
+      <nav className="fixed top-0 left-0 w-full z-[60] px-6 md:px-12 py-6 md:py-8 flex justify-between items-center bg-transparent mix-blend-mode-difference text-[#3E2B26] pointer-events-none">
 
         {/* Logo */}
         <Link href="/" className="pointer-events-auto">
@@ -68,7 +68,7 @@ export default function Navbar() {
             alt="Bloom Branding"
             width={400}
             height={100}
-            className="h-16 md:h-24 w-auto object-contain"
+            className="h-12 md:h-24 w-auto object-contain"
             priority
           />
         </Link>

@@ -64,9 +64,9 @@ export default function ClientShowcase() {
   // Dynamic positions and sizes
   const getPosition = (index: number) => {
     if (isMobile) {
-      const mobileSpacing = 300
+      const mobileSpacing = window.innerWidth * 0.75
       const currentX = (index - 2) * mobileSpacing
-      return { x: currentX, scale: index === 2 ? 1 : 0.75, opacity: index === 2 ? 1 : 0.3 }
+      return { x: currentX, scale: index === 2 ? 1 : 0.8, opacity: index === 2 ? 1 : 0.4 }
     }
     if (isTablet) {
       const tabletPositions = [
@@ -162,17 +162,17 @@ export default function ClientShowcase() {
                       {/* TEXT SECTION */}
                       <div className="flex h-[35%] flex-col items-center justify-center px-8 text-center bg-white relative z-10">
                         <motion.h3
-                          className="text-2xl font-serif text-dark-choc mb-2"
+                          className="text-xl md:text-2xl font-serif text-dark-choc mb-1 md:mb-2"
                         >
                           {client.name}
                         </motion.h3>
                         <motion.p
-                          className="text-xs font-mono uppercase tracking-widest text-dark-choc/50 mb-4"
+                          className="text-[10px] md:text-xs font-mono uppercase tracking-widest text-dark-choc/50 mb-2 md:mb-4"
                         >
                           {client.type}
                         </motion.p>
                         <motion.p
-                          className="text-base text-near-black/80 font-sans leading-relaxed"
+                          className="text-sm md:text-base text-near-black/80 font-sans leading-relaxed px-2 md:px-0"
                           initial={{ opacity: 0, y: 10 }}
                           animate={{ opacity: 1, y: 0 }}
                           transition={{ delay: 0.1, duration: 0.4 }}

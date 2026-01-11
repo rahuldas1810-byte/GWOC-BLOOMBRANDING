@@ -347,7 +347,7 @@ export default function Home() {
         {homepageContent.heroVideo && (
           <video
             ref={videoRef}
-            className={`absolute inset-0 w-full h-full object-contain md:object-cover z-40 transition-opacity duration-[1500ms] ease-in-out ${videoEnded || isTransitioning ? "opacity-0 pointer-events-none z-0" : "opacity-100 z-40"
+            className={`absolute inset-0 w-full h-full object-cover z-40 transition-opacity duration-[1500ms] ease-in-out ${videoEnded || isTransitioning ? "opacity-0 pointer-events-none z-0" : "opacity-100 z-40"
               }`}
             autoPlay
             muted
@@ -483,16 +483,16 @@ export default function Home() {
               transition={{ duration: 1.2, ease: [0.4, 0, 0.2, 1] }}
               className="max-w-5xl"
             >
-              <p className="label-text mb-8 text-dark-choc/70">
+              <p className="label-text mb-4 md:mb-8 text-dark-choc/70">
                 {homepageContent.tagline}
               </p>
               <h1
-                className="font-serif text-dark-choc leading-[1.1] mb-10"
+                className="font-serif text-dark-choc leading-[1.1] mb-6 md:mb-10"
                 style={{ fontSize: "clamp(3rem, 8vw, 8rem)" }}
               >
                 {homepageContent.heroHeadline || 'We craft brand identities that resonate.'}
               </h1>
-              <p className="body-text max-w-xl mb-14 text-dark-choc/80">
+              <p className="body-text max-w-xl mb-8 md:mb-14 text-dark-choc/80">
                 {homepageContent.heroSubheading}
               </p>
               <motion.div
@@ -517,7 +517,7 @@ export default function Home() {
           <section className="bg-earl-gray relative overflow-hidden pb-10 pt-20">
 
             {/* MARQUEE */}
-            <div className="mb-20">
+            <div className="mb-12 md:mb-20">
               <TextMarquee text="WHY BRANDS CHOOSE US • BLOOM BRANDING • " />
             </div>
 
@@ -543,7 +543,7 @@ export default function Home() {
 
                 {/* LEFT COLUMN: Grid of Services */}
                 <div className="lg:col-span-7 flex flex-col pt-4">
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-8 border-t border-dark-choc/20 pt-8">
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-x-4 md:gap-x-8 gap-y-4 md:gap-y-8 border-t border-dark-choc/20 pt-6 md:pt-8">
                     {services.map((service, index) => (
                       <motion.div
                         key={service.title}
@@ -553,7 +553,7 @@ export default function Home() {
                         transition={{ duration: 0.5, delay: index * 0.1 }}
                         onClick={() => setHoveredService(index)}
                         onHoverStart={() => setHoveredService(index)}
-                        className={`group relative border border-dark-choc/20 rounded-2xl p-8 md:p-10 cursor-pointer transition-all duration-500 h-full flex flex-col justify-between ${hoveredService === index ? "bg-dark-choc shadow-xl scale-[1.01]" : "hover:bg-dark-choc/5 hover:border-dark-choc/40"}`}
+                        className={`group relative border border-dark-choc/20 rounded-2xl p-6 md:p-8 lg:p-10 cursor-pointer transition-all duration-500 h-full flex flex-col justify-between ${hoveredService === index ? "bg-dark-choc shadow-xl scale-[1.01]" : "hover:bg-dark-choc/5 hover:border-dark-choc/40"}`}
                       >
                         <div className="flex flex-col gap-6 relative z-10">
                           {/* Header Group */}
@@ -606,7 +606,7 @@ export default function Home() {
                           src={SERVICE_IMAGES[(hoveredService || 0) % SERVICE_IMAGES.length]}
                           alt="Service visualization"
                           fill
-                          className="object-contain md:object-cover"
+                          className="object-cover"
                           priority
                           sizes="(max-width: 1024px) 0vw, 50vw"
                         />

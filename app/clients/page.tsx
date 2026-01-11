@@ -48,7 +48,7 @@ export default function Clients() {
               initial={{ opacity: 0, scale: 0.95 }}
               animate={{ opacity: 1, scale: 1 }}
               transition={{ duration: 1.2, delay: 0.2, ease: [0.22, 1, 0.36, 1] }}
-              className="font-serif text-4xl sm:text-5xl md:text-7xl lg:text-9xl text-dark-choc mb-8 md:mb-12 leading-[1.1] md:leading-[0.85] tracking-tighter px-4"
+              className="font-serif text-4xl sm:text-5xl md:text-7xl lg:text-8xl xl:text-9xl text-dark-choc mb-6 sm:mb-8 md:mb-12 leading-[1.1] md:leading-[0.85] tracking-tighter px-4"
             >
               Building <span className="relative inline-block">
                 <span className="italic font-light relative z-10 text-dark-choc/90">Legacies</span>
@@ -107,7 +107,7 @@ export default function Clients() {
 
           {/* Content */}
           <div className="relative z-10 text-center mix-blend-normal">
-            <h2 className="font-serif text-4xl sm:text-5xl md:text-6xl lg:text-8xl xl:text-9xl text-[#F0EBE5] transition-all duration-[800ms] ease-[cubic-bezier(0.32,0.72,0,1)] group-hover:text-dark-choc group-hover:scale-110 group-hover:tracking-widest group-hover:italic">
+            <h2 className="font-serif text-4xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-8xl 2xl:text-9xl text-[#F0EBE5] transition-all duration-[800ms] ease-[cubic-bezier(0.32,0.72,0,1)] group-hover:text-dark-choc group-hover:scale-105 md:group-hover:scale-110 group-hover:tracking-widest group-hover:italic">
               Let&apos;s Talk.
             </h2>
           </div>

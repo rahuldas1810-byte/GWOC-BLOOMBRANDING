@@ -1,6 +1,6 @@
 'use client'
 
-import { useRef } from 'react'
+import { useRef, useEffect, useState } from 'react'
 import { motion, useScroll, useTransform, useSpring } from 'framer-motion'
 import { Gem, Cpu, Leaf, TrendingUp, Armchair } from 'lucide-react'
 
@@ -48,7 +48,7 @@ const sectors = [
 ]
 
 // Sub-component to handle individual scroll transforms
-function SectorCard({ sector, index, containerRef }: { sector: any, index: number, containerRef: React.RefObject<HTMLElement> }) {
+function SectorCard({ sector, index, containerRef, isMobile }: { sector: any, index: number, containerRef: React.RefObject<HTMLElement>, isMobile: boolean }) {
   const { scrollYProgress } = useScroll({
     target: containerRef,
     // Start animation when the top of the section hits the bottom of the viewport
@@ -65,7 +65,7 @@ function SectorCard({ sector, index, containerRef }: { sector: any, index: numbe
   const y = useTransform(
     scrollYProgress,
     [startOffset, endOffset],
-    [350, 0] // "Middle length deep" approx 350px (half-ish of 600)
+    [isMobile ? 100 : 350, 0] // Reduce movement on mobile
   )
 
   const opacity = useTransform(
@@ -120,6 +120,14 @@ function SectorCard({ sector, index, containerRef }: { sector: any, index: numbe
 
 export default function SectorShowcase() {
   const containerRef = useRef(null)
+  const [isMobile, setIsMobile] = useState(false)
+
+  useEffect(() => {
+    const checkMobile = () => setIsMobile(window.innerWidth < 768)
+    checkMobile()
+    window.addEventListener('resize', checkMobile)
+    return () => window.removeEventListener('resize', checkMobile)
+  }, [])
 
   return (
     <section ref={containerRef} className="py-16 sm:py-24 md:py-32 bg-[#F0EBE5] overflow-hidden min-h-[600px] sm:min-h-[700px] md:min-h-[800px]">
@@ -132,6 +140,7 @@ export default function SectorShowcase() {
               sector={sector}
               index={index}
               containerRef={containerRef}
+              isMobile={isMobile}
             />
           ))}
         </div>
