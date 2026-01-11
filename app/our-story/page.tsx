@@ -113,7 +113,7 @@ export default function OurStory() {
     <div className="min-h-screen">
 
       {/* ================= CINEMATIC HERO ================= */}
-      <section ref={containerRef} className="relative h-[90vh] min-h-[700px] overflow-hidden flex items-center justify-center bg-dark-choc">
+      <section ref={containerRef} className="relative h-[70vh] min-h-[500px] md:h-[90vh] md:min-h-[700px] overflow-hidden flex items-center justify-center bg-dark-choc">
 
         {/* Parallax Background Image */}
         <motion.div
@@ -124,9 +124,10 @@ export default function OurStory() {
             src={data.heroBackgroundImage?.url || "/who-we-are.jpg"}
             alt="Bloom Branding studio"
             fill
-            className="object-cover opacity-50"
+            className="object-contain md:object-cover opacity-50"
             priority
             unoptimized={data.heroBackgroundImage?.url?.startsWith('http') || false}
+            sizes="100vw"
           />
           {/* Gradient Overlay for Text Readability */}
           <div className="absolute inset-0 bg-gradient-to-t from-dark-choc via-dark-choc/30 to-transparent" />
@@ -345,7 +346,8 @@ export default function OurStory() {
                   src="/27.jpg"
                   alt="Bloom Branding purpose"
                   fill
-                  className="object-cover"
+                  className="object-contain md:object-cover"
+                  sizes="(max-width: 1024px) 100vw, 75vw"
                 />
                 <div className="absolute inset-0 bg-dark-choc/10 mix-blend-multiply" />
               </motion.div>

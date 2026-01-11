@@ -52,8 +52,8 @@ export default function TestimonialsSection({
   // Stack configuration with X and Y offsets for "bottom-right peek" effect
   const stackConfig = [
     { x: 0, y: 0, scale: 1, opacity: 1, zIndex: 30 },                // Active
-    { x: 20, y: 20, scale: 0.95, opacity: 0.5, zIndex: 20 },         // Behind 1
-    { x: 40, y: 40, scale: 0.90, opacity: 0.25, zIndex: 10 },        // Behind 2
+    { x: 12, y: 12, scale: 0.95, opacity: 0.5, zIndex: 20 },         // Behind 1
+    { x: 24, y: 24, scale: 0.90, opacity: 0.25, zIndex: 10 },        // Behind 2
   ];
 
   return (
@@ -67,7 +67,7 @@ export default function TestimonialsSection({
       {/* Content */}
       <div className="relative z-10 py-16">
         <div className="container mx-auto px-6 md:px-12 lg:px-20">
-          
+
           {/* Header */}
           <div className="mb-12">
             {label && (
@@ -85,7 +85,7 @@ export default function TestimonialsSection({
               </motion.div>
             )}
             <motion.h2
-              className="font-sans text-5xl md:text-6xl lg:text-7xl font-bold tracking-tight text-white italic"
+              className="font-sans text-4xl md:text-6xl lg:text-7xl font-bold tracking-tight text-white italic"
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
@@ -97,8 +97,8 @@ export default function TestimonialsSection({
           </div>
 
           {/* Stacked Card Deck Layout - with entrance animation */}
-          <motion.div 
-            className="relative w-full max-w-[850px] mx-auto h-[360px] flex justify-center mb-12"
+          <motion.div
+            className="relative w-full max-w-[850px] mx-auto h-[320px] md:h-[360px] flex justify-center mb-12"
             initial={{ opacity: 0, y: 50, scale: 0.95 }}
             whileInView={{ opacity: 1, y: 0, scale: 1 }}
             viewport={{ once: true, margin: "-100px" }}
@@ -149,7 +149,7 @@ export default function TestimonialsSection({
                                 <path d="M4.583 17.321C3.553 16.227 3 15 3 13.011c0-3.5 2.457-6.637 6.03-8.188l.893 1.378c-3.335 1.804-3.987 4.145-4.247 5.621.537-.278 1.24-.375 1.929-.311 1.804.167 3.226 1.648 3.226 3.489a3.5 3.5 0 01-3.5 3.5c-1.073 0-2.099-.49-2.748-1.179zm10 0C13.553 16.227 13 15 13 13.011c0-3.5 2.457-6.637 6.03-8.188l.893 1.378c-3.335 1.804-3.987 4.145-4.247 5.621.537-.278 1.24-.375 1.929-.311 1.804.167 3.226 1.648 3.226 3.489a3.5 3.5 0 01-3.5 3.5c-1.073 0-2.099-.49-2.748-1.179z" />
                               </svg>
                             </div>
-                            
+
                             <p className="text-xl md:text-2xl text-gray-200 leading-relaxed line-clamp-3">
                               {testimonial.quote}
                             </p>

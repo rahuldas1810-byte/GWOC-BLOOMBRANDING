@@ -221,7 +221,7 @@ export default function Footer() {
           transition={{ duration: 0.8, delay: 0.5 }}
           className="relative w-full flex justify-center pb-4 md:pb-6"
         >
-          <h1 className={`${cinzel.className} font-normal text-[clamp(56px,8vw,96px)] tracking-[0.1em] leading-none text-white/95 text-center uppercase whitespace-nowrap`}>
+          <h1 className={`${cinzel.className} font-normal text-[clamp(40px,8vw,96px)] tracking-[0.1em] leading-none text-white/95 text-center uppercase whitespace-nowrap`}>
             Bloom Branding
           </h1>
         </motion.div>

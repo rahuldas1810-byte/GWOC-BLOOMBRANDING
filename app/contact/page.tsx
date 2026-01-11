@@ -218,16 +218,17 @@ export default function Contact() {
   return (
     <main className="min-h-screen bg-earl-gray scroll-smooth">
       {/* Hero Section */}
-      <section className="relative w-full h-[60vh] flex items-center justify-center overflow-hidden">
+      <section className="relative w-full h-[50vh] min-h-[400px] md:h-[60vh] flex items-center justify-center overflow-hidden">
         {/* Background Image */}
         <div className="absolute inset-0 z-0 select-none pointer-events-none">
           <Image
             src={backgroundImageUrl}
             alt="Bloom Branding background"
             fill
-            className="object-cover object-center"
+            className="object-contain md:object-cover object-center"
             priority
             unoptimized={backgroundImageUrl?.startsWith("http") || false}
+            sizes="100vw"
           />
         </div>
 
@@ -336,7 +337,7 @@ export default function Contact() {
 
             {/* RIGHT COLUMN: Contact Form */}
             <SectionReveal delay={0.1}>
-              <div className="sticky top-32">
+              <div className="lg:sticky lg:top-32">
                 <div className="bg-white rounded-3xl p-8 md:p-12 shadow-xl shadow-dark-choc/5 border border-dark-choc/5 relative overflow-hidden">
                   {/* Decor element */}
                   <div className="absolute top-0 right-0 w-32 h-32 bg-electric-blue/5 rounded-bl-full -mr-8 -mt-8 pointer-events-none" />

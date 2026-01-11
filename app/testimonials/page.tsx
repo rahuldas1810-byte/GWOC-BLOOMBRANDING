@@ -117,8 +117,8 @@ export default function Testimonials() {
   return (
     <div className="min-h-screen">
       {/* ================= HERO SECTION ================= */}
-      <section className="relative min-h-[85vh] w-full overflow-hidden mt-20 lg:mt-24">
-        <div className="relative h-screen">
+      <section className="relative min-h-[70vh] md:min-h-[85vh] w-full overflow-hidden mt-16 md:mt-20 lg:mt-24">
+        <div className="relative h-[70vh] md:h-screen min-h-[500px]">
           {/* Slice Reveal Background */}
           <SliceReveal />
 
@@ -127,7 +127,7 @@ export default function Testimonials() {
 
           {/* Text Content */}
           <div className="absolute inset-0 z-20 flex items-center">
-            <div className="container-custom px-16 md:px-24">
+            <div className="container-custom px-4 sm:px-6 md:px-16 lg:px-24">
               <motion.div
                 className="max-w-5xl text-left text-white [&_*]:text-white"
                 variants={heroContainer}
@@ -137,7 +137,7 @@ export default function Testimonials() {
                 {/* Small label */}
                 <motion.p
                   variants={heroItem}
-                  className="text-[11px] tracking-[0.35em] uppercase mb-10 opacity-70 text-white"
+                  className="text-[10px] sm:text-[11px] tracking-[0.25em] sm:tracking-[0.35em] uppercase mb-6 md:mb-10 opacity-70 text-white"
                 >
                   {siteSettings?.testimonialsHero?.label || 'Our Partners'}
                 </motion.p>
@@ -145,7 +145,7 @@ export default function Testimonials() {
                 {/* MAIN heading */}
                 <motion.h1
                   variants={heroItem}
-                  className="font-serif text-[clamp(4.5rem,8vw,8rem)] leading-[0.98] mb-10 text-white"
+                  className="font-serif text-[clamp(2.5rem,8vw,8rem)] leading-[0.98] mb-6 md:mb-10 text-white px-2 sm:px-0"
                 >
                   {siteSettings?.testimonialsHero?.title || 'Testimonials'}
                 </motion.h1>
@@ -153,14 +153,14 @@ export default function Testimonials() {
                 {/* Description */}
                 <motion.p
                   variants={heroItem}
-                  className="text-lg md:text-xl max-w-xl opacity-90 mb-14 text-white"
+                  className="text-base sm:text-lg md:text-xl max-w-xl opacity-90 mb-8 md:mb-14 text-white px-2 sm:px-0"
                 >
                   {siteSettings?.testimonialsHero?.description || 'Hear from companies who have worked with us to build their brand identity.'}
                 </motion.p>
 
                 {/* Button */}
-                <motion.div variants={heroItem}>
-                  <MagneticButton className="px-14 py-6 border border-white/60 rounded-full text-[11px] tracking-[0.3em] uppercase hover:bg-white hover:text-black transition-all duration-300">
+                <motion.div variants={heroItem} className="px-2 sm:px-0">
+                  <MagneticButton className="px-8 sm:px-10 md:px-14 py-4 sm:py-5 md:py-6 border border-white/60 rounded-full text-[10px] sm:text-[11px] tracking-[0.25em] sm:tracking-[0.3em] uppercase hover:bg-white hover:text-black transition-all duration-300">
                     {siteSettings?.testimonialsHero?.buttonText || 'Client Stories'}
                   </MagneticButton>
                 </motion.div>
@@ -174,8 +174,8 @@ export default function Testimonials() {
 
       {/* ================= BRAND CATEGORIES ================= */}
       {Object.keys(brandData).length > 0 && (
-        <section className="py-24 bg-earl-gray">
-          <div className="flex justify-center gap-6 mb-14 -mt-8">
+        <section className="py-16 md:py-24 bg-earl-gray">
+          <div className="flex flex-wrap justify-center gap-3 sm:gap-4 md:gap-6 mb-10 md:mb-14 -mt-4 md:-mt-8 px-4">
             {Object.keys(brandData).map((category) => {
               const categoryKey = category as string;
               const isActive = activeCategory === categoryKey;
@@ -186,7 +186,7 @@ export default function Testimonials() {
                   onClick={() => setActiveCategory(categoryKey)}
                   whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.95 }}
-                  className={`px-7 py-2.5 rounded-full text-[11px] tracking-[0.25em] uppercase transition-all duration-300 font-medium
+                  className={`px-5 sm:px-6 md:px-7 py-2 sm:py-2.5 rounded-full text-[10px] sm:text-[11px] tracking-[0.2em] sm:tracking-[0.25em] uppercase transition-all duration-300 font-medium
                     ${isActive
                       ? "bg-dark-choc text-white shadow-md"
                       : "border border-dark-choc/30 text-dark-choc hover:border-dark-choc hover:bg-dark-choc/5"
@@ -208,7 +208,7 @@ export default function Testimonials() {
                 initial="hidden"
                 animate="show"
                 exit="hidden"
-                className="grid grid-cols-1 md:grid-cols-3 gap-14 max-w-7xl xl:max-w-[85rem] mx-auto px-6"
+                className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8 sm:gap-10 md:gap-14 max-w-7xl xl:max-w-[85rem] mx-auto px-4 sm:px-6"
               >
                 {brandData[activeCategory].map((brand: any) => (
                   <motion.div
@@ -219,7 +219,7 @@ export default function Testimonials() {
                     transition={{ duration: 0.3, ease: 'easeOut' }}
                   >
                     {/* Image */}
-                    <div className="relative w-full h-[460px] rounded-xl overflow-hidden bg-dark-choc/10 mb-4 shadow-lg group-hover:shadow-2xl transition-all duration-500">
+                    <div className="relative w-full h-[300px] sm:h-[380px] md:h-[460px] rounded-xl overflow-hidden bg-dark-choc/10 mb-3 md:mb-4 shadow-lg group-hover:shadow-2xl transition-all duration-500">
                       {brand.image && (
                         <Image
                           src={brand.image}
@@ -262,10 +262,10 @@ export default function Testimonials() {
       {/* ================= SPLIT TESTIMONIALS ================= */}
       {testimonials.length > 0 && (
         <section id="client-reviews" className="relative bg-white pb-0">
-          <div className="flex relative">
+          <div className="flex flex-col lg:flex-row relative">
             {/* Left Sticky Image */}
-            <div className="sticky top-[20vh] w-[55%] h-[60vh] bg-earl-gray/30 flex items-center justify-center p-12 md:p-16 lg:p-20">
-              <div className="relative w-full h-full pr-24">
+            <div className="sticky top-0 lg:top-[20vh] lg:sticky w-full lg:w-[55%] h-[40vh] sm:h-[50vh] lg:h-[60vh] bg-earl-gray/30 flex items-center justify-center p-4 sm:p-6 md:p-16 lg:p-20 z-10 lg:z-auto">
+              <div className="relative w-full h-full lg:pr-24">
                 {testimonials.map((testimonial, index) => {
                   if (!testimonial || !testimonial.image) return null;
 
@@ -305,29 +305,29 @@ export default function Testimonials() {
             </div>
 
             {/* Right Scroll Content */}
-            <div className="w-1/2 bg-white">
+            <div className="w-full lg:w-1/2 bg-white">
               {testimonials.map((testimonial, index) => {
                 if (!testimonial) return null;
                 return (
                   <motion.section
                     key={testimonial.id || index}
-                    className="min-h-[60vh] flex items-center px-16 py-20"
+                    className="min-h-[40vh] sm:min-h-[50vh] lg:min-h-[60vh] flex items-center px-4 sm:px-6 md:px-16 py-12 sm:py-16 lg:py-20"
                     initial={{ opacity: 0, y: 20 }}
                     whileInView={{ opacity: 1, y: 0 }}
                     onViewportEnter={() => setActiveIndex(index)}
-                    viewport={{ amount: 0.6 }}
+                    viewport={{ amount: 0.5 }}
                     transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
                   >
                     <div className="w-full">
-                      <p className="font-serif text-xl md:text-2xl lg:text-3xl text-dark-choc mb-12 leading-tight">
+                      <p className="font-serif text-lg sm:text-xl md:text-2xl lg:text-3xl text-dark-choc mb-6 sm:mb-8 lg:mb-12 leading-tight">
                         &ldquo;{testimonial.quote || 'No quote available'}&rdquo;
                       </p>
 
                       <div>
-                        <p className="font-serif text-xl md:text-2xl text-dark-choc mb-2">
+                        <p className="font-serif text-base sm:text-lg md:text-2xl text-dark-choc mb-1 sm:mb-2">
                           {testimonial.clientName || 'Anonymous'}
                         </p>
-                        <p className="font-mono text-xs uppercase tracking-[0.15em] text-dark-choc/50">
+                        <p className="font-mono text-[9px] sm:text-[10px] md:text-xs uppercase tracking-[0.12em] sm:tracking-[0.15em] text-dark-choc/50">
                           {testimonial.company || 'Company'}
                         </p>
                       </div>

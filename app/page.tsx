@@ -347,7 +347,7 @@ export default function Home() {
         {homepageContent.heroVideo && (
           <video
             ref={videoRef}
-            className={`absolute inset-0 w-full h-full object-cover z-40 transition-opacity duration-[1500ms] ease-in-out ${videoEnded || isTransitioning ? "opacity-0 pointer-events-none z-0" : "opacity-100 z-40"
+            className={`absolute inset-0 w-full h-full object-contain md:object-cover z-40 transition-opacity duration-[1500ms] ease-in-out ${videoEnded || isTransitioning ? "opacity-0 pointer-events-none z-0" : "opacity-100 z-40"
               }`}
             autoPlay
             muted
@@ -487,8 +487,8 @@ export default function Home() {
                 {homepageContent.tagline}
               </p>
               <h1
-                className="font-serif text-dark-choc leading-tight mb-10"
-                style={{ fontSize: "clamp(6rem, 8vw, 8rem)" }}
+                className="font-serif text-dark-choc leading-[1.1] mb-10"
+                style={{ fontSize: "clamp(3rem, 8vw, 8rem)" }}
               >
                 {homepageContent.heroHeadline || 'We craft brand identities that resonate.'}
               </h1>
@@ -606,8 +606,9 @@ export default function Home() {
                           src={SERVICE_IMAGES[(hoveredService || 0) % SERVICE_IMAGES.length]}
                           alt="Service visualization"
                           fill
-                          className="object-cover"
+                          className="object-contain md:object-cover"
                           priority
+                          sizes="(max-width: 1024px) 0vw, 50vw"
                         />
                         {/* Subtle Overlay */}
                         <div className="absolute inset-0 bg-dark-choc/10 mix-blend-multiply" />
@@ -906,21 +907,21 @@ export default function Home() {
                     {/* Pin Shadow */}
                     <div className="absolute top-[42px] left-1/2 transform -translate-x-1/2 w-8 h-4 bg-black/20 blur-md rounded-full"></div>
                     {/* Red Pin */}
-                    <svg 
-                      width="40" 
-                      height="48" 
-                      viewBox="0 0 40 48" 
-                      fill="none" 
+                    <svg
+                      width="40"
+                      height="48"
+                      viewBox="0 0 40 48"
+                      fill="none"
                       xmlns="http://www.w3.org/2000/svg"
                       className="drop-shadow-lg"
                     >
-                      <path 
-                        d="M20 0C10.06 0 2 8.06 2 18C2 29 20 48 20 48C20 48 38 29 38 18C38 8.06 29.94 0 20 0Z" 
+                      <path
+                        d="M20 0C10.06 0 2 8.06 2 18C2 29 20 48 20 48C20 48 38 29 38 18C38 8.06 29.94 0 20 0Z"
                         fill="#dc2626"
                         className="animate-pulse"
                       />
-                      <path 
-                        d="M20 12C16.69 12 14 14.69 14 18C14 21.31 16.69 24 20 24C23.31 24 26 21.31 26 18C26 14.69 23.31 12 20 12Z" 
+                      <path
+                        d="M20 12C16.69 12 14 14.69 14 18C14 21.31 16.69 24 20 24C23.31 24 26 21.31 26 18C26 14.69 23.31 12 20 12Z"
                         fill="white"
                       />
                     </svg>

@@ -11,7 +11,7 @@ const sectors = [
     description: 'Defining modern luxury.',
     icon: Gem,
     // Muted Sage / Eucalyptus
-    color: 'bg-[#C5CBB4]', 
+    color: 'bg-[#C5CBB4]',
   },
   {
     id: 'tech',
@@ -53,7 +53,7 @@ function SectorCard({ sector, index, containerRef }: { sector: any, index: numbe
     target: containerRef,
     // Start animation when the top of the section hits the bottom of the viewport
     // End animation when the card is well into view
-    offset: ["start end", "center center"] 
+    offset: ["start end", "center center"]
   })
 
   // Stagger the movement
@@ -61,13 +61,13 @@ function SectorCard({ sector, index, containerRef }: { sector: any, index: numbe
   // Index 4 (last card) will start at 0.6 and end at 0.95
   const startOffset = index * 0.15
   const endOffset = startOffset + 0.35
-  
+
   const y = useTransform(
     scrollYProgress,
     [startOffset, endOffset],
     [350, 0] // "Middle length deep" approx 350px (half-ish of 600)
   )
-  
+
   const opacity = useTransform(
     scrollYProgress,
     [startOffset, startOffset + 0.15],
@@ -81,24 +81,33 @@ function SectorCard({ sector, index, containerRef }: { sector: any, index: numbe
   return (
     <motion.div
       style={{ y: smoothY, opacity }}
+      whileHover={{
+        scale: 1.03,
+        y: -10,
+        transition: { duration: 0.4, ease: [0.22, 1, 0.36, 1] }
+      }}
       className={`
-        relative h-[600px] p-10 flex flex-col justify-between 
+        relative h-[300px] sm:h-[350px] md:h-[400px] p-6 sm:p-8 md:p-10 flex flex-col justify-between 
         ${sector.color}
-        hover:shadow-xl transition-all duration-700 ease-out
-        group
+        hover:shadow-2xl transition-shadow duration-500 ease-out
+        group cursor-pointer rounded-xl
       `}
     >
       {/* Icon Top */}
-      <div className="w-14 h-14 rounded-full border border-dark-choc/20 flex items-center justify-center text-dark-choc group-hover:scale-110 transition-transform duration-700">
+      <motion.div
+        className="w-14 h-14 rounded-full border border-dark-choc/20 flex items-center justify-center text-dark-choc"
+        whileHover={{ rotate: 15, scale: 1.1 }}
+        transition={{ duration: 0.3 }}
+      >
         <sector.icon strokeWidth={1} size={28} />
-      </div>
+      </motion.div>
 
       {/* Text Bottom */}
       <div>
-        <h3 className="font-serif text-4xl text-dark-choc mb-6">
+        <h3 className="font-serif text-3xl sm:text-3xl md:text-4xl text-dark-choc mb-4 sm:mb-5 md:mb-6">
           {sector.name}
         </h3>
-        <p className="font-sans text-base text-dark-choc/80 leading-relaxed max-w-[200px]">
+        <p className="font-sans text-sm sm:text-base text-dark-choc/80 leading-relaxed max-w-[200px]">
           {sector.description}
         </p>
       </div>
@@ -113,22 +122,22 @@ export default function SectorShowcase() {
   const containerRef = useRef(null)
 
   return (
-    <section ref={containerRef} className="py-32 bg-[#F0EBE5] overflow-hidden min-h-[800px]">
+    <section ref={containerRef} className="py-16 sm:py-24 md:py-32 bg-[#F0EBE5] overflow-hidden min-h-[600px] sm:min-h-[700px] md:min-h-[800px]">
       {/* Increased max-width for wider cards */}
-      <div className="mx-auto max-w-[1800px] px-6 md:px-12">
-        <div className="grid grid-cols-1 md:grid-cols-5 gap-4 md:gap-8">
+      <div className="mx-auto max-w-[1800px] px-4 sm:px-6 md:px-12">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4 sm:gap-6 md:gap-8">
           {sectors.map((sector, index) => (
-            <SectorCard 
-              key={sector.id} 
-              sector={sector} 
-              index={index} 
-              containerRef={containerRef} 
+            <SectorCard
+              key={sector.id}
+              sector={sector}
+              index={index}
+              containerRef={containerRef}
             />
           ))}
         </div>
 
         {/* Final Alignment Hint / Decorative Baseline */}
-        <motion.div 
+        <motion.div
           initial={{ scaleX: 0, opacity: 0 }}
           whileInView={{ scaleX: 1, opacity: 1 }}
           viewport={{ once: true }}

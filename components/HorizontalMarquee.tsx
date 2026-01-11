@@ -46,7 +46,7 @@ export default function HorizontalMarquee({ images, gradientClass = "from-white"
               alt="Bloom Branding work"
               width={1600}
               height={900}
-              className="w-full h-[70vh] object-cover"
+              className="w-full h-[50vh] sm:h-[60vh] md:h-[70vh] object-contain md:object-cover"
             />
           </div>
         ))}

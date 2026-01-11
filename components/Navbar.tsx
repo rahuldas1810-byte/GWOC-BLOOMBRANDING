@@ -62,8 +62,15 @@ export default function Navbar() {
       <nav className="fixed top-0 left-0 w-full z-[60] px-6 md:px-12 py-8 flex justify-between items-center bg-transparent mix-blend-mode-difference text-[#3E2B26] pointer-events-none">
 
         {/* Logo */}
-        <Link href="/" className="font-serif text-2xl md:text-3xl tracking-widest uppercase pointer-events-auto mix-blend-difference text-[#3E2B26]">
-          BLOOM BRANDING
+        <Link href="/" className="pointer-events-auto">
+          <Image
+            src="/bloom-logo.png"
+            alt="Bloom Branding"
+            width={400}
+            height={100}
+            className="h-16 md:h-24 w-auto object-contain"
+            priority
+          />
         </Link>
 
         {/* Header Controls - Squiggle & Wave Pills */}
@@ -162,17 +169,17 @@ export default function Navbar() {
               <div className="flex-1 grid grid-cols-1 lg:grid-cols-12 px-6 md:px-12 pb-12 pt-4 h-full overflow-y-auto lg:overflow-visible">
 
                 {/* Column 1: Branding & Visuals (Grouped at Bottom) */}
-                <div className="hidden lg:flex col-span-3 flex-col h-full pr-8 justify-end pb-24 gap-10">
+                <div className="flex lg:col-span-3 flex-col h-full lg:pr-8 justify-end pb-8 lg:pb-24 gap-6 lg:gap-10">
                   {/* Top: Copyright (Bodoni) */}
-                  <div>
-                    <h2 className="font-bodoni text-3xl mb-2"><span className="mr-1 font-sans text-lg relative -top-[2px]">©</span>2026</h2>
-                    <p className="text-xs text-[#3E2B26]/70 w-3/4 leading-relaxed font-sans">
+                  <div className="order-2 lg:order-1">
+                    <h2 className="font-bodoni text-2xl lg:text-3xl mb-2"><span className="mr-1 font-sans text-lg relative -top-[2px]">©</span>2026</h2>
+                    <p className="text-[10px] lg:text-xs text-[#3E2B26]/70 w-full lg:w-3/4 leading-relaxed font-sans">
                       Bloom Branding Industries. All rights reserved.
                     </p>
                   </div>
 
                   {/* Middle: Socials (Real Links) */}
-                  <div className="flex gap-4">
+                  <div className="flex gap-4 order-1 lg:order-2">
                     {[
                       { Icon: Linkedin, href: "https://in.linkedin.com/company/bloombranding-digital-media-marketing-branding-agency" },
                       { Icon: Facebook, href: "https://www.facebook.com/hello.bloombranding/" },
@@ -191,7 +198,7 @@ export default function Navbar() {
                   </div>
 
                   {/* Bottom: Image (Replaces Video) */}
-                  <div className="w-full max-w-[270px] aspect-video rounded-lg relative overflow-hidden shadow-sm group cursor-pointer">
+                  <div className="hidden lg:block w-full max-w-[270px] aspect-video rounded-lg relative overflow-hidden shadow-sm group cursor-pointer lg:order-3">
                     <Image
                       src="/bloom-1.jpg"
                       alt="Bloom Branding Visual"
@@ -202,8 +209,8 @@ export default function Navbar() {
                 </div>
 
                 {/* Column 2: Navigation Links (No Italic Active) */}
-                <div className="col-span-1 lg:col-span-5 flex flex-col justify-center lg:pl-12 lg:border-l border-[#3E2B26]/10">
-                  <ul className="flex flex-col pl-16">
+                <div className="col-span-1 lg:col-span-5 flex flex-col justify-center lg:pl-12 lg:border-l border-[#3E2B26]/10 py-8 lg:py-0">
+                  <ul className="flex flex-col pl-4 md:pl-16">
                     {menuItems.map((item, idx) => {
                       const isActive = pathname === item.href;
                       return (
@@ -211,17 +218,17 @@ export default function Navbar() {
                           <Link
                             href={item.href}
                             onClick={() => setIsOpen(false)}
-                            className={`font-bodoni block transition-all duration-500 antialiased font-light tracking-[-0.02em] leading-[1.1] py-0
-                              text-5xl md:text-6xl lg:text-[5.5rem]
+                            className={`font-bodoni block transition-all duration-500 antialiased font-light tracking-[-0.02em] leading-[1.1] py-1
+                              text-4xl md:text-5xl lg:text-6xl
                               ${isActive
-                                ? "text-[#3E2B26] opacity-100 translate-x-4 italic"
-                                : "text-[#3E2B26] opacity-30 hover:opacity-100 hover:translate-x-4"
+                                ? "text-[#3E2B26] opacity-100 translate-x-2 md:translate-x-4 italic"
+                                : "text-[#3E2B26] opacity-30 hover:opacity-100 hover:translate-x-2 md:hover:translate-x-4"
                               }`}
                           >
                             <span className="inline-block relative">
                               {/* Arrow Indicator */}
                               {isActive && (
-                                <span className="absolute -left-16 top-1/2 -translate-y-[45%] text-5xl font-light text-[#3E2B26]">
+                                <span className="absolute -left-7 md:-left-14 top-1/2 -translate-y-[45%] text-3xl md:text-4xl font-light text-[#3E2B26]">
                                   ›
                                 </span>
                               )}
@@ -235,16 +242,16 @@ export default function Navbar() {
                 </div>
 
                 {/* Column 3: Info Details (Compact Typography) */}
-                <div className="hidden lg:flex col-span-3 flex-col justify-center pl-16 space-y-4 text-[#3E2B26]">
+                <div className="flex lg:col-span-3 flex-col justify-center lg:pl-16 space-y-6 lg:space-y-4 text-[#3E2B26] border-t lg:border-t-0 border-[#3E2B26]/10 pt-8 lg:pt-0">
                   {contactInfo.map((info) => (
                     <div key={info.title}>
                       {/* Label: Very Small, Muted, Sans, Uppercase */}
-                      <h3 className="font-sans text-xs text-[#3E2B26]/50 mb-0 uppercase tracking-widest">
+                      <h3 className="font-sans text-[10px] lg:text-xs text-[#3E2B26]/50 mb-1 lg:mb-0 uppercase tracking-widest">
                         {info.title}
                       </h3>
                       {/* Value: Medium-Large, Clean, Sans */}
                       {info.lines.map((line, i) => (
-                        <p key={i} className="font-sans text-lg md:text-xl text-[#3E2B26] font-light leading-tight">
+                        <p key={i} className="font-sans text-base lg:text-lg md:text-xl text-[#3E2B26] font-light leading-tight">
                           {line}
                         </p>
                       ))}
