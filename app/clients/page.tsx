@@ -3,39 +3,15 @@
 import { useEffect, useState } from 'react'
 import Link from 'next/link'
 import SectionReveal from '@/components/SectionReveal'
-import { motion, useMotionValue, useSpring } from 'framer-motion'
+import { motion } from 'framer-motion'
 import ClientShowcase from '@/components/clientshowcase'
 import ImpactStats from '@/components/ImpactStats'
 import ClientSocialProof from '@/components/ClientSocialProof'
 import { getClients, getSiteSettings } from '@/lib/content'
+import SectorShowcase from '@/components/SectorShowcase'
 
 export default function Clients() {
   const [settings, setSettings] = useState<any>(null)
-  
-  // Custom Cursor Logic
-  const cursorX = useMotionValue(-100)
-  const cursorY = useMotionValue(-100)
-  const springConfig = { damping: 25, stiffness: 120 } // Slightly "laggy" feel
-  const springX = useSpring(cursorX, springConfig)
-  const springY = useSpring(cursorY, springConfig)
-
-  useEffect(() => {
-    // Hide default cursor on mount
-    document.body.style.cursor = 'none'
-
-    const moveCursor = (e: MouseEvent) => {
-      cursorX.set(e.clientX)
-      cursorY.set(e.clientY)
-    }
-
-    window.addEventListener('mousemove', moveCursor)
-
-    return () => {
-      // Restore default cursor on unmount
-      document.body.style.cursor = 'auto'
-      window.removeEventListener('mousemove', moveCursor)
-    }
-  }, [cursorX, cursorY])
 
   useEffect(() => {
     const fetchData = async () => {
@@ -52,26 +28,7 @@ export default function Clients() {
   }, [])
 
   return (
-    <div className="min-h-screen relative cursor-none">
-      {/* Custom Cursor */}
-       <motion.div
-        className="fixed top-0 left-0 w-3 h-3 bg-dark-choc rounded-full pointer-events-none z-[9999]"
-        style={{
-          x: cursorX,
-          y: cursorY,
-          translateX: '-50%',
-          translateY: '-50%'
-        }}
-      />
-      <motion.div
-        className="fixed top-0 left-0 w-12 h-12 border border-dark-choc rounded-full pointer-events-none z-[9998]"
-        style={{
-          x: springX,
-          y: springY,
-          translateX: '-50%',
-          translateY: '-50%'
-        }}
-      />
+    <div className="min-h-screen relative">
 
       {/* Hero */}
       <section className="relative py-36 md:py-48 lg:py-56 overflow-hidden bg-[#F0EBE5]">
@@ -152,6 +109,9 @@ export default function Clients() {
 
       {/* Linked Social Proof (Logos + Testimonials) */}
       <ClientSocialProof />
+
+      {/* Sector Showcase */}
+      <SectorShowcase />
 
       {/* CTA - Fill on Hover */}
       <Link href="/contact" className="block">

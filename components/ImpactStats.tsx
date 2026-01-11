@@ -66,11 +66,26 @@ export default function ImpactStats() {
               whileInView={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
               viewport={{ once: true, margin: '-50px' }}
               transition={{ duration: 0.8, delay: index * 0.15, ease: [0.22, 1, 0.36, 1] }}
-              whileHover={{ y: -6, scale: 1.02 }}
-              className="flex flex-col items-center text-center group cursor-default relative"
+              whileHover="hover"
+              className="flex flex-col items-center text-center group cursor-default relative isolate"
             >
-              {/* Decorative circle background */}
-              <div className="absolute inset-0 rounded-full bg-gradient-to-br from-butter-yellow/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 -z-10" />
+              {/* Breathing Glow Blob - Premium & Ethereal */}
+              <motion.div 
+                variants={{
+                  hover: { scale: 1.4, opacity: 0.8 }
+                }}
+                animate={{ 
+                  scale: [1, 1.15, 1],
+                  opacity: [0.3, 0.5, 0.3],
+                }}
+                transition={{ 
+                  duration: 4, 
+                  repeat: Infinity, 
+                  ease: "easeInOut",
+                  delay: index * 1.5 // Stagger breathing
+                }}
+                className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-32 h-32 rounded-full bg-[#E8E2D2] blur-3xl -z-10"
+              />
               
               {/* Micro visual anchor - decorative dot */}
               <motion.div 
@@ -78,12 +93,14 @@ export default function ImpactStats() {
                 whileInView={{ opacity: 1, scale: 1 }}
                 viewport={{ once: true }}
                 transition={{ duration: 0.6, delay: 0.5 + (index * 0.1), ease: [0.22, 1, 0.36, 1] }}
-                className="w-2 h-2 rounded-full bg-dark-choc/30 mb-8 group-hover:bg-dark-choc/50 transition-colors duration-300"
+                className="w-2 h-2 rounded-full bg-dark-choc/30 mb-8 group-hover:bg-dark-choc/50 transition-colors duration-300 relative z-10"
               />
               
-              <Counter value={stat.value} suffix={stat.suffix} index={index} />
+              <div className="relative z-10">
+                <Counter value={stat.value} suffix={stat.suffix} index={index} />
+              </div>
               
-              <span className="font-mono text-xs md:text-sm text-dark-choc/60 mt-6 uppercase tracking-[0.25em] font-semibold leading-relaxed">
+              <span className="relative z-10 font-mono text-xs md:text-sm text-dark-choc/60 mt-6 uppercase tracking-[0.25em] font-semibold leading-relaxed">
                 {stat.label}
               </span>
             </motion.div>
