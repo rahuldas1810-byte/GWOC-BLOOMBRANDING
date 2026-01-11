@@ -20,7 +20,7 @@ const cinzel = Cinzel_Decorative({
 
 export default function Footer() {
   return (
-    <footer className={`relative overflow-hidden pt-16 pb-6 md:pt-20 md:pb-8 ${inter.variable} font-sans text-[#FDF6EE]`}>
+    <footer className={`relative overflow-hidden pt-16 pb-16 md:pt-20 md:pb-8 ${inter.variable} font-sans text-[#FDF6EE]`}>
 
       {/* Background Image */}
       <div className="absolute inset-0 z-0">
@@ -38,7 +38,7 @@ export default function Footer() {
       <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
 
         {/* Top Row: 4 Columns */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10 md:gap-12 mb-16 md:mb-20">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-10 md:gap-12 mb-16 md:mb-20">
 
           {/* Column 1: Come by */}
           <motion.div
@@ -174,7 +174,7 @@ export default function Footer() {
                   alt="Bloom Branding"
                   width={240}
                   height={80}
-                  className="w-48 md:w-56 h-auto object-contain brightness-0 invert"
+                  className="hidden md:block w-48 md:w-56 h-auto object-contain brightness-0 invert"
                 />
               </motion.div>
               <p className="font-serif italic font-light text-[22px] md:text-[26px] leading-[1.3] text-white/95">
@@ -221,7 +221,7 @@ export default function Footer() {
           transition={{ duration: 0.8, delay: 0.5 }}
           className="relative w-full flex justify-center pb-4 md:pb-6"
         >
-          <h1 className={`${cinzel.className} font-normal text-[clamp(40px,8vw,96px)] tracking-[0.1em] leading-none text-white/95 text-center uppercase whitespace-nowrap`}>
+          <h1 className={`${cinzel.className} font-normal text-[clamp(28px,8vw,96px)] tracking-[0.1em] leading-none text-white/95 text-center uppercase md:whitespace-nowrap`}>
             Bloom Branding
           </h1>
         </motion.div>

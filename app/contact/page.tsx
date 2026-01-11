@@ -26,7 +26,7 @@ function FAQ({ items }: { items: FAQItem[] }) {
   };
 
   return (
-    <div className="space-y-4">
+    <div className="space-y-6">
       {items.map((item, index) => {
         const isOpen = openIndex === index;
         return (
@@ -39,7 +39,7 @@ function FAQ({ items }: { items: FAQItem[] }) {
           >
             <motion.button
               onClick={() => toggleFAQ(index)}
-              className="w-full flex items-start justify-between gap-4 text-left p-6"
+              className="w-full flex items-start justify-between gap-4 text-left p-5 md:p-6"
               aria-expanded={isOpen}
             >
               <h3 className={`font-serif text-lg md:text-xl pr-8 transition-colors duration-200 leading-snug ${isOpen ? "text-electric-blue" : "text-dark-choc group-hover:text-electric-blue"}`}>
@@ -70,7 +70,7 @@ function FAQ({ items }: { items: FAQItem[] }) {
               transition={{ duration: 0.4, ease: [0.4, 0, 0.2, 1] }}
               className="overflow-hidden"
             >
-              <div className="px-6 pb-6 pt-0">
+              <div className="px-5 pb-5 md:px-6 md:pb-6 pt-0">
                 <p className="body-text text-dark-choc/70">
                   {item.answer}
                 </p>
@@ -218,14 +218,14 @@ export default function Contact() {
   return (
     <main className="min-h-screen bg-earl-gray scroll-smooth">
       {/* Hero Section */}
-      <section className="relative w-full h-[50vh] min-h-[400px] md:h-[60vh] flex items-center justify-center overflow-hidden">
+      <section className="relative w-full h-[40vh] md:h-[60vh] min-h-[300px] md:min-h-[400px] flex items-center justify-center overflow-hidden">
         {/* Background Image */}
         <div className="absolute inset-0 z-0 select-none pointer-events-none">
           <Image
             src={backgroundImageUrl}
             alt="Bloom Branding background"
             fill
-            className="object-contain md:object-cover object-center"
+            className="object-cover object-center"
             priority
             unoptimized={backgroundImageUrl?.startsWith("http") || false}
             sizes="100vw"
@@ -233,14 +233,14 @@ export default function Contact() {
         </div>
 
         {/* Overlay */}
-        <div className="absolute inset-0 z-10 bg-dark-choc/40 backdrop-blur-[2px]" />
+        <div className="absolute inset-0 z-10 bg-dark-choc/20" />
 
         {/* Content - Removed text content, keeping only background image */}
 
       </section>
 
       {/* Main Content */}
-      <section className="section-padding relative">
+      <section className="py-12 md:section-padding relative">
         <div className="container-custom">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 lg:gap-24">
 
@@ -266,7 +266,7 @@ export default function Contact() {
                     <h3 className="label-text mb-4">DIRECT CONTACT</h3>
                     <a
                       href={`mailto:${siteSettings?.contactEmail || data.email}`}
-                      className="font-serif text-2xl md:text-3xl text-dark-choc hover:text-electric-blue transition-colors duration-300 relative group inline-block"
+                      className="font-serif text-xl md:text-3xl text-dark-choc hover:text-electric-blue transition-colors duration-300 relative group inline-block"
                     >
                       {siteSettings?.contactEmail || data.email}
                       <span className="absolute left-0 bottom-1 w-0 h-[1px] bg-electric-blue transition-all duration-300 group-hover:w-full"></span>
@@ -337,8 +337,8 @@ export default function Contact() {
 
             {/* RIGHT COLUMN: Contact Form */}
             <SectionReveal delay={0.1}>
-              <div className="lg:sticky lg:top-32">
-                <div className="bg-white rounded-3xl p-8 md:p-12 shadow-xl shadow-dark-choc/5 border border-dark-choc/5 relative overflow-hidden">
+              <div className="lg:sticky lg:top-32 max-w-2xl mx-auto lg:max-w-none">
+                <div className="bg-white rounded-3xl p-6 md:p-12 shadow-xl shadow-dark-choc/5 border border-dark-choc/5 relative overflow-hidden">
                   {/* Decor element */}
                   <div className="absolute top-0 right-0 w-32 h-32 bg-electric-blue/5 rounded-bl-full -mr-8 -mt-8 pointer-events-none" />
 

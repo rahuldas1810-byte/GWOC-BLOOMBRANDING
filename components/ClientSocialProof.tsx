@@ -72,7 +72,7 @@ export default function ClientSocialProof() {
     <section className="py-24 relative overflow-hidden bg-[#F0EBE5]">
       {/* Subtle vertical gradient background for depth */}
       <div className="absolute inset-0 bg-gradient-to-b from-[#F0EBE5] via-[#EAE1D5] to-[#F0EBE5] opacity-50 pointer-events-none" />
-      
+
       <div className="container-custom mb-12 flex justify-center relative z-10">
         <span className="font-mono text-xs uppercase tracking-[0.25em] text-dark-choc/60">
           Trusted by growing brands
@@ -88,7 +88,7 @@ export default function ClientSocialProof() {
 
           <div className="flex overflow-hidden group">
             <motion.div
-              className="flex gap-24 md:gap-32 items-center whitespace-nowrap px-10"
+              className="flex gap-16 sm:gap-24 md:gap-32 items-center whitespace-nowrap px-10"
               animate={{ x: "-50%" }}
               transition={{
                 ease: "linear",
@@ -100,7 +100,7 @@ export default function ClientSocialProof() {
               {[...brands, ...brands, ...brands, ...brands].map((brand, i) => (
                 <motion.div
                   key={i}
-                  className={`text-3xl md:text-4xl text-dark-choc/70 hover:text-dark-choc transition-all duration-[250ms] ease-out cursor-default select-none ${brand.font}`}
+                  className={`text-2xl sm:text-3xl md:text-4xl text-dark-choc/70 hover:text-dark-choc transition-all duration-[250ms] ease-out cursor-default select-none ${brand.font}`}
                   whileHover={{ scale: 1.08, y: -4 }}
                   transition={{ duration: 0.2, ease: 'easeOut' }}
                 >
@@ -122,7 +122,7 @@ export default function ClientSocialProof() {
               transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
               className="flex flex-col items-center"
             >
-              <h3 className="font-serif text-2xl md:text-3xl text-dark-choc/90 italic leading-relaxed mb-6 max-w-2xl">
+              <h3 className="font-serif text-lg sm:text-2xl md:text-3xl text-dark-choc/90 italic leading-relaxed mb-4 md:mb-6 max-w-2xl">
                 "{activeBrand.quote}"
               </h3>
               {activeBrand.author && (

@@ -117,7 +117,7 @@ export default function Testimonials() {
   return (
     <div className="min-h-screen">
       {/* ================= HERO SECTION ================= */}
-      <section className="relative min-h-[70vh] md:min-h-[85vh] w-full overflow-hidden mt-16 md:mt-20 lg:mt-24">
+      <section className="relative min-h-[70vh] md:min-h-[85vh] w-full overflow-hidden">
         <div className="relative h-[70vh] md:h-screen min-h-[500px]">
           {/* Slice Reveal Background */}
           <SliceReveal />
@@ -174,8 +174,8 @@ export default function Testimonials() {
 
       {/* ================= BRAND CATEGORIES ================= */}
       {Object.keys(brandData).length > 0 && (
-        <section className="py-16 md:py-24 bg-earl-gray">
-          <div className="flex flex-wrap justify-center gap-3 sm:gap-4 md:gap-6 mb-10 md:mb-14 -mt-4 md:-mt-8 px-4">
+        <section className="py-12 md:py-24 bg-earl-gray overflow-hidden">
+          <div className="flex overflow-x-auto no-scrollbar justify-start sm:justify-center gap-3 sm:gap-4 md:gap-6 mb-10 md:mb-14 -mt-4 md:-mt-8 px-4 sm:px-6">
             {Object.keys(brandData).map((category) => {
               const categoryKey = category as string;
               const isActive = activeCategory === categoryKey;
@@ -186,7 +186,7 @@ export default function Testimonials() {
                   onClick={() => setActiveCategory(categoryKey)}
                   whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.95 }}
-                  className={`px-5 sm:px-6 md:px-7 py-2 sm:py-2.5 rounded-full text-[10px] sm:text-[11px] tracking-[0.2em] sm:tracking-[0.25em] uppercase transition-all duration-300 font-medium
+                  className={`flex-shrink-0 px-5 sm:px-6 md:px-7 py-2 sm:py-2.5 rounded-full text-[10px] sm:text-[11px] tracking-[0.2em] sm:tracking-[0.25em] uppercase transition-all duration-300 font-medium
                     ${isActive
                       ? "bg-dark-choc text-white shadow-md"
                       : "border border-dark-choc/30 text-dark-choc hover:border-dark-choc hover:bg-dark-choc/5"
@@ -263,8 +263,8 @@ export default function Testimonials() {
       {testimonials.length > 0 && (
         <section id="client-reviews" className="relative bg-white pb-0">
           <div className="flex flex-col lg:flex-row relative">
-            {/* Left Sticky Image */}
-            <div className="sticky top-0 lg:top-[20vh] lg:sticky w-full lg:w-[55%] h-[40vh] sm:h-[50vh] lg:h-[60vh] bg-earl-gray/30 flex items-center justify-center p-4 sm:p-6 md:p-16 lg:p-20 z-10 lg:z-auto">
+            {/* Left Sticky Image - Relative on mobile, Sticky on desktop */}
+            <div className="relative lg:sticky lg:top-[20vh] w-full lg:w-[55%] h-[40vh] sm:h-[50vh] lg:h-[60vh] bg-earl-gray/30 flex items-center justify-center p-4 sm:p-6 md:p-16 lg:p-20 z-10 lg:z-auto">
               <div className="relative w-full h-full lg:pr-24">
                 {testimonials.map((testimonial, index) => {
                   if (!testimonial || !testimonial.image) return null;
@@ -311,7 +311,7 @@ export default function Testimonials() {
                 return (
                   <motion.section
                     key={testimonial.id || index}
-                    className="min-h-[40vh] sm:min-h-[50vh] lg:min-h-[60vh] flex items-center px-4 sm:px-6 md:px-16 py-12 sm:py-16 lg:py-20"
+                    className="min-h-[40vh] sm:min-h-[50vh] lg:min-h-[60vh] flex items-center px-4 sm:px-6 md:px-16 py-12 sm:py-16 lg:py-20 scroll-mt-24"
                     initial={{ opacity: 0, y: 20 }}
                     whileInView={{ opacity: 1, y: 0 }}
                     onViewportEnter={() => setActiveIndex(index)}

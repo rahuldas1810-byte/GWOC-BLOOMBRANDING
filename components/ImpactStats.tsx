@@ -22,7 +22,7 @@ function Counter({ value, suffix, index }: { value: number; suffix: string; inde
   }, [count, isInView, value, index])
 
   return (
-    <span ref={ref} className="font-serif text-4xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-8xl text-white tracking-tighter font-light">
+    <span ref={ref} className="font-serif text-3xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-8xl text-white tracking-tighter font-light">
       <motion.span>{rounded}</motion.span>
       <span className="text-[#BDAF62]">{suffix}</span>
     </span>
@@ -41,7 +41,7 @@ function PolygonEnclosure({ children, index }: { children: React.ReactNode; inde
       >
         <svg
           viewBox="0 0 200 200"
-          className="w-32 h-32 sm:w-40 sm:h-40 md:w-56 md:h-56 lg:w-64 lg:h-64 drop-shadow-[0_0_30px_rgba(30,53,112,0.3)]"
+          className="w-28 h-28 sm:w-40 sm:h-40 md:w-56 md:h-56 lg:w-64 lg:h-64 drop-shadow-[0_0_30px_rgba(30,53,112,0.3)]"
         >
           {/* Main Glass Polygon */}
           <motion.path
@@ -158,7 +158,7 @@ export default function ImpactStats() {
               <span className="font-mono text-[10px] sm:text-xs uppercase tracking-[0.4em] sm:tracking-[0.6em] text-[#BDAF62] mb-4 sm:mb-6 md:mb-8 block font-black">
                 Experience Served
               </span>
-              <h2 className="font-serif text-4xl sm:text-5xl md:text-7xl lg:text-8xl text-white leading-[0.85] tracking-tighter">
+              <h2 className="font-serif text-4xl sm:text-5xl md:text-6xl lg:text-8xl text-white leading-[0.85] tracking-tighter">
                 Global<br />
                 <span className="italic relative font-light">
                   Impact.

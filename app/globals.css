@@ -6,22 +6,27 @@
   html {
     scroll-behavior: smooth;
   }
-  
+
   html.lenis {
     height: auto;
   }
-  
+
   .lenis.lenis-smooth {
     scroll-behavior: auto;
   }
-  
+
   body {
     @apply bg-earl-gray text-near-black font-sans;
     font-size: 16px;
     line-height: 1.6;
   }
 
-  h1, h2, h3, h4, h5, h6 {
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
     @apply font-serif text-dark-choc;
     line-height: 1.05;
   }
@@ -36,11 +41,11 @@
   .container-custom {
     @apply max-w-6xl mx-auto px-6 sm:px-10 lg:px-16;
   }
-  
+
   .section-padding {
     @apply py-24 md:py-32 lg:py-40;
   }
-  
+
   /* Editorial Typography - Refined Scale */
   .heading-1 {
     @apply font-serif text-dark-choc font-normal;
@@ -48,14 +53,14 @@
     line-height: 1;
     letter-spacing: -0.03em;
   }
-  
+
   .heading-2 {
     @apply font-serif text-dark-choc font-normal;
     font-size: clamp(2.25rem, 5vw, 4rem);
     line-height: 1.05;
     letter-spacing: -0.em;
   }
-  
+
   .heading-3 {
     @apply font-serif text-dark-choc font-normal;
     font-size: clamp(1.5rem, 3vw, 2.25rem);
@@ -75,14 +80,14 @@
     font-size: 0.6875rem;
     letter-spacing: 0.18em;
   }
-  
+
   /* Brand Buttons - More Refined */
   .btn-primary {
     @apply inline-flex items-center justify-center px-10 py-5 font-mono text-xs uppercase text-white bg-electric-blue hover:bg-electric-blue-dark transition-all duration-300 ease-out rounded-full;
     letter-spacing: 0.2em;
     @apply shadow-md hover:shadow-lg active:scale-95;
   }
-  
+
   .btn-secondary {
     @apply inline-flex items-center justify-center px-10 py-5 font-mono text-xs uppercase text-electric-blue bg-transparent border border-electric-blue/40 hover:border-electric-blue hover:bg-electric-blue hover:text-white transition-all duration-300 ease-out rounded-full;
     letter-spacing: 0.2em;
@@ -113,10 +118,18 @@
 ::selection {
   @apply bg-electric-blue/20 text-dark-choc;
 }
+
 /* Subtle float animation for editorial images */
 @keyframes float {
-  0%, 100% { transform: translateY(0); }
-  50% { transform: translateY(-8px); }
+
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+
+  50% {
+    transform: translateY(-8px);
+  }
 }
 
 .float-image {
@@ -174,7 +187,11 @@ img[loading="lazy"] {
 }
 
 /* Smooth transitions for interactive elements */
-button, a, input, textarea, select {
+button,
+a,
+input,
+textarea,
+select {
   @apply transition-all duration-200;
 }
 
@@ -183,20 +200,28 @@ button, a, input, textarea, select {
   0% {
     background-position: -1000px 0;
   }
+
   100% {
     background-position: 1000px 0;
   }
 }
 
 .skeleton {
-  background: linear-gradient(
-    90deg,
-    rgba(98, 74, 65, 0.1) 0%,
-    rgba(98, 74, 65, 0.2) 50%,
-    rgba(98, 74, 65, 0.1) 100%
-  );
+  background: linear-gradient(90deg,
+      rgba(98, 74, 65, 0.1) 0%,
+      rgba(98, 74, 65, 0.2) 50%,
+      rgba(98, 74, 65, 0.1) 100%);
   background-size: 1000px 100%;
   animation: shimmer 2s infinite;
 }
 
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
 
+.no-scrollbar {
+  -ms-overflow-style: none;
+  /* IE and Edge */
+  scrollbar-width: none;
+  /* Firefox */
+}

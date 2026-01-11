@@ -113,7 +113,7 @@ export default function OurStory() {
     <div className="min-h-screen">
 
       {/* ================= CINEMATIC HERO ================= */}
-      <section ref={containerRef} className="relative h-[70vh] min-h-[500px] md:h-[90vh] md:min-h-[700px] overflow-hidden flex items-center justify-center bg-dark-choc">
+      <section ref={containerRef} className="relative h-[60vh] min-h-[450px] md:h-[90vh] md:min-h-[700px] overflow-hidden flex items-center justify-center bg-dark-choc">
 
         {/* Parallax Background Image */}
         <motion.div
@@ -124,7 +124,7 @@ export default function OurStory() {
             src={data.heroBackgroundImage?.url || "/who-we-are.jpg"}
             alt="Bloom Branding studio"
             fill
-            className="object-contain md:object-cover opacity-50"
+            className="object-cover opacity-50"
             priority
             unoptimized={data.heroBackgroundImage?.url?.startsWith('http') || false}
             sizes="100vw"
@@ -155,7 +155,7 @@ export default function OurStory() {
                   initial={{ y: "100%" }}
                   animate={{ y: 0 }}
                   transition={{ duration: 1, ease: [0.16, 1, 0.3, 1] }}
-                  className="block text-[15vw] lg:text-[14rem]"
+                  className="block text-[12vw] md:text-[15vw] lg:text-[14rem]"
                 >
                   {data.heroTitle.split(' ')[0]}
                 </motion.span>
@@ -165,7 +165,7 @@ export default function OurStory() {
                   initial={{ y: "100%" }}
                   animate={{ y: 0 }}
                   transition={{ duration: 1, delay: 0.1, ease: [0.16, 1, 0.3, 1] }}
-                  className="block text-[15vw] lg:text-[14rem] italic pl-[10vw] lg:pl-32"
+                  className="block text-[12vw] md:text-[15vw] lg:text-[14rem] italic pl-[5vw] md:pl-[10vw] lg:pl-32"
                 >
                   {data.heroTitle.split(' ').slice(1).join(' ')}
                 </motion.span>
@@ -176,7 +176,7 @@ export default function OurStory() {
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ duration: 1, delay: 0.8 }}
-              className="body-text text-xl md:text-2xl max-w-lg mt-12 text-earl-gray/80"
+              className="body-text text-lg md:text-xl lg:text-2xl max-w-lg mt-8 md:mt-12 text-earl-gray/80 px-4 md:px-0"
             >
               {data.heroSubtitle}
             </motion.p>
@@ -188,7 +188,7 @@ export default function OurStory() {
       <section className="section-padding bg-white relative z-20 rounded-t-[3rem] -mt-20 min-h-[80vh]">
         <div className="container-custom">
 
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-16 lg:gap-28 items-start pt-10">
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 md:gap-16 lg:gap-28 items-start pt-6 md:pt-10">
 
             {/* Sticky Left Column */}
             <div className="lg:col-span-5 lg:sticky lg:top-32 self-start">
@@ -221,7 +221,7 @@ export default function OurStory() {
             {/* Scrollable Right Content */}
             <div className="lg:col-span-6 lg:col-start-7 space-y-12 lg:pt-32">
               <SectionReveal delay={0.2}>
-                <p className="body-text text-2xl md:text-3xl leading-relaxed text-dark-choc indent-12">
+                <p className="body-text text-lg md:text-2xl lg:text-3xl leading-relaxed text-dark-choc indent-8 md:indent-12">
                   {data.purposeDescription}
                 </p>
               </SectionReveal>
@@ -277,7 +277,7 @@ export default function OurStory() {
                 }}
                 viewport={{ once: true, margin: "-10%" }}
                 onClick={() => setActiveCard(activeCard === item.id ? null : item.id)}
-                className={`group px-8 py-10 lg:p-12 border-t border-dark-choc/10 hover:border-transparent min-h-[450px] w-full md:w-auto flex flex-col justify-between 
+                className={`group px-6 py-8 md:px-8 md:py-10 lg:p-12 border-t border-dark-choc/10 hover:border-transparent min-h-[320px] md:min-h-[400px] lg:min-h-[450px] w-full md:w-auto flex flex-col justify-between 
                            cursor-pointer transition-colors duration-500 overflow-hidden relative
                            ${activeCard === item.id
                     ? 'bg-electric-blue text-white border-transparent'
@@ -335,7 +335,7 @@ export default function OurStory() {
       </SectionReveal>
 
       {/* Why We Exist - EDITORIAL OVERLAP */}
-      <section ref={purposeRef} className="section-padding bg-white relative overflow-hidden py-32 lg:py-48">
+      <section ref={purposeRef} className="section-padding bg-white relative overflow-hidden py-20 md:py-32 lg:py-48">
         <div className="container-custom relative z-10">
 
           <div className="relative">
@@ -346,7 +346,7 @@ export default function OurStory() {
                   src="/27.jpg"
                   alt="Bloom Branding purpose"
                   fill
-                  className="object-contain md:object-cover"
+                  className="object-cover"
                   sizes="(max-width: 1024px) 100vw, 75vw"
                 />
                 <div className="absolute inset-0 bg-dark-choc/10 mix-blend-multiply" />
@@ -364,7 +364,7 @@ export default function OurStory() {
 
             {/* Overlapping Content Card - FAANG TILT */}
             <TiltCard
-              className="bg-white/95 backdrop-blur-md p-10 md:p-16 rounded-[2rem] shadow-[0_40px_100px_rgba(0,0,0,0.1)] border border-dark-choc/5
+              className="bg-white/95 backdrop-blur-md p-6 md:p-10 lg:p-16 rounded-[2rem] shadow-[0_40px_100px_rgba(0,0,0,0.1)] border border-dark-choc/5
                             relative mt-[-10%] ml-[5%] w-[90%]
                             lg:absolute lg:right-0 lg:bottom-[10%] lg:w-[45%] lg:mt-0 lg:ml-0 overflow-hidden group/card"
             >
@@ -390,7 +390,7 @@ export default function OurStory() {
                 <p className="label-text mb-6 text-dark-choc/60">Our Purpose</p>
                 <h2 className="heading-2 mb-8">Why We Exist</h2>
 
-                <p className="font-serif text-3xl md:text-4xl text-dark-choc mb-8 leading-tight">
+                <p className="font-serif text-2xl md:text-3xl lg:text-4xl text-dark-choc mb-6 md:mb-8 leading-tight">
                   No jargon. No fluff. <span className="text-dark-choc/40 italic">Just clarity.</span>
                 </p>
 

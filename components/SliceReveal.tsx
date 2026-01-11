@@ -33,8 +33,9 @@ export default function SliceReveal() {
           className="h-full flex-1"
           style={{
             backgroundImage: "url('/testimonials/hero.jpg')",
-            backgroundSize: "cover",
-            backgroundPosition: `${(i / SLICE_COUNT) * 100}% center`,
+            backgroundSize: `${SLICE_COUNT * 100}% 100%`,
+            backgroundPosition: `${(i / (SLICE_COUNT - 1)) * 100}% center`,
+            backgroundRepeat: "no-repeat",
           }}
         />
       ))}
