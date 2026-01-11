@@ -11,8 +11,8 @@ import { Playfair_Display, Inter, Bodoni_Moda } from "next/font/google";
 // 1. Setup Fonts
 const playfair = Playfair_Display({ subsets: ["latin"], variable: "--font-serif" });
 const inter = Inter({ subsets: ["latin"], variable: "--font-sans" });
-const bodoni = Bodoni_Moda({ 
-  subsets: ["latin"], 
+const bodoni = Bodoni_Moda({
+  subsets: ["latin"],
   variable: "--font-bodoni",
   display: "swap"
 });
@@ -22,12 +22,13 @@ const menuItems = [
   { label: "Home", href: "/" },
   { label: "Our Story", href: "/our-story" },
   { label: "Services", href: "/services" },
+  { label: "Clients", href: "/clients" },
   { label: "Testimonials", href: "/testimonials" },
   { label: "Contact", href: "/contact" },
 ];
 
 const contactInfo = [
-  { title: "Bloom Industries", lines: ["Rua do Faro 123", "4740-531 Esposende, PT"] },
+  { title: "Bloom Industries", lines: ["Solarium Business Centre, 515,", "beside Times Corner, Surat, Gujarat 395007"] },
   { title: "Factory Hours", lines: ["Monday to Friday", "08:00h – 17:30h*"] },
   { title: "Customer Service", lines: ["Service by appointment*"] },
   { title: "Contact", lines: ["comercial@bloombranding.com", "(+351) 933 209 045"] },
@@ -43,7 +44,7 @@ export default function Navbar() {
   const getCurrentPageLabel = () => {
     if (pathname === "/") return "HOME";
     const label = pathname.replace("/", "").replace(/[-_]/g, " ").toUpperCase();
-    return label || "HOME"; 
+    return label || "HOME";
   };
 
   // --- Change Set 3: Pills Color Behavior ---
@@ -59,36 +60,74 @@ export default function Navbar() {
          --- Top Navigation Bar (Always Visible) --- 
       */}
       <nav className="fixed top-0 left-0 w-full z-[60] px-6 md:px-12 py-8 flex justify-between items-center bg-transparent mix-blend-mode-difference text-[#3E2B26] pointer-events-none">
-        
+
         {/* Logo */}
         <Link href="/" className="font-serif text-2xl md:text-3xl tracking-widest uppercase pointer-events-auto mix-blend-difference text-[#3E2B26]">
           BLOOM BRANDING
         </Link>
-        
+
         {/* Header Controls - Squiggle & Wave Pills */}
         <div className="flex items-center gap-3 pointer-events-auto mix-blend-normal">
-           
-           {/* Pill 1: Decorative Squiggle (Outlined) */}
-           <div className="hidden md:flex items-center justify-center w-[72px] h-[44px] rounded-full border border-[#3E2B26] text-[#3E2B26] bg-transparent transition-all duration-300">
-             <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
-                {/* Abstract 'W' Squiggle */}
-                <path d="M5 13C6.5 13 7.5 10 9.5 10C11.5 10 12.5 14 14.5 14C16.5 14 17.5 10 19 10" />
-             </svg>
-           </div>
 
-           {/* Pill 2: Page Label (Removed per request) */}
-           
-           {/* Pill 3: Menu Toggle (Solid, Double Wave) */}
-           <button 
-             onClick={toggleMenu}
-             className="flex items-center justify-center w-24 h-[44px] rounded-full bg-[#3E2B26] text-[#F3F0E7] border-none transition-transform duration-300 hover:scale-[1.02] active:scale-95"
-           >
-             <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
-               {/* Double Wave/Stream Icon */}
-               <path d="M4 9C7 9 9 11 12 11C15 11 17 9 20 9" />
-               <path d="M4 15C7 15 9 17 12 17C15 17 17 15 20 15" />
-             </svg>
-           </button>
+          {/* Pill 1: Decorative Squiggle (Outlined) - Vein Pulse Animation */}
+          <div className="hidden md:flex items-center justify-center w-[72px] h-[44px] rounded-full border border-[#3E2B26] text-[#3E2B26] bg-transparent transition-all duration-300">
+            <svg
+              width="28"
+              height="16"
+              viewBox="0 0 28 16"
+              fill="none"
+            >
+              {/* Base wave - static vein */}
+              <path
+                d="M2 8C4 8 5 4 8 4C11 4 12 12 15 12C18 12 19 4 22 4C24 4 25 8 26 8"
+                stroke="currentColor"
+                strokeWidth="1.5"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                opacity="0.35"
+              />
+              {/* Pulse traveling through the vein */}
+              <motion.path
+                d="M2 8C4 8 5 4 8 4C11 4 12 12 15 12C18 12 19 4 22 4C24 4 25 8 26 8"
+                stroke="currentColor"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeDasharray="6 30"
+                initial={{ strokeDashoffset: 36 }}
+                animate={{
+                  strokeDashoffset: [36, 0],
+                  opacity: [0.5, 1, 0.5]
+                }}
+                transition={{
+                  strokeDashoffset: {
+                    duration: 1,
+                    repeat: Infinity,
+                    ease: "easeInOut"
+                  },
+                  opacity: {
+                    duration: 1,
+                    repeat: Infinity,
+                    ease: "easeInOut"
+                  }
+                }}
+              />
+            </svg>
+          </div>
+
+          {/* Pill 2: Page Label (Removed per request) */}
+
+          {/* Pill 3: Menu Toggle (Solid, Double Wave) */}
+          <button
+            onClick={toggleMenu}
+            className="flex items-center justify-center w-24 h-[44px] rounded-full bg-[#3E2B26] text-[#F3F0E7] border-none transition-transform duration-300 hover:scale-[1.02] active:scale-95"
+          >
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+              {/* Double Wave/Stream Icon */}
+              <path d="M4 9C7 9 9 11 12 11C15 11 17 9 20 9" />
+              <path d="M4 15C7 15 9 17 12 17C15 17 17 15 20 15" />
+            </svg>
+          </button>
         </div>
       </nav>
 
@@ -110,10 +149,10 @@ export default function Navbar() {
               initial={{ height: 0, opacity: 0 }}
               animate={{ height: "70vh", opacity: 1 }}
               exit={{ height: 0, opacity: 0 }}
-              transition={{ duration: 0.8, ease: [0.19, 1, 0.22, 1] }} 
+              transition={{ duration: 0.8, ease: [0.19, 1, 0.22, 1] }}
               className="fixed top-0 left-0 w-full bg-[#EAE8DC] text-[#3E2B26] rounded-b-[3rem] shadow-2xl z-50 overflow-hidden flex flex-col"
             >
-              
+
               {/* Inner Header - Invisible Ghost Logo */}
               <div className="flex justify-between items-center px-6 md:px-12 py-8 w-full shrink-0">
                 <Link href="/" onClick={() => setIsOpen(false)} className="font-serif text-2xl md:text-3xl tracking-widest uppercase text-[#3E2B26] invisible">BLOOM BRANDING</Link>
@@ -121,7 +160,7 @@ export default function Navbar() {
 
               {/* Grid Layout Content */}
               <div className="flex-1 grid grid-cols-1 lg:grid-cols-12 px-6 md:px-12 pb-12 pt-4 h-full overflow-y-auto lg:overflow-visible">
-                
+
                 {/* Column 1: Branding & Visuals (Grouped at Bottom) */}
                 <div className="hidden lg:flex col-span-3 flex-col h-full pr-8 justify-end pb-24 gap-10">
                   {/* Top: Copyright (Bodoni) */}
@@ -153,11 +192,11 @@ export default function Navbar() {
 
                   {/* Bottom: Image (Replaces Video) */}
                   <div className="w-full max-w-[270px] aspect-video rounded-lg relative overflow-hidden shadow-sm group cursor-pointer">
-                    <Image 
-                      src="/bloom-1.jpg" 
-                      alt="Bloom Branding Visual" 
-                      fill 
-                      className="object-cover group-hover:scale-105 transition duration-700 opacity-90 group-hover:opacity-100" 
+                    <Image
+                      src="/bloom-1.jpg"
+                      alt="Bloom Branding Visual"
+                      fill
+                      className="object-cover group-hover:scale-105 transition duration-700 opacity-90 group-hover:opacity-100"
                     />
                   </div>
                 </div>
@@ -169,17 +208,17 @@ export default function Navbar() {
                       const isActive = pathname === item.href;
                       return (
                         <li key={item.label} className="group relative">
-                          <Link 
+                          <Link
                             href={item.href}
                             onClick={() => setIsOpen(false)}
-                            className={`font-bodoni block transition-all duration-500 antialiased font-normal tracking-[-0.04em] leading-[0.9] py-0
+                            className={`font-bodoni block transition-all duration-500 antialiased font-light tracking-[-0.02em] leading-[1.1] py-0
                               text-5xl md:text-6xl lg:text-[5.5rem]
-                              ${isActive 
-                                ? "text-[#3E2B26] opacity-100 translate-x-4 font-medium" 
+                              ${isActive
+                                ? "text-[#3E2B26] opacity-100 translate-x-4 italic"
                                 : "text-[#3E2B26] opacity-30 hover:opacity-100 hover:translate-x-4"
                               }`}
                           >
-                           <span className="inline-block relative">
+                            <span className="inline-block relative">
                               {/* Arrow Indicator */}
                               {isActive && (
                                 <span className="absolute -left-16 top-1/2 -translate-y-[45%] text-5xl font-light text-[#3E2B26]">
@@ -187,7 +226,7 @@ export default function Navbar() {
                                 </span>
                               )}
                               {item.label}
-                           </span>
+                            </span>
                           </Link>
                         </li>
                       );
