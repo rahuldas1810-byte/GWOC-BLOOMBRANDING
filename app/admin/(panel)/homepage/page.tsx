@@ -217,14 +217,14 @@ export default function HomepagePage() {
   }
 
   return (
-    <div className="min-h-screen bg-dark-choc/5 py-8">
-      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex items-center justify-between mb-8">
-          <h1 className="text-3xl font-bold text-dark-choc">Homepage Content</h1>
+    <div className="min-h-screen bg-dark-choc/5 py-4 sm:py-8">
+      <div className="max-w-6xl mx-auto px-3 sm:px-6 lg:px-8">
+        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-6 sm:mb-8">
+          <h1 className="text-2xl sm:text-3xl font-bold text-dark-choc">Homepage Content</h1>
           <button
             onClick={handleSave}
             disabled={saving}
-            className="flex items-center gap-2 bg-electric-blue text-white px-6 py-3 rounded-lg hover:bg-electric-blue/90 transition-colors disabled:opacity-50"
+            className="flex items-center justify-center gap-2 bg-electric-blue text-white px-4 sm:px-6 py-2.5 sm:py-3 rounded-lg hover:bg-electric-blue/90 transition-colors disabled:opacity-50 w-full sm:w-auto text-sm sm:text-base font-medium"
           >
             {saving ? (
               <>
@@ -242,8 +242,8 @@ export default function HomepagePage() {
 
         <div className="space-y-6">
           {/* Hero Section */}
-          <div className="bg-white rounded-lg shadow-md p-6 border border-dark-choc/10">
-            <h2 className="text-xl font-bold text-dark-choc mb-4">Hero Section</h2>
+          <div className="bg-white rounded-lg shadow-md p-4 sm:p-6 border border-dark-choc/10">
+            <h2 className="text-lg sm:text-xl font-bold text-dark-choc mb-4">Hero Section</h2>
             <div className="space-y-4">
               <div>
                 <label className="block text-sm font-medium text-dark-choc mb-2">
@@ -319,15 +319,15 @@ export default function HomepagePage() {
           </div>
 
           {/* Homepage Testimonials Section */}
-          <div className="bg-white rounded-lg shadow-md p-6 border border-dark-choc/10">
-            <div className="flex items-center justify-between mb-4">
+          <div className="bg-white rounded-lg shadow-md p-4 sm:p-6 border border-dark-choc/10">
+            <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-4">
               <div>
-                <h2 className="text-xl font-bold text-dark-choc">Homepage Testimonials</h2>
-                <p className="text-sm text-dark-choc/60 mt-1">Select which testimonials appear on the homepage "What Clients Say" section</p>
+                <h2 className="text-lg sm:text-xl font-bold text-dark-choc">Homepage Testimonials</h2>
+                <p className="text-xs sm:text-sm text-dark-choc/60 mt-1">Select which testimonials appear on the homepage "What Clients Say" section</p>
               </div>
               <Link
                 href="/admin/testimonials/new"
-                className="flex items-center gap-2 bg-electric-blue text-white px-4 py-2 rounded-lg hover:bg-electric-blue/90 transition-colors text-sm font-medium"
+                className="flex items-center justify-center gap-2 bg-electric-blue text-white px-4 py-2 rounded-lg hover:bg-electric-blue/90 transition-colors text-sm font-medium w-full sm:w-auto"
               >
                 <Plus className="w-4 h-4" />
                 Add New
