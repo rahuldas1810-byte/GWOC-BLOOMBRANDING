@@ -132,7 +132,7 @@ export default function SectorShowcase() {
   return (
     <section ref={containerRef} className="py-16 sm:py-24 md:py-32 bg-[#F0EBE5] overflow-hidden min-h-[600px] sm:min-h-[700px] md:min-h-[800px]">
       {/* Increased max-width for wider cards */}
-      <div className="mx-auto max-w-[1800px] px-4 sm:px-6 md:px-12">
+      <div className="mx-auto max-w-[1800px] w-full px-4 sm:px-6 md:px-12 overflow-visible">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4 sm:gap-6 md:gap-8">
           {sectors.map((sector, index) => (
             <SectorCard
