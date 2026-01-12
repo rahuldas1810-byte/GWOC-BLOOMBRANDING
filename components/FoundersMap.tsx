@@ -104,9 +104,12 @@ const generatePath = (targetX: number, targetY: number) => {
 
 export default function FoundersMap() {
     const [activePin, setActivePin] = useState<number | null>(null);
+    const activeFounder = FOUNDERS.find(f => f.id === activePin);
 
     return (
-        <section className="relative w-full h-[600px] md:h-[900px] bg-[#1a1a1a] overflow-hidden flex items-center justify-center group/map">
+        <section className="relative w-full flex flex-col md:block md:h-[900px] bg-[#1a1a1a] group/map">
+            {/* Map Canvas - Preserves desktop layout */}
+            <div className="relative w-full h-[600px] md:h-full flex-shrink-0 overflow-hidden flex items-center justify-center">
 
             {/* ================= BACKGROUND: CITY IMAGE ================= */}
             <div className="absolute inset-0 w-full h-full">
@@ -235,7 +238,7 @@ export default function FoundersMap() {
                                             animate={{ opacity: 1, y: 0, scale: 1, x: "-50%" }}
                                             exit={{ opacity: 0, y: parseFloat(founder.top) < 50 ? -10 : 10, scale: 0.95, x: "-50%" }}
                                             transition={{ duration: 0.2, ease: "easeOut" }}
-                                            className={`absolute left-1/2 w-[280px] md:w-[320px] pointer-events-none z-50 
+                                            className={`hidden md:block absolute left-1/2 w-[280px] md:w-[320px] pointer-events-none z-50  
                                                         ${parseFloat(founder.top) < 50
                                                     ? 'top-[calc(100%+20px)] origin-top'
                                                     : 'bottom-[calc(100%+20px)] origin-bottom'
@@ -287,6 +290,38 @@ export default function FoundersMap() {
                 </span>
             </div>
 
+            </div>{/* End Map Canvas */}
+
+            {/* Mobile Info Panel - Safe Content Stage */}
+            <AnimatePresence mode="wait">
+                {activeFounder && (
+                    <motion.div
+                        initial={{ height: 0, opacity: 0 }}
+                        animate={{ height: "auto", opacity: 1 }}
+                        exit={{ height: 0, opacity: 0 }}
+                        className="w-full bg-white md:hidden relative z-50 overflow-hidden"
+                    >
+                        <div className="p-8 border-t border-white/10">
+                            <div className="flex items-center gap-4 mb-4">
+                                <span className="inline-block px-2 py-1 rounded bg-electric-blue/10 text-electric-blue text-[10px] font-bold uppercase tracking-wider">
+                                    {activeFounder.role}
+                                </span>
+                                <div className="h-px flex-1 bg-dark-choc/10" />
+                            </div>
+
+                            <h3 className="text-2xl font-serif text-dark-choc mb-3">{activeFounder.name}</h3>
+                            <p className="text-base text-dark-choc/70 mb-5 leading-relaxed">
+                                {activeFounder.fullBio}
+                            </p>
+
+                            <div className="flex items-center gap-2">
+                                <Mail className="w-4 h-4 text-electric-blue" />
+                                <span className="text-xs font-mono text-dark-choc/50">{activeFounder.email}</span>
+                            </div>
+                        </div>
+                    </motion.div>
+                )}
+            </AnimatePresence>
 
         </section >
     );
