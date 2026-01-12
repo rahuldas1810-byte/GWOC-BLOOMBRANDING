@@ -65,27 +65,27 @@ export default function TestimonialsSection({
       />
 
       {/* Content */}
-      <div className="relative z-10 py-16">
-        <div className="container mx-auto px-6 md:px-12 lg:px-20">
+      <div className="relative z-10 py-8 sm:py-12 md:py-16">
+        <div className="container mx-auto px-4 sm:px-6 md:px-12 lg:px-20">
 
           {/* Header */}
-          <div className="mb-12">
+          <div className="mb-6 sm:mb-10 md:mb-12">
             {label && (
               <motion.div
-                className="flex items-center gap-3 mb-6"
+                className="flex items-center gap-2 sm:gap-3 mb-4 sm:mb-6"
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ duration: 0.6, delay: 0.1 }}
               >
-                <span className="flex items-center justify-center w-8 h-8 rounded-full bg-[#d9f99d] text-black font-bold text-sm">3</span>
-                <p className="font-bold uppercase tracking-wider text-[#d9f99d] text-sm">
+                <span className="flex items-center justify-center w-6 h-6 sm:w-8 sm:h-8 rounded-full bg-[#d9f99d] text-black font-bold text-xs sm:text-sm">3</span>
+                <p className="font-bold uppercase tracking-wider text-[#d9f99d] text-xs sm:text-sm">
                   {label}
                 </p>
               </motion.div>
             )}
             <motion.h2
-              className="font-sans text-4xl md:text-6xl lg:text-7xl font-bold tracking-tight text-white italic"
+              className="font-sans text-2xl sm:text-4xl md:text-6xl lg:text-7xl font-bold tracking-tight text-white italic"
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
@@ -93,12 +93,12 @@ export default function TestimonialsSection({
             >
               {heading}
             </motion.h2>
-            <div className="h-px w-full bg-[#d9f99d]/30 mt-10" />
+            <div className="h-px w-full bg-[#d9f99d]/30 mt-6 sm:mt-10" />
           </div>
 
           {/* Stacked Card Deck Layout - with entrance animation */}
           <motion.div
-            className="relative w-full max-w-[850px] mx-auto h-[320px] md:h-[360px] flex justify-center mb-12"
+            className="relative w-full max-w-[850px] mx-auto h-[220px] sm:h-[280px] md:h-[360px] flex justify-center mb-8 sm:mb-12"
             initial={{ opacity: 0, y: 50, scale: 0.95 }}
             whileInView={{ opacity: 1, y: 0, scale: 1 }}
             viewport={{ once: true, margin: "-100px" }}
@@ -138,29 +138,29 @@ export default function TestimonialsSection({
                   >
                     {/* Ghost border for stacked cards (visible layers) */}
                     {stackIndex > 0 ? (
-                      <div className="h-[280px] rounded-3xl border border-white/15 bg-[#1a1b26]/60" />
+                      <div className="h-[180px] sm:h-[240px] md:h-[280px] rounded-2xl sm:rounded-3xl border border-white/15 bg-[#1a1b26]/60" />
                     ) : (
-                      <SpotlightCard className="h-[280px]">
-                        <div className="p-8 h-full flex flex-col justify-between">
+                      <SpotlightCard className="h-[180px] sm:h-[240px] md:h-[280px]">
+                        <div className="p-4 sm:p-6 md:p-8 h-full flex flex-col justify-between">
                           <div>
                             {/* Quote Icon */}
-                            <div className="mb-4 text-gray-400">
-                              <svg width="28" height="28" viewBox="0 0 24 24" fill="currentColor">
+                            <div className="mb-2 sm:mb-4 text-gray-400">
+                              <svg className="w-5 h-5 sm:w-6 sm:h-6 md:w-7 md:h-7" viewBox="0 0 24 24" fill="currentColor">
                                 <path d="M4.583 17.321C3.553 16.227 3 15 3 13.011c0-3.5 2.457-6.637 6.03-8.188l.893 1.378c-3.335 1.804-3.987 4.145-4.247 5.621.537-.278 1.24-.375 1.929-.311 1.804.167 3.226 1.648 3.226 3.489a3.5 3.5 0 01-3.5 3.5c-1.073 0-2.099-.49-2.748-1.179zm10 0C13.553 16.227 13 15 13 13.011c0-3.5 2.457-6.637 6.03-8.188l.893 1.378c-3.335 1.804-3.987 4.145-4.247 5.621.537-.278 1.24-.375 1.929-.311 1.804.167 3.226 1.648 3.226 3.489a3.5 3.5 0 01-3.5 3.5c-1.073 0-2.099-.49-2.748-1.179z" />
                               </svg>
                             </div>
 
-                            <p className="text-xl md:text-2xl text-gray-200 leading-relaxed line-clamp-3">
+                            <p className="text-sm sm:text-lg md:text-2xl text-gray-200 leading-relaxed line-clamp-3">
                               {testimonial.quote}
                             </p>
                           </div>
 
                           {/* Author - Bottom Right */}
                           <div className="text-right">
-                            <p className="font-bold text-white uppercase tracking-wider text-sm">
+                            <p className="font-bold text-white uppercase tracking-wider text-[10px] sm:text-xs md:text-sm">
                               {testimonial.clientName}
                             </p>
-                            <p className="text-sm text-gray-400 mt-0.5">
+                            <p className="text-[10px] sm:text-xs md:text-sm text-gray-400 mt-0.5">
                               {testimonial.company}
                             </p>
                           </div>
@@ -174,22 +174,22 @@ export default function TestimonialsSection({
           </motion.div>
 
           {/* Navigation Arrows */}
-          <div className="flex justify-center gap-3">
+          <div className="flex justify-center gap-2 sm:gap-3">
             <button
               onClick={handlePrev}
-              className="w-11 h-11 rounded border border-white/20 flex items-center justify-center text-white hover:bg-white/10 transition-colors"
+              className="w-9 h-9 sm:w-11 sm:h-11 rounded border border-white/20 flex items-center justify-center text-white hover:bg-white/10 transition-colors"
               aria-label="Previous"
             >
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <svg className="w-4 h-4 sm:w-[18px] sm:h-[18px]" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                 <path d="M15 18L9 12L15 6" />
               </svg>
             </button>
             <button
               onClick={handleNext}
-              className="w-11 h-11 rounded border border-white/20 flex items-center justify-center text-white hover:bg-white/10 transition-colors"
+              className="w-9 h-9 sm:w-11 sm:h-11 rounded border border-white/20 flex items-center justify-center text-white hover:bg-white/10 transition-colors"
               aria-label="Next"
             >
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <svg className="w-4 h-4 sm:w-[18px] sm:h-[18px]" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                 <path d="M9 18L15 12L9 6" />
               </svg>
             </button>

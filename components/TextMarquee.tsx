@@ -9,9 +9,9 @@ interface TextMarqueeProps {
 
 export default function TextMarquee({ text, className = "", repeat = 4 }: TextMarqueeProps) {
   return (
-    <div className={`relative w-full overflow-hidden border-b border-dark-choc/20 py-4 ${className}`}>
+    <div className={`relative w-full overflow-hidden border-b border-dark-choc/20 py-2 sm:py-4 ${className}`}>
       <motion.div
-        className="flex whitespace-nowrap gap-16"
+        className="flex whitespace-nowrap gap-6 sm:gap-12 md:gap-16"
         animate={{ x: ['0%', '-50%'] }}
         transition={{
           ease: 'linear',
@@ -20,7 +20,7 @@ export default function TextMarquee({ text, className = "", repeat = 4 }: TextMa
         }}
       >
         {Array.from({ length: repeat * 2 }).map((_, index) => (
-          <span key={index} className="font-mono text-4xl md:text-64xl tracking-widest text-dark-choc uppercase opacity-80">
+          <span key={index} className="font-mono text-lg sm:text-2xl md:text-4xl tracking-widest text-dark-choc uppercase opacity-80">
             {text}
           </span>
         ))}

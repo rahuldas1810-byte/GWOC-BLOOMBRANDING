@@ -46,7 +46,7 @@ export default function PolaroidParallaxSection() {
   return (
     <section
       ref={sectionRef}
-      className="relative w-full h-[150vh] overflow-hidden bg-[#EEEDE8]"
+      className="relative w-full h-[100vh] md:h-[150vh] overflow-hidden bg-[#EEEDE8]"
     >
       {mounted && (
         <motion.div
@@ -69,7 +69,7 @@ export default function PolaroidParallaxSection() {
             />
           </motion.div>
 
-          {/* POLAROIDS */}
+          {/* POLAROIDS - DESKTOP */}
           <div className="pointer-events-none hidden md:block relative z-10 w-full h-full">
 
             {/* PHASE 1 */}
@@ -100,6 +100,35 @@ export default function PolaroidParallaxSection() {
               />
             </motion.div>
 
+          </div>
+
+          {/* POLAROIDS - MOBILE */}
+          <div className="pointer-events-none md:hidden relative z-10 w-full h-full">
+            <motion.div style={{ opacity: phase1Opacity }} className="absolute inset-0">
+              <MobilePolaroid
+                className="absolute left-4 top-[20%] -rotate-3"
+                img="https://images.unsplash.com/photo-1581094794329-c8112a89af12"
+                caption="Expert team"
+              />
+              <MobilePolaroid
+                className="absolute right-4 top-[28%] rotate-2"
+                img="https://images.unsplash.com/photo-1503387762-592deb58ef4e"
+                caption="High standards"
+              />
+            </motion.div>
+
+            <motion.div style={{ opacity: phase2Opacity }} className="absolute inset-0">
+              <MobilePolaroid
+                className="absolute left-4 top-[55%] rotate-2"
+                img="https://images.unsplash.com/photo-1581092918056-0c4c3acd3789"
+                caption="Precision driven"
+              />
+              <MobilePolaroid
+                className="absolute right-4 top-[60%] -rotate-3"
+                img="https://images.unsplash.com/photo-1581578731548-c64695cc6952"
+                caption="Built with care"
+              />
+            </motion.div>
           </div>
         </motion.div>
       )}
@@ -132,6 +161,38 @@ function Polaroid({
 
       <div
         className={`${prata.className} px-3 pb-6 pt-1 text-center text-[10px] tracking-[0.22em] uppercase text-[#2c2420]/80`}
+      >
+        {caption}
+      </div>
+    </div>
+  );
+}
+
+/* ---------------- MOBILE POLAROID ---------------- */
+
+function MobilePolaroid({
+  img,
+  caption,
+  className,
+}: {
+  img: string;
+  caption: string;
+  className?: string;
+}) {
+  return (
+    <div className={`w-[120px] bg-white shadow-lg ${className}`}>
+      <div className="p-2">
+        <div className="aspect-[4/5] overflow-hidden bg-gray-100">
+          <img
+            src={img}
+            alt={caption}
+            className="w-full h-full object-cover"
+          />
+        </div>
+      </div>
+
+      <div
+        className={`${prata.className} px-2 pb-3 pt-1 text-center text-[8px] tracking-[0.15em] uppercase text-[#2c2420]/80`}
       >
         {caption}
       </div>
