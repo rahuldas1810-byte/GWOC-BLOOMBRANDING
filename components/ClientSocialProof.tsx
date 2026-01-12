@@ -83,8 +83,8 @@ export default function ClientSocialProof() {
         {/* LOGO MARQUEE */}
         <div className="relative w-full flex mb-8"> {/* Reduced gap */}
           {/* Side Gradients */}
-          <div className="absolute left-0 top-0 bottom-0 w-32 bg-gradient-to-r from-[#F0EBE5] to-transparent z-10 pointer-events-none" />
-          <div className="absolute right-0 top-0 bottom-0 w-32 bg-gradient-to-l from-[#F0EBE5] to-transparent z-10 pointer-events-none" />
+          <div className="absolute left-0 top-0 bottom-0 w-16 md:w-32 bg-gradient-to-r from-[#F0EBE5] to-transparent z-10 pointer-events-none" />
+          <div className="absolute right-0 top-0 bottom-0 w-16 md:w-32 bg-gradient-to-l from-[#F0EBE5] to-transparent z-10 pointer-events-none" />
 
           <div className="flex overflow-hidden group">
             <motion.div

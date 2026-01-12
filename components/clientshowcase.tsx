@@ -64,7 +64,12 @@ export default function ClientShowcase() {
   // Dynamic positions and sizes
   const getPosition = (index: number) => {
     if (isMobile) {
-      const mobileSpacing = window.innerWidth * 0.75
+      // Tighter spacing for mobile (35vw) so side cards "peek" instead of being off-screen
+      // Center card is 75vw wide. 
+      // Spacing 35vw gives: Center(0), Left(-35vw), Right(+35vw)
+      // Right Left-Edge = 35vw - 25vw(width/2) = 10vw. 
+      // Visible!
+      const mobileSpacing = window.innerWidth * 0.35
       const currentX = (index - 2) * mobileSpacing
       return { x: currentX, scale: index === 2 ? 1 : 0.8, opacity: index === 2 ? 1 : 0.4 }
     }
@@ -97,11 +102,13 @@ export default function ClientShowcase() {
   ]
 
   return (
-    <section className="py-20 bg-[#F0EBE5] overflow-hidden">
+    <section className="py-12 md:py-20 bg-[#F0EBE5] overflow-hidden">
       <div className="relative w-full">
-        <div className="relative flex items-center justify-center h-[700px] w-full max-w-none overflow-visible">
+        {/* Responsive height: 60vh on mobile (min 500px) to house the 55vh card gracefully */}
+        <div className="relative flex items-center justify-center h-[60vh] min-h-[500px] md:h-[700px] w-full max-w-none overflow-visible">
           {visibleClients.map((client, i) => {
             const pos = getPosition(i)
+            
             const isCenter = i === 2
 
             // Determine z-index based on position to ensure center is on top
@@ -117,8 +124,8 @@ export default function ClientShowcase() {
                   handleHover((activeIndex + i - 2 + clients.length) % clients.length)
                 }
                 className={`absolute rounded-2xl overflow-hidden shadow-2xl transition-all duration-500 ${isCenter
-                  ? 'w-[300px] h-[400px] md:w-[420px] md:h-[520px] bg-white hover:shadow-3xl'
-                  : 'w-56 h-[320px] md:w-72 md:h-[420px] bg-[linear-gradient(150deg,#3A2F2A_0%,#C8BBAA_100%)] opacity-70 hover:opacity-85' // Espresso Brown -> Soft Sand
+                  ? 'w-[75vw] h-[55vh] max-w-[300px] max-h-[400px] sm:max-w-none sm:max-h-none sm:w-[360px] sm:h-[460px] md:w-[420px] md:h-[520px] bg-white hover:shadow-3xl'
+                  : 'w-[50vw] h-[40vh] max-w-[200px] max-h-[300px] sm:max-w-none sm:max-h-none sm:w-56 sm:h-[320px] md:w-72 md:h-[420px] bg-[linear-gradient(150deg,#3A2F2A_0%,#C8BBAA_100%)] opacity-70 hover:opacity-85' // Espresso Brown -> Soft Sand
                   }`}
                 style={{ zIndex }}
               >
@@ -133,11 +140,11 @@ export default function ClientShowcase() {
                       transition={{ duration: 0.4 }}
                     >
                       {/* IMAGE SECTION */}
-                      <div className="h-[65%] w-full overflow-hidden relative bg-gray-100">
+                      <div className="h-[60%] sm:h-[65%] w-full overflow-hidden relative bg-gray-100">
                         <motion.img
                           src={client.image}
                           alt={client.name}
-                          className="h-full w-full object-contain md:object-cover"
+                          className="h-full w-full object-cover"
                           initial={{ scale: 1.02, opacity: 0 }}
                           animate={{ scale: 1, opacity: 1 }}
                           transition={{ duration: 0.6, ease: 'easeOut' }}
