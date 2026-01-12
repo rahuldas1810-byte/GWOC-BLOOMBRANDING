@@ -1,7 +1,7 @@
 "use client";
 
 import { useRef, useState } from "react";
-import { motion, useScroll, useTransform, AnimatePresence } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import SpotlightCard from "@/components/ui/SpotlightCard";
 import type { Testimonial } from "@/types";
 
@@ -19,18 +19,8 @@ export default function TestimonialsSection({
   const sectionRef = useRef<HTMLDivElement>(null);
   const [activeIndex, setActiveIndex] = useState(0);
 
-  // Scroll-linked background transition
-  const { scrollYProgress } = useScroll({
-    target: sectionRef,
-    offset: ["start end", "end start"],
-  });
-
-  // Updated to Lighter Midnight Blue #13141f
-  const backgroundColor = useTransform(
-    scrollYProgress,
-    [0, 0.3, 0.7, 1],
-    ["#F2F0E9", "#13141f", "#13141f", "#F2F0E9"]
-  );
+  // Static brown background - no scroll-based color changes
+  const backgroundColor = "#2A1F1A";
 
   const handleNext = () => {
     setActiveIndex((prev) => (prev + 1) % testimonials.length);
@@ -58,8 +48,8 @@ export default function TestimonialsSection({
 
   return (
     <section ref={sectionRef} className="relative overflow-hidden">
-      {/* Animated background layer */}
-      <motion.div
+      {/* Static background layer - no scroll transitions */}
+      <div
         className="absolute inset-0 z-0"
         style={{ backgroundColor }}
       />
@@ -78,8 +68,8 @@ export default function TestimonialsSection({
                 viewport={{ once: true }}
                 transition={{ duration: 0.6, delay: 0.1 }}
               >
-                <span className="flex items-center justify-center w-6 h-6 sm:w-8 sm:h-8 rounded-full bg-[#d9f99d] text-black font-bold text-xs sm:text-sm">3</span>
-                <p className="font-bold uppercase tracking-wider text-[#d9f99d] text-xs sm:text-sm">
+                <span className="flex items-center justify-center w-6 h-6 sm:w-8 sm:h-8 rounded-full bg-[#BDAF62] text-[#2A1F1A] font-bold text-xs sm:text-sm">3</span>
+                <p className="font-bold uppercase tracking-wider text-[#BDAF62] text-xs sm:text-sm">
                   {label}
                 </p>
               </motion.div>
@@ -93,7 +83,7 @@ export default function TestimonialsSection({
             >
               {heading}
             </motion.h2>
-            <div className="h-px w-full bg-[#d9f99d]/30 mt-6 sm:mt-10" />
+            <div className="h-px w-full bg-[#BDAF62]/30 mt-6 sm:mt-10" />
           </div>
 
           {/* Stacked Card Deck Layout - with entrance animation */}
@@ -138,19 +128,19 @@ export default function TestimonialsSection({
                   >
                     {/* Ghost border for stacked cards (visible layers) */}
                     {stackIndex > 0 ? (
-                      <div className="h-[180px] sm:h-[240px] md:h-[280px] rounded-2xl sm:rounded-3xl border border-white/15 bg-[#1a1b26]/60" />
+                      <div className="h-[180px] sm:h-[240px] md:h-[280px] rounded-2xl sm:rounded-3xl border border-[#BDAF62]/20 bg-[#3E2B26]/60" />
                     ) : (
                       <SpotlightCard className="h-[180px] sm:h-[240px] md:h-[280px]">
                         <div className="p-4 sm:p-6 md:p-8 h-full flex flex-col justify-between">
                           <div>
                             {/* Quote Icon */}
-                            <div className="mb-2 sm:mb-4 text-gray-400">
+                            <div className="mb-2 sm:mb-4 text-[#BDAF62]">
                               <svg className="w-5 h-5 sm:w-6 sm:h-6 md:w-7 md:h-7" viewBox="0 0 24 24" fill="currentColor">
                                 <path d="M4.583 17.321C3.553 16.227 3 15 3 13.011c0-3.5 2.457-6.637 6.03-8.188l.893 1.378c-3.335 1.804-3.987 4.145-4.247 5.621.537-.278 1.24-.375 1.929-.311 1.804.167 3.226 1.648 3.226 3.489a3.5 3.5 0 01-3.5 3.5c-1.073 0-2.099-.49-2.748-1.179zm10 0C13.553 16.227 13 15 13 13.011c0-3.5 2.457-6.637 6.03-8.188l.893 1.378c-3.335 1.804-3.987 4.145-4.247 5.621.537-.278 1.24-.375 1.929-.311 1.804.167 3.226 1.648 3.226 3.489a3.5 3.5 0 01-3.5 3.5c-1.073 0-2.099-.49-2.748-1.179z" />
                               </svg>
                             </div>
 
-                            <p className="text-sm sm:text-lg md:text-2xl text-gray-200 leading-relaxed line-clamp-3">
+                            <p className="text-sm sm:text-lg md:text-2xl text-[#F2EDE4] leading-relaxed line-clamp-3">
                               {testimonial.quote}
                             </p>
                           </div>
@@ -160,7 +150,7 @@ export default function TestimonialsSection({
                             <p className="font-bold text-white uppercase tracking-wider text-[10px] sm:text-xs md:text-sm">
                               {testimonial.clientName}
                             </p>
-                            <p className="text-[10px] sm:text-xs md:text-sm text-gray-400 mt-0.5">
+                            <p className="text-[10px] sm:text-xs md:text-sm text-[#BDAF62]/70 mt-0.5">
                               {testimonial.company}
                             </p>
                           </div>
@@ -177,7 +167,7 @@ export default function TestimonialsSection({
           <div className="flex justify-center gap-2 sm:gap-3">
             <button
               onClick={handlePrev}
-              className="w-9 h-9 sm:w-11 sm:h-11 rounded border border-white/20 flex items-center justify-center text-white hover:bg-white/10 transition-colors"
+              className="w-9 h-9 sm:w-11 sm:h-11 rounded border border-[#BDAF62]/30 flex items-center justify-center text-[#F2EDE4] hover:bg-[#BDAF62]/10 transition-colors"
               aria-label="Previous"
             >
               <svg className="w-4 h-4 sm:w-[18px] sm:h-[18px]" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -186,7 +176,7 @@ export default function TestimonialsSection({
             </button>
             <button
               onClick={handleNext}
-              className="w-9 h-9 sm:w-11 sm:h-11 rounded border border-white/20 flex items-center justify-center text-white hover:bg-white/10 transition-colors"
+              className="w-9 h-9 sm:w-11 sm:h-11 rounded border border-[#BDAF62]/30 flex items-center justify-center text-[#F2EDE4] hover:bg-[#BDAF62]/10 transition-colors"
               aria-label="Next"
             >
               <svg className="w-4 h-4 sm:w-[18px] sm:h-[18px]" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">

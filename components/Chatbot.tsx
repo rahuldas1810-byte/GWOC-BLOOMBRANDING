@@ -198,7 +198,7 @@ export default function Chatbot() {
                 onMouseLeave={() => setIsHovered(false)}
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
-                className="pointer-events-auto w-14 h-14 rounded-full bg-gradient-to-br from-[#2C4494] to-[#1E3570] shadow-xl shadow-[#2C4494]/40 flex items-center justify-center text-white relative group overflow-hidden border border-white/10"
+                className="pointer-events-auto w-14 h-14 rounded-full bg-gradient-to-br from-[#3E2B26] to-[#5A4238] shadow-xl shadow-[#3E2B26]/40 flex items-center justify-center text-white relative group overflow-hidden border border-white/10"
             >
                 {/* Subtle glow effect */}
                 <div className="absolute inset-0 rounded-full bg-gradient-to-t from-transparent to-white/10" />

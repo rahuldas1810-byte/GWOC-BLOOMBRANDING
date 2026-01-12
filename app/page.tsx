@@ -342,12 +342,12 @@ export default function Home() {
   return (
     <div className="min-h-screen relative">
       {/* ================= HERO SECTION ================= */}
-      <section className="relative h-screen overflow-hidden">
+      <section className="relative w-full h-auto md:min-h-screen overflow-hidden flex flex-col justify-center">
         {/* Hero Video - plays first, then fades out smoothly when it ends */}
         {homepageContent.heroVideo && (
           <video
             ref={videoRef}
-            className={`absolute inset-0 w-full h-full object-contain sm:object-cover z-40 transition-opacity duration-[1500ms] ease-in-out ${videoEnded || isTransitioning ? "opacity-0 pointer-events-none z-0" : "opacity-100 z-40"
+            className={`relative w-full h-auto md:absolute md:inset-0 md:h-full object-contain md:object-cover z-40 transition-opacity duration-[1500ms] ease-in-out ${videoEnded || isTransitioning ? "opacity-0 pointer-events-none z-0" : "opacity-100 z-40"
               }`}
             autoPlay
             muted
@@ -356,7 +356,7 @@ export default function Home() {
             style={{
               transition: 'opacity 1.5s cubic-bezier(0.4, 0, 0.2, 1)',
               visibility: videoEnded ? 'hidden' : 'visible',
-              display: videoEnded ? 'none' : 'block',
+              display: 'block', // Always block to maintain height on mobile
               zIndex: videoEnded || isTransitioning ? 0 : 40
             }}
             onLoadStart={() => {
@@ -454,7 +454,7 @@ export default function Home() {
 
         {/* Content - fades in smoothly after hero video ends or if no hero video (and content is loaded) */}
         <div
-          className={`relative z-20 h-full flex items-center transition-opacity duration-[1500ms] ease-in-out ${contentLoaded && (
+          className={`absolute inset-0 md:relative z-20 h-full flex items-center transition-opacity duration-[1500ms] ease-in-out ${contentLoaded && (
             (homepageContent.heroVideo && (videoEnded || isTransitioning)) ||
             (!homepageContent.heroVideo && !isInitialLoad)
           ) ? "opacity-100" : "opacity-0 pointer-events-none"
@@ -488,7 +488,7 @@ export default function Home() {
               </p>
               <h1
                 className="font-serif text-dark-choc leading-[1.1] mb-4 sm:mb-6 md:mb-10"
-                style={{ fontSize: "clamp(2rem, 6vw, 8rem)" }}
+                style={{ fontSize: "clamp(2.5rem, 10vw, 8rem)" }}
               >
                 {homepageContent.heroHeadline || 'We craft brand identities that resonate.'}
               </h1>
@@ -577,6 +577,20 @@ export default function Home() {
                           <h3 className={`heading-3 text-xl sm:text-2xl md:text-3xl lg:text-4xl transition-all duration-300 leading-tight ${hoveredService === index ? "text-earl-gray" : "text-dark-choc"}`}>
                             {service.title}
                           </h3>
+
+                          {/* Mobile-Only Context Image - Restores visual parity with desktop - Reveal on Tap */}
+                          {hoveredService === index && (
+                            <div className="relative w-full h-[180px] sm:h-[220px] rounded-xl overflow-hidden mt-2 lg:hidden animate-in fade-in slide-in-from-top-2 duration-300">
+                              <Image
+                                src={SERVICE_IMAGES[index % SERVICE_IMAGES.length]}
+                                alt={service.title}
+                                fill
+                                className="object-cover"
+                                sizes="(max-width: 1024px) 100vw, 0vw"
+                              />
+                              <div className="absolute inset-0 bg-dark-choc/5" />
+                            </div>
+                          )}
                         </div>
 
                         {/* Description */}
@@ -637,7 +651,7 @@ export default function Home() {
 
       {/* ================= VIDEO BREAK ================= */}
       {homepageContent.sectionVideo && (
-        <section className="w-screen h-screen overflow-hidden bg-black">
+        <section className="w-full h-[50vh] md:h-screen overflow-hidden bg-black">
           <video
             className="w-full h-full object-cover"
             autoPlay
