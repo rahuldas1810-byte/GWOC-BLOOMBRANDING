@@ -5,12 +5,12 @@ import { useRouter, usePathname } from 'next/navigation'
 import { api } from '@/lib/api'
 import Link from 'next/link'
 import Image from 'next/image'
-import { 
-  LayoutDashboard, 
-  Users, 
-  MessageSquare, 
-  Image as ImageIcon, 
-  Film, 
+import {
+  LayoutDashboard,
+  Users,
+  MessageSquare,
+  Image as ImageIcon,
+  Film,
   FileText,
   Mail,
   LogOut,
@@ -88,11 +88,10 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
   return (
     <div className="min-h-screen bg-earl-gray flex">
       <ToastContainer />
-      
+
       {/* Sidebar */}
-      <aside className={`fixed lg:static inset-y-0 left-0 z-50 w-64 bg-white border-r border-dark-choc/10 shadow-lg transform transition-transform duration-300 ${
-        sidebarOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'
-      }`}>
+      <aside className={`fixed lg:static inset-y-0 left-0 z-50 w-64 bg-white border-r border-dark-choc/10 shadow-lg transform transition-transform duration-300 ${sidebarOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'
+        }`}>
         <div className="flex flex-col h-full">
           <div className="p-6 border-b border-dark-choc/10 bg-gradient-to-r from-electric-blue to-electric-blue/80 flex items-center justify-center">
             <div className="relative h-16 w-auto">
@@ -115,11 +114,10 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
                 <Link
                   key={item.name}
                   href={item.href}
-                  className={`flex items-center gap-3 px-4 py-3 rounded-lg transition-all duration-200 ${
-                    isActive
+                  className={`flex items-center gap-3 px-4 py-3 rounded-lg transition-all duration-200 ${isActive
                       ? 'bg-electric-blue text-white shadow-md'
                       : 'text-dark-choc hover:bg-earl-gray hover:text-electric-blue'
-                  }`}
+                    }`}
                   onClick={() => setSidebarOpen(false)}
                 >
                   <Icon className="w-5 h-5" />
@@ -168,7 +166,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
         </header>
 
         {/* Page content */}
-        <main className="flex-1 p-6 lg:p-8 overflow-auto">{children}</main>
+        <main className="flex-1 p-4 sm:p-6 lg:p-8 overflow-auto pb-8">{children}</main>
       </div>
     </div>
   )
