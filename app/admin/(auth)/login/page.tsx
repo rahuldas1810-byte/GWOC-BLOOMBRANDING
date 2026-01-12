@@ -8,7 +8,7 @@ import { motion, AnimatePresence } from 'framer-motion'
 import { Inter } from 'next/font/google'
 import Image from 'next/image'
 
-const inter = Inter({ 
+const inter = Inter({
   subsets: ['latin'],
   variable: '--font-inter',
   display: 'swap',
@@ -33,7 +33,7 @@ export default function AdminLogin() {
 
     try {
       const response = await api.login(email, password)
-      
+
       if (response.success) {
         router.push('/admin/dashboard')
       } else {
@@ -53,7 +53,7 @@ export default function AdminLogin() {
 
     try {
       const response = await api.forgotPassword(forgotPasswordEmail)
-      
+
       if (response.success) {
         setForgotPasswordMessage('OTP sent successfully.')
         router.push(`/admin/verify-otp?email=${encodeURIComponent(forgotPasswordEmail)}`)
@@ -72,7 +72,7 @@ export default function AdminLogin() {
       {/* Professional Background Image Layer */}
       <div className="absolute inset-0 z-0">
         {/* Base Background with Professional Pattern */}
-        <div 
+        <div
           className="absolute inset-0"
           style={{
             backgroundImage: `
@@ -88,9 +88,9 @@ export default function AdminLogin() {
             backgroundRepeat: 'repeat',
           }}
         />
-        
+
         {/* Professional Abstract Geometric Pattern */}
-        <div 
+        <div
           className="absolute inset-0 opacity-40"
           style={{
             backgroundImage: `
@@ -102,13 +102,13 @@ export default function AdminLogin() {
             backgroundPosition: '0% 0%, 50% 50%, 100% 100%',
           }}
         />
-        
+
         {/* Gradient Overlay for Depth */}
         <div className="absolute inset-0 bg-gradient-to-br from-slate-950/90 via-slate-900/85 to-indigo-950/90" />
         <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-black/30" />
         <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-black/40" />
       </div>
-      
+
       {/* Animated Background Elements */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none z-0">
         {/* Gentle Animated Orbs */}
@@ -139,7 +139,7 @@ export default function AdminLogin() {
           }}
           className="absolute -bottom-40 -left-40 w-[800px] h-[800px] bg-gradient-to-tr from-indigo-500/12 via-purple-500/10 to-pink-500/12 rounded-full blur-3xl"
         />
-        
+
         {/* Subtle Shimmer Effect */}
         <motion.div
           animate={{
@@ -164,7 +164,7 @@ export default function AdminLogin() {
         <div className="bg-white/70 backdrop-blur-xl rounded-2xl shadow-[0_8px_32px_rgba(0,0,0,0.08)] border border-white/50 p-10 md:p-12 relative overflow-hidden">
           {/* Subtle Inner Glow */}
           <div className="absolute inset-0 bg-gradient-to-br from-blue-50/30 via-transparent to-indigo-50/20 rounded-2xl pointer-events-none" />
-          
+
           {/* Content */}
           <div className="relative">
             {/* Header */}
@@ -244,8 +244,8 @@ export default function AdminLogin() {
                 <label htmlFor="password" className="block text-sm font-semibold text-slate-700 mb-2" style={{ fontFamily: 'var(--font-inter), system-ui, sans-serif' }}>
                   Password
                 </label>
-                <div className="relative group">
-                  <div className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 group-focus-within:text-blue-600 transition-colors duration-200 z-10">
+                <div className="relative group flex items-center">
+                  <div className="absolute left-4 text-slate-400 group-focus-within:text-blue-600 transition-colors duration-200 z-10 pointer-events-none">
                     <Lock className="w-5 h-5" />
                   </div>
                   <input
@@ -254,14 +254,14 @@ export default function AdminLogin() {
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
                     required
-                    className="w-full pl-12 pr-12 h-12 bg-white border border-slate-300 rounded-xl focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all duration-200 text-base text-slate-900 placeholder:text-slate-400 outline-none hover:border-slate-400"
+                    className="w-full pl-12 pr-14 h-12 bg-white border border-slate-300 rounded-xl focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all duration-200 text-base text-slate-900 placeholder:text-slate-400 outline-none hover:border-slate-400"
                     style={{ fontFamily: 'var(--font-inter), system-ui, sans-serif' }}
                     placeholder="Enter your password"
                   />
                   <button
                     type="button"
                     onClick={() => setShowPassword(!showPassword)}
-                    className="absolute right-4 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 transition-colors duration-200 p-1.5 rounded-lg hover:bg-slate-100 z-10"
+                    className="absolute right-3 flex items-center justify-center w-8 h-8 text-slate-400 hover:text-slate-600 transition-colors duration-200 rounded-lg hover:bg-slate-100 z-10"
                     aria-label={showPassword ? 'Hide password' : 'Show password'}
                   >
                     {showPassword ? (
@@ -321,7 +321,7 @@ export default function AdminLogin() {
                   initial={false}
                 />
               </motion.button>
-          </form>
+            </form>
 
             {/* Forgot Password Section */}
             <AnimatePresence>
@@ -336,7 +336,7 @@ export default function AdminLogin() {
                   <h2 className="text-xl font-semibold text-slate-900 mb-6" style={{ fontFamily: 'var(--font-inter), system-ui, sans-serif' }}>
                     Reset Password
                   </h2>
-                  
+
                   <AnimatePresence>
                     {forgotPasswordMessage && (
                       <motion.div
@@ -344,11 +344,10 @@ export default function AdminLogin() {
                         animate={{ opacity: 1, y: 0 }}
                         exit={{ opacity: 0, y: -8 }}
                         transition={{ duration: 0.2 }}
-                        className={`mb-6 p-4 rounded-xl flex items-start gap-3 ${
-                          forgotPasswordMessage.includes('sent') 
-                            ? 'bg-green-50 border border-green-200 text-green-700' 
+                        className={`mb-6 p-4 rounded-xl flex items-start gap-3 ${forgotPasswordMessage.includes('sent')
+                            ? 'bg-green-50 border border-green-200 text-green-700'
                             : 'bg-red-50 border border-red-200 text-red-700'
-                        }`}
+                          }`}
                         style={{ fontFamily: 'var(--font-inter), system-ui, sans-serif' }}
                       >
                         {forgotPasswordMessage.includes('sent') ? (
@@ -426,7 +425,7 @@ export default function AdminLogin() {
                 </motion.div>
               )}
             </AnimatePresence>
-            </div>
+          </div>
         </div>
 
         {/* Footer Note */}
