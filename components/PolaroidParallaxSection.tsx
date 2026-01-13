@@ -1,7 +1,8 @@
 'use client';
 
 import { useRef, useEffect, useState } from 'react';
-import { motion, useScroll, useTransform } from 'framer-motion';
+import { motion, useScroll, useTransform, useSpring } from 'framer-motion';
+import Image from 'next/image';
 import { Prata } from 'next/font/google';
 
 const prata = Prata({ subsets: ['latin'], weight: '400' });
@@ -19,26 +20,39 @@ export default function PolaroidParallaxSection() {
     offset: ['start end', 'end start'],
   });
 
-  /* ---------------- SECTION FADE-IN (NEW) ---------------- */
+  // SMOOTHING: Dampen the scroll input so it feels buttery smooth
+  const smoothProgress = useSpring(scrollYProgress, {
+    stiffness: 100,
+    damping: 30,
+    restDelta: 0.001
+  });
+
+  /* ---------------- SECTION FADE-IN (SCROLL LINKED) ---------------- */
+  // We keep the section opacity linked to scroll for the overall entry/exit feel
   const sectionOpacity = useTransform(
-    scrollYProgress,
+    smoothProgress,
     [0, 0.12],
     [0, 1]
   );
 
   /* ---------------- BACKGROUND ---------------- */
-  const bgY = useTransform(scrollYProgress, [0, 1], ['-6%', '6%']);
-  const overlayOpacity = useTransform(scrollYProgress, [0, 0.3], [0.35, 0]);
+  // Parallax background movement
+  const bgY = useTransform(smoothProgress, [0, 1], ['-6%', '6%']);
+  
+  // Overlay darkening
+  const overlayOpacity = useTransform(smoothProgress, [0, 0.3], [0.35, 0]);
 
   /* ---------------- CARD PHASES (NO OVERLAP) ---------------- */
+  // Phase 1 Fade In/Out
   const phase1Opacity = useTransform(
-    scrollYProgress,
+    smoothProgress,
     [0.18, 0.32],
     [0, 1]
   );
 
+  // Phase 2 Fade In/Out
   const phase2Opacity = useTransform(
-    scrollYProgress,
+    smoothProgress,
     [0.45, 0.6],
     [0, 1]
   );
@@ -53,16 +67,26 @@ export default function PolaroidParallaxSection() {
           className="absolute inset-0"
           style={{ opacity: sectionOpacity }}
         >
-          {/* BACKGROUND */}
+          {/* BACKGROUND WITH FADE-IN TRANSITION */}
           <motion.div
             className="absolute inset-0 w-full h-[120%] -top-[10%]"
             style={{ y: bgY }}
+            initial={{ opacity: 0, scale: 1.05 }}
+            whileInView={{ opacity: 1, scale: 1 }}
+            viewport={{ once: true, margin: "-10%" }}
+            transition={{ duration: 1.5, ease: "easeOut" }}
           >
-            <img
-              src="/services-page-1.jpg"
-              alt="Services background"
-              className="w-full h-full object-cover"
-            />
+            <div className="relative w-full h-full"> 
+               <Image
+                src="/services-page-1.jpg"
+                alt="Services background"
+                fill
+                priority
+                className="object-cover"
+                sizes="100vw"
+              />
+            </div>
+            
             <motion.div
               className="absolute inset-0 bg-black"
               style={{ opacity: overlayOpacity }}
@@ -148,13 +172,21 @@ function Polaroid({
   className?: string;
 }) {
   return (
-    <div className={`w-[210px] bg-white shadow-xl ${className}`}>
+    <motion.div 
+        initial={{ opacity: 0, y: 30 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true }}
+        transition={{ duration: 0.8, ease: "easeOut" }}
+        className={`w-[210px] bg-white shadow-xl ${className}`}
+    >
       <div className="p-3">
-        <div className="aspect-[4/5] overflow-hidden bg-gray-100">
-          <img
+        <div className="aspect-[4/5] relative overflow-hidden bg-gray-100">
+          <Image
             src={img}
             alt={caption}
-            className="w-full h-full object-cover"
+            fill
+            className="object-cover"
+            sizes="(max-width: 768px) 100vw, 210px"
           />
         </div>
       </div>
@@ -164,7 +196,7 @@ function Polaroid({
       >
         {caption}
       </div>
-    </div>
+    </motion.div>
   );
 }
 

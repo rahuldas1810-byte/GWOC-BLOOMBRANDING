@@ -51,7 +51,7 @@ export const sendEmail = async (options: EmailOptions): Promise<boolean> => {
 }
 
     const mailOptions = {
-      from: `"Bloom Branding" <${process.env.SMTP_FROM || process.env.SMTP_USER}>`,
+      from: `"Bloom Branding" <${process.env.SMTP_FROM || process.env.SMTP_EMAIL}>`,
       to: options.to,
       subject: options.subject,
       html: options.html,
@@ -73,7 +73,7 @@ export const sendEmail = async (options: EmailOptions): Promise<boolean> => {
   } catch (error: any) {
     console.error('❌ Error sending email:', error.message)
     if (error.code === 'EAUTH') {
-      console.error('   Authentication failed. Check your SMTP_USER and SMTP_PASSWORD')
+      console.error('   Authentication failed. Check your SMTP_EMAIL and SMTP_PASSWORD')
     } else if (error.code === 'ECONNECTION') {
       console.error('   Connection failed. Check your SMTP_HOST and SMTP_PORT')
     }
