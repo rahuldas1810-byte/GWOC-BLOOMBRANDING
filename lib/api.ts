@@ -330,6 +330,18 @@ class ApiClient {
     return this.request(`/admin/services/${id}`, { method: 'DELETE' });
   }
 
+  // Services Page Content (Admin)
+  async getServicesPage() {
+    return this.request<any>('/admin/services-page');
+  }
+
+  async updateServicesPage(data: any) {
+    return this.request<any>('/admin/services-page', {
+      method: 'PUT',
+      body: JSON.stringify(data),
+    });
+  }
+
   // Our Story (Admin)
   async getOurStory() {
     return this.request<any>('/admin/our-story');

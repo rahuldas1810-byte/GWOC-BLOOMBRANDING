@@ -9,7 +9,7 @@ import ExperienceSection from "@/components/ExperienceSection";
 import { getTestimonials, getClients, getHomepageContent, getServices, getSiteSettings } from "@/lib/content";
 import type { Testimonial, Client } from "@/types";
 import TextMarquee from "@/components/TextMarquee";
-import TestimonialsSection from "@/components/homepage/TestimonialsSection";
+import Testimonials from "@/components/Testimonials";
 
 const SERVICE_IMAGES = [
   "https://images.unsplash.com/photo-1600508774634-4e11d34730e2?q=80&w=2070&auto=format&fit=crop", // Brand Identity
@@ -746,14 +746,9 @@ export default function Home() {
       </SectionReveal>
 
 
+
       {/* ================= TESTIMONIALS SLIDER ================= */}
-      {testimonials.length > 0 && (
-        <TestimonialsSection
-          testimonials={testimonials}
-          label={homepageContent.testimonialsLabel}
-          heading={homepageContent.testimonialsHeading}
-        />
-      )}
+      <Testimonials />
 
       <SectionReveal>
         <section className="section-padding bg-earl-gray relative overflow-hidden">

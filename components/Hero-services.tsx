@@ -12,12 +12,24 @@ gsap.registerPlugin(ScrollTrigger);
 const manrope = Manrope({ subsets: ['latin'], weight: ['300', '400', '500'] });
 const prata = Prata({ subsets: ['latin'], weight: '400' });
 
-export default function Hero() {
+export default function Hero({ text, videoUrl }: { text?: string; videoUrl?: string }) {
   const containerRef = useRef<HTMLDivElement>(null);
   const splitLayerRef = useRef<HTMLDivElement>(null);
   const patternLayerRef = useRef<HTMLSpanElement>(null);
   const leftDetailRef = useRef<HTMLDivElement>(null);
   const rightDetailRef = useRef<HTMLDivElement>(null);
+
+  // Default Fallbacks
+  const defaultText = `Bloom
+Branding
+manages projects
+from preparation
+to site for compact
+homes to custom
+superstructures.`;
+  const displayText = text || defaultText;
+  const defaultVideo = "https://videos.pexels.com/video-files/3205626/3205626-hd_1920_1080_25fps.mp4";
+  const displayVideo = videoUrl || defaultVideo;
 
   // 1. NAVBAR FIX: Force white text IMMEDIATELY on load
   useEffect(() => {
@@ -82,13 +94,10 @@ export default function Hero() {
             transition={{ duration: 0.8, ease: "easeOut" }}
             className={`${manrope.className} text-[#E8E6DD] text-3xl sm:text-4xl md:text-[clamp(2rem,3.2vw,4rem)] leading-[1.2] sm:leading-[1.15] font-normal tracking-tight`}
           >
-            <span className="block">Bloom</span>
-            <span className="block">Branding</span>
-            <span className="block">manages projects</span>
-            <span className="block">from preparation</span>
-            <span className="block">to site for compact</span>
-            <span className="block">homes to custom</span>
-            <span className="block">superstructures.</span>
+           {/* Handle new lines if text is passed as a string with \n */}
+            {displayText.split('\n').map((line, i) => (
+                <span key={i} className="block">{line}</span>
+            ))}
           </motion.h1>
 
           <div className={`${prata.className} mt-4 sm:mt-6 md:mt-10 flex items-center gap-2 sm:gap-4 text-[10px] sm:text-xs uppercase tracking-[0.15em] sm:tracking-[0.2em] text-[#E8E6DD] opacity-70`}>
@@ -108,8 +117,9 @@ export default function Hero() {
             muted
             playsInline
             className="w-full h-full object-cover brightness-90 sepia-[0.15] will-change-contents"
+            key={displayVideo} // Force re-render if video changes
           >
-            <source src="https://videos.pexels.com/video-files/3205626/3205626-hd_1920_1080_25fps.mp4" type="video/mp4" />
+            <source src={displayVideo} type="video/mp4" />
           </video>
         </div>
       </div>

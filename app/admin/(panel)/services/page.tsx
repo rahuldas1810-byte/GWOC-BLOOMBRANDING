@@ -1,13 +1,15 @@
 'use client'
-
 import { useEffect, useState } from 'react'
 import { api } from '@/lib/api'
 import Link from 'next/link'
-import { Plus, Edit, Trash2, Eye, EyeOff } from 'lucide-react'
+import { Plus, Edit, Trash2, Eye, EyeOff, LayoutTemplate } from 'lucide-react'
+import ServiceContentDrawer from './ServiceContentDrawer'
 
 export default function ServicesPage() {
   const [services, setServices] = useState<any[]>([])
   const [loading, setLoading] = useState(true)
+  const [drawerOpen, setDrawerOpen] = useState(false)
+  const [selectedService, setSelectedService] = useState<any>(null)
 
   useEffect(() => {
     fetchServices()
@@ -48,6 +50,15 @@ export default function ServicesPage() {
     } catch (error) {
       console.error('Failed to delete service:', error)
     }
+  }
+
+  const handleManageContent = (service: any) => {
+    setSelectedService(service)
+    setDrawerOpen(true)
+  }
+
+  const handleDrawerSave = () => {
+    fetchServices()
   }
 
   if (loading) {
@@ -91,6 +102,16 @@ export default function ServicesPage() {
                     {service.isActive ? 'Active' : 'Inactive'}
                   </span>
                 </div>
+                
+                {/* Mobile Manage Content Button */}
+                <button
+                  onClick={() => handleManageContent(service)}
+                  className="w-full flex items-center justify-center gap-2 mt-2 mb-3 py-2 bg-earl-gray/30 hover:bg-earl-gray/50 text-dark-choc rounded-lg transition-colors text-sm font-medium"
+                >
+                  <LayoutTemplate className="w-4 h-4" />
+                  Manage Content
+                </button>
+
                 <div className="flex items-center justify-between pt-3 border-t border-dark-choc/10">
                   <div className="text-xs text-dark-choc/60">
                     <span className="mr-3">{service.images?.length || 0} images</span>
@@ -172,6 +193,15 @@ export default function ServicesPage() {
                       <td className="px-4 lg:px-6 py-4">
                         <div className="flex items-center gap-1 lg:gap-2">
                           <button
+                            onClick={() => handleManageContent(service)}
+                            className="flex items-center gap-1.5 px-3 py-1.5 bg-earl-gray/80 hover:bg-earl-gray text-dark-choc rounded text-xs font-medium mr-2 transition-colors"
+                            title="Manage Website Content"
+                          >
+                            <LayoutTemplate className="w-3.5 h-3.5" />
+                            Manage Content
+                          </button>
+                          
+                          <button
                             onClick={() => handleToggleActive(service._id, service.isActive)}
                             className={`p-2 rounded transition-colors ${service.isActive
                                 ? 'text-gray-500 hover:bg-gray-100'
@@ -207,6 +237,13 @@ export default function ServicesPage() {
           </div>
         </div>
       </div>
+
+      <ServiceContentDrawer
+        isOpen={drawerOpen}
+        onClose={() => setDrawerOpen(false)}
+        service={selectedService}
+        onSave={handleDrawerSave}
+      />
     </div>
   )
 }
