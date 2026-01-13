@@ -11,7 +11,7 @@ import { getSiteSettings } from '@/lib/content';
 import { api } from '@/lib/api';
 
 import Hero from '@/components/Hero-services';
-import PolaroidParallaxSection from '@/components/PolaroidParallaxSection';
+import ArchesServicesSection from '@/components/ArchesServicesSection';
 import NewsletterSection from '@/components/NewsletterSection';
 
 gsap.registerPlugin(ScrollTrigger);
@@ -109,39 +109,38 @@ Let's turn your vision into reality.`;
   const statementBText = content?.statementB?.text || defaultStatementB;
 
   return (
-    <motion.div 
-      ref={containerRef} 
-      className="bg-[#F2F0E9] w-full h-auto text-[#2c2420] overflow-x-hidden"
-      initial={{ opacity: 0, y: 8 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.8, ease: "easeOut" }}
-    >
-
-      {/* HERO SECTION */}
+    <div className="w-full bg-[#F2F0E9] overflow-x-hidden">
+      {/* HERO SECTION - Isolated from motion wrapper to fix GSAP Pinning */}
       <Hero 
         text={content?.hero?.text}
         videoUrl={content?.hero?.video?.url}
       />
 
-      {/* NEW POLAROID PARALLAX SECTION */}
-      <PolaroidParallaxSection 
-        backgroundImage={content?.backgroundImage?.url}
-      />
+      <motion.div 
+        ref={containerRef} 
+        className="w-full h-auto text-[#2c2420]"
+        initial={{ opacity: 0, y: 8 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.8, ease: "easeOut" }}
+      >
 
-      {/* TEXT SECTION 1 - FIX: Reduced Padding to close gap */}
-      <section className="px-4 sm:px-6 md:px-20 pt-8 sm:pt-10 pb-12 sm:pb-20 flex flex-col justify-center">
-        <div className="max-w-7xl mx-auto space-y-3 sm:space-y-6">
-          {statementAText.split('\n').map((line: string, index: number) => (
-            <SplitText key={index} className={`text-2xl sm:text-3xl md:text-5xl lg:text-6xl font-serif leading-[1.1] sm:leading-[1.05] ${index === 2 ? 'italic' : ''}`}>
-              {line}
-            </SplitText>
-          ))}
-        </div>
-      </section>
+        {/* NEW MARCHES TRIO SECTION */}
+        <ArchesServicesSection />
 
-      {/* GALLERY SECTION */}
-      <section className="gallery-section py-8 sm:py-16 w-full relative flex flex-col gap-4 sm:gap-8">
-        <div id="row-1" className="flex gap-4 sm:gap-8 w-[800%] sm:w-[600%]">
+        {/* TEXT SECTION 1 - FIX: Reduced Padding to close gap */}
+        <section className="px-4 sm:px-6 md:px-20 pt-8 sm:pt-10 pb-12 sm:pb-20 flex flex-col justify-center">
+          <div className="max-w-7xl mx-auto space-y-3 sm:space-y-6">
+            {statementAText.split('\n').map((line: string, index: number) => (
+              <SplitText key={index} className={`text-2xl sm:text-3xl md:text-5xl lg:text-6xl font-serif leading-[1.1] sm:leading-[1.05] ${index === 2 ? 'italic' : ''}`}>
+                {line}
+              </SplitText>
+            ))}
+          </div>
+        </section>
+
+        {/* GALLERY SECTION */}
+        <section className="gallery-section py-8 sm:py-16 w-full relative flex flex-col gap-4 sm:gap-8">
+          <div id="row-1" className="flex gap-4 sm:gap-8 w-[800%] sm:w-[600%]">
           {ROW_DATA.map((img, i) => (
             <div key={`r1-${i}`} className={`relative bg-gray-300 flex-shrink-0 overflow-hidden ${img.cls}`}>
               <img src={`${img.url}?q=80&w=800&auto=format&fit=crop`} alt="" className="w-full h-full object-cover transition duration-700 hover:scale-105" />
@@ -188,5 +187,6 @@ Let's turn your vision into reality.`;
       />
 
     </motion.div>
+    </div>
   );
 }
