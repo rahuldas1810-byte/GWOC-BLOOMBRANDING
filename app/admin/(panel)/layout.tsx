@@ -29,6 +29,7 @@ const navigation = [
   { name: 'Dashboard', href: '/admin/dashboard', icon: LayoutDashboard },
   { name: 'Homepage', href: '/admin/homepage', icon: FileText },
   { name: 'Services', href: '/admin/services', icon: Briefcase },
+  { name: 'Services Page Content', href: '/admin/services-page', icon: FileText },
   { name: 'Our Story', href: '/admin/our-story', icon: BookOpen },
   { name: 'Contact', href: '/admin/contact', icon: Phone },
   { name: 'Site Settings', href: '/admin/site-settings', icon: Settings },

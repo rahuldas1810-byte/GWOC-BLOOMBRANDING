@@ -4,10 +4,13 @@ import { useState } from 'react';
 import { Mail } from 'lucide-react';
 import { motion } from 'framer-motion';
 
-export default function NewsletterSection() {
+export default function NewsletterSection({ title, description }: { title?: string; description?: string }) {
   const [email, setEmail] = useState('');
   const [status, setStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle');
   const [message, setMessage] = useState('');
+
+  const displayTitle = title || "Subscribe to our Newsletter";
+  const displayDesc = description || "Subscribe to our newsletter to receive daily updates.";
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -45,6 +48,7 @@ export default function NewsletterSection() {
           
           {/* Left Column: Visual */}
           <div className="w-full md:w-1/2 flex justify-center md:justify-end">
+             {/* ... (unchanged) ... */}
             <div className="relative group">
               {/* Dashed Circle */}
               <div className="absolute inset-0 border border-dashed border-[#2c2420]/20 rounded-full scale-125 md:scale-150 animate-[spin_60s_linear_infinite]" />
@@ -77,10 +81,10 @@ export default function NewsletterSection() {
               className="space-y-3"
             >
               <h2 className="text-3xl md:text-4xl lg:text-5xl font-serif text-[#2c2420] leading-tight">
-                Subscribe to our Newsletter
+                {displayTitle}
               </h2>
               <p className="text-[#2c2420]/70 text-lg font-sans max-w-md mx-auto md:mx-0">
-                Subscribe to our newsletter to receive daily updates.
+                {displayDesc}
               </p>
             </motion.div>
 

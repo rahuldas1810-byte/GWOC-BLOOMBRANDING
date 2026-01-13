@@ -8,6 +8,7 @@ import Link from 'next/link';
 import { ArrowRight } from 'lucide-react';
 import SectionReveal from '@/components/SectionReveal';
 import { getSiteSettings } from '@/lib/content';
+import { api } from '@/lib/api';
 
 import Hero from '@/components/Hero-services';
 import PolaroidParallaxSection from '@/components/PolaroidParallaxSection';
@@ -39,18 +40,20 @@ const SplitText = ({ children, className }: { children: string, className?: stri
 
 export default function ServicesPage() {
   const containerRef = useRef<HTMLDivElement>(null);
-  const [hero, setHero] = useState<any>(null);
+  const [content, setContent] = useState<any>(null);
 
   useEffect(() => {
     const fetchData = async () => {
-      const settingsData = await getSiteSettings();
-      if (settingsData?.servicesHero) {
-        setHero(settingsData.servicesHero);
+      try {
+        const response = await api.getServicesPage();
+        if (response.success && response.data) {
+          setContent(response.data);
+        }
+      } catch (error) {
+        console.error('Failed to fetch services page content:', error);
       }
     }
     fetchData();
-    const interval = setInterval(fetchData, 30000);
-    return () => clearInterval(interval);
   }, []);
 
   useEffect(() => {
@@ -89,7 +92,21 @@ export default function ServicesPage() {
     return () => {
       ctx.revert();
     };
-  }, []);
+  }, [content]); // Re-run GSAP when content loads
+
+  // Default fallbacks for text sections
+  const defaultStatementA = `Effortlessly sustainable.
+The perfect living space.
+Built just like in your mind.
+Timelessly modern.`;
+
+  const defaultStatementB = `Your narrative is unfolding.
+Strategic clarity.
+Bold, authentic.
+Let's turn your vision into reality.`;
+
+  const statementAText = content?.statementA?.text || defaultStatementA;
+  const statementBText = content?.statementB?.text || defaultStatementB;
 
   return (
     <motion.div 
@@ -101,26 +118,24 @@ export default function ServicesPage() {
     >
 
       {/* HERO SECTION */}
-      <Hero />
+      <Hero 
+        text={content?.hero?.text}
+        videoUrl={content?.hero?.video?.url}
+      />
 
       {/* NEW POLAROID PARALLAX SECTION */}
-      <PolaroidParallaxSection />
+      <PolaroidParallaxSection 
+        backgroundImage={content?.backgroundImage?.url}
+      />
 
       {/* TEXT SECTION 1 - FIX: Reduced Padding to close gap */}
       <section className="px-4 sm:px-6 md:px-20 pt-8 sm:pt-10 pb-12 sm:pb-20 flex flex-col justify-center">
         <div className="max-w-7xl mx-auto space-y-3 sm:space-y-6">
-          <SplitText className="text-2xl sm:text-3xl md:text-5xl lg:text-6xl font-serif leading-[1.1] sm:leading-[1.05]">
-            Effortlessly sustainable.
-          </SplitText>
-          <SplitText className="text-2xl sm:text-3xl md:text-5xl lg:text-6xl font-serif leading-[1.1] sm:leading-[1.05]">
-            The perfect living space.
-          </SplitText>
-          <SplitText className="text-2xl sm:text-3xl md:text-5xl lg:text-6xl font-serif leading-[1.1] sm:leading-[1.05] italic">
-            Built just like in your mind.
-          </SplitText>
-          <SplitText className="text-2xl sm:text-3xl md:text-5xl lg:text-6xl font-serif leading-[1.1] sm:leading-[1.05]">
-            Timelessly modern.
-          </SplitText>
+          {statementAText.split('\n').map((line: string, index: number) => (
+            <SplitText key={index} className={`text-2xl sm:text-3xl md:text-5xl lg:text-6xl font-serif leading-[1.1] sm:leading-[1.05] ${index === 2 ? 'italic' : ''}`}>
+              {line}
+            </SplitText>
+          ))}
         </div>
       </section>
 
@@ -145,19 +160,11 @@ export default function ServicesPage() {
       {/* TEXT SECTION 2 - FIX: Updated Copy & CTA */}
       <section className="px-4 sm:px-6 md:px-20 pt-12 sm:pt-20 pb-6 sm:pb-10 flex flex-col justify-center">
         <div className="max-w-7xl mx-auto space-y-3 sm:space-y-6 mb-10 sm:mb-20">
-          {/* UPDATED BRANDING COPY */}
-          <SplitText className="text-2xl sm:text-3xl md:text-5xl lg:text-6xl font-serif leading-[1.1] sm:leading-[1.05]">
-            Your narrative is unfolding.
-          </SplitText>
-          <SplitText className="text-2xl sm:text-3xl md:text-5xl lg:text-6xl font-serif leading-[1.1] sm:leading-[1.05]">
-            Strategic clarity.
-          </SplitText>
-          <SplitText className="text-2xl sm:text-3xl md:text-5xl lg:text-6xl font-serif leading-[1.1] sm:leading-[1.05] italic">
-            Bold, authentic.
-          </SplitText>
-          <SplitText className="text-2xl sm:text-3xl md:text-5xl lg:text-6xl font-serif leading-[1.1] sm:leading-[1.05]">
-            Let's turn your vision into reality.
-          </SplitText>
+          {statementBText.split('\n').map((line: string, index: number) => (
+            <SplitText key={index} className={`text-2xl sm:text-3xl md:text-5xl lg:text-6xl font-serif leading-[1.1] sm:leading-[1.05] ${index === 2 ? 'italic' : ''}`}>
+               {line}
+            </SplitText>
+          ))}
         </div>
 
         <div className="max-w-7xl mx-auto w-full border-t border-[#2c2420]/20 pt-6 sm:pt-8 flex justify-between items-center">
@@ -175,7 +182,10 @@ export default function ServicesPage() {
       </section>
 
       {/* NEW NEWSLETTER SECTION */}
-      <NewsletterSection />
+      <NewsletterSection 
+        title={content?.newsletter?.title}
+        description={content?.newsletter?.description}
+      />
 
     </motion.div>
   );

@@ -7,9 +7,11 @@ import { Prata } from 'next/font/google';
 
 const prata = Prata({ subsets: ['latin'], weight: '400' });
 
-export default function PolaroidParallaxSection() {
+export default function PolaroidParallaxSection({ backgroundImage }: { backgroundImage?: string }) {
   const sectionRef = useRef<HTMLElement>(null);
   const [mounted, setMounted] = useState(false);
+  
+  const displayImage = backgroundImage || "/services-page-1.jpg";
 
   useEffect(() => {
     setMounted(true);
@@ -56,7 +58,6 @@ export default function PolaroidParallaxSection() {
     [0.45, 0.6],
     [0, 1]
   );
-
   return (
     <section
       ref={sectionRef}
@@ -78,7 +79,7 @@ export default function PolaroidParallaxSection() {
           >
             <div className="relative w-full h-full"> 
                <Image
-                src="/services-page-1.jpg"
+                src={displayImage}
                 alt="Services background"
                 fill
                 priority
