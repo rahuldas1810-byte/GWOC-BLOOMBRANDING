@@ -24,6 +24,8 @@ export const metadata: Metadata = {
   },
 }
 
+import SmoothScroll from '@/components/SmoothScroll'
+
 export default function RootLayout({
   children,
 }: {
@@ -32,6 +34,7 @@ export default function RootLayout({
   return (
     <html lang="en" className={`${playfair.variable} ${lekton.variable}`}>
       <body className="antialiased bg-earl-gray text-near-black">
+        <SmoothScroll />
         <ConditionalLayout>{children}</ConditionalLayout>
       </body>
     </html>
