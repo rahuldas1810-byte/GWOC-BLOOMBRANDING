@@ -48,8 +48,8 @@ superstructures.`;
         trigger: containerRef.current,
         start: 'top top',
         end: '+=150%', // Reduced from 250% for faster scroll (1-2 scrolls)
-        // SCROLL LAG FIX: Set to 0 for instant, 1:1 response with no delay
-        scrub: 0,
+        // SCROLL LAG FIX: Set to 1 for smoother, interpolated response
+        scrub: 1,
         pin: true,
         anticipatePin: 1,
       },
