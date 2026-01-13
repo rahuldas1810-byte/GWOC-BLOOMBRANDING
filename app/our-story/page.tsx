@@ -8,6 +8,7 @@ import { motion, useScroll, useTransform, useMotionValue, useSpring, useMotionTe
 import { useRef, useState, useEffect } from 'react'
 import { getOurStory, getSiteSettings } from '@/lib/content'
 import FoundersMap from '@/components/FoundersMap'
+import { Target, ShieldCheck, TrendingUp, Sparkles } from 'lucide-react'
 
 
 
@@ -405,37 +406,79 @@ export default function OurStory() {
         </div>
       </section>
 
-      {/* What Makes Us Different */}
-      <SectionReveal>
-        <section className="section-padding bg-earl-gray">
-          <div className="container-custom">
-            <div className="mb-20">
-              <p className="label-text mb-5">Our Difference</p>
-              <h2 className="heading-2">What Sets Us Apart</h2>
-            </div>
+      {/* What Tells Us Apart - HIGH END 3D UPGRADE */}
+      <section className="section-padding bg-earl-gray relative overflow-hidden">
 
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-1 bg-dark-choc/5">
-              <HoverCard
-                title="Focused Approach"
-                description="We don’t try to be everything to everyone. We focus on strategic brand identity."
-              />
-              <HoverCard
-                title="No Jargon"
-                description="Clear, honest communication without buzzwords or fluff."
-              />
-              <HoverCard
-                title="Results-Driven"
-                description="Every brand is designed to help you achieve measurable goals."
-              />
-              <HoverCard
-                title="Long-Term Thinking"
-                description="We build brands that grow with you, not trends that fade."
-              />
-            </div>
+        {/* Infinite Grid Background Overlay */}
+        <div
+          className="absolute inset-0 pointer-events-none opacity-[0.1]"
+          style={{
+            backgroundImage: `
+              linear-gradient(to right, rgba(98, 74, 65, 0.1) 1px, transparent 1px),
+              linear-gradient(to bottom, rgba(98, 74, 65, 0.1) 1px, transparent 1px)
+            `,
+            backgroundSize: '60px 60px',
+            maskImage: 'radial-gradient(circle at center, black, transparent 80%)',
+            WebkitMaskImage: 'radial-gradient(circle at center, black, transparent 80%)',
+          }}
+        >
+          <motion.div
+            className="absolute inset-0"
+            animate={{
+              backgroundPosition: ['0px 0px', '60px 60px'],
+            }}
+            transition={{
+              duration: 20,
+              repeat: Infinity,
+              ease: "linear"
+            }}
+            style={{
+              backgroundImage: 'inherit',
+              backgroundSize: 'inherit'
+            }}
+          />
+        </div>
 
+        <div className="container-custom relative z-10">
+          <div className="mb-20">
+            <p className="label-text mb-5 text-dark-choc/60 font-mono tracking-[0.3em]">Our Philosophy</p>
+            <h2 className="font-serif text-5xl md:text-7xl text-dark-choc leading-none">
+              What Tells Us Apart
+            </h2>
           </div>
-        </section>
-      </SectionReveal>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 lg:gap-12 items-stretch">
+            <HoverCard
+              variant="earl-gray"
+              iconVariant="chocolate"
+              Icon={Target}
+              title="Focused Approach"
+              description="We don't try to be everything to everyone. We specialize in strategic brand identity that scales."
+            />
+            <HoverCard
+              variant="earl-gray"
+              iconVariant="chocolate"
+              Icon={ShieldCheck}
+              title="No Jargon"
+              description="Strategic clarity delivered through honest, clear communication. No buzzwords, just results."
+            />
+            <HoverCard
+              variant="earl-gray"
+              iconVariant="chocolate"
+              Icon={TrendingUp}
+              title="Results-Driven"
+              description="Every creative decision we make is backed by data and designed to achieve your business goals."
+            />
+            <HoverCard
+              variant="earl-gray"
+              iconVariant="chocolate"
+              Icon={Sparkles}
+              title="Long-Term Thinking"
+              description="We build brands that are timeless. We create legacies that grow along with your vision."
+            />
+          </div>
+        </div>
+      </section>
 
     </div >
   )
@@ -527,6 +570,87 @@ function TiltCard({ children, className }: { children: React.ReactNode, classNam
         }}
       />
       {children}
+    </motion.div>
+  )
+}
+function PhilosophyCard({ item, isActive, onClick }: { item: any, isActive: boolean, onClick: () => void }) {
+  const x = useMotionValue(0)
+  const y = useMotionValue(0)
+
+  // Spotlight position
+  const spotlightX = useTransform(x, [-0.5, 0.5], ["0%", "100%"])
+  const spotlightY = useTransform(y, [-0.5, 0.5], ["0%", "100%"])
+
+  function onMouseMove({ currentTarget, clientX, clientY }: React.MouseEvent) {
+    const { left, top, width, height } = currentTarget.getBoundingClientRect()
+    x.set((clientX - left) / width - 0.5)
+    y.set((clientY - top) / height - 0.5)
+  }
+
+  function onMouseLeave() {
+    x.set(0)
+    y.set(0)
+  }
+
+  return (
+    <motion.div
+      layout
+      initial={{ opacity: 0, scale: 0.9, y: 20 }}
+      whileInView={{ opacity: 1, scale: 1, y: 0 }}
+      animate={{
+        flex: isActive ? 1.5 : 1,
+        transition: { duration: 0.4, ease: "easeInOut" }
+      }}
+      viewport={{ once: true, margin: "-10%" }}
+      onMouseMove={onMouseMove}
+      onMouseLeave={onMouseLeave}
+      onClick={onClick}
+      whileTap={{ scale: 0.98 }}
+      className={`group px-5 py-6 sm:px-6 sm:py-8 md:px-8 md:py-10 lg:p-12 border-t border-dark-choc/10 hover:border-transparent min-h-[280px] sm:min-h-[320px] md:min-h-[400px] lg:min-h-[450px] w-full md:w-auto flex flex-col justify-between 
+                 cursor-pointer transition-colors duration-500 overflow-hidden relative
+                 ${isActive
+          ? 'bg-dark-choc text-white border-transparent'
+          : 'bg-white hover:bg-dark-choc hover:text-white'}`}
+    >
+      {/* Blue Spotlight Effect */}
+      <motion.div
+        className="pointer-events-none absolute -inset-px opacity-0 group-hover:opacity-100 transition duration-500 z-0"
+        style={{
+          background: useMotionTemplate`radial-gradient(
+             600px circle at ${spotlightX} ${spotlightY},
+             rgba(44, 68, 148, 0.2),
+             transparent 80%
+           )`
+        }}
+      />
+
+      <motion.div layout="position" className="relative z-10">
+        <span className={`block text-4xl sm:text-5xl md:text-6xl font-serif mb-4 sm:mb-6 md:mb-8 transition-colors duration-500
+                          ${isActive
+            ? 'text-white/30'
+            : 'text-dark-choc/20 group-hover:text-white/30'}`}>
+          {item.id}
+        </span>
+      </motion.div>
+
+      <motion.div layout="position" className="relative z-10">
+        <motion.h3
+          layout="position"
+          className={`heading-3 mb-6 transition-colors duration-500
+                        ${isActive
+              ? 'text-white'
+              : 'text-dark-choc group-hover:text-white'}`}>
+          {item.title}
+        </motion.h3>
+        <motion.p
+          layout="position"
+          className={`body-text transition-opacity duration-500
+                        ${isActive
+              ? 'opacity-90 text-white'
+              : 'opacity-80 group-hover:opacity-90 group-hover:text-white'}`}>
+          {item.description || item.text}
+        </motion.p>
+      </motion.div>
     </motion.div>
   )
 }
