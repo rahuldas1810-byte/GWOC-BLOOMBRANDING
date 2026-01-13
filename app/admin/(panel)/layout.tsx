@@ -19,7 +19,8 @@ import {
   Briefcase,
   BookOpen,
   Phone,
-  Settings
+  Settings,
+  Send
 } from 'lucide-react'
 import ToastContainer from '@/components/admin/Toast'
 import LoadingSpinner from '@/components/admin/LoadingSpinner'
@@ -35,6 +36,7 @@ const navigation = [
   { name: 'Clients', href: '/admin/clients', icon: Users },
   { name: 'Media Manager', href: '/admin/media', icon: Film },
   { name: 'Enquiries', href: '/admin/enquiries', icon: Mail },
+  { name: 'Newsletter', href: '/admin/newsletter', icon: Send },
 ]
 
 export default function AdminLayout({ children }: { children: React.ReactNode }) {

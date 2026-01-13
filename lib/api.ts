@@ -365,6 +365,24 @@ class ApiClient {
       body: JSON.stringify(data),
     });
   }
+  // Newsletter (Admin)
+  async getNewsletterSubscribers() {
+    return this.request<any[]>('/newsletter/subscribe');
+  }
+
+  async sendNewsletterUpdate(data: { subject: string; message: string }) {
+    return this.request<any>('/newsletter/send', {
+      method: 'POST',
+      body: JSON.stringify(data),
+    });
+  }
+
+  async manageSubscriber(email: string, action: 'deactivate' | 'reactivate') {
+    return this.request<any>('/newsletter/manage', {
+      method: 'PATCH',
+      body: JSON.stringify({ email, action }),
+    });
+  }
 }
 
 export const api = new ApiClient(API_BASE_URL);

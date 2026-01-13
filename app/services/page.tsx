@@ -9,9 +9,9 @@ import { ArrowRight } from 'lucide-react';
 import SectionReveal from '@/components/SectionReveal';
 import { getSiteSettings } from '@/lib/content';
 
-
 import Hero from '@/components/Hero-services';
 import PolaroidParallaxSection from '@/components/PolaroidParallaxSection';
+import NewsletterSection from '@/components/NewsletterSection';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -94,7 +94,7 @@ export default function ServicesPage() {
   return (
     <motion.div 
       ref={containerRef} 
-      className="bg-[#F2F0E9] min-h-screen text-[#2c2420] overflow-x-hidden"
+      className="bg-[#F2F0E9] w-full h-auto text-[#2c2420] overflow-x-hidden"
       initial={{ opacity: 0, y: 8 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.8, ease: "easeOut" }}
@@ -174,8 +174,8 @@ export default function ServicesPage() {
         </div>
       </section>
 
-      {/* FIX: Increased Bottom Spacer to 50vh to ensure text scrolls into view */}
-      <div className="h-[50vh]"></div>
+      {/* NEW NEWSLETTER SECTION */}
+      <NewsletterSection />
 
     </motion.div>
   );
