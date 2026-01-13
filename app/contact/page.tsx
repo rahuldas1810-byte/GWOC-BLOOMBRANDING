@@ -245,7 +245,7 @@ export default function Contact() {
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 lg:gap-24">
 
             {/* LEFT COLUMN: FAQ & Contact Info */}
-            <div className="flex flex-col gap-20">
+            <div className="flex flex-col gap-20 order-2 lg:order-1">
 
               {/* FAQ Section */}
               <SectionReveal>
@@ -336,118 +336,120 @@ export default function Contact() {
             </div>
 
             {/* RIGHT COLUMN: Contact Form */}
-            <SectionReveal delay={0.1}>
-              <div className="lg:sticky lg:top-32 max-w-2xl mx-auto lg:max-w-none">
-                <div className="bg-white rounded-3xl p-6 md:p-12 shadow-xl shadow-dark-choc/5 border border-dark-choc/5 relative overflow-hidden">
-                  {/* Decor element */}
-                  <div className="absolute top-0 right-0 w-32 h-32 bg-electric-blue/5 rounded-bl-full -mr-8 -mt-8 pointer-events-none" />
+            <div className="order-1 lg:order-2 lg:sticky lg:top-32 lg:self-start">
+              <SectionReveal delay={0.1}>
+                <div className="max-w-2xl mx-auto lg:max-w-none">
+                  <div className="bg-white rounded-3xl p-6 md:p-12 shadow-xl shadow-dark-choc/5 border border-dark-choc/5 relative overflow-hidden">
+                    {/* Decor element */}
+                    <div className="absolute top-0 right-0 w-32 h-32 bg-electric-blue/5 rounded-bl-full -mr-8 -mt-8 pointer-events-none" />
 
-                  <h2 className="heading-3 mb-4">{data.formTitle}</h2>
-                  <p className="body-text mb-10 text-dark-choc/70">
-                    {data.formDescription}
-                  </p>
+                    <h2 className="heading-3 mb-4">{data.formTitle}</h2>
+                    <p className="body-text mb-10 text-dark-choc/70">
+                      {data.formDescription}
+                    </p>
 
-                  {submitStatus === "success" ? (
-                    <motion.div
-                      initial={{ opacity: 0, scale: 0.95 }}
-                      animate={{ opacity: 1, scale: 1 }}
-                      className="bg-green-50 text-green-800 p-8 rounded-2xl text-center border border-green-100"
-                    >
-                      <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4 text-green-600">
-                        <svg className="w-8 h-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-                        </svg>
-                      </div>
-                      <h3 className="font-serif text-2xl mb-2">Message Sent!</h3>
-                      <p className="text-green-700">
-                        Thank you for reaching out. We'll get back to you shortly.
-                      </p>
-                      <button
-                        onClick={() => setSubmitStatus("idle")}
-                        className="mt-6 text-sm font-bold uppercase tracking-widest text-green-700 border-b border-green-300 hover:text-green-900 transition-colors"
+                    {submitStatus === "success" ? (
+                      <motion.div
+                        initial={{ opacity: 0, scale: 0.95 }}
+                        animate={{ opacity: 1, scale: 1 }}
+                        className="bg-green-50 text-green-800 p-8 rounded-2xl text-center border border-green-100"
                       >
-                        Send another message
-                      </button>
-                    </motion.div>
-                  ) : (
-                    <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
-                      <div className="space-y-6">
-                        <div className="space-y-2">
-                          <label htmlFor="name" className="text-sm font-semibold text-dark-choc/70">Name</label>
-                          <input
-                            type="text"
-                            id="name"
-                            {...register("name")}
-                            className="w-full px-4 py-4 bg-earl-gray/30 border border-dark-choc/10 rounded-lg outline-none focus:border-electric-blue focus:ring-1 focus:ring-electric-blue/20 transition-all text-dark-choc placeholder:text-dark-choc/30"
-                            placeholder="Enter Your Name"
-                          />
-                          {errors.name && <p className="text-xs text-red-500 mt-1">{errors.name.message}</p>}
-                        </div>
-                        <div className="space-y-2">
-                          <label htmlFor="email" className="text-sm font-semibold text-dark-choc/70">Email</label>
-                          <input
-                            type="email"
-                            id="email"
-                            {...register("email")}
-                            className="w-full px-4 py-4 bg-earl-gray/30 border border-dark-choc/10 rounded-lg outline-none focus:border-electric-blue focus:ring-1 focus:ring-electric-blue/20 transition-all text-dark-choc placeholder:text-dark-choc/30"
-                            placeholder="name@company.com"
-                          />
-                          {errors.email && <p className="text-xs text-red-500 mt-1">{errors.email.message}</p>}
-                        </div>
-                        <div className="space-y-2">
-                          <label htmlFor="company" className="text-sm font-semibold text-dark-choc/70">Company <span className="font-normal text-dark-choc/40">(Optional)</span></label>
-                          <input
-                            type="text"
-                            id="company"
-                            {...register("company")}
-                            className="w-full px-4 py-4 bg-earl-gray/30 border border-dark-choc/10 rounded-lg outline-none focus:border-electric-blue focus:ring-1 focus:ring-electric-blue/20 transition-all text-dark-choc placeholder:text-dark-choc/30"
-                            placeholder="Your Company Ltd."
-                          />
-                        </div>
-                        <div className="space-y-2">
-                          <label htmlFor="message" className="text-sm font-semibold text-dark-choc/70">Message</label>
-                          <textarea
-                            id="message"
-                            {...register("message")}
-                            rows={4}
-                            className="w-full px-4 py-4 bg-earl-gray/30 border border-dark-choc/10 rounded-lg outline-none focus:border-electric-blue focus:ring-1 focus:ring-electric-blue/20 transition-all text-dark-choc placeholder:text-dark-choc/30 resize-none"
-                            placeholder="Tell us about your project..."
-                          />
-                          {errors.message && <p className="text-xs text-red-500 mt-1">{errors.message.message}</p>}
-                        </div>
-                      </div>
-
-                      {errorMessage && (
-                        <div className="bg-red-50 text-red-600 p-4 rounded-lg text-sm border border-red-100 flex items-center gap-3">
-                          <svg className="w-5 h-5 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                        <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4 text-green-600">
+                          <svg className="w-8 h-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
                           </svg>
-                          {errorMessage}
                         </div>
-                      )}
+                        <h3 className="font-serif text-2xl mb-2">Message Sent!</h3>
+                        <p className="text-green-700">
+                          Thank you for reaching out. We'll get back to you shortly.
+                        </p>
+                        <button
+                          onClick={() => setSubmitStatus("idle")}
+                          className="mt-6 text-sm font-bold uppercase tracking-widest text-green-700 border-b border-green-300 hover:text-green-900 transition-colors"
+                        >
+                          Send another message
+                        </button>
+                      </motion.div>
+                    ) : (
+                      <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
+                        <div className="space-y-6">
+                          <div className="space-y-2">
+                            <label htmlFor="name" className="text-sm font-semibold text-dark-choc/70">Name</label>
+                            <input
+                              type="text"
+                              id="name"
+                              {...register("name")}
+                              className="w-full px-4 py-4 bg-earl-gray/30 border border-dark-choc/10 rounded-lg outline-none focus:border-electric-blue focus:ring-1 focus:ring-electric-blue/20 transition-all text-dark-choc placeholder:text-dark-choc/30"
+                              placeholder="Enter Your Name"
+                            />
+                            {errors.name && <p className="text-xs text-red-500 mt-1">{errors.name.message}</p>}
+                          </div>
+                          <div className="space-y-2">
+                            <label htmlFor="email" className="text-sm font-semibold text-dark-choc/70">Email</label>
+                            <input
+                              type="email"
+                              id="email"
+                              {...register("email")}
+                              className="w-full px-4 py-4 bg-earl-gray/30 border border-dark-choc/10 rounded-lg outline-none focus:border-electric-blue focus:ring-1 focus:ring-electric-blue/20 transition-all text-dark-choc placeholder:text-dark-choc/30"
+                              placeholder="name@company.com"
+                            />
+                            {errors.email && <p className="text-xs text-red-500 mt-1">{errors.email.message}</p>}
+                          </div>
+                          <div className="space-y-2">
+                            <label htmlFor="company" className="text-sm font-semibold text-dark-choc/70">Company <span className="font-normal text-dark-choc/40">(Optional)</span></label>
+                            <input
+                              type="text"
+                              id="company"
+                              {...register("company")}
+                              className="w-full px-4 py-4 bg-earl-gray/30 border border-dark-choc/10 rounded-lg outline-none focus:border-electric-blue focus:ring-1 focus:ring-electric-blue/20 transition-all text-dark-choc placeholder:text-dark-choc/30"
+                              placeholder="Your Company Ltd."
+                            />
+                          </div>
+                          <div className="space-y-2">
+                            <label htmlFor="message" className="text-sm font-semibold text-dark-choc/70">Message</label>
+                            <textarea
+                              id="message"
+                              {...register("message")}
+                              rows={4}
+                              className="w-full px-4 py-4 bg-earl-gray/30 border border-dark-choc/10 rounded-lg outline-none focus:border-electric-blue focus:ring-1 focus:ring-electric-blue/20 transition-all text-dark-choc placeholder:text-dark-choc/30 resize-none"
+                              placeholder="Tell us about your project..."
+                            />
+                            {errors.message && <p className="text-xs text-red-500 mt-1">{errors.message.message}</p>}
+                          </div>
+                        </div>
 
-                      <button
-                        type="submit"
-                        disabled={isPending}
-                        className="btn-primary w-full justify-center py-4 text-base"
-                      >
-                        {isPending ? (
-                          <>
-                            <svg className="animate-spin -ml-1 mr-3 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                              <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
-                              <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                        {errorMessage && (
+                          <div className="bg-red-50 text-red-600 p-4 rounded-lg text-sm border border-red-100 flex items-center gap-3">
+                            <svg className="w-5 h-5 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
                             </svg>
-                            Sending...
-                          </>
-                        ) : (
-                          "Send Message"
+                            {errorMessage}
+                          </div>
                         )}
-                      </button>
-                    </form>
-                  )}
+
+                        <button
+                          type="submit"
+                          disabled={isPending}
+                          className="btn-primary w-full justify-center py-4 text-base"
+                        >
+                          {isPending ? (
+                            <>
+                              <svg className="animate-spin -ml-1 mr-3 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                                <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                                <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                              </svg>
+                              Sending...
+                            </>
+                          ) : (
+                            "Send Message"
+                          )}
+                        </button>
+                      </form>
+                    )}
+                  </div>
                 </div>
-              </div>
-            </SectionReveal>
+              </SectionReveal>
+            </div>
           </div>
         </div>
       </section>
