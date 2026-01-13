@@ -79,15 +79,15 @@ export default function BrandsPage() {
   }
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-6 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <div>
-          <h1 className="text-3xl font-bold text-dark-choc mb-2">Brands</h1>
-          <p className="text-dark-choc/60">Manage your brand portfolio</p>
+          <h1 className="text-2xl sm:text-3xl font-bold text-dark-choc">Brands</h1>
+          <p className="text-dark-choc/60 mt-1">Manage your brand portfolio</p>
         </div>
         <Link
           href="/admin/brands/new"
-          className="flex items-center gap-2 bg-electric-blue text-white px-6 py-3 rounded-lg hover:bg-electric-blue/90 transition-colors font-medium shadow-sm hover:shadow-md"
+          className="flex items-center justify-center gap-2 bg-electric-blue text-white px-6 py-3 rounded-lg hover:bg-electric-blue/90 transition-all font-semibold shadow-sm active:scale-95 w-full sm:w-auto"
         >
           <Plus className="w-5 h-5" />
           Add Brand
@@ -95,82 +95,93 @@ export default function BrandsPage() {
       </div>
 
       {brands.length > 0 && (
-        <div className="relative">
-          <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-dark-choc/40" />
+        <div className="relative group">
+          <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-dark-choc/30 group-focus-within:text-electric-blue transition-colors" />
           <input
             type="text"
             placeholder="Search brands by name or category..."
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            className="w-full pl-10 pr-4 py-3 border border-dark-choc/20 rounded-lg focus:ring-2 focus:ring-electric-blue focus:border-transparent bg-white"
+            className="w-full pl-12 pr-4 py-3.5 border border-dark-choc/15 rounded-xl focus:ring-4 focus:ring-electric-blue/10 focus:border-electric-blue bg-white transition-all outline-none text-sm sm:text-base placeholder:text-dark-choc/30"
           />
         </div>
       )}
 
       {filteredBrands.length === 0 ? (
-        <EmptyState
-          icon={Plus}
-          title={brands.length === 0 ? "No brands yet" : "No brands found"}
-          description={
-            brands.length === 0
-              ? "Get started by creating your first brand. Brands will appear on your testimonials page."
-              : `No brands match "${searchQuery}". Try a different search term.`
-          }
-          actionLabel={brands.length === 0 ? "Create First Brand" : undefined}
-          actionHref={brands.length === 0 ? "/admin/brands/new" : undefined}
-        />
+        <div className="bg-white rounded-2xl p-8 sm:p-12 border border-dark-choc/5 shadow-sm">
+          <EmptyState
+            icon={Plus}
+            title={brands.length === 0 ? "No brands yet" : "No brands found"}
+            description={
+              brands.length === 0
+                ? "Get started by creating your first brand. Brands will appear on your testimonials page."
+                : `No brands match "${searchQuery}". Try a different search term.`
+            }
+            actionLabel={brands.length === 0 ? "Create First Brand" : undefined}
+            actionHref={brands.length === 0 ? "/admin/brands/new" : undefined}
+          />
+        </div>
       ) : (
-        <div className="bg-white rounded-xl shadow-sm border border-dark-choc/10 overflow-hidden">
-          <div className="overflow-x-auto">
+        <div className="bg-white rounded-xl shadow-sm border border-dark-choc/5 overflow-hidden">
+          {/* Desktop Table View */}
+          <div className="hidden md:block overflow-x-auto">
             <table className="w-full">
-              <thead className="bg-earl-gray/50">
+              <thead className="bg-earl-gray/30 text-dark-choc/70 text-xs font-bold uppercase tracking-widest">
                 <tr>
-                  <th className="px-6 py-4 text-left text-sm font-semibold text-dark-choc">Brand</th>
-                  <th className="px-6 py-4 text-left text-sm font-semibold text-dark-choc">Category</th>
-                  <th className="px-6 py-4 text-left text-sm font-semibold text-dark-choc">Order</th>
-                  <th className="px-6 py-4 text-left text-sm font-semibold text-dark-choc">Actions</th>
+                  <th className="px-6 py-5 text-left">Brand</th>
+                  <th className="px-6 py-5 text-left">Category</th>
+                  <th className="px-6 py-5 text-left w-24">Order</th>
+                  <th className="px-6 py-5 text-right w-32">Actions</th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-dark-choc/10">
+              <tbody className="divide-y divide-dark-choc/5">
                 {filteredBrands.map((brand) => (
                   <tr
                     key={brand._id}
-                    className="hover:bg-earl-gray/30 transition-colors"
+                    className="hover:bg-earl-gray/10 transition-colors group"
                   >
                     <td className="px-6 py-4">
-                      <div className="flex items-center gap-3">
-                        {brand.image?.url && (
-                          <img
-                            src={brand.image.url}
-                            alt={brand.name}
-                            className="w-12 h-12 object-cover rounded-lg border border-dark-choc/10"
-                          />
-                        )}
-                        <span className="font-medium text-dark-choc">{brand.name}</span>
+                      <div className="flex items-center gap-4">
+                        <div className="w-12 h-12 rounded-lg border border-dark-choc/10 overflow-hidden bg-white shrink-0">
+                          {brand.image?.url ? (
+                            <img
+                              src={brand.image.url}
+                              alt={brand.name}
+                              className="w-full h-full object-contain p-1"
+                            />
+                          ) : (
+                            <div className="w-full h-full bg-earl-gray/20 flex items-center justify-center text-dark-choc/20">
+                              <Plus className="w-5 h-5" />
+                            </div>
+                          )}
+                        </div>
+                        <span className="font-semibold text-dark-choc group-hover:text-electric-blue transition-colors">{brand.name}</span>
                       </div>
                     </td>
                     <td className="px-6 py-4">
-                      <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-electric-blue/10 text-electric-blue">
+                      <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-bold bg-electric-blue/5 text-electric-blue border border-electric-blue/10">
                         {brand.category || 'Uncategorized'}
                       </span>
                     </td>
-                    <td className="px-6 py-4 text-dark-choc">{brand.order || 0}</td>
                     <td className="px-6 py-4">
-                      <div className="flex items-center gap-2">
+                      <span className="text-dark-choc/60 font-mono font-medium">{brand.order || 0}</span>
+                    </td>
+                    <td className="px-6 py-4 text-right">
+                      <div className="flex items-center justify-end gap-2">
                         <Link
                           href={`/admin/brands/${brand._id}`}
-                          className="p-2 text-electric-blue hover:bg-electric-blue/10 rounded-lg transition-colors"
+                          className="p-2 text-dark-choc/40 hover:text-electric-blue hover:bg-electric-blue/5 rounded-lg transition-all"
                           title="Edit"
                         >
-                          <Edit className="w-4 h-4" />
+                          <Edit className="w-5 h-5" />
                         </Link>
                         <button
                           onClick={() => handleDelete(brand._id, brand.name)}
                           disabled={deletingId === brand._id}
-                          className="p-2 text-red-500 hover:bg-red-50 rounded-lg transition-colors disabled:opacity-50"
+                          className="p-2 text-dark-choc/40 hover:text-red-500 hover:bg-red-50 rounded-lg transition-all disabled:opacity-50"
                           title="Delete"
                         >
-                          <Trash2 className="w-4 h-4" />
+                          <Trash2 className="w-5 h-5" />
                         </button>
                       </div>
                     </td>
@@ -179,9 +190,62 @@ export default function BrandsPage() {
               </tbody>
             </table>
           </div>
+
+          {/* Mobile Card View */}
+          <div className="md:hidden divide-y divide-dark-choc/5">
+            {filteredBrands.map((brand) => (
+              <div key={brand._id} className="p-4 space-y-4">
+                <div className="flex items-start justify-between">
+                  <div className="flex items-center gap-4 min-w-0">
+                    <div className="w-14 h-14 rounded-xl border border-dark-choc/10 overflow-hidden bg-white shrink-0 p-1">
+                      {brand.image?.url ? (
+                        <img
+                          src={brand.image.url}
+                          alt={brand.name}
+                          className="w-full h-full object-contain"
+                        />
+                      ) : (
+                        <div className="w-full h-full bg-earl-gray/20 flex items-center justify-center text-dark-choc/20">
+                          <Plus className="w-6 h-6" />
+                        </div>
+                      )}
+                    </div>
+                    <div className="min-w-0">
+                      <h3 className="font-bold text-dark-choc truncate">{brand.name}</h3>
+                      <div className="flex items-center gap-2 mt-1">
+                        <span className="text-[10px] font-bold uppercase tracking-wider text-dark-choc/40">
+                          Order: {brand.order || 0}
+                        </span>
+                        <span className="w-1 h-1 rounded-full bg-dark-choc/20" />
+                        <span className="text-xs font-semibold text-electric-blue">
+                          {brand.category || 'General'}
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+                  <div className="flex gap-1">
+                    <Link
+                      href={`/admin/brands/${brand._id}`}
+                      className="p-2.5 text-dark-choc/40 bg-earl-gray/10 rounded-xl"
+                    >
+                      <Edit className="w-5 h-5" />
+                    </Link>
+                    <button
+                      onClick={() => handleDelete(brand._id, brand.name)}
+                      disabled={deletingId === brand._id}
+                      className="p-2.5 text-red-500 bg-red-50 rounded-xl disabled:opacity-50"
+                    >
+                      <Trash2 className="w-5 h-5" />
+                    </button>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
         </div>
       )}
     </div>
+
   )
 }
 
