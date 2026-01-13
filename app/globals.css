@@ -7,12 +7,25 @@
     scroll-behavior: smooth;
   }
 
-  html.lenis {
+  html.lenis,
+  html.lenis body {
     height: auto;
   }
 
   .lenis.lenis-smooth {
-    scroll-behavior: auto;
+    scroll-behavior: auto !important;
+  }
+
+  .lenis.lenis-smooth [data-lenis-prevent] {
+    overscroll-behavior: contain;
+  }
+
+  .lenis.lenis-stopped {
+    overflow: hidden;
+  }
+
+  .lenis.lenis-scrolling iframe {
+    pointer-events: none;
   }
 
   body {
@@ -224,4 +237,26 @@ select {
   /* IE and Edge */
   scrollbar-width: none;
   /* Firefox */
+}
+
+@keyframes subtle-drift {
+  0% {
+    transform: translateX(0);
+  }
+
+  50% {
+    transform: translateX(4px);
+  }
+
+  100% {
+    transform: translateX(0);
+  }
+}
+
+.animate-subtle-drift {
+  animation: subtle-drift 8s ease-in-out infinite;
+}
+
+.hover-pause:hover {
+  animation-play-state: paused;
 }
