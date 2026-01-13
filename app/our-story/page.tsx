@@ -113,7 +113,7 @@ export default function OurStory() {
     <div className="min-h-screen">
 
       {/* ================= CINEMATIC HERO ================= */}
-      <section ref={containerRef} className="relative h-[60vh] min-h-[450px] md:h-[90vh] md:min-h-[700px] overflow-hidden flex items-center justify-center bg-dark-choc">
+      <section ref={containerRef} className="relative h-[55vh] min-h-[380px] sm:h-[60vh] sm:min-h-[450px] md:h-[90vh] md:min-h-[700px] overflow-hidden flex items-center justify-center bg-dark-choc">
 
         {/* Parallax Background Image */}
         <motion.div
@@ -176,7 +176,7 @@ export default function OurStory() {
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ duration: 1, delay: 0.8 }}
-              className="body-text text-lg md:text-xl lg:text-2xl max-w-lg mt-8 md:mt-12 text-earl-gray/80 px-4 md:px-0"
+              className="body-text text-base sm:text-lg md:text-xl lg:text-2xl max-w-lg mt-6 sm:mt-8 md:mt-12 text-earl-gray/80 px-5 sm:px-4 md:px-0"
             >
               {data.heroSubtitle}
             </motion.p>
@@ -185,10 +185,10 @@ export default function OurStory() {
       </section>
 
       {/* Who We Are - REFINED */}
-      <section className="section-padding bg-white relative z-20 rounded-t-[3rem] -mt-20 min-h-[80vh]">
+      <section className="section-padding bg-white relative z-20 rounded-t-[2rem] sm:rounded-t-[3rem] -mt-12 sm:-mt-20">
         <div className="container-custom">
 
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 md:gap-16 lg:gap-28 items-start pt-6 md:pt-10">
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 sm:gap-10 md:gap-16 lg:gap-28 items-start pt-4 sm:pt-6 md:pt-10">
 
             {/* Sticky Left Column */}
             <div className="lg:col-span-5 lg:sticky lg:top-32 self-start">
@@ -202,7 +202,7 @@ export default function OurStory() {
                   whileInView={{ y: 0 }}
                   viewport={{ once: true, margin: "-10%" }}
                   transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-                  className="heading-2 text-6xl md:text-7xl leading-[1.1] text-dark-choc"
+                  className="heading-2 text-4xl sm:text-5xl md:text-6xl lg:text-7xl leading-[1.1] text-dark-choc"
                 >
                   {data.purposeTitle}
                 </motion.h2>
@@ -221,7 +221,7 @@ export default function OurStory() {
             {/* Scrollable Right Content */}
             <div className="lg:col-span-6 lg:col-start-7 space-y-12 lg:pt-32">
               <SectionReveal delay={0.2}>
-                <p className="body-text text-lg md:text-2xl lg:text-3xl leading-relaxed text-dark-choc indent-8 md:indent-12">
+                <p className="body-text text-base sm:text-lg md:text-2xl lg:text-3xl leading-relaxed text-dark-choc pl-4 sm:pl-6 md:pl-12">
                   {data.purposeDescription}
                 </p>
               </SectionReveal>
@@ -259,7 +259,7 @@ export default function OurStory() {
       <section className="section-padding bg-earl-gray relative z-20">
         <div className="container-custom">
 
-          <div className="text-center mb-24">
+          <div className="text-center mb-12 sm:mb-16 md:mb-24">
             <p className="label-text mb-5 text-dark-choc/60">{data.philosophyTitle}</p>
             <h2 className="heading-2 text-dark-choc">{data.philosophyDescription}</h2>
           </div>
@@ -277,14 +277,14 @@ export default function OurStory() {
                 }}
                 viewport={{ once: true, margin: "-10%" }}
                 onClick={() => setActiveCard(activeCard === item.id ? null : item.id)}
-                className={`group px-6 py-8 md:px-8 md:py-10 lg:p-12 border-t border-dark-choc/10 hover:border-transparent min-h-[320px] md:min-h-[400px] lg:min-h-[450px] w-full md:w-auto flex flex-col justify-between 
+                className={`group px-5 py-6 sm:px-6 sm:py-8 md:px-8 md:py-10 lg:p-12 border-t border-dark-choc/10 hover:border-transparent min-h-[280px] sm:min-h-[320px] md:min-h-[400px] lg:min-h-[450px] w-full md:w-auto flex flex-col justify-between 
                            cursor-pointer transition-colors duration-500 overflow-hidden relative
                            ${activeCard === item.id
                     ? 'bg-electric-blue text-white border-transparent'
                     : 'bg-white hover:bg-electric-blue hover:text-white'}`}
               >
                 <motion.div layout="position">
-                  <span className={`block text-6xl font-serif mb-8 transition-colors duration-500
+                  <span className={`block text-4xl sm:text-5xl md:text-6xl font-serif mb-4 sm:mb-6 md:mb-8 transition-colors duration-500
                                     ${activeCard === item.id
                       ? 'text-white/30'
                       : 'text-dark-choc/20 group-hover:text-white/30'}`}>
@@ -319,7 +319,7 @@ export default function OurStory() {
 
       {/* ================= MARQUEE ================= */}
       <SectionReveal>
-        <section className="py-32 bg-dark-choc overflow-hidden border-t border-dark-choc/5">
+        <section className="py-16 sm:py-24 md:py-32 bg-dark-choc overflow-hidden border-t border-dark-choc/5">
           <div className="container-custom mb-16 text-center">
             <p className="label-text mb-6 text-earl-gray/60">Culture</p>
             <h2 className="heading-2 text-earl-gray">Life at Bloom</h2>
@@ -335,12 +335,12 @@ export default function OurStory() {
       </SectionReveal>
 
       {/* Why We Exist - EDITORIAL OVERLAP */}
-      <section ref={purposeRef} className="section-padding bg-white relative overflow-hidden py-20 md:py-32 lg:py-48">
+      <section ref={purposeRef} className="section-padding bg-white relative overflow-hidden py-12 sm:py-16 md:py-32 lg:py-48">
         <div className="container-custom relative z-10">
 
           <div className="relative">
             {/* Parallax Image - Large & Cinematic */}
-            <div className="lg:w-[75%] relative aspect-[16/9] lg:aspect-[21/9] overflow-hidden rounded-[2rem] shadow-2xl group">
+            <div className="lg:w-[75%] relative aspect-[16/9] lg:aspect-[21/9] overflow-hidden rounded-xl sm:rounded-2xl md:rounded-[2rem] shadow-2xl group">
               <motion.div style={{ y: purposeY }} className="absolute inset-0 w-full h-[120%] -top-[10%]">
                 <Image
                   src="/27.jpg"
@@ -364,8 +364,8 @@ export default function OurStory() {
 
             {/* Overlapping Content Card - FAANG TILT */}
             <TiltCard
-              className="bg-white/95 backdrop-blur-md p-6 md:p-10 lg:p-16 rounded-[2rem] shadow-[0_40px_100px_rgba(0,0,0,0.1)] border border-dark-choc/5
-                            relative mt-[-10%] ml-[5%] w-[90%]
+              className="bg-white/95 backdrop-blur-md p-5 sm:p-6 md:p-10 lg:p-16 rounded-xl sm:rounded-2xl md:rounded-[2rem] shadow-[0_40px_100px_rgba(0,0,0,0.1)] border border-dark-choc/5
+                            relative mt-[-8%] sm:mt-[-10%] mx-auto w-[92%] sm:w-[90%]
                             lg:absolute lg:right-0 lg:bottom-[10%] lg:w-[45%] lg:mt-0 lg:ml-0 overflow-hidden group/card"
             >
               {/* Rotating Badge */}

@@ -342,12 +342,12 @@ export default function Home() {
   return (
     <div className="min-h-screen relative">
       {/* ================= HERO SECTION ================= */}
-      <section className="relative h-screen overflow-hidden">
+      <section className="relative w-full h-auto md:min-h-screen overflow-hidden flex flex-col justify-center">
         {/* Hero Video - plays first, then fades out smoothly when it ends */}
         {homepageContent.heroVideo && (
           <video
             ref={videoRef}
-            className={`absolute inset-0 w-full h-full object-cover z-40 transition-opacity duration-[1500ms] ease-in-out ${videoEnded || isTransitioning ? "opacity-0 pointer-events-none z-0" : "opacity-100 z-40"
+            className={`relative w-full h-auto md:absolute md:inset-0 md:h-full object-contain md:object-cover z-40 transition-opacity duration-[1500ms] ease-in-out ${videoEnded || isTransitioning ? "opacity-0 pointer-events-none z-0" : "opacity-100 z-40"
               }`}
             autoPlay
             muted
@@ -356,7 +356,7 @@ export default function Home() {
             style={{
               transition: 'opacity 1.5s cubic-bezier(0.4, 0, 0.2, 1)',
               visibility: videoEnded ? 'hidden' : 'visible',
-              display: videoEnded ? 'none' : 'block',
+              display: 'block', // Always block to maintain height on mobile
               zIndex: videoEnded || isTransitioning ? 0 : 40
             }}
             onLoadStart={() => {
@@ -454,7 +454,7 @@ export default function Home() {
 
         {/* Content - fades in smoothly after hero video ends or if no hero video (and content is loaded) */}
         <div
-          className={`relative z-20 h-full flex items-center transition-opacity duration-[1500ms] ease-in-out ${contentLoaded && (
+          className={`absolute inset-0 md:relative z-20 h-full flex items-center transition-opacity duration-[1500ms] ease-in-out ${contentLoaded && (
             (homepageContent.heroVideo && (videoEnded || isTransitioning)) ||
             (!homepageContent.heroVideo && !isInitialLoad)
           ) ? "opacity-100" : "opacity-0 pointer-events-none"
@@ -483,16 +483,16 @@ export default function Home() {
               transition={{ duration: 1.2, ease: [0.4, 0, 0.2, 1] }}
               className="max-w-5xl"
             >
-              <p className="label-text mb-4 md:mb-8 text-dark-choc/70">
+              <p className="label-text mb-3 sm:mb-4 md:mb-8 text-dark-choc/70 text-[9px] sm:text-[10px] md:text-xs">
                 {homepageContent.tagline}
               </p>
               <h1
-                className="font-serif text-dark-choc leading-[1.1] mb-6 md:mb-10"
-                style={{ fontSize: "clamp(3rem, 8vw, 8rem)" }}
+                className="font-serif text-dark-choc leading-[1.1] mb-4 sm:mb-6 md:mb-10"
+                style={{ fontSize: "clamp(2.5rem, 10vw, 8rem)" }}
               >
                 {homepageContent.heroHeadline || 'We craft brand identities that resonate.'}
               </h1>
-              <p className="body-text max-w-xl mb-8 md:mb-14 text-dark-choc/80">
+              <p className="body-text max-w-xl mb-6 sm:mb-8 md:mb-14 text-dark-choc/80 text-sm sm:text-base md:text-lg">
                 {homepageContent.heroSubheading}
               </p>
               <motion.div
@@ -501,7 +501,7 @@ export default function Home() {
               >
                 <Link
                   href="/contact"
-                  className="btn-primary bg-[#892F1A] border-[#892F1A] hover:bg-[#6d2514] hover:border-[#6d2514] inline-block"
+                  className="btn-primary bg-[#892F1A] border-[#892F1A] hover:bg-[#6d2514] hover:border-[#6d2514] inline-block text-[10px] sm:text-xs px-6 py-3 sm:px-8 sm:py-4 md:px-10 md:py-5"
                 >
                   Start Your Project
                 </Link>
@@ -514,10 +514,10 @@ export default function Home() {
       {/* ================= SERVICES ================= */}
       <div className="-mt-[1px] relative z-20">
         <SectionReveal>
-          <section className="bg-earl-gray relative overflow-hidden pb-10 pt-20">
+          <section className="bg-earl-gray relative overflow-hidden pb-8 sm:pb-10 pt-12 sm:pt-16 md:pt-20">
 
             {/* MARQUEE */}
-            <div className="mb-12 md:mb-20">
+            <div className="mb-8 sm:mb-12 md:mb-20">
               <TextMarquee text="WHY BRANDS CHOOSE US • BLOOM BRANDING • " />
             </div>
 
@@ -538,12 +538,12 @@ export default function Home() {
               ></motion.div>
             </div>
 
-            <div className="w-full max-w-[95%] mx-auto px-4 relative z-10">
-              <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-16 items-start">
+            <div className="w-full max-w-[95%] mx-auto px-4 sm:px-4 relative z-10">
+              <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 sm:gap-8 lg:gap-16 items-start">
 
                 {/* LEFT COLUMN: Grid of Services */}
                 <div className="lg:col-span-7 flex flex-col pt-4">
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-x-4 md:gap-x-8 gap-y-4 md:gap-y-8 border-t border-dark-choc/20 pt-6 md:pt-8">
+                  <div className="grid grid-cols-1 xs:grid-cols-2 sm:grid-cols-2 gap-3 sm:gap-4 md:gap-8 border-t border-dark-choc/20 pt-6 sm:pt-6 md:pt-8">
                     {services.map((service, index) => (
                       <motion.div
                         key={service.title}
@@ -553,35 +553,49 @@ export default function Home() {
                         transition={{ duration: 0.5, delay: index * 0.1 }}
                         onClick={() => setHoveredService(index)}
                         onHoverStart={() => setHoveredService(index)}
-                        className={`group relative border border-dark-choc/20 rounded-2xl p-6 md:p-8 lg:p-10 cursor-pointer transition-all duration-500 h-full flex flex-col justify-between ${hoveredService === index ? "bg-dark-choc shadow-xl scale-[1.01]" : "hover:bg-dark-choc/5 hover:border-dark-choc/40"}`}
+                        className={`group relative border border-dark-choc/20 rounded-2xl p-5 sm:p-6 md:p-8 lg:p-10 cursor-pointer transition-all duration-500 h-full flex flex-col justify-between min-h-[160px] sm:min-h-[180px] ${hoveredService === index ? "bg-dark-choc shadow-xl scale-[1.01]" : "hover:bg-dark-choc/5 hover:border-dark-choc/40"}`}
                       >
-                        <div className="flex flex-col gap-6 relative z-10">
+                        <div className="flex flex-col gap-4 sm:gap-6 relative z-10">
                           {/* Header Group */}
                           <div className="flex items-center justify-between">
-                            <span className={`font-serif text-xl transition-all duration-300 ${hoveredService === index ? "text-earl-gray/30" : "text-dark-choc/40"}`}>
+                            <span className={`font-serif text-base sm:text-lg md:text-xl transition-all duration-300 ${hoveredService === index ? "text-earl-gray/30" : "text-dark-choc/40"}`}>
                               0{index + 1}
                             </span>
                             {/* Arrow (Visible on hover/active) */}
                             <motion.div
-                              className={`flex items-center justify-center w-10 h-10 rounded-full border transition-all duration-300 ${hoveredService === index ? "border-earl-gray bg-earl-gray text-dark-choc" : "border-dark-choc/20 text-dark-choc/40 group-hover:border-dark-choc group-hover:text-dark-choc opacity-50 group-hover:opacity-100"}`}
+                              className={`flex items-center justify-center w-8 h-8 sm:w-10 sm:h-10 rounded-full border transition-all duration-300 ${hoveredService === index ? "border-earl-gray bg-earl-gray text-dark-choc" : "border-dark-choc/20 text-dark-choc/40 group-hover:border-dark-choc group-hover:text-dark-choc opacity-50 group-hover:opacity-100"}`}
                               animate={{
                                 rotate: hoveredService === index ? -45 : 0,
                               }}
                             >
-                              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                              <svg className="w-4 h-4" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                                 <path d="M5 12H19M19 12L12 5M19 12L12 19" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
                               </svg>
                             </motion.div>
                           </div>
 
-                          <h3 className={`heading-3 text-3xl md:text-4xl transition-all duration-300 ${hoveredService === index ? "text-earl-gray" : "text-dark-choc"}`}>
+                          <h3 className={`heading-3 text-xl sm:text-2xl md:text-3xl lg:text-4xl transition-all duration-300 leading-tight ${hoveredService === index ? "text-earl-gray" : "text-dark-choc"}`}>
                             {service.title}
                           </h3>
+
+                          {/* Mobile-Only Context Image - Restores visual parity with desktop - Reveal on Tap */}
+                          {hoveredService === index && (
+                            <div className="relative w-full h-[180px] sm:h-[220px] rounded-xl overflow-hidden mt-2 lg:hidden animate-in fade-in slide-in-from-top-2 duration-300">
+                              <Image
+                                src={SERVICE_IMAGES[index % SERVICE_IMAGES.length]}
+                                alt={service.title}
+                                fill
+                                className="object-cover"
+                                sizes="(max-width: 1024px) 100vw, 0vw"
+                              />
+                              <div className="absolute inset-0 bg-dark-choc/5" />
+                            </div>
+                          )}
                         </div>
 
                         {/* Description */}
-                        <div className="mt-6">
-                          <p className={`body-text text-lg md:text-xl leading-relaxed transition-all duration-300 ${hoveredService === index ? "text-earl-gray/80" : "text-dark-choc/60 line-clamp-3"}`}>
+                        <div className="mt-4 sm:mt-6">
+                          <p className={`body-text text-sm sm:text-base md:text-lg lg:text-xl leading-relaxed transition-all duration-300 ${hoveredService === index ? "text-earl-gray/80" : "text-dark-choc/60 line-clamp-3"}`}>
                             {service.description}
                           </p>
                         </div>
@@ -637,7 +651,7 @@ export default function Home() {
 
       {/* ================= VIDEO BREAK ================= */}
       {homepageContent.sectionVideo && (
-        <section className="w-screen h-screen overflow-hidden bg-black">
+        <section className="w-full h-[50vh] md:h-screen overflow-hidden bg-black">
           <video
             className="w-full h-full object-cover"
             autoPlay
@@ -711,11 +725,11 @@ export default function Home() {
                   {homepageContent.clientsTitle || 'Trusted By'}
                 </motion.h2>
               </div>
-              <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-12">
+              <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-6 gap-4 sm:gap-8 md:gap-12">
                 {clients.map((client) => (
                   <span
                     key={client.id}
-                    className="text-center font-serif text-xl text-dark-choc/40"
+                    className="text-center font-serif text-xs sm:text-base md:text-lg lg:text-xl text-dark-choc/40"
                   >
                     {client.name}
                   </span>
@@ -825,7 +839,7 @@ export default function Home() {
               </motion.h2>
             </div>
 
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16">
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 sm:gap-12 lg:gap-16">
               {/* Address */}
               <motion.div
                 className="flex flex-col justify-center relative z-20"
@@ -834,7 +848,7 @@ export default function Home() {
                 viewport={{ once: true }}
                 transition={{ duration: 0.8, delay: 0.3 }}
               >
-                <div className="bg-white/80 backdrop-blur-md p-10 md:p-12 border border-dark-choc/5 shadow-[0_20px_40px_rgba(0,0,0,0.05)]">
+                <div className="bg-white/80 backdrop-blur-md p-6 sm:p-10 md:p-12 border border-dark-choc/5 shadow-[0_20px_40px_rgba(0,0,0,0.05)]">
                   <address className="body-text font-serif text-dark-choc not-italic">
                     <motion.p
                       className="heading-3 mb-4"
@@ -884,7 +898,7 @@ export default function Home() {
 
               {/* Google Maps Embed */}
               <motion.div
-                className="relative w-full h-[400px] md:h-[500px]"
+                className="relative w-full h-[280px] sm:h-[350px] md:h-[500px]"
                 initial={{ opacity: 0, x: 30, scale: 0.95 }}
                 whileInView={{ opacity: 1, x: 0, scale: 1 }}
                 viewport={{ once: true }}

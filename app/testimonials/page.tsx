@@ -117,8 +117,8 @@ export default function Testimonials() {
   return (
     <div className="min-h-screen">
       {/* ================= HERO SECTION ================= */}
-      <section className="relative min-h-[70vh] md:min-h-[85vh] w-full overflow-hidden">
-        <div className="relative h-[70vh] md:h-screen min-h-[500px]">
+      <section className="relative min-h-[60vh] md:min-h-[85vh] w-full overflow-hidden">
+        <div className="relative h-[60vh] md:h-screen min-h-[400px]">
           {/* Slice Reveal Background */}
           <SliceReveal />
 
@@ -208,7 +208,7 @@ export default function Testimonials() {
                 initial="hidden"
                 animate="show"
                 exit="hidden"
-                className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8 sm:gap-10 md:gap-14 max-w-7xl xl:max-w-[85rem] mx-auto px-4 sm:px-6"
+                className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 sm:gap-10 md:gap-14 max-w-7xl xl:max-w-[85rem] mx-auto px-4 sm:px-6"
               >
                 {brandData[activeCategory].map((brand: any) => (
                   <motion.div
@@ -219,7 +219,7 @@ export default function Testimonials() {
                     transition={{ duration: 0.3, ease: 'easeOut' }}
                   >
                     {/* Image */}
-                    <div className="relative w-full h-[300px] sm:h-[380px] md:h-[460px] rounded-xl overflow-hidden bg-dark-choc/10 mb-3 md:mb-4 shadow-lg group-hover:shadow-2xl transition-all duration-500">
+                    <div className="relative w-full h-[220px] sm:h-[300px] md:h-[460px] rounded-xl overflow-hidden bg-dark-choc/10 mb-3 md:mb-4 shadow-lg group-hover:shadow-2xl transition-all duration-500">
                       {brand.image && (
                         <Image
                           src={brand.image}
@@ -263,8 +263,8 @@ export default function Testimonials() {
       {testimonials.length > 0 && (
         <section id="client-reviews" className="relative bg-white pb-0">
           <div className="flex flex-col lg:flex-row relative">
-            {/* Left Sticky Image - Relative on mobile, Sticky on desktop */}
-            <div className="relative lg:sticky lg:top-[20vh] w-full lg:w-[55%] h-[40vh] sm:h-[50vh] lg:h-[60vh] bg-earl-gray/30 flex items-center justify-center p-4 sm:p-6 md:p-16 lg:p-20 z-10 lg:z-auto">
+            {/* Left Sticky Image - Sticky on both mobile (Top) and desktop (Left) */}
+            <div className="flex sticky top-0 lg:top-[20vh] w-full lg:w-[55%] h-[45vh] sm:h-[50vh] lg:h-[60vh] bg-earl-gray items-center justify-center p-4 sm:p-6 md:p-16 lg:p-20 z-20 lg:z-auto shadow-sm lg:shadow-none">
               <div className="relative w-full h-full lg:pr-24">
                 {testimonials.map((testimonial, index) => {
                   if (!testimonial || !testimonial.image) return null;
@@ -305,20 +305,21 @@ export default function Testimonials() {
             </div>
 
             {/* Right Scroll Content */}
-            <div className="w-full lg:w-1/2 bg-white">
+            <div className="w-full lg:w-1/2 bg-transparent lg:bg-white relative z-10">
               {testimonials.map((testimonial, index) => {
                 if (!testimonial) return null;
                 return (
                   <motion.section
                     key={testimonial.id || index}
-                    className="min-h-[40vh] sm:min-h-[50vh] lg:min-h-[60vh] flex items-center px-4 sm:px-6 md:px-16 py-12 sm:py-16 lg:py-20 scroll-mt-24"
+                    className="min-h-[50vh] lg:min-h-[60vh] flex items-center px-6 sm:px-8 md:px-16 py-12 sm:py-16 lg:py-20 scroll-mt-24 bg-white lg:bg-transparent rounded-t-[2.5rem] lg:rounded-none shadow-[0_-10px_40px_rgba(0,0,0,0.05)] lg:shadow-none mb-12 lg:mb-0"
                     initial={{ opacity: 0, y: 20 }}
                     whileInView={{ opacity: 1, y: 0 }}
                     onViewportEnter={() => setActiveIndex(index)}
-                    viewport={{ amount: 0.5 }}
+                    viewport={{ amount: 0.5, margin: "-10% 0px -10% 0px" }}
                     transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
                   >
                     <div className="w-full">
+
                       <p className="font-serif text-lg sm:text-xl md:text-2xl lg:text-3xl text-dark-choc mb-6 sm:mb-8 lg:mb-12 leading-tight">
                         &ldquo;{testimonial.quote || 'No quote available'}&rdquo;
                       </p>

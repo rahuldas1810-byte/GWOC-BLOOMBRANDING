@@ -54,7 +54,7 @@ export default function ExperienceSection() {
     }
 
     return (
-        <section className="py-16 md:py-20 relative overflow-hidden">
+        <section className="py-10 sm:py-16 md:py-20 relative overflow-hidden">
             {/* Background Image */}
             <div className="absolute inset-0 z-0">
                 <Image
@@ -69,24 +69,24 @@ export default function ExperienceSection() {
             <div className="container-custom relative z-10">
 
                 {/* Header */}
-                <div className="text-center mb-10 md:mb-12">
+                <div className="text-center mb-6 sm:mb-10 md:mb-12">
                     <motion.div
                         initial={{ opacity: 0, y: 20 }}
                         whileInView={{ opacity: 1, y: 0 }}
                         viewport={{ once: true }}
                         transition={{ duration: 0.6 }}
                     >
-                        <span className={`${handwriting.className} text-3xl md:text-4xl text-dark-choc block mb-2`}>
+                        <span className={`${handwriting.className} text-xl sm:text-3xl md:text-4xl text-dark-choc block mb-2`}>
                             what is our
                         </span>
-                        <h2 className="font-serif text-5xl md:text-7xl text-electric-blue uppercase tracking-tight font-light">
+                        <h2 className="font-serif text-3xl sm:text-5xl md:text-7xl text-electric-blue uppercase tracking-tight font-light">
                             Experience
                         </h2>
                     </motion.div>
                 </div>
 
                 {/* Venn Diagram Circles */}
-                <div className="flex flex-col md:flex-row justify-center items-center relative min-h-[500px] md:h-[350px]">
+                <div className="flex flex-row justify-center items-center relative h-[180px] sm:h-[280px] md:h-[350px]">
 
                     {/* Left Circle */}
                     <motion.div
@@ -96,19 +96,19 @@ export default function ExperienceSection() {
                         transition={{ duration: 0.8, delay: 0.2 }}
                         whileHover={{ scale: 1.05, borderColor: 'rgba(46, 74, 167, 0.5)' }}
                         className="
-              relative w-[280px] h-[280px] md:w-[320px] md:h-[320px] 
+              relative w-[130px] h-[130px] sm:w-[200px] sm:h-[200px] md:w-[320px] md:h-[320px] 
               rounded-full border border-dark-choc/30 
-              flex flex-col justify-center items-center text-center p-6
+              flex flex-col justify-center items-center text-center p-2 sm:p-4 md:p-6
               bg-transparent z-10
-              mb-[-40px] md:mb-0 md:mr-[-40px]
+              mr-[-20px] sm:mr-[-30px] md:mr-[-40px]
               transition-all duration-300 cursor-default
             "
                     >
-                        <span className="font-serif text-5xl md:text-6xl text-electric-blue font-bold mb-2">
+                        <span className="font-serif text-2xl sm:text-4xl md:text-6xl text-electric-blue font-bold mb-1 sm:mb-2">
                             <CountUp to={stats.years} />+
                         </span>
-                        <span className="font-sans text-sm md:text-base tracking-widest text-near-black uppercase font-medium">
-                            Years of<br />Experience<br />in the Industry
+                        <span className="font-sans text-[8px] sm:text-xs md:text-base tracking-wider sm:tracking-widest text-near-black uppercase font-medium leading-tight">
+                            Years of<br />Experience
                         </span>
                     </motion.div>
 
@@ -120,21 +120,20 @@ export default function ExperienceSection() {
                         transition={{ duration: 0.8 }}
                         whileHover={{ scale: 1.05, borderColor: 'rgba(46, 74, 167, 0.5)' }}
                         className="
-              relative w-[280px] h-[280px] md:w-[320px] md:h-[320px] 
+              relative w-[130px] h-[130px] sm:w-[200px] sm:h-[200px] md:w-[320px] md:h-[320px] 
               rounded-full border border-dark-choc/30 
-              flex flex-col justify-center items-center text-center p-6
+              flex flex-col justify-center items-center text-center p-2 sm:p-4 md:p-6
               bg-transparent z-20
-              mb-[-40px] md:mb-0
               transition-all duration-300 cursor-default
             "
                     >
-                        <span className="font-sans text-sm md:text-base tracking-widest text-near-black uppercase font-medium mb-2">
+                        <span className="font-sans text-[8px] sm:text-xs md:text-base tracking-wider sm:tracking-widest text-near-black uppercase font-medium mb-1">
                             Worked On
                         </span>
-                        <span className="font-serif text-5xl md:text-6xl text-electric-blue font-bold mb-2">
+                        <span className="font-serif text-2xl sm:text-4xl md:text-6xl text-electric-blue font-bold mb-1">
                             <CountUp to={stats.clients} />+
                         </span>
-                        <span className="font-sans text-sm md:text-base tracking-widest text-near-black uppercase font-medium">
+                        <span className="font-sans text-[8px] sm:text-xs md:text-base tracking-wider sm:tracking-widest text-near-black uppercase font-medium">
                             Clients
                         </span>
                     </motion.div>
@@ -147,19 +146,19 @@ export default function ExperienceSection() {
                         transition={{ duration: 0.8, delay: 0.2 }}
                         whileHover={{ scale: 1.05, borderColor: 'rgba(46, 74, 167, 0.5)' }}
                         className="
-              relative w-[280px] h-[280px] md:w-[320px] md:h-[320px] 
+              relative w-[130px] h-[130px] sm:w-[200px] sm:h-[200px] md:w-[320px] md:h-[320px] 
               rounded-full border border-dark-choc/30 
-              flex flex-col justify-center items-center text-center p-6
+              flex flex-col justify-center items-center text-center p-2 sm:p-4 md:p-6
               bg-transparent z-10
-              md:ml-[-40px]
+              ml-[-20px] sm:ml-[-30px] md:ml-[-40px]
               transition-all duration-300 cursor-default
             "
                     >
-                        <span className="font-serif text-5xl md:text-6xl text-electric-blue font-bold mb-2">
+                        <span className="font-serif text-2xl sm:text-4xl md:text-6xl text-electric-blue font-bold mb-1 sm:mb-2">
                             <CountUp to={stats.projects} />+
                         </span>
-                        <span className="font-sans text-sm md:text-base tracking-widest text-near-black uppercase font-medium">
-                            Branding &<br />Production<br />Projects
+                        <span className="font-sans text-[8px] sm:text-xs md:text-base tracking-wider sm:tracking-widest text-near-black uppercase font-medium leading-tight">
+                            Branding &<br />Projects
                         </span>
                     </motion.div>
 
