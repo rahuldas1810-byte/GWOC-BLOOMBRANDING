@@ -91,6 +91,8 @@ export const getClients = async (): Promise<Client[]> => {
           name: item.name,
           logo: item.logo?.url || item.logo,
           image: item.logo?.url || item.image,
+          category: item.category,
+          description: item.description,
           order: item.order || 0,
         }))
         .sort((a: Client, b: Client) => (a.order || 0) - (b.order || 0))
@@ -329,6 +331,31 @@ export const getBrands = async (category?: string, retries = 3) => {
     return result.success && Array.isArray(result.data) ? result.data : []
   } catch (error) {
     console.error('Error fetching brands:', error)
+    return []
+  }
+}
+
+/**
+ * Fetch sectors from API
+ */
+export const getSectors = async () => {
+  try {
+    const baseUrl = typeof window !== 'undefined'
+      ? ''
+      : process.env.NEXT_PUBLIC_SITE_URL || 'http://localhost:3000'
+    const response = await fetch(`${baseUrl}/api/public/sectors`, {
+      next: { revalidate: 300 }, // Cache for 5 minutes
+    })
+
+    if (!response.ok) {
+      console.warn('Failed to fetch sectors from API')
+      return []
+    }
+
+    const result = await response.json()
+    return result.success && Array.isArray(result.data) ? result.data : []
+  } catch (error) {
+    console.error('Error fetching sectors:', error)
     return []
   }
 }

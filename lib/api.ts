@@ -206,6 +206,33 @@ class ApiClient {
     return this.request(`/admin/clients/${id}`, { method: 'DELETE' });
   }
 
+  // Sectors (Admin)
+  async getSectors() {
+    return this.request<any[]>('/admin/sectors');
+  }
+
+  async getSector(id: string) {
+    return this.request<any>(`/admin/sectors/${id}`);
+  }
+
+  async createSector(data: any) {
+    return this.request<any>('/admin/sectors', {
+      method: 'POST',
+      body: JSON.stringify(data),
+    });
+  }
+
+  async updateSector(id: string, data: any) {
+    return this.request<any>(`/admin/sectors/${id}`, {
+      method: 'PUT',
+      body: JSON.stringify(data),
+    });
+  }
+
+  async deleteSector(id: string) {
+    return this.request(`/admin/sectors/${id}`, { method: 'DELETE' });
+  }
+
   // Media (Admin)
   async uploadMedia(file: File, folder?: string, tags?: string, altText?: string, usedIn?: string) {
     const formData = new FormData();

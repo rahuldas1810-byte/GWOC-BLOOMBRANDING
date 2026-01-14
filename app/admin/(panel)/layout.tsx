@@ -29,15 +29,14 @@ const navigation = [
   { name: 'Dashboard', href: '/admin/dashboard', icon: LayoutDashboard },
   { name: 'Homepage', href: '/admin/homepage', icon: FileText },
   { name: 'Services', href: '/admin/services', icon: Briefcase },
-  { name: 'Services Page Content', href: '/admin/services-page', icon: FileText },
   { name: 'Our Story', href: '/admin/our-story', icon: BookOpen },
-  { name: 'Contact', href: '/admin/contact', icon: Phone },
-  { name: 'Site Settings', href: '/admin/site-settings', icon: Settings },
-  { name: 'Testimonials', href: '/admin/testimonials', icon: MessageSquare },
   { name: 'Clients', href: '/admin/clients', icon: Users },
-  { name: 'Media Manager', href: '/admin/media', icon: Film },
+  { name: 'Testimonials', href: '/admin/testimonials', icon: MessageSquare },
+  { name: 'Contact', href: '/admin/contact', icon: Phone },
   { name: 'Enquiries', href: '/admin/enquiries', icon: Mail },
   { name: 'Newsletter', href: '/admin/newsletter', icon: Send },
+  { name: 'Media Manager', href: '/admin/media', icon: Film },
+  { name: 'Site Settings', href: '/admin/site-settings', icon: Settings },
 ]
 
 export default function AdminLayout({ children }: { children: React.ReactNode }) {
@@ -118,8 +117,8 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
                   key={item.name}
                   href={item.href}
                   className={`flex items-center gap-3 px-4 py-3 rounded-lg transition-all duration-200 ${isActive
-                      ? 'bg-electric-blue text-white shadow-md'
-                      : 'text-dark-choc hover:bg-earl-gray hover:text-electric-blue'
+                    ? 'bg-electric-blue text-white shadow-md'
+                    : 'text-dark-choc hover:bg-earl-gray hover:text-electric-blue'
                     }`}
                   onClick={() => setSidebarOpen(false)}
                 >
