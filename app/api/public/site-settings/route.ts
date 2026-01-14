@@ -47,6 +47,7 @@ export async function GET(request: NextRequest) {
             title: 'Brands Who Trusted Us',
             description: 'Each collaboration reflects our approach to building clear, confident brand identities.',
             subtitle: 'Trusted by founders, startups, and growing D2C brands.',
+            socialLabel: 'Trusted by growing brands',
           },
           homepageSections: {
             clientsLabel: 'Our Clients',
@@ -80,12 +81,12 @@ export async function GET(request: NextRequest) {
       success: true,
       data: settings,
     })
-    
+
     // Disable caching - always return fresh data
     response.headers.set('Cache-Control', 'no-store, no-cache, must-revalidate, proxy-revalidate')
     response.headers.set('Pragma', 'no-cache')
     response.headers.set('Expires', '0')
-    
+
     return response
   } catch (error: any) {
     console.error('❌ Get site settings error:', error)

@@ -25,44 +25,18 @@ import {
 import ToastContainer from '@/components/admin/Toast'
 import LoadingSpinner from '@/components/admin/LoadingSpinner'
 
-const navigationGroups = [
-  {
-    title: 'Overview',
-    items: [
-      { name: 'Dashboard', href: '/admin/dashboard', icon: LayoutDashboard },
-    ]
-  },
-  {
-    title: 'Content',
-    items: [
-      { name: 'Homepage', href: '/admin/homepage', icon: FileText },
-      { name: 'Services Page', href: '/admin/services-page', icon: FileText },
-      { name: 'Our Story', href: '/admin/our-story', icon: BookOpen },
-      { name: 'Contact Page', href: '/admin/contact', icon: Phone },
-    ]
-  },
-  {
-    title: 'Management',
-    items: [
-      { name: 'Services', href: '/admin/services', icon: Briefcase },
-      { name: 'Clients', href: '/admin/clients', icon: Users },
-      { name: 'Testimonials', href: '/admin/testimonials', icon: MessageSquare },
-      { name: 'Media', href: '/admin/media', icon: Film },
-    ]
-  },
-  {
-    title: 'Inbox',
-    items: [
-      { name: 'Enquiries', href: '/admin/enquiries', icon: Mail },
-      { name: 'Newsletter', href: '/admin/newsletter', icon: Send },
-    ]
-  },
-  {
-    title: 'System',
-    items: [
-      { name: 'Settings', href: '/admin/site-settings', icon: Settings },
-    ]
-  }
+const navigation = [
+  { name: 'Dashboard', href: '/admin/dashboard', icon: LayoutDashboard },
+  { name: 'Homepage', href: '/admin/homepage', icon: FileText },
+  { name: 'Services', href: '/admin/services', icon: Briefcase },
+  { name: 'Our Story', href: '/admin/our-story', icon: BookOpen },
+  { name: 'Clients', href: '/admin/clients', icon: Users },
+  { name: 'Testimonials', href: '/admin/testimonials', icon: MessageSquare },
+  { name: 'Contact', href: '/admin/contact', icon: Phone },
+  { name: 'Enquiries', href: '/admin/enquiries', icon: Mail },
+  { name: 'Newsletter', href: '/admin/newsletter', icon: Send },
+  { name: 'Media Manager', href: '/admin/media', icon: Film },
+  { name: 'Site Settings', href: '/admin/site-settings', icon: Settings },
 ]
 
 export default function AdminLayout({ children }: { children: React.ReactNode }) {
@@ -134,34 +108,25 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
             </div>
           </div>
 
-          <nav className="flex-1 px-4 py-6 space-y-6 overflow-y-auto">
-            {navigationGroups.map((group) => (
-              <div key={group.title}>
-                <h3 className="px-4 text-xs font-bold text-dark-choc/40 uppercase tracking-widest mb-2">
-                  {group.title}
-                </h3>
-                <div className="space-y-1">
-                  {group.items.map((item) => {
-                    const Icon = item.icon
-                    const isActive = pathname === item.href || pathname.startsWith(item.href + '/')
-                    return (
-                      <Link
-                        key={item.name}
-                        href={item.href}
-                        className={`flex items-center gap-3 px-4 py-2.5 rounded-lg transition-all duration-200 ${isActive
-                            ? 'bg-electric-blue text-white shadow-md font-bold translate-x-1'
-                            : 'text-dark-choc hover:bg-earl-gray hover:text-electric-blue'
-                          }`}
-                        onClick={() => setSidebarOpen(false)}
-                      >
-                        <Icon className={`w-5 h-5 ${isActive ? 'text-white' : ''}`} />
-                        <span className="text-sm">{item.name}</span>
-                      </Link>
-                    )
-                  })}
-                </div>
-              </div>
-            ))}
+          <nav className="flex-1 p-4 space-y-1 overflow-y-auto">
+            {navigation.map((item) => {
+              const Icon = item.icon
+              const isActive = pathname === item.href || pathname.startsWith(item.href + '/')
+              return (
+                <Link
+                  key={item.name}
+                  href={item.href}
+                  className={`flex items-center gap-3 px-4 py-3 rounded-lg transition-all duration-200 ${isActive
+                    ? 'bg-electric-blue text-white shadow-md'
+                    : 'text-dark-choc hover:bg-earl-gray hover:text-electric-blue'
+                    }`}
+                  onClick={() => setSidebarOpen(false)}
+                >
+                  <Icon className="w-5 h-5" />
+                  <span className="font-medium">{item.name}</span>
+                </Link>
+              )
+            })}
           </nav>
 
           <div className="p-4 border-t border-dark-choc/10">

@@ -106,7 +106,7 @@ const ContactSchema = new Schema<IContact>(
     },
     phone: {
       type: String,
-      default: '+91 1234567890',
+      default: '+91 9727068674',
     },
     faqs: [
       {

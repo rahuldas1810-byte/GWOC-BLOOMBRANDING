@@ -2,10 +2,13 @@
 
 import { useState, useRef, useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
-import type { ShowcaseClient } from '@/types'
+import type { ShowcaseClient, Client } from '@/types'
+import { getClients } from '@/lib/content'
 
 export default function ClientShowcase() {
   const [activeIndex, setActiveIndex] = useState(0)
+  const [clients, setClients] = useState<ShowcaseClient[]>([])
+  const [loading, setLoading] = useState(true)
   const hoverTimeout = useRef<ReturnType<typeof setTimeout> | null>(null)
 
   const handleHover = (index: number) => {
@@ -25,10 +28,32 @@ export default function ClientShowcase() {
     }
     handleResize()
     window.addEventListener('resize', handleResize)
+
+    const fetchClients = async () => {
+      try {
+        const data = await getClients()
+        if (data && data.length > 0) {
+          const transformed = data.map((c: Client) => ({
+            name: c.name,
+            type: c.category || 'Portfolio',
+            review: c.description || 'View our collaboration with this brand.',
+            image: c.image || '/mainlogo.png'
+          }))
+          setClients(transformed)
+        }
+      } catch (error) {
+        console.error('Error in ClientShowcase:', error)
+      } finally {
+        setLoading(false)
+      }
+    }
+    fetchClients()
+
     return () => window.removeEventListener('resize', handleResize)
   }, [])
 
-  const clients: ShowcaseClient[] = [
+  // Dummy clients for when no data is returned or while first loading
+  const fallbackClients: ShowcaseClient[] = [
     {
       name: 'Bloom Studio',
       type: 'D2C • Branding',
@@ -60,6 +85,8 @@ export default function ClientShowcase() {
       image: '/clients/urban.jpg',
     },
   ]
+
+  const displayClients = clients.length > 0 ? clients : fallbackClients
 
   // Dynamic positions and sizes
   const getPosition = (index: number) => {
@@ -94,11 +121,11 @@ export default function ClientShowcase() {
   }
 
   const visibleClients = [
-    clients[(activeIndex + clients.length - 2) % clients.length],
-    clients[(activeIndex + clients.length - 1) % clients.length],
-    clients[activeIndex],
-    clients[(activeIndex + 1) % clients.length],
-    clients[(activeIndex + 2) % clients.length],
+    displayClients[(activeIndex + displayClients.length - 2) % displayClients.length],
+    displayClients[(activeIndex + displayClients.length - 1) % displayClients.length],
+    displayClients[activeIndex],
+    displayClients[(activeIndex + 1) % displayClients.length],
+    displayClients[(activeIndex + 2) % displayClients.length],
   ]
 
   return (
@@ -108,7 +135,7 @@ export default function ClientShowcase() {
         <div className="relative flex items-center justify-center h-[60vh] min-h-[500px] md:h-[700px] w-full max-w-none overflow-visible">
           {visibleClients.map((client, i) => {
             const pos = getPosition(i)
-            
+
             const isCenter = i === 2
 
             // Determine z-index based on position to ensure center is on top
@@ -121,7 +148,7 @@ export default function ClientShowcase() {
                 animate={{ x: pos.x, scale: pos.scale, opacity: pos.opacity }}
                 transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }} // smooth easeOut
                 onMouseEnter={() =>
-                  handleHover((activeIndex + i - 2 + clients.length) % clients.length)
+                  handleHover((activeIndex + i - 2 + displayClients.length) % displayClients.length)
                 }
                 className={`absolute rounded-2xl overflow-hidden shadow-2xl transition-all duration-500 ${isCenter
                   ? 'w-[75vw] h-[55vh] max-w-[300px] max-h-[400px] sm:max-w-none sm:max-h-none sm:w-[360px] sm:h-[460px] md:w-[420px] md:h-[520px] bg-white hover:shadow-3xl'

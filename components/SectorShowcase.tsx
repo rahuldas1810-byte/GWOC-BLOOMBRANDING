@@ -2,70 +2,37 @@
 
 import { useRef, useEffect, useState } from 'react'
 import { motion, useScroll, useTransform, useSpring } from 'framer-motion'
-import { Gem, Cpu, Leaf, TrendingUp, Armchair } from 'lucide-react'
+import { Gem, Cpu, Leaf, TrendingUp, Armchair, Rocket, Heart, ShoppingBag, Camera, Music } from 'lucide-react'
+import { getSectors } from '@/lib/content'
 
-const sectors = [
-  {
-    id: 'fashion',
-    name: 'Fashion',
-    description: 'Defining modern luxury.',
-    icon: Gem,
-    // Muted Sage / Eucalyptus
-    color: 'bg-[#C5CBB4]',
-  },
-  {
-    id: 'tech',
-    name: 'Tech',
-    description: 'Humanizing digital experiences.',
-    icon: Cpu,
-    // Soft Warm Greige
-    color: 'bg-[#D8D4CC]',
-  },
-  {
-    id: 'wellness',
-    name: 'Wellness',
-    description: 'Cultivating balance.',
-    icon: Leaf,
-    // Muted Clay / Terra
-    color: 'bg-[#D4C5B8]',
-  },
-  {
-    id: 'finance',
-    name: 'Finance',
-    description: 'Building trust.',
-    icon: TrendingUp,
-    // Slate / Stone
-    color: 'bg-[#B8C0C4]',
-  },
-  {
-    id: 'hospitality',
-    name: 'Hospitality',
-    description: 'Crafting memorable stays.',
-    icon: Armchair,
-    // Warm Sand
-    color: 'bg-[#CDC7B6]',
-  },
-]
+const ICON_MAP: { [key: string]: any } = {
+  Gem,
+  Cpu,
+  Leaf,
+  TrendingUp,
+  Armchair,
+  Rocket,
+  Heart,
+  ShoppingBag,
+  Camera,
+  Music,
+}
 
 // Sub-component to handle individual scroll transforms
 function SectorCard({ sector, index, containerRef, isMobile }: { sector: any, index: number, containerRef: React.RefObject<HTMLElement>, isMobile: boolean }) {
   const { scrollYProgress } = useScroll({
     target: containerRef,
-    // Start animation when the top of the section hits the bottom of the viewport
-    // End animation when the card is well into view
     offset: ["start end", "center center"]
   })
 
   // Stagger the movement
-  // Adjusted spacing so all cards fit within the [0, 1] scroll progress
-  // Index 4 (last card) will start at 0.6 and end at 0.95
   const startOffset = index * 0.15
   const endOffset = startOffset + 0.35
 
   const y = useTransform(
     scrollYProgress,
     [startOffset, endOffset],
-    [isMobile ? 100 : 350, 0] // Reduce movement on mobile
+    [isMobile ? 100 : 350, 0]
   )
 
   const opacity = useTransform(
@@ -74,9 +41,9 @@ function SectorCard({ sector, index, containerRef, isMobile }: { sector: any, in
     [0, 1]
   )
 
-  // Add spring physics for that "really really smooth" feel
-  // Damping 25, Stiffness 80 is a nice heavy/smooth setting
   const smoothY = useSpring(y, { damping: 25, stiffness: 80 })
+
+  const IconComp = ICON_MAP[sector.icon] || Gem
 
   return (
     <motion.div
@@ -99,7 +66,7 @@ function SectorCard({ sector, index, containerRef, isMobile }: { sector: any, in
         whileHover={{ rotate: 15, scale: 1.1 }}
         transition={{ duration: 0.3 }}
       >
-        <sector.icon strokeWidth={1} size={28} />
+        <IconComp strokeWidth={1} size={28} />
       </motion.div>
 
       {/* Text Bottom */}
@@ -121,13 +88,24 @@ function SectorCard({ sector, index, containerRef, isMobile }: { sector: any, in
 export default function SectorShowcase() {
   const containerRef = useRef(null)
   const [isMobile, setIsMobile] = useState(false)
+  const [sectors, setSectors] = useState<any[]>([])
 
   useEffect(() => {
+    const fetchData = async () => {
+      const data = await getSectors()
+      if (data && data.length > 0) {
+        setSectors(data)
+      }
+    }
+    fetchData()
+
     const checkMobile = () => setIsMobile(window.innerWidth < 768)
     checkMobile()
     window.addEventListener('resize', checkMobile)
     return () => window.removeEventListener('resize', checkMobile)
   }, [])
+
+  if (sectors.length === 0) return null
 
   return (
     <section ref={containerRef} className="py-16 sm:py-24 md:py-32 bg-[#F0EBE5] overflow-hidden min-h-[600px] sm:min-h-[700px] md:min-h-[800px]">
@@ -136,7 +114,7 @@ export default function SectorShowcase() {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4 sm:gap-6 md:gap-8">
           {sectors.map((sector, index) => (
             <SectorCard
-              key={sector.id}
+              key={sector._id || sector.id}
               sector={sector}
               index={index}
               containerRef={containerRef}

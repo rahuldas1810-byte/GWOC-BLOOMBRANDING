@@ -11,6 +11,8 @@ export interface Client {
   id: string
   name: string
   logo?: string
+  category?: string
+  description?: string
   order?: number
   image?: string
 }
@@ -44,4 +46,15 @@ export interface ShowcaseClient {
   type: string
   review: string
   image: string
+}
+
+export interface Sector {
+  id?: string
+  _id?: string
+  name: string
+  description: string
+  icon: string
+  color: string
+  order: number
+  isActive: boolean
 }

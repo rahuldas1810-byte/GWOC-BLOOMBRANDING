@@ -48,7 +48,7 @@ export async function POST(request: NextRequest) {
     await connectDB()
 
     const body = await request.json()
-    const { name, logo, category, order, isActive } = body
+    const { name, logo, category, description, order, isActive } = body
 
     if (!name) {
       return NextResponse.json(
@@ -61,6 +61,7 @@ export async function POST(request: NextRequest) {
       name,
       logo: logo || {},
       category: category || '',
+      description: description || '',
       order: order || 0,
       isActive: isActive !== undefined ? isActive : true,
     })
