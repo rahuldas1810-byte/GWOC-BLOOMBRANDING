@@ -7,6 +7,7 @@ export interface IClient extends Document {
     mediaId?: string // Reference to Media document
   }
   category?: string
+  description?: string
   order: number
   isActive: boolean
   createdAt: Date
@@ -30,6 +31,10 @@ const ClientSchema = new Schema<IClient>(
       },
     },
     category: {
+      type: String,
+      default: '',
+    },
+    description: {
       type: String,
       default: '',
     },

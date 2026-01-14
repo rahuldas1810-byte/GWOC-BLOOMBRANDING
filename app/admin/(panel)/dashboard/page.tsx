@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from 'react'
 import { api } from '@/lib/api'
-import { Users, MessageSquare, Mail, Film, FileText, Briefcase } from 'lucide-react'
+import { Users, MessageSquare, Mail, Film, FileText, Briefcase, Plus } from 'lucide-react'
 import Link from 'next/link'
 import LoadingSpinner from '@/components/admin/LoadingSpinner'
 
@@ -28,7 +28,7 @@ export default function AdminDashboard() {
   }
 
   const statCards = [
-    { label: 'Brands', value: stats?.brands || 0, icon: Users, color: 'bg-electric-blue', href: '/admin/brands' },
+    { label: 'Brands', value: stats?.brands || 0, icon: Users, color: 'bg-electric-blue', href: '/admin/testimonials' },
     { label: 'Services', value: stats?.services || 0, icon: Briefcase, color: 'bg-purple-500', href: '/admin/services' },
     { label: 'Testimonials', value: stats?.testimonials || 0, icon: MessageSquare, color: 'bg-butter-yellow', href: '/admin/testimonials' },
     { label: 'Clients', value: stats?.clients || 0, icon: Users, color: 'bg-dark-choc', href: '/admin/clients' },
@@ -38,33 +38,34 @@ export default function AdminDashboard() {
 
   if (loading) {
     return (
-      <div className="flex items-center justify-center min-h-[400px]">
-        <div className="text-center">
-          <LoadingSpinner size="lg" />
-          <p className="mt-4 text-dark-choc/60">Loading dashboard...</p>
-        </div>
+      <div className="flex flex-col items-center justify-center min-h-[400px]">
+        <LoadingSpinner size="lg" />
+        <p className="mt-4 text-dark-choc/40 font-medium">Syncing dashboard...</p>
       </div>
     )
   }
 
   return (
-    <div className="space-y-6">
-      <div>
-        <h1 className="text-3xl font-bold text-dark-choc mb-2">Dashboard</h1>
-        <p className="text-dark-choc/60">Welcome to Bloom Branding CMS</p>
+    <div className="space-y-8 max-w-7xl mx-auto">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+        <div>
+          <h1 className="text-3xl font-bold text-dark-choc mb-2">Dashboard</h1>
+          <p className="text-dark-choc/60 text-base">Welcome to the Bloom Branding Command Center.</p>
+        </div>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
         {statCards.map((stat) => {
           const Icon = stat.icon
           const CardContent = (
-            <div className="bg-white rounded-xl shadow-sm hover:shadow-md transition-shadow p-6 border border-dark-choc/10 group cursor-pointer">
-              <div className="flex items-center justify-between">
+            <div className="bg-white rounded-2xl shadow-sm hover:shadow-md transition-all p-6 border border-dark-choc/10 group cursor-pointer h-full relative overflow-hidden">
+              <div className="absolute top-0 right-0 w-24 h-24 bg-gradient-to-br from-dark-choc/5 to-transparent rounded-bl-full -mr-12 -mt-12 transition-all group-hover:scale-110" />
+              <div className="flex items-center justify-between relative z-10">
                 <div className="flex-1">
-                  <p className="text-dark-choc/60 text-sm font-medium mb-2">{stat.label}</p>
-                  <p className="text-4xl font-bold text-dark-choc">{stat.value}</p>
+                  <p className="text-dark-choc/40 text-[10px] font-black uppercase tracking-widest mb-3">{stat.label}</p>
+                  <p className="text-4xl font-black text-dark-choc">{stat.value}</p>
                 </div>
-                <div className={`${stat.color} p-4 rounded-xl group-hover:scale-110 transition-transform`}>
+                <div className={`${stat.color} p-4 rounded-2xl group-hover:scale-110 transition-all shadow-sm`}>
                   <Icon className="w-7 h-7 text-white" />
                 </div>
               </div>
@@ -81,36 +82,47 @@ export default function AdminDashboard() {
         })}
       </div>
 
-      <div className="bg-white rounded-xl shadow-sm p-6 border border-dark-choc/10">
-        <h2 className="text-xl font-bold text-dark-choc mb-6">Quick Actions</h2>
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+      <div className="bg-white rounded-2xl shadow-sm p-6 sm:p-8 border border-dark-choc/10">
+        <h2 className="text-xl font-bold text-dark-choc mb-8 flex items-center gap-2">
+          <FileText className="w-6 h-6 text-electric-blue" />
+          Quick Actions
+        </h2>
+        <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
           <Link
             href="/admin/brands/new"
-            className="p-5 border-2 border-dark-choc/10 rounded-xl hover:border-electric-blue hover:bg-electric-blue/5 transition-all text-center group"
+            className="p-6 bg-earl-gray/10 border border-dark-choc/5 rounded-2xl hover:border-electric-blue hover:bg-white hover:shadow-lg transition-all text-center group"
           >
-            <FileText className="w-8 h-8 mx-auto mb-3 text-electric-blue group-hover:scale-110 transition-transform" />
-            <span className="text-dark-choc font-medium block">Add Brand</span>
+            <div className="w-14 h-14 bg-white rounded-xl flex items-center justify-center mx-auto mb-4 shadow-sm border border-dark-choc/5 group-hover:scale-110 transition-transform">
+              <Plus className="w-8 h-8 text-electric-blue" />
+            </div>
+            <span className="text-dark-choc text-sm font-bold block">Add Brand</span>
           </Link>
           <Link
             href="/admin/testimonials/new"
-            className="p-5 border-2 border-dark-choc/10 rounded-xl hover:border-electric-blue hover:bg-electric-blue/5 transition-all text-center group"
+            className="p-6 bg-earl-gray/10 border border-dark-choc/5 rounded-2xl hover:border-electric-blue hover:bg-white hover:shadow-lg transition-all text-center group"
           >
-            <MessageSquare className="w-8 h-8 mx-auto mb-3 text-electric-blue group-hover:scale-110 transition-transform" />
-            <span className="text-dark-choc font-medium block">Add Testimonial</span>
+            <div className="w-14 h-14 bg-white rounded-xl flex items-center justify-center mx-auto mb-4 shadow-sm border border-dark-choc/5 group-hover:scale-110 transition-transform">
+              <MessageSquare className="w-8 h-8 text-electric-blue" />
+            </div>
+            <span className="text-dark-choc text-sm font-bold block">Add Testimonial</span>
           </Link>
           <Link
             href="/admin/services/new"
-            className="p-5 border-2 border-dark-choc/10 rounded-xl hover:border-electric-blue hover:bg-electric-blue/5 transition-all text-center group"
+            className="p-6 bg-earl-gray/10 border border-dark-choc/5 rounded-2xl hover:border-electric-blue hover:bg-white hover:shadow-lg transition-all text-center group"
           >
-            <Briefcase className="w-8 h-8 mx-auto mb-3 text-electric-blue group-hover:scale-110 transition-transform" />
-            <span className="text-dark-choc font-medium block">Add Service</span>
+            <div className="w-14 h-14 bg-white rounded-xl flex items-center justify-center mx-auto mb-4 shadow-sm border border-dark-choc/5 group-hover:scale-110 transition-transform">
+              <Briefcase className="w-8 h-8 text-electric-blue" />
+            </div>
+            <span className="text-dark-choc text-sm font-bold block">Add Service</span>
           </Link>
           <Link
             href="/admin/media"
-            className="p-5 border-2 border-dark-choc/10 rounded-xl hover:border-electric-blue hover:bg-electric-blue/5 transition-all text-center group"
+            className="p-6 bg-earl-gray/10 border border-dark-choc/5 rounded-2xl hover:border-electric-blue hover:bg-white hover:shadow-lg transition-all text-center group"
           >
-            <Film className="w-8 h-8 mx-auto mb-3 text-electric-blue group-hover:scale-110 transition-transform" />
-            <span className="text-dark-choc font-medium block">Upload Media</span>
+            <div className="w-14 h-14 bg-white rounded-xl flex items-center justify-center mx-auto mb-4 shadow-sm border border-dark-choc/5 group-hover:scale-110 transition-transform">
+              <Film className="w-8 h-8 text-electric-blue" />
+            </div>
+            <span className="text-dark-choc text-sm font-bold block">Media Hub</span>
           </Link>
         </div>
       </div>

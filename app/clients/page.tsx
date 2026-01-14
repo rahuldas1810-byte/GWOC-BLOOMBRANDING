@@ -40,7 +40,7 @@ export default function Clients() {
               className="inline-block"
             >
               <p className="label-text mb-6 md:mb-8 text-[#BDAF62] font-mono text-xs sm:text-sm md:text-base uppercase tracking-[0.4em] md:tracking-[0.6em] font-black opacity-80">
-                Strategic Partnerships
+                {settings?.clientsHero?.label || 'Strategic Partnerships'}
               </p>
             </motion.div>
 
@@ -50,16 +50,42 @@ export default function Clients() {
               transition={{ duration: 1.2, delay: 0.2, ease: [0.22, 1, 0.36, 1] }}
               className="font-serif text-4xl sm:text-5xl md:text-7xl lg:text-8xl xl:text-9xl text-dark-choc mb-6 sm:mb-8 md:mb-12 leading-[1.1] md:leading-[0.85] tracking-tighter px-4"
             >
-              Building <span className="relative inline-block">
-                <span className="italic font-light relative z-10 text-dark-choc/90">Legacies</span>
-                <motion.div
-                  initial={{ scaleX: 0 }}
-                  animate={{ scaleX: 1 }}
-                  transition={{ duration: 1.5, delay: 1, ease: "circOut" }}
-                  className="absolute -bottom-2 left-0 w-full h-1 bg-gradient-to-r from-[#BDAF62]/60 to-transparent origin-left"
-                />
-              </span><br />
-              <span className="text-dark-choc/80">not just Logos.</span>
+              {settings?.clientsHero?.title ? (
+                <>
+                  {settings.clientsHero.title.split(' ').map((word: string, i: number, arr: string[]) => {
+                    if (word.toLowerCase().includes('legacies')) {
+                      return (
+                        <span key={i} className="relative inline-block mr-2 md:mr-4">
+                          <span className="italic font-light relative z-10 text-dark-choc/90">{word}</span>
+                          <motion.div
+                            initial={{ scaleX: 0 }}
+                            animate={{ scaleX: 1 }}
+                            transition={{ duration: 1.5, delay: 1, ease: "circOut" }}
+                            className="absolute -bottom-2 left-0 w-full h-1 bg-gradient-to-r from-[#BDAF62]/60 to-transparent origin-left"
+                          />
+                        </span>
+                      )
+                    }
+                    if (i === Math.floor(arr.length / 2)) {
+                      return <span key={i}><br />{word} </span>
+                    }
+                    return <span key={i}>{word} </span>
+                  })}
+                </>
+              ) : (
+                <>
+                  Building <span className="relative inline-block">
+                    <span className="italic font-light relative z-10 text-dark-choc/90">Legacies</span>
+                    <motion.div
+                      initial={{ scaleX: 0 }}
+                      animate={{ scaleX: 1 }}
+                      transition={{ duration: 1.5, delay: 1, ease: "circOut" }}
+                      className="absolute -bottom-2 left-0 w-full h-1 bg-gradient-to-r from-[#BDAF62]/60 to-transparent origin-left"
+                    />
+                  </span><br />
+                  <span className="text-dark-choc/80">not just Logos.</span>
+                </>
+              )}
             </motion.h1>
 
             <motion.div
@@ -69,7 +95,11 @@ export default function Clients() {
               className="max-w-3xl mx-auto px-4"
             >
               <p className="body-text text-base sm:text-lg md:text-xl lg:text-2xl text-dark-choc/60 leading-relaxed mb-8 md:mb-12 font-light tracking-tight">
-                A strategic collective for ambitious founders who want to <span className="text-[#BDAF62] font-medium">define the next era</span> of global culture.
+                {settings?.clientsHero?.description || (
+                  <>
+                    A strategic collective for ambitious founders who want to <span className="text-[#BDAF62] font-medium">define the next era</span> of global culture.
+                  </>
+                )}
               </p>
             </motion.div>
 

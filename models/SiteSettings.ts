@@ -32,6 +32,7 @@ export interface ISiteSettings extends Document {
     title: string
     description: string
     subtitle: string
+    socialLabel: string
   }
   // Homepage Section Labels
   homepageSections: {
@@ -143,6 +144,10 @@ const SiteSettingsSchema = new Schema<ISiteSettings>(
       subtitle: {
         type: String,
         default: 'Trusted by founders, startups, and growing D2C brands.',
+      },
+      socialLabel: {
+        type: String,
+        default: 'Trusted by growing brands',
       },
     },
     homepageSections: {

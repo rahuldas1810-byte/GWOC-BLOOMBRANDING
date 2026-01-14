@@ -60,12 +60,13 @@ export async function PUT(
     await connectDB()
 
     const body = await request.json()
-    const { name, logo, category, order, isActive } = body
+    const { name, logo, category, description, order, isActive } = body
 
     const updateData: any = {}
     if (name !== undefined) updateData.name = name
     if (logo !== undefined) updateData.logo = logo
     if (category !== undefined) updateData.category = category
+    if (description !== undefined) updateData.description = description
     if (order !== undefined) updateData.order = order
     if (isActive !== undefined) updateData.isActive = isActive
 

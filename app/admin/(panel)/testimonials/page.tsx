@@ -3,7 +3,7 @@
 import { useEffect, useState } from 'react'
 import { api } from '@/lib/api'
 import Link from 'next/link'
-import { Plus, Edit, Trash2, Search, Eye, EyeOff } from 'lucide-react'
+import { Plus, Edit, Trash2, Search, Eye, EyeOff, Quote } from 'lucide-react'
 import EmptyState from '@/components/admin/EmptyState'
 import LoadingSpinner from '@/components/admin/LoadingSpinner'
 import { toast } from '@/components/admin/Toast'
@@ -120,150 +120,110 @@ export default function TestimonialsPage() {
   }
 
   return (
-    <div className="space-y-8 sm:space-y-12 px-1 sm:px-0">
+    <div className="space-y-6 max-w-7xl mx-auto">
       {/* Page Header */}
-      <div>
-        <h1 className="text-2xl sm:text-3xl font-bold text-dark-choc mb-2">Testimonials</h1>
-        <p className="text-sm sm:text-base text-dark-choc/60">Manage brands and client testimonials</p>
+      <div className="bg-white rounded-2xl shadow-sm border border-dark-choc/10 p-5 sm:p-6 mb-8">
+        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-6">
+          <div>
+            <h1 className="text-2xl sm:text-3xl font-bold text-dark-choc mb-2">Testimonials & Brands</h1>
+            <p className="text-dark-choc/60 text-sm sm:text-base">Manage brand portfolio and customer success stories.</p>
+          </div>
+        </div>
       </div>
 
       {/* Section 1: Brands */}
-      <section className="space-y-4 sm:space-y-6">
-        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
-          <div>
-            <h2 className="text-xl sm:text-2xl font-semibold text-dark-choc mb-1">Brands</h2>
-            <p className="text-sm text-dark-choc/60">Manage your brand portfolio</p>
-          </div>
-          <Link
-            href="/admin/brands/new"
-            className="flex items-center justify-center gap-2 bg-electric-blue text-white px-4 sm:px-6 py-2.5 sm:py-3 rounded-lg hover:bg-electric-blue/90 transition-colors font-medium shadow-sm hover:shadow-md w-full sm:w-auto text-sm sm:text-base"
-          >
-            <Plus className="w-5 h-5" />
-            Add Brand
-          </Link>
-        </div>
-
-        {brandsLoading ? (
-          <div className="flex items-center justify-center min-h-[200px]">
-            <div className="text-center">
-              <LoadingSpinner size="lg" />
-              <p className="mt-4 text-dark-choc/60">Loading brands...</p>
+      <section className="space-y-6">
+        <div className="bg-white rounded-2xl shadow-sm border border-dark-choc/10 p-5 sm:p-6">
+          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-8">
+            <div>
+              <h2 className="text-xl font-bold text-dark-choc">Brand Portfolio</h2>
+              <p className="text-xs font-black uppercase tracking-widest text-dark-choc/40">Logos shown on the site</p>
             </div>
+            <Link
+              href="/admin/brands/new"
+              className="flex items-center justify-center gap-2 bg-electric-blue text-white px-6 py-2.5 rounded-xl hover:bg-electric-blue/90 transition-all shadow-sm active:scale-95 font-medium whitespace-nowrap"
+            >
+              <Plus className="w-5 h-5" />
+              Add Brand
+            </Link>
           </div>
-        ) : (
-          <>
-            {brands.length > 0 && (
-              <div className="relative">
-                <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-dark-choc/40" />
-                <input
-                  type="text"
-                  placeholder="Search brands..."
-                  value={searchQuery}
-                  onChange={(e) => setSearchQuery(e.target.value)}
-                  className="w-full pl-10 pr-4 py-3 border border-dark-choc/20 rounded-lg focus:ring-2 focus:ring-electric-blue focus:border-transparent bg-white text-sm sm:text-base"
-                />
-              </div>
-            )}
 
-            {filteredBrands.length === 0 ? (
-              <EmptyState
-                icon={Plus}
-                title={brands.length === 0 ? "No brands yet" : "No brands found"}
-                description={
-                  brands.length === 0
-                    ? "Get started by creating your first brand. Brands will appear on your testimonials page."
-                    : `No brands match "${searchQuery}". Try a different search term.`
-                }
-                actionLabel={brands.length === 0 ? "Create First Brand" : undefined}
-                actionHref={brands.length === 0 ? "/admin/brands/new" : undefined}
-              />
-            ) : (
-              <>
-                {/* Mobile Cards View for Brands */}
-                <div className="block sm:hidden space-y-3">
-                  {filteredBrands.map((brand) => (
-                    <div
-                      key={brand._id}
-                      className="bg-white rounded-xl shadow-sm border border-dark-choc/10 p-4"
-                    >
-                      <div className="flex items-center gap-3">
-                        {brand.image?.url && (
-                          <img
-                            src={brand.image.url}
-                            alt={brand.name}
-                            className="w-12 h-12 object-cover rounded-lg border border-dark-choc/10 flex-shrink-0"
-                          />
-                        )}
-                        <div className="flex-1 min-w-0">
-                          <h3 className="font-medium text-dark-choc truncate">{brand.name}</h3>
-                          <div className="flex items-center gap-2 mt-1">
-                            <span className="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-electric-blue/10 text-electric-blue">
-                              {brand.category || 'Uncategorized'}
-                            </span>
-                            <span className="text-xs text-dark-choc/50">Order: {brand.order || 0}</span>
-                          </div>
-                        </div>
-                      </div>
-                      <div className="flex items-center justify-end gap-1 mt-3 pt-3 border-t border-dark-choc/10">
-                        <Link
-                          href={`/admin/brands/${brand._id}`}
-                          className="p-2 text-electric-blue hover:bg-electric-blue/10 rounded-lg transition-colors"
-                        >
-                          <Edit className="w-4 h-4" />
-                        </Link>
-                        <button
-                          onClick={() => handleDeleteBrand(brand._id, brand.name)}
-                          disabled={deletingBrandId === brand._id}
-                          className="p-2 text-red-500 hover:bg-red-50 rounded-lg transition-colors disabled:opacity-50"
-                        >
-                          <Trash2 className="w-4 h-4" />
-                        </button>
-                      </div>
-                    </div>
-                  ))}
+          {brandsLoading ? (
+            <div className="flex flex-col items-center justify-center py-12">
+              <LoadingSpinner size="lg" />
+              <p className="mt-4 text-dark-choc/40 font-medium">Syncing brands...</p>
+            </div>
+          ) : (
+            <>
+              {brands.length > 0 && (
+                <div className="relative mb-6">
+                  <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-dark-choc/20" />
+                  <input
+                    type="text"
+                    placeholder="Search brands by name or category..."
+                    value={searchQuery}
+                    onChange={(e) => setSearchQuery(e.target.value)}
+                    className="w-full pl-12 pr-4 py-3.5 bg-earl-gray/20 border-0 rounded-xl focus:bg-white focus:ring-4 focus:ring-electric-blue/5 focus:border-electric-blue outline-none transition-all font-medium text-dark-choc"
+                  />
                 </div>
+              )}
 
-                {/* Desktop Table View for Brands */}
-                <div className="hidden sm:block bg-white rounded-xl shadow-sm border border-dark-choc/10 overflow-hidden">
+              {filteredBrands.length === 0 ? (
+                <div className="py-12 border-2 border-dashed border-dark-choc/5 rounded-2xl">
+                  <EmptyState
+                    icon={Plus}
+                    title={brands.length === 0 ? "No brands yet" : "No brands found"}
+                    description={
+                      brands.length === 0
+                        ? "Get started by creating your first brand. Brands will appear on your testimonials page."
+                        : `No brands match "${searchQuery}". Try a different search term.`
+                    }
+                  />
+                </div>
+              ) : (
+                <div className="bg-white rounded-xl border border-dark-choc/5 overflow-hidden">
                   <div className="overflow-x-auto">
-                    <table className="w-full">
-                      <thead className="bg-earl-gray/50">
+                    <table className="w-full text-left border-collapse">
+                      <thead className="bg-earl-gray/30 text-dark-choc/70 text-[10px] font-black uppercase tracking-[0.2em]">
                         <tr>
-                          <th className="px-4 lg:px-6 py-4 text-left text-sm font-semibold text-dark-choc">Brand</th>
-                          <th className="px-4 lg:px-6 py-4 text-left text-sm font-semibold text-dark-choc hidden md:table-cell">Category</th>
-                          <th className="px-4 lg:px-6 py-4 text-left text-sm font-semibold text-dark-choc">Order</th>
-                          <th className="px-4 lg:px-6 py-4 text-left text-sm font-semibold text-dark-choc">Actions</th>
+                          <th className="px-6 py-5">Brand</th>
+                          <th className="px-6 py-5 hidden md:table-cell">Category</th>
+                          <th className="px-6 py-5 text-center">Order</th>
+                          <th className="px-6 py-5 text-right">Actions</th>
                         </tr>
                       </thead>
-                      <tbody className="divide-y divide-dark-choc/10">
+                      <tbody className="divide-y divide-dark-choc/5 text-sm">
                         {filteredBrands.map((brand) => (
-                          <tr
-                            key={brand._id}
-                            className="hover:bg-earl-gray/30 transition-colors"
-                          >
-                            <td className="px-4 lg:px-6 py-4">
-                              <div className="flex items-center gap-3">
-                                {brand.image?.url && (
-                                  <img
-                                    src={brand.image.url}
-                                    alt={brand.name}
-                                    className="w-10 h-10 lg:w-12 lg:h-12 object-cover rounded-lg border border-dark-choc/10"
-                                  />
-                                )}
-                                <span className="font-medium text-dark-choc">{brand.name}</span>
+                          <tr key={brand._id} className="hover:bg-earl-gray/10 group transition-colors">
+                            <td className="px-6 py-4">
+                              <div className="flex items-center gap-3 min-w-[200px]">
+                                <div className="w-10 h-10 rounded-lg bg-white border border-dark-choc/10 p-1.5 flex items-center justify-center overflow-hidden shrink-0 group-hover:scale-105 transition-transform duration-300">
+                                  {brand.image?.url ? (
+                                    <img
+                                      src={brand.image.url}
+                                      alt={brand.name}
+                                      className="max-w-full max-h-full object-contain"
+                                    />
+                                  ) : (
+                                    <Plus className="w-5 h-5 text-dark-choc/10" />
+                                  )}
+                                </div>
+                                <span className="font-bold text-dark-choc group-hover:text-electric-blue transition-colors">{brand.name}</span>
                               </div>
                             </td>
-                            <td className="px-4 lg:px-6 py-4 hidden md:table-cell">
-                              <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-electric-blue/10 text-electric-blue">
-                                {brand.category || 'Uncategorized'}
+                            <td className="px-6 py-4 hidden md:table-cell">
+                              <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-[10px] font-bold uppercase bg-dark-choc/5 text-dark-choc/70 border border-dark-choc/10">
+                                {brand.category || 'General'}
                               </span>
                             </td>
-                            <td className="px-4 lg:px-6 py-4 text-dark-choc">{brand.order || 0}</td>
-                            <td className="px-4 lg:px-6 py-4">
-                              <div className="flex items-center gap-1 lg:gap-2">
+                            <td className="px-6 py-4 text-center">
+                              <span className="font-mono font-bold text-dark-choc/40">{brand.order || 0}</span>
+                            </td>
+                            <td className="px-6 py-4 text-right">
+                              <div className="flex items-center justify-end gap-1">
                                 <Link
                                   href={`/admin/brands/${brand._id}`}
-                                  className="p-2 text-electric-blue hover:bg-electric-blue/10 rounded-lg transition-colors"
+                                  className="p-2 text-dark-choc/30 hover:text-electric-blue hover:bg-electric-blue/5 rounded-lg transition-all"
                                   title="Edit"
                                 >
                                   <Edit className="w-4 h-4" />
@@ -271,7 +231,7 @@ export default function TestimonialsPage() {
                                 <button
                                   onClick={() => handleDeleteBrand(brand._id, brand.name)}
                                   disabled={deletingBrandId === brand._id}
-                                  className="p-2 text-red-500 hover:bg-red-50 rounded-lg transition-colors disabled:opacity-50"
+                                  className="p-2 text-dark-choc/30 hover:text-red-500 hover:bg-red-50 rounded-lg transition-all disabled:opacity-50"
                                   title="Delete"
                                 >
                                   <Trash2 className="w-4 h-4" />
@@ -284,190 +244,110 @@ export default function TestimonialsPage() {
                     </table>
                   </div>
                 </div>
-              </>
-            )}
-          </>
-        )}
+              )}
+            </>
+          )}
+        </div>
       </section>
 
-      {/* Divider */}
-      <div className="border-t border-dark-choc/20"></div>
-
       {/* Section 2: Client Testimonials */}
-      <section className="space-y-4 sm:space-y-6">
-        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
-          <div>
-            <h2 className="text-xl sm:text-2xl font-semibold text-dark-choc mb-1">Client Testimonials</h2>
-            <p className="text-sm text-dark-choc/60">Manage client testimonials and reviews</p>
+      <section className="space-y-6">
+        <div className="bg-white rounded-2xl shadow-sm border border-dark-choc/10 p-5 sm:p-6">
+          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-8">
+            <div>
+              <h2 className="text-xl font-bold text-dark-choc">Client Success</h2>
+              <p className="text-xs font-black uppercase tracking-widest text-dark-choc/40">Verified testimonials</p>
+            </div>
+            <Link
+              href="/admin/testimonials/new"
+              className="flex items-center justify-center gap-2 bg-electric-blue text-white px-6 py-2.5 rounded-xl hover:bg-electric-blue/90 transition-all shadow-sm active:scale-95 font-medium whitespace-nowrap"
+            >
+              <Plus className="w-5 h-5" />
+              Add Testimonial
+            </Link>
           </div>
-          <Link
-            href="/admin/testimonials/new"
-            className="flex items-center justify-center gap-2 bg-electric-blue text-white px-4 sm:px-6 py-2.5 sm:py-3 rounded-lg hover:bg-electric-blue/90 transition-colors font-medium shadow-sm hover:shadow-md w-full sm:w-auto text-sm sm:text-base"
-          >
-            <Plus className="w-5 h-5" />
-            Add Testimonial
-          </Link>
-        </div>
 
-        {testimonialsLoading ? (
-          <div className="flex items-center justify-center min-h-[200px]">
-            <div className="text-center">
+          {testimonialsLoading ? (
+            <div className="flex flex-col items-center justify-center py-12">
               <LoadingSpinner size="lg" />
-              <p className="mt-4 text-dark-choc/60">Loading testimonials...</p>
+              <p className="mt-4 text-dark-choc/40 font-medium">Syncing stories...</p>
             </div>
-          </div>
-        ) : testimonials.length === 0 ? (
-          <div className="bg-white rounded-xl shadow-sm border border-dark-choc/10 p-8 sm:p-12 text-center">
-            <div className="flex flex-col items-center gap-4">
-              <div className="w-16 h-16 bg-earl-gray rounded-full flex items-center justify-center">
-                <Plus className="w-8 h-8 text-dark-choc/40" />
-              </div>
-              <div>
-                <h3 className="text-lg font-semibold text-dark-choc mb-2">No testimonials yet</h3>
-                <p className="text-dark-choc/60 mb-4 text-sm sm:text-base">Get started by creating your first client testimonial.</p>
-                <Link
-                  href="/admin/testimonials/new"
-                  className="inline-flex items-center gap-2 bg-electric-blue text-white px-6 py-3 rounded-lg hover:bg-electric-blue/90 transition-colors font-medium"
-                >
-                  <Plus className="w-5 h-5" />
-                  Create First Testimonial
-                </Link>
-              </div>
+          ) : testimonials.length === 0 ? (
+            <div className="py-12 border-2 border-dashed border-dark-choc/5 rounded-2xl">
+              <EmptyState
+                icon={Quote}
+                title="No testimonials yet"
+                description="Get started by creating your first client testimonial."
+                actionLabel="Create Testimonial"
+                actionHref="/admin/testimonials/new"
+              />
             </div>
-          </div>
-        ) : (
-          <>
-            {/* Mobile Cards View for Testimonials */}
-            <div className="block sm:hidden space-y-3">
-              {testimonials.map((testimonial) => (
-                <div
-                  key={testimonial._id}
-                  className="bg-white rounded-xl shadow-sm border border-dark-choc/10 p-4"
-                >
-                  <div className="flex items-start gap-3 mb-3">
-                    {testimonial.profileImage?.url && (
-                      <img
-                        src={testimonial.profileImage.url}
-                        alt={testimonial.clientName}
-                        className="w-12 h-12 object-cover rounded-full border border-dark-choc/10 flex-shrink-0"
-                      />
-                    )}
-                    <div className="flex-1 min-w-0">
-                      <div className="flex items-center justify-between gap-2">
-                        <h3 className="font-medium text-dark-choc truncate">{testimonial.clientName}</h3>
-                        <span
-                          className={`px-2 py-0.5 text-xs rounded font-medium flex-shrink-0 ${testimonial.isActive
-                              ? 'bg-green-100 text-green-700'
-                              : 'bg-gray-100 text-gray-700'
-                            }`}
-                        >
-                          {testimonial.isActive ? 'Active' : 'Inactive'}
-                        </span>
-                      </div>
-                      <p className="text-sm text-dark-choc/60">{testimonial.company}</p>
-                    </div>
-                  </div>
-                  <p className="text-sm text-dark-choc/70 line-clamp-2 mb-3">{testimonial.quote}</p>
-                  <div className="flex items-center justify-between pt-3 border-t border-dark-choc/10">
-                    <span className="text-xs text-dark-choc/50">Order: {testimonial.order || 0}</span>
-                    <div className="flex items-center gap-1">
-                      <button
-                        onClick={() => handleToggleActive(testimonial._id, testimonial.isActive)}
-                        className={`p-2 rounded-lg transition-colors ${testimonial.isActive
-                            ? 'text-gray-500 hover:bg-gray-100'
-                            : 'text-green-600 hover:bg-green-50'
-                          }`}
-                      >
-                        {testimonial.isActive ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
-                      </button>
-                      <Link
-                        href={`/admin/testimonials/${testimonial._id}`}
-                        className="p-2 text-electric-blue hover:bg-electric-blue/10 rounded-lg transition-colors"
-                      >
-                        <Edit className="w-4 h-4" />
-                      </Link>
-                      <button
-                        onClick={() => handleDeleteTestimonial(testimonial._id)}
-                        className="p-2 text-red-500 hover:bg-red-50 rounded-lg transition-colors"
-                      >
-                        <Trash2 className="w-4 h-4" />
-                      </button>
-                    </div>
-                  </div>
-                </div>
-              ))}
-            </div>
-
-            {/* Desktop Table View for Testimonials */}
-            <div className="hidden sm:block bg-white rounded-xl shadow-sm border border-dark-choc/10 overflow-hidden">
+          ) : (
+            <div className="bg-white rounded-xl border border-dark-choc/5 overflow-hidden">
               <div className="overflow-x-auto">
-                <table className="w-full">
-                  <thead className="bg-earl-gray/50">
+                <table className="w-full text-left border-collapse">
+                  <thead className="bg-earl-gray/30 text-dark-choc/70 text-[10px] font-black uppercase tracking-[0.2em]">
                     <tr>
-                      <th className="px-4 lg:px-6 py-4 text-left text-sm font-semibold text-dark-choc">Client</th>
-                      <th className="px-4 lg:px-6 py-4 text-left text-sm font-semibold text-dark-choc hidden md:table-cell">Company</th>
-                      <th className="px-4 lg:px-6 py-4 text-left text-sm font-semibold text-dark-choc hidden lg:table-cell">Quote</th>
-                      <th className="px-4 lg:px-6 py-4 text-left text-sm font-semibold text-dark-choc">Order</th>
-                      <th className="px-4 lg:px-6 py-4 text-left text-sm font-semibold text-dark-choc">Status</th>
-                      <th className="px-4 lg:px-6 py-4 text-left text-sm font-semibold text-dark-choc">Actions</th>
+                      <th className="px-6 py-5">Client</th>
+                      <th className="px-6 py-5 hidden md:table-cell">Company</th>
+                      <th className="px-6 py-5 text-center">Order</th>
+                      <th className="px-6 py-5 text-center">Status</th>
+                      <th className="px-6 py-5 text-right">Actions</th>
                     </tr>
                   </thead>
-                  <tbody className="divide-y divide-dark-choc/10">
+                  <tbody className="divide-y divide-dark-choc/5 text-sm">
                     {testimonials.map((testimonial) => (
-                      <tr key={testimonial._id} className="hover:bg-earl-gray/30 transition-colors">
-                        <td className="px-4 lg:px-6 py-4">
-                          <div className="flex items-center gap-3">
-                            {testimonial.profileImage?.url && (
-                              <img
-                                src={testimonial.profileImage.url}
-                                alt={testimonial.clientName}
-                                className="w-10 h-10 lg:w-12 lg:h-12 object-cover rounded-full border border-dark-choc/10"
-                              />
-                            )}
-                            <span className="font-medium text-dark-choc">{testimonial.clientName}</span>
+                      <tr key={testimonial._id} className="hover:bg-earl-gray/10 group transition-colors">
+                        <td className="px-6 py-4">
+                          <div className="flex items-center gap-3 min-w-[200px]">
+                            <div className="w-10 h-10 rounded-full bg-earl-gray overflow-hidden shrink-0 border border-dark-choc/10">
+                              {testimonial.profileImage?.url ? (
+                                <img
+                                  src={testimonial.profileImage.url}
+                                  alt={testimonial.clientName}
+                                  className="w-full h-full object-cover"
+                                />
+                              ) : (
+                                <div className="w-full h-full flex items-center justify-center text-dark-choc/20 font-bold">
+                                  {testimonial.clientName[0]}
+                                </div>
+                              )}
+                            </div>
+                            <div>
+                              <p className="font-bold text-dark-choc group-hover:text-electric-blue transition-colors">{testimonial.clientName}</p>
+                              <p className="text-[10px] text-dark-choc/40 font-medium md:hidden">{testimonial.company}</p>
+                            </div>
                           </div>
                         </td>
-                        <td className="px-4 lg:px-6 py-4 text-dark-choc hidden md:table-cell">{testimonial.company}</td>
-                        <td className="px-4 lg:px-6 py-4 text-dark-choc max-w-xs truncate hidden lg:table-cell">
-                          {testimonial.quote}
+                        <td className="px-6 py-4 hidden md:table-cell">
+                          <span className="text-dark-choc/60 font-medium">{testimonial.company}</span>
                         </td>
-                        <td className="px-4 lg:px-6 py-4 text-dark-choc">{testimonial.order || 0}</td>
-                        <td className="px-4 lg:px-6 py-4">
-                          <span
-                            className={`px-2 py-1 text-xs rounded font-medium ${testimonial.isActive
-                                ? 'bg-green-100 text-green-700'
-                                : 'bg-gray-100 text-gray-700'
+                        <td className="px-6 py-4 text-center">
+                          <span className="font-mono font-bold text-dark-choc/40">{testimonial.order || 0}</span>
+                        </td>
+                        <td className="px-6 py-4 text-center">
+                          <button
+                            onClick={() => handleToggleActive(testimonial._id, testimonial.isActive)}
+                            className={`px-3 py-1 rounded-full text-[9px] font-black uppercase tracking-widest transition-all border ${testimonial.isActive
+                              ? 'bg-green-50 text-green-600 border-green-100 hover:bg-green-100'
+                              : 'bg-gray-50 text-gray-500 border-gray-100 hover:bg-gray-100'
                               }`}
                           >
-                            {testimonial.isActive ? 'Active' : 'Inactive'}
-                          </span>
+                            {testimonial.isActive ? 'Active' : 'Hidden'}
+                          </button>
                         </td>
-                        <td className="px-4 lg:px-6 py-4">
-                          <div className="flex items-center gap-1 lg:gap-2">
-                            <button
-                              onClick={() => handleToggleActive(testimonial._id, testimonial.isActive)}
-                              className={`p-2 rounded-lg transition-colors ${testimonial.isActive
-                                  ? 'text-gray-500 hover:bg-gray-100'
-                                  : 'text-green-600 hover:bg-green-50'
-                                }`}
-                              title={testimonial.isActive ? 'Hide' : 'Show'}
-                            >
-                              {testimonial.isActive ? (
-                                <EyeOff className="w-4 h-4" />
-                              ) : (
-                                <Eye className="w-4 h-4" />
-                              )}
-                            </button>
+                        <td className="px-6 py-4 text-right">
+                          <div className="flex items-center justify-end gap-1">
                             <Link
                               href={`/admin/testimonials/${testimonial._id}`}
-                              className="p-2 text-electric-blue hover:bg-electric-blue/10 rounded-lg transition-colors"
+                              className="p-2 text-dark-choc/30 hover:text-electric-blue hover:bg-electric-blue/5 rounded-lg transition-all"
                               title="Edit"
                             >
                               <Edit className="w-4 h-4" />
                             </Link>
                             <button
                               onClick={() => handleDeleteTestimonial(testimonial._id)}
-                              className="p-2 text-red-500 hover:bg-red-50 rounded-lg transition-colors"
+                              className="p-2 text-dark-choc/30 hover:text-red-500 hover:bg-red-50 rounded-lg transition-all"
                               title="Delete"
                             >
                               <Trash2 className="w-4 h-4" />
@@ -480,8 +360,8 @@ export default function TestimonialsPage() {
                 </table>
               </div>
             </div>
-          </>
-        )}
+          )}
+        </div>
       </section>
     </div>
   )

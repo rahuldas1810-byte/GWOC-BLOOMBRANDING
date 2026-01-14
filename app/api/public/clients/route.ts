@@ -13,18 +13,18 @@ export async function GET(request: NextRequest) {
 
     const clients = await Client.find({ isActive: true })
       .sort({ order: 1, createdAt: -1 })
-      .select('name logo category order createdAt')
+      .select('name logo category description order createdAt')
 
     const response = NextResponse.json({
       success: true,
       data: clients,
     })
-    
+
     // Disable caching - always return fresh data
     response.headers.set('Cache-Control', 'no-store, no-cache, must-revalidate, proxy-revalidate')
     response.headers.set('Pragma', 'no-cache')
     response.headers.set('Expires', '0')
-    
+
     return response
   } catch (error: any) {
     console.error('❌ Get clients error:', error)

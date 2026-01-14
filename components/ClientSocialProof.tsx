@@ -2,69 +2,68 @@
 
 import { motion, AnimatePresence } from 'framer-motion'
 import { useState, useEffect } from 'react'
+import { getTestimonials, getSiteSettings } from '@/lib/content'
 
-const brands = [
-  {
-    name: 'NOVA LABS',
-    font: 'font-sans',
-    quote: "They brought clarity when everything felt scattered.",
-    author: "Founder, Nova Labs"
-  },
-  {
-    name: 'Bloom Studio',
-    font: 'font-serif italic',
-    quote: "Strategic, calm, and deeply thoughtful.",
-    author: "Director, Bloom Studio"
-  },
-  {
-    name: 'ECHO',
-    font: 'font-mono tracking-widest',
-    quote: "The brand finally feels like us.",
-    author: "CEO, Echo"
-  },
-  {
-    name: 'Pulse',
-    font: 'font-sans font-bold tracking-tighter',
-    quote: "A partnership that truly transformed our trajectory.",
-    author: "CMO, Pulse"
-  },
-  {
-    name: 'URBAN',
-    font: 'font-serif uppercase tracking-widest',
-    quote: "Minimalism with maximum impact.",
-    author: "Founder, Urban D2C"
-  },
-  {
-    name: 'Velvet',
-    font: 'font-serif italic',
-    quote: "Elegant execution at every touchpoint.",
-    author: "Creative Lead, Velvet"
-  },
-  {
-    name: 'AURA',
-    font: 'font-sans font-light tracking-[0.3em]',
-    quote: "We found our voice in the noise.",
-    author: "Head of Brand, Aura"
-  },
-  {
-    name: 'MUSE',
-    font: 'font-serif uppercase',
-    quote: "Design that speaks before you read.",
-    author: "Editor, Muse"
-  },
+const FONT_STYLES = [
+  'font-sans',
+  'font-serif italic',
+  'font-mono tracking-widest',
+  'font-sans font-bold tracking-tighter',
+  'font-serif uppercase tracking-widest',
+  'font-serif italic',
+  'font-sans font-light tracking-[0.3em]',
+  'font-serif uppercase'
 ]
 
 export default function ClientSocialProof() {
   const [activeIndex, setActiveIndex] = useState(0)
+  const [brands, setBrands] = useState<any[]>([])
+  const [label, setLabel] = useState('Trusted by growing brands')
+  const [loading, setLoading] = useState(true)
 
-  // Time-based rotation for "illusion" of sync
   useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const [testimonialsData, settingsData] = await Promise.all([
+          getTestimonials(),
+          getSiteSettings()
+        ])
+
+        if (settingsData?.clientsHero?.socialLabel) {
+          setLabel(settingsData.clientsHero.socialLabel)
+        }
+
+        if (testimonialsData && testimonialsData.length > 0) {
+          const mappedBrands = testimonialsData.map((t, i) => ({
+            name: t.company,
+            quote: t.quote,
+            author: `${t.clientName}, ${t.company}`,
+            font: FONT_STYLES[i % FONT_STYLES.length]
+          }))
+          setBrands(mappedBrands)
+        }
+      } catch (error) {
+        console.error('Error fetching social proof data:', error)
+      } finally {
+        setLoading(false)
+      }
+    }
+
+    fetchData()
+  }, [])
+
+  // Time-based rotation
+  useEffect(() => {
+    if (brands.length === 0) return
+
     const timer = setInterval(() => {
       setActiveIndex((prev) => (prev + 1) % brands.length)
-    }, 4000) // 4 seconds interval
+    }, 4000)
 
     return () => clearInterval(timer)
-  }, [])
+  }, [brands])
+
+  if (loading || brands.length === 0) return null
 
   const activeBrand = brands[activeIndex]
 
@@ -75,13 +74,13 @@ export default function ClientSocialProof() {
 
       <div className="container-custom mb-12 flex justify-center relative z-10">
         <span className="font-mono text-xs uppercase tracking-[0.25em] text-dark-choc/60">
-          Trusted by growing brands
+          {label}
         </span>
       </div>
 
       <div className="relative w-full flex flex-col z-10">
         {/* LOGO MARQUEE */}
-        <div className="relative w-full flex mb-8"> {/* Reduced gap */}
+        <div className="relative w-full flex mb-8">
           {/* Side Gradients */}
           <div className="absolute left-0 top-0 bottom-0 w-16 md:w-32 bg-gradient-to-r from-[#F0EBE5] to-transparent z-10 pointer-events-none" />
           <div className="absolute right-0 top-0 bottom-0 w-16 md:w-32 bg-gradient-to-l from-[#F0EBE5] to-transparent z-10 pointer-events-none" />
@@ -92,7 +91,7 @@ export default function ClientSocialProof() {
               animate={{ x: "-50%" }}
               transition={{
                 ease: "linear",
-                duration: 40, // Continuous ambient motion
+                duration: 40,
                 repeat: Infinity
               }}
               style={{ width: "fit-content" }}
@@ -115,15 +114,15 @@ export default function ClientSocialProof() {
         <div className="w-full min-h-[120px] flex flex-col items-center justify-center text-center relative px-6">
           <AnimatePresence mode="wait">
             <motion.div
-              key={activeBrand.name} // Triggers animation on change
+              key={activeBrand.name + activeIndex} // Triggers animation on change
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -20 }}
               transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
               className="flex flex-col items-center"
             >
-              <h3 className="font-serif text-lg sm:text-2xl md:text-3xl text-dark-choc/90 italic leading-relaxed mb-4 md:mb-6 max-w-2xl">
-                "{activeBrand.quote}"
+              <h3 className="font-serif text-lg sm:text-2xl md:text-3xl text-dark-choc/90 italic leading-relaxed mb-4 md:mb-6 max-w-2xl text-center">
+                &ldquo;{activeBrand.quote}&rdquo;
               </h3>
               {activeBrand.author && (
                 <motion.p
