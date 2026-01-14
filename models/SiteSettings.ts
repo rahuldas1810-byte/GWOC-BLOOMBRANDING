@@ -58,6 +58,12 @@ export interface ISiteSettings extends Document {
     description: string
     buttonText: string
   }
+  // Social Links
+  socialLinks: {
+    instagram: string
+    linkedin: string
+    facebook: string
+  }
   createdAt: Date
   updatedAt: Date
 }
@@ -204,6 +210,20 @@ const SiteSettingsSchema = new Schema<ISiteSettings>(
       buttonText: {
         type: String,
         default: 'Client Stories',
+      },
+    },
+    socialLinks: {
+      instagram: {
+        type: String,
+        default: 'https://www.instagram.com/bloom.branding_/',
+      },
+      linkedin: {
+        type: String,
+        default: 'https://in.linkedin.com/company/bloombranding-digital-media-marketing-branding-agency',
+      },
+      facebook: {
+        type: String,
+        default: 'https://www.facebook.com/hello.bloombranding/',
       },
     },
   },

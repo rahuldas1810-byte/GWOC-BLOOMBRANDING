@@ -2,7 +2,8 @@
 
 import { useEffect, useState } from 'react'
 import { api } from '@/lib/api'
-import { Save, Loader2 } from 'lucide-react'
+import { Save, Loader2, Info } from 'lucide-react'
+import { toast } from '@/components/admin/Toast'
 
 export default function SiteSettingsPage() {
   const [loading, setLoading] = useState(true)
@@ -42,7 +43,7 @@ export default function SiteSettingsPage() {
     },
     ourStoryAdditional: {
       whoWeAreLabel: 'Who We Are',
-      additionalParagraph: 'We work with startups, D2C brands, and creators who are ready to make a real impact. Our team combines strategic thinking with clean, confident design. We don\'t chase trends. We build brands that stand the test of time.',
+      additionalParagraph: '',
     },
     contactLabels: {
       heroSubtitle: 'Projects • Collaborations • Brand Enquiries',
@@ -55,6 +56,11 @@ export default function SiteSettingsPage() {
       title: 'Testimonials',
       description: 'Hear from companies who have worked with us to build their brand identity.',
       buttonText: 'Client Stories',
+    },
+    socialLinks: {
+      instagram: '',
+      linkedin: '',
+      facebook: '',
     },
   })
 
@@ -76,10 +82,12 @@ export default function SiteSettingsPage() {
           ourStoryAdditional: response.data.ourStoryAdditional || formData.ourStoryAdditional,
           contactLabels: response.data.contactLabels || formData.contactLabels,
           testimonialsHero: response.data.testimonialsHero || formData.testimonialsHero,
+          socialLinks: response.data.socialLinks || formData.socialLinks,
         })
       }
     } catch (error) {
       console.error('Failed to fetch site settings:', error)
+      toast.error('Failed to load site settings')
     } finally {
       setLoading(false)
     }
@@ -90,13 +98,13 @@ export default function SiteSettingsPage() {
     try {
       const response = await api.updateSiteSettings(formData)
       if (response.success) {
-        alert('Site settings updated successfully!')
+        toast.success('Site settings updated successfully!')
       } else {
-        alert(response.message || 'Failed to update')
+        toast.error(response.message || 'Failed to update')
       }
     } catch (error: any) {
       console.error('Update failed:', error)
-      alert(`Failed to update: ${error.message || 'Unknown error'}`)
+      toast.error(`Error: ${error.message || 'Unknown error'}`)
     } finally {
       setSaving(false)
     }
@@ -115,414 +123,278 @@ export default function SiteSettingsPage() {
   }
 
   if (loading) {
-    return <div className="text-dark-choc">Loading...</div>
+    return (
+      <div className="flex items-center justify-center min-vh-screen py-12">
+        <Loader2 className="w-8 h-8 animate-spin text-electric-blue" />
+        <span className="ml-3 text-dark-choc font-medium">Loading settings...</span>
+      </div>
+    )
   }
 
   return (
-    <div className="space-y-6 max-w-7xl mx-auto">
-      <div className="bg-white rounded-2xl shadow-sm border border-dark-choc/10 p-5 sm:p-6 mb-8">
-        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-6">
-          <div>
-            <h1 className="text-2xl sm:text-3xl font-bold text-dark-choc mb-2">Global Site Settings</h1>
-            <p className="text-dark-choc/60 text-sm sm:text-base">Control labels, stats, and SEO descriptions across the site.</p>
-          </div>
-
-          <button
-            onClick={handleSave}
-            disabled={saving}
-            className="flex items-center justify-center gap-2 bg-dark-choc text-white px-8 py-3 rounded-xl hover:bg-dark-choc/90 transition-all shadow-sm active:scale-95 disabled:opacity-50 font-bold whitespace-nowrap"
-          >
-            {saving ? (
-              <>
-                <Loader2 className="w-5 h-5 animate-spin" />
-                Saving...
-              </>
-            ) : (
-              <>
-                <Save className="w-5 h-5" />
-                Save Changes
-              </>
-            )}
-          </button>
-        </div>
-      </div>
-
-      <div className="space-y-6">
-        {/* Experience Stats */}
-        <div className="bg-white rounded-2xl shadow-sm border border-dark-choc/10 overflow-hidden">
-          <div className="p-6 border-b border-dark-choc/5 bg-earl-gray/10">
-            <h2 className="text-lg font-bold text-dark-choc">Experience Stats (Homepage)</h2>
-          </div>
-          <div className="p-6 grid grid-cols-1 sm:grid-cols-3 gap-6">
+    <div className="min-h-screen pb-12">
+      <div className="max-w-7xl mx-auto space-y-6">
+        {/* Header Section */}
+        <div className="bg-white rounded-3xl shadow-sm border border-dark-choc/10 p-6 sm:p-10 mb-8">
+          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-6">
             <div>
-              <label className="block text-xs font-black uppercase tracking-widest text-dark-choc/40 mb-3 ml-1">Years</label>
-              <input
-                type="number"
-                value={formData.experienceStats.years}
-                onChange={(e) => setFormData({
-                  ...formData,
-                  experienceStats: { ...formData.experienceStats, years: parseInt(e.target.value) || 0 },
-                })}
-                className="w-full px-5 py-3.5 bg-earl-gray/20 border border-transparent rounded-xl focus:bg-white focus:ring-4 focus:ring-electric-blue/5 focus:border-electric-blue outline-none transition-all font-bold text-dark-choc"
-              />
+              <h1 className="text-3xl font-black text-dark-choc tracking-tight">Site Settings</h1>
+              <p className="text-dark-choc/50 font-medium">Control global labels, brand statistics, and social links.</p>
             </div>
-            <div>
-              <label className="block text-xs font-black uppercase tracking-widest text-dark-choc/40 mb-3 ml-1">Clients</label>
-              <input
-                type="number"
-                value={formData.experienceStats.clients}
-                onChange={(e) => setFormData({
-                  ...formData,
-                  experienceStats: { ...formData.experienceStats, clients: parseInt(e.target.value) || 0 },
-                })}
-                className="w-full px-5 py-3.5 bg-earl-gray/20 border border-transparent rounded-xl focus:bg-white focus:ring-4 focus:ring-electric-blue/5 focus:border-electric-blue outline-none transition-all font-bold text-dark-choc"
-              />
-            </div>
-            <div>
-              <label className="block text-xs font-black uppercase tracking-widest text-dark-choc/40 mb-3 ml-1">Projects</label>
-              <input
-                type="number"
-                value={formData.experienceStats.projects}
-                onChange={(e) => setFormData({
-                  ...formData,
-                  experienceStats: { ...formData.experienceStats, projects: parseInt(e.target.value) || 0 },
-                })}
-                className="w-full px-5 py-3.5 bg-earl-gray/20 border border-transparent rounded-xl focus:bg-white focus:ring-4 focus:ring-electric-blue/5 focus:border-electric-blue outline-none transition-all font-bold text-dark-choc"
-              />
-            </div>
+            <button
+              onClick={handleSave}
+              disabled={saving}
+              className="flex items-center justify-center gap-3 bg-dark-choc text-white px-10 py-4 rounded-2xl hover:bg-dark-choc/90 transition-all font-black shadow-xl shadow-dark-choc/20 active:scale-95 disabled:opacity-50"
+            >
+              {saving ? <Loader2 className="w-5 h-5 animate-spin" /> : <Save className="w-5 h-5" />}
+              Save Changes
+            </button>
           </div>
         </div>
 
-        {/* Impact Stats */}
-        <div className="bg-white rounded-2xl shadow-sm border border-dark-choc/10 overflow-hidden">
-          <div className="p-6 border-b border-dark-choc/5 bg-earl-gray/10">
-            <h2 className="text-lg font-bold text-dark-choc">Impact Stats (Clients Page)</h2>
-          </div>
-          <div className="p-6 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-            <div>
-              <label className="block text-xs font-black uppercase tracking-widest text-dark-choc/40 mb-3 ml-1">Brands Collaborated</label>
-              <input
-                type="number"
-                value={formData.impactStats.brandsCollaborated}
-                onChange={(e) => setFormData({
-                  ...formData,
-                  impactStats: { ...formData.impactStats, brandsCollaborated: parseInt(e.target.value) || 0 },
-                })}
-                className="w-full px-5 py-3.5 bg-earl-gray/20 border border-transparent rounded-xl focus:bg-white focus:ring-4 focus:ring-electric-blue/5 focus:border-electric-blue outline-none transition-all font-bold text-dark-choc"
-              />
+        <div className="space-y-8">
+          {/* Social Links Section */}
+          <div className="bg-white rounded-3xl shadow-xl border border-dark-choc/10 overflow-hidden">
+            <div className="p-8 border-b border-dark-choc/5 bg-earl-gray/10">
+              <h2 className="text-lg font-black text-dark-choc uppercase tracking-widest text-sm">Social Connectivity</h2>
             </div>
-            <div>
-              <label className="block text-xs font-black uppercase tracking-widest text-dark-choc/40 mb-3 ml-1">Successful Launches</label>
-              <input
-                type="number"
-                value={formData.impactStats.successfulLaunches}
-                onChange={(e) => setFormData({
-                  ...formData,
-                  impactStats: { ...formData.impactStats, successfulLaunches: parseInt(e.target.value) || 0 },
-                })}
-                className="w-full px-5 py-3.5 bg-earl-gray/20 border border-transparent rounded-xl focus:bg-white focus:ring-4 focus:ring-electric-blue/5 focus:border-electric-blue outline-none transition-all font-bold text-dark-choc"
-              />
-            </div>
-            <div>
-              <label className="block text-xs font-black uppercase tracking-widest text-dark-choc/40 mb-3 ml-1">Industries Served</label>
-              <input
-                type="number"
-                value={formData.impactStats.industriesServed}
-                onChange={(e) => setFormData({
-                  ...formData,
-                  impactStats: { ...formData.impactStats, industriesServed: parseInt(e.target.value) || 0 },
-                })}
-                className="w-full px-5 py-3.5 bg-earl-gray/20 border border-transparent rounded-xl focus:bg-white focus:ring-4 focus:ring-electric-blue/5 focus:border-electric-blue outline-none transition-all font-bold text-dark-choc"
-              />
-            </div>
-            <div>
-              <label className="block text-xs font-black uppercase tracking-widest text-dark-choc/40 mb-3 ml-1">Years Experience</label>
-              <input
-                type="number"
-                value={formData.impactStats.yearsExperience}
-                onChange={(e) => setFormData({
-                  ...formData,
-                  impactStats: { ...formData.impactStats, yearsExperience: parseInt(e.target.value) || 0 },
-                })}
-                className="w-full px-5 py-3.5 bg-earl-gray/20 border border-transparent rounded-xl focus:bg-white focus:ring-4 focus:ring-electric-blue/5 focus:border-electric-blue outline-none transition-all font-bold text-dark-choc"
-              />
-            </div>
-          </div>
-        </div>
-
-        {/* Client Approach */}
-        <div className="bg-white rounded-2xl shadow-sm border border-dark-choc/10 overflow-hidden">
-          <div className="p-6 border-b border-dark-choc/5 bg-earl-gray/10">
-            <h2 className="text-lg font-bold text-dark-choc">Client Approach Section</h2>
-          </div>
-          <div className="p-6 space-y-6">
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+            <div className="p-8 grid grid-cols-1 md:grid-cols-3 gap-8">
               <div>
-                <label className="block text-xs font-black uppercase tracking-widest text-dark-choc/40 mb-3 ml-1">Eyebrow</label>
+                <label className="block text-[10px] font-black uppercase tracking-widest text-dark-choc/40 mb-2 ml-1">Instagram URL</label>
                 <input
                   type="text"
-                  value={formData.clientApproach.eyebrow}
-                  onChange={(e) => setFormData({
-                    ...formData,
-                    clientApproach: { ...formData.clientApproach, eyebrow: e.target.value },
-                  })}
-                  className="w-full px-5 py-3.5 bg-earl-gray/20 border border-transparent rounded-xl focus:bg-white focus:ring-4 focus:ring-electric-blue/5 focus:border-electric-blue outline-none transition-all font-bold text-dark-choc"
+                  value={formData.socialLinks.instagram}
+                  onChange={e => setFormData({ ...formData, socialLinks: { ...formData.socialLinks, instagram: e.target.value } })}
+                  className="w-full px-5 py-4 bg-earl-gray/20 border-0 rounded-2xl focus:bg-white focus:ring-4 focus:ring-electric-blue/5 focus:border-electric-blue outline-none transition-all font-bold text-dark-choc"
+                  placeholder="https://instagram.com/..."
                 />
               </div>
               <div>
-                <label className="block text-xs font-black uppercase tracking-widest text-dark-choc/40 mb-3 ml-1">Title</label>
+                <label className="block text-[10px] font-black uppercase tracking-widest text-dark-choc/40 mb-2 ml-1">LinkedIn URL</label>
                 <input
                   type="text"
-                  value={formData.clientApproach.title}
-                  onChange={(e) => setFormData({
-                    ...formData,
-                    clientApproach: { ...formData.clientApproach, title: e.target.value },
-                  })}
-                  className="w-full px-5 py-3.5 bg-earl-gray/20 border border-transparent rounded-xl focus:bg-white focus:ring-4 focus:ring-electric-blue/5 focus:border-electric-blue outline-none transition-all font-bold text-dark-choc"
+                  value={formData.socialLinks.linkedin}
+                  onChange={e => setFormData({ ...formData, socialLinks: { ...formData.socialLinks, linkedin: e.target.value } })}
+                  className="w-full px-5 py-4 bg-earl-gray/20 border-0 rounded-2xl focus:bg-white focus:ring-4 focus:ring-electric-blue/5 focus:border-electric-blue outline-none transition-all font-bold text-dark-choc"
+                  placeholder="https://linkedin.com/in/..."
                 />
               </div>
-            </div>
-            <div>
-              <label className="block text-xs font-black uppercase tracking-widest text-dark-choc/40 mb-3 ml-1">Statements</label>
-              <div className="space-y-3">
-                {formData.clientApproach.statements.map((statement, index) => (
-                  <input
-                    key={index}
-                    type="text"
-                    value={statement}
-                    onChange={(e) => updateStatement(index, e.target.value)}
-                    className="w-full px-5 py-3.5 bg-earl-gray/20 border border-transparent rounded-xl focus:bg-white focus:ring-4 focus:ring-electric-blue/5 focus:border-electric-blue outline-none transition-all font-bold text-dark-choc"
-                    placeholder={`Statement ${index + 1}`}
-                  />
-                ))}
-              </div>
-            </div>
-          </div>
-        </div>
-
-        {/* Hero Sections Grid */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-          {/* Services Hero */}
-          <div className="bg-white rounded-2xl shadow-sm border border-dark-choc/10 overflow-hidden">
-            <div className="p-6 border-b border-dark-choc/5 bg-earl-gray/10">
-              <h2 className="text-lg font-bold text-dark-choc">Services Page Hero</h2>
-            </div>
-            <div className="p-6 space-y-4">
-              <div className="grid grid-cols-2 gap-4">
-                <div>
-                  <label className="block text-xs font-black uppercase tracking-widest text-dark-choc/40 mb-3 ml-1">Label</label>
-                  <input
-                    type="text"
-                    value={formData.servicesHero.label}
-                    onChange={(e) => setFormData({
-                      ...formData,
-                      servicesHero: { ...formData.servicesHero, label: e.target.value },
-                    })}
-                    className="w-full px-5 py-3.5 bg-earl-gray/20 border border-transparent rounded-xl focus:bg-white focus:ring-4 focus:ring-electric-blue/5 focus:border-electric-blue outline-none transition-all font-bold text-dark-choc"
-                  />
-                </div>
-                <div>
-                  <label className="block text-xs font-black uppercase tracking-widest text-dark-choc/40 mb-3 ml-1">Title</label>
-                  <input
-                    type="text"
-                    value={formData.servicesHero.title}
-                    onChange={(e) => setFormData({
-                      ...formData,
-                      servicesHero: { ...formData.servicesHero, title: e.target.value },
-                    })}
-                    className="w-full px-5 py-3.5 bg-earl-gray/20 border border-transparent rounded-xl focus:bg-white focus:ring-4 focus:ring-electric-blue/5 focus:border-electric-blue outline-none transition-all font-bold text-dark-choc"
-                  />
-                </div>
-              </div>
               <div>
-                <label className="block text-xs font-black uppercase tracking-widest text-dark-choc/40 mb-3 ml-1">Description</label>
-                <textarea
-                  value={formData.servicesHero.description}
-                  onChange={(e) => setFormData({
-                    ...formData,
-                    servicesHero: { ...formData.servicesHero, description: e.target.value },
-                  })}
-                  rows={3}
-                  className="w-full px-5 py-3.5 bg-earl-gray/20 border border-transparent rounded-xl focus:bg-white focus:ring-4 focus:ring-electric-blue/5 focus:border-electric-blue outline-none transition-all font-bold text-dark-choc"
-                />
-              </div>
-            </div>
-          </div>
-
-          {/* Clients Hero */}
-          <div className="bg-white rounded-2xl shadow-sm border border-dark-choc/10 overflow-hidden">
-            <div className="p-6 border-b border-dark-choc/5 bg-earl-gray/10">
-              <h2 className="text-lg font-bold text-dark-choc">Clients Page Hero</h2>
-            </div>
-            <div className="p-6 space-y-4">
-              <div className="grid grid-cols-2 gap-4">
-                <div>
-                  <label className="block text-xs font-black uppercase tracking-widest text-dark-choc/40 mb-3 ml-1">Label</label>
-                  <input
-                    type="text"
-                    value={formData.clientsHero.label}
-                    onChange={(e) => setFormData({
-                      ...formData,
-                      clientsHero: { ...formData.clientsHero, label: e.target.value },
-                    })}
-                    className="w-full px-5 py-3.5 bg-earl-gray/20 border border-transparent rounded-xl focus:bg-white focus:ring-4 focus:ring-electric-blue/5 focus:border-electric-blue outline-none transition-all font-bold text-dark-choc"
-                  />
-                </div>
-                <div>
-                  <label className="block text-xs font-black uppercase tracking-widest text-dark-choc/40 mb-3 ml-1">Title</label>
-                  <input
-                    type="text"
-                    value={formData.clientsHero.title}
-                    onChange={(e) => setFormData({
-                      ...formData,
-                      clientsHero: { ...formData.clientsHero, title: e.target.value },
-                    })}
-                    className="w-full px-5 py-3.5 bg-earl-gray/20 border border-transparent rounded-xl focus:bg-white focus:ring-4 focus:ring-electric-blue/5 focus:border-electric-blue outline-none transition-all font-bold text-dark-choc"
-                  />
-                </div>
-              </div>
-              <div>
-                <label className="block text-xs font-black uppercase tracking-widest text-dark-choc/40 mb-3 ml-1">Description</label>
-                <textarea
-                  value={formData.clientsHero.description}
-                  onChange={(e) => setFormData({
-                    ...formData,
-                    clientsHero: { ...formData.clientsHero, description: e.target.value },
-                  })}
-                  rows={3}
-                  className="w-full px-5 py-3.5 bg-earl-gray/20 border border-transparent rounded-xl focus:bg-white focus:ring-4 focus:ring-electric-blue/5 focus:border-electric-blue outline-none transition-all font-bold text-dark-choc"
-                />
-              </div>
-            </div>
-          </div>
-        </div>
-
-        {/* More Settings */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-          {/* Homepage Sections */}
-          <div className="bg-white rounded-2xl shadow-sm border border-dark-choc/10 overflow-hidden">
-            <div className="p-6 border-b border-dark-choc/5 bg-earl-gray/10">
-              <h2 className="text-lg font-bold text-dark-choc">Homepage Labels</h2>
-            </div>
-            <div className="p-6 grid grid-cols-2 gap-4">
-              <div>
-                <label className="block text-xs font-black uppercase tracking-widest text-dark-choc/40 mb-3 ml-1">Clients Label</label>
+                <label className="block text-[10px] font-black uppercase tracking-widest text-dark-choc/40 mb-2 ml-1">Facebook URL</label>
                 <input
                   type="text"
-                  value={formData.homepageSections.clientsLabel}
-                  onChange={(e) => setFormData({
-                    ...formData,
-                    homepageSections: { ...formData.homepageSections, clientsLabel: e.target.value },
-                  })}
-                  className="w-full px-5 py-3.5 bg-earl-gray/20 border border-transparent rounded-xl focus:bg-white focus:ring-4 focus:ring-electric-blue/5 focus:border-electric-blue outline-none transition-all font-bold text-dark-choc"
-                />
-              </div>
-              <div>
-                <label className="block text-xs font-black uppercase tracking-widest text-dark-choc/40 mb-3 ml-1">Clients Title</label>
-                <input
-                  type="text"
-                  value={formData.homepageSections.clientsTitle}
-                  onChange={(e) => setFormData({
-                    ...formData,
-                    homepageSections: { ...formData.homepageSections, clientsTitle: e.target.value },
-                  })}
-                  className="w-full px-5 py-3.5 bg-earl-gray/20 border border-transparent rounded-xl focus:bg-white focus:ring-4 focus:ring-electric-blue/5 focus:border-electric-blue outline-none transition-all font-bold text-dark-choc"
+                  value={formData.socialLinks.facebook}
+                  onChange={e => setFormData({ ...formData, socialLinks: { ...formData.socialLinks, facebook: e.target.value } })}
+                  className="w-full px-5 py-4 bg-earl-gray/20 border-0 rounded-2xl focus:bg-white focus:ring-4 focus:ring-electric-blue/5 focus:border-electric-blue outline-none transition-all font-bold text-dark-choc"
+                  placeholder="https://facebook.com/..."
                 />
               </div>
             </div>
           </div>
 
-          {/* Testimonials Hero */}
-          <div className="bg-white rounded-2xl shadow-sm border border-dark-choc/10 overflow-hidden">
-            <div className="p-6 border-b border-dark-choc/5 bg-earl-gray/10">
-              <h2 className="text-lg font-bold text-dark-choc">Testimonials Page</h2>
-            </div>
-            <div className="p-6 space-y-4">
-              <div className="grid grid-cols-2 gap-4">
+          {/* Stats Sections */}
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+            <div className="bg-white rounded-3xl shadow-xl border border-dark-choc/10 overflow-hidden">
+              <div className="p-8 border-b border-dark-choc/5 bg-earl-gray/10">
+                <h2 className="text-lg font-black text-dark-choc uppercase tracking-widest text-sm">Homepage Stats</h2>
+              </div>
+              <div className="p-8 grid grid-cols-1 sm:grid-cols-3 gap-6">
                 <div>
-                  <label className="block text-xs font-black uppercase tracking-widest text-dark-choc/40 mb-3 ml-1">Label</label>
+                  <label className="block text-[10px] font-black uppercase tracking-widest text-dark-choc/40 mb-2 ml-1">Years</label>
                   <input
-                    type="text"
-                    value={formData.testimonialsHero.label}
-                    onChange={(e) => setFormData({
-                      ...formData,
-                      testimonialsHero: { ...formData.testimonialsHero, label: e.target.value },
-                    })}
-                    className="w-full px-5 py-3.5 bg-earl-gray/20 border border-transparent rounded-xl focus:bg-white focus:ring-4 focus:ring-electric-blue/5 focus:border-electric-blue outline-none transition-all font-bold text-dark-choc"
+                    type="number"
+                    value={formData.experienceStats.years}
+                    onChange={e => setFormData({ ...formData, experienceStats: { ...formData.experienceStats, years: parseInt(e.target.value) || 0 } })}
+                    className="w-full px-5 py-4 bg-earl-gray/20 border-0 rounded-2xl focus:bg-white focus:ring-4 focus:ring-electric-blue/5 focus:border-electric-blue outline-none transition-all font-black text-dark-choc text-xl"
                   />
                 </div>
                 <div>
-                  <label className="block text-xs font-black uppercase tracking-widest text-dark-choc/40 mb-3 ml-1">Button Text</label>
+                  <label className="block text-[10px] font-black uppercase tracking-widest text-dark-choc/40 mb-2 ml-1">Clients</label>
                   <input
-                    type="text"
-                    value={formData.testimonialsHero.buttonText}
-                    onChange={(e) => setFormData({
-                      ...formData,
-                      testimonialsHero: { ...formData.testimonialsHero, buttonText: e.target.value },
-                    })}
-                    className="w-full px-5 py-3.5 bg-earl-gray/20 border border-transparent rounded-xl focus:bg-white focus:ring-4 focus:ring-electric-blue/5 focus:border-electric-blue outline-none transition-all font-bold text-dark-choc"
+                    type="number"
+                    value={formData.experienceStats.clients}
+                    onChange={e => setFormData({ ...formData, experienceStats: { ...formData.experienceStats, clients: parseInt(e.target.value) || 0 } })}
+                    className="w-full px-5 py-4 bg-earl-gray/20 border-0 rounded-2xl focus:bg-white focus:ring-4 focus:ring-electric-blue/5 focus:border-electric-blue outline-none transition-all font-black text-dark-choc text-xl"
+                  />
+                </div>
+                <div>
+                  <label className="block text-[10px] font-black uppercase tracking-widest text-dark-choc/40 mb-2 ml-1">Projects</label>
+                  <input
+                    type="number"
+                    value={formData.experienceStats.projects}
+                    onChange={e => setFormData({ ...formData, experienceStats: { ...formData.experienceStats, projects: parseInt(e.target.value) || 0 } })}
+                    className="w-full px-5 py-4 bg-earl-gray/20 border-0 rounded-2xl focus:bg-white focus:ring-4 focus:ring-electric-blue/5 focus:border-electric-blue outline-none transition-all font-black text-dark-choc text-xl"
+                  />
+                </div>
+              </div>
+            </div>
+
+            <div className="bg-white rounded-3xl shadow-xl border border-dark-choc/10 overflow-hidden">
+              <div className="p-8 border-b border-dark-choc/5 bg-earl-gray/10">
+                <h2 className="text-lg font-black text-dark-choc uppercase tracking-widest text-sm">Clients Page Stats</h2>
+              </div>
+              <div className="p-8 grid grid-cols-2 gap-6">
+                <div>
+                  <label className="block text-[10px] font-black uppercase tracking-widest text-dark-choc/40 mb-2 ml-1">Brands</label>
+                  <input
+                    type="number"
+                    value={formData.impactStats.brandsCollaborated}
+                    onChange={e => setFormData({ ...formData, impactStats: { ...formData.impactStats, brandsCollaborated: parseInt(e.target.value) || 0 } })}
+                    className="w-full px-5 py-4 bg-earl-gray/20 border-0 rounded-2xl focus:bg-white focus:ring-4 focus:ring-electric-blue/5 focus:border-electric-blue outline-none transition-all font-black text-dark-choc text-xl"
+                  />
+                </div>
+                <div>
+                  <label className="block text-[10px] font-black uppercase tracking-widest text-dark-choc/40 mb-2 ml-1">Launches</label>
+                  <input
+                    type="number"
+                    value={formData.impactStats.successfulLaunches}
+                    onChange={e => setFormData({ ...formData, impactStats: { ...formData.impactStats, successfulLaunches: parseInt(e.target.value) || 0 } })}
+                    className="w-full px-5 py-4 bg-earl-gray/20 border-0 rounded-2xl focus:bg-white focus:ring-4 focus:ring-electric-blue/5 focus:border-electric-blue outline-none transition-all font-black text-dark-choc text-xl"
                   />
                 </div>
               </div>
             </div>
           </div>
-        </div>
 
-        {/* Contact Page Labels */}
-        <div className="bg-white rounded-2xl shadow-sm border border-dark-choc/10 overflow-hidden">
-          <div className="p-6 border-b border-dark-choc/5 bg-earl-gray/10">
-            <h2 className="text-lg font-bold text-dark-choc">Contact Page Labels</h2>
-          </div>
-          <div className="p-6 space-y-6">
-            <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
-              <div>
-                <label className="block text-xs font-black uppercase tracking-widest text-dark-choc/40 mb-3 ml-1">Hero Subtitle</label>
-                <input
-                  type="text"
-                  value={formData.contactLabels.heroSubtitle}
-                  onChange={(e) => setFormData({
-                    ...formData,
-                    contactLabels: { ...formData.contactLabels, heroSubtitle: e.target.value },
-                  })}
-                  className="w-full px-5 py-3.5 bg-earl-gray/20 border border-transparent rounded-xl focus:bg-white focus:ring-4 focus:ring-electric-blue/5 focus:border-electric-blue outline-none transition-all font-bold text-dark-choc"
-                />
+          {/* Client Approach Section */}
+          <div className="bg-white rounded-3xl shadow-xl border border-dark-choc/10 overflow-hidden">
+            <div className="p-8 border-b border-dark-choc/5 bg-earl-gray/10">
+              <h2 className="text-lg font-black text-dark-choc uppercase tracking-widest text-sm">Client Approach Labels</h2>
+            </div>
+            <div className="p-8 space-y-8">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <div>
+                  <label className="block text-[10px] font-black uppercase tracking-widest text-dark-choc/40 mb-2 ml-1">Section Eyebrow</label>
+                  <input
+                    type="text"
+                    value={formData.clientApproach.eyebrow}
+                    onChange={e => setFormData({ ...formData, clientApproach: { ...formData.clientApproach, eyebrow: e.target.value } })}
+                    className="w-full px-5 py-4 bg-earl-gray/20 border-0 rounded-2xl focus:bg-white focus:ring-4 focus:ring-electric-blue/5 focus:border-electric-blue outline-none transition-all font-black text-dark-choc"
+                  />
+                </div>
+                <div>
+                  <label className="block text-[10px] font-black uppercase tracking-widest text-dark-choc/40 mb-2 ml-1">Section Title</label>
+                  <input
+                    type="text"
+                    value={formData.clientApproach.title}
+                    onChange={e => setFormData({ ...formData, clientApproach: { ...formData.clientApproach, title: e.target.value } })}
+                    className="w-full px-5 py-4 bg-earl-gray/20 border-0 rounded-2xl focus:bg-white focus:ring-4 focus:ring-electric-blue/5 focus:border-electric-blue outline-none transition-all font-black text-dark-choc"
+                  />
+                </div>
               </div>
-              <div>
-                <label className="block text-xs font-black uppercase tracking-widest text-dark-choc/40 mb-3 ml-1">Form Label</label>
-                <input
-                  type="text"
-                  value={formData.contactLabels.formLabel}
-                  onChange={(e) => setFormData({
-                    ...formData,
-                    contactLabels: { ...formData.contactLabels, formLabel: e.target.value },
-                  })}
-                  className="w-full px-5 py-3.5 bg-earl-gray/20 border border-transparent rounded-xl focus:bg-white focus:ring-4 focus:ring-electric-blue/5 focus:border-electric-blue outline-none transition-all font-bold text-dark-choc"
-                />
-              </div>
-              <div>
-                <label className="block text-xs font-black uppercase tracking-widest text-dark-choc/40 mb-3 ml-1">Form Title</label>
-                <input
-                  type="text"
-                  value={formData.contactLabels.formTitle}
-                  onChange={(e) => setFormData({
-                    ...formData,
-                    contactLabels: { ...formData.contactLabels, formTitle: e.target.value },
-                  })}
-                  className="w-full px-5 py-3.5 bg-earl-gray/20 border border-transparent rounded-xl focus:bg-white focus:ring-4 focus:ring-electric-blue/5 focus:border-electric-blue outline-none transition-all font-bold text-dark-choc"
-                />
+              <div className="space-y-4">
+                <label className="block text-[10px] font-black uppercase tracking-widest text-dark-choc/40 mb-2 ml-1">Key Statements</label>
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                  {formData.clientApproach.statements.map((statement, idx) => (
+                    <input
+                      key={idx}
+                      type="text"
+                      value={statement}
+                      onChange={e => updateStatement(idx, e.target.value)}
+                      placeholder={`Statement ${idx + 1}`}
+                      className="w-full px-5 py-4 bg-earl-gray/20 border-0 rounded-2xl focus:bg-white focus:ring-4 focus:ring-electric-blue/5 focus:border-electric-blue outline-none transition-all font-bold text-dark-choc"
+                    />
+                  ))}
+                </div>
               </div>
             </div>
-            <div>
-              <label className="block text-xs font-black uppercase tracking-widest text-dark-choc/40 mb-3 ml-1">Form Description</label>
-              <textarea
-                value={formData.contactLabels.formDescription}
-                onChange={(e) => setFormData({
-                  ...formData,
-                  contactLabels: { ...formData.contactLabels, formDescription: e.target.value },
-                })}
-                rows={3}
-                className="w-full px-5 py-3.5 bg-earl-gray/20 border border-transparent rounded-xl focus:bg-white focus:ring-4 focus:ring-electric-blue/5 focus:border-electric-blue outline-none transition-all font-bold text-dark-choc"
-              />
+          </div>
+
+          {/* Page Hero Grids */}
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+            {/* Services & Clients Heroes */}
+            <div className="space-y-8">
+              <div className="bg-white rounded-3xl shadow-xl border border-dark-choc/10 overflow-hidden">
+                <div className="p-8 border-b border-dark-choc/5 bg-earl-gray/10">
+                  <h2 className="text-lg font-black text-dark-choc uppercase tracking-widest text-sm">Services Page Hero</h2>
+                </div>
+                <div className="p-8 space-y-6">
+                  <div className="grid grid-cols-2 gap-4">
+                    <div>
+                      <label className="block text-[10px] font-black uppercase tracking-widest text-dark-choc/40 mb-2 ml-1">Label</label>
+                      <input
+                        type="text"
+                        value={formData.servicesHero.label}
+                        onChange={e => setFormData({ ...formData, servicesHero: { ...formData.servicesHero, label: e.target.value } })}
+                        className="w-full px-5 py-4 bg-earl-gray/20 border-0 rounded-2xl focus:bg-white focus:ring-4 focus:ring-electric-blue/5 focus:border-electric-blue outline-none transition-all font-black text-dark-choc"
+                      />
+                    </div>
+                    <div>
+                      <label className="block text-[10px] font-black uppercase tracking-widest text-dark-choc/40 mb-2 ml-1">Title</label>
+                      <input
+                        type="text"
+                        value={formData.servicesHero.title}
+                        onChange={e => setFormData({ ...formData, servicesHero: { ...formData.servicesHero, title: e.target.value } })}
+                        className="w-full px-5 py-4 bg-earl-gray/20 border-0 rounded-2xl focus:bg-white focus:ring-4 focus:ring-electric-blue/5 focus:border-electric-blue outline-none transition-all font-black text-dark-choc"
+                      />
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div className="bg-white rounded-3xl shadow-xl border border-dark-choc/10 overflow-hidden">
+                <div className="p-8 border-b border-dark-choc/5 bg-earl-gray/10">
+                  <h2 className="text-lg font-black text-dark-choc uppercase tracking-widest text-sm">Testimonials Hero</h2>
+                </div>
+                <div className="p-8 space-y-6">
+                  <div className="grid grid-cols-2 gap-4">
+                    <div>
+                      <label className="block text-[10px] font-black uppercase tracking-widest text-dark-choc/40 mb-2 ml-1">Label</label>
+                      <input
+                        type="text"
+                        value={formData.testimonialsHero.label}
+                        onChange={e => setFormData({ ...formData, testimonialsHero: { ...formData.testimonialsHero, label: e.target.value } })}
+                        className="w-full px-5 py-4 bg-earl-gray/20 border-0 rounded-2xl focus:bg-white focus:ring-4 focus:ring-electric-blue/5 focus:border-electric-blue outline-none transition-all font-black text-dark-choc"
+                      />
+                    </div>
+                    <div>
+                      <label className="block text-[10px] font-black uppercase tracking-widest text-dark-choc/40 mb-2 ml-1">Cta Text</label>
+                      <input
+                        type="text"
+                        value={formData.testimonialsHero.buttonText}
+                        onChange={e => setFormData({ ...formData, testimonialsHero: { ...formData.testimonialsHero, buttonText: e.target.value } })}
+                        className="w-full px-5 py-4 bg-earl-gray/20 border-0 rounded-2xl focus:bg-white focus:ring-4 focus:ring-electric-blue/5 focus:border-electric-blue outline-none transition-all font-black text-dark-choc"
+                      />
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* Contact Labels */}
+            <div className="bg-white rounded-3xl shadow-xl border border-dark-choc/10 overflow-hidden">
+              <div className="p-8 border-b border-dark-choc/5 bg-earl-gray/10">
+                <h2 className="text-lg font-black text-dark-choc uppercase tracking-widest text-sm">Contact Page Labels</h2>
+              </div>
+              <div className="p-8 space-y-6">
+                <div>
+                  <label className="block text-[10px] font-black uppercase tracking-widest text-dark-choc/40 mb-2 ml-1">Hero Subtitle</label>
+                  <input
+                    type="text"
+                    value={formData.contactLabels.heroSubtitle}
+                    onChange={e => setFormData({ ...formData, contactLabels: { ...formData.contactLabels, heroSubtitle: e.target.value } })}
+                    className="w-full px-5 py-4 bg-earl-gray/20 border-0 rounded-2xl focus:bg-white focus:ring-4 focus:ring-electric-blue/5 focus:border-electric-blue outline-none transition-all font-bold text-dark-choc"
+                  />
+                </div>
+                <div>
+                  <label className="block text-[10px] font-black uppercase tracking-widest text-dark-choc/40 mb-2 ml-1">Form Title</label>
+                  <input
+                    type="text"
+                    value={formData.contactLabels.formTitle}
+                    onChange={e => setFormData({ ...formData, contactLabels: { ...formData.contactLabels, formTitle: e.target.value } })}
+                    className="w-full px-5 py-4 bg-earl-gray/20 border-0 rounded-2xl focus:bg-white focus:ring-4 focus:ring-electric-blue/5 focus:border-electric-blue outline-none transition-all font-black text-dark-choc"
+                  />
+                </div>
+                <div>
+                  <label className="block text-[10px] font-black uppercase tracking-widest text-dark-choc/40 mb-2 ml-1">Form Description</label>
+                  <textarea
+                    rows={4}
+                    value={formData.contactLabels.formDescription}
+                    onChange={e => setFormData({ ...formData, contactLabels: { ...formData.contactLabels, formDescription: e.target.value } })}
+                    className="w-full px-5 py-4 bg-earl-gray/20 border-0 rounded-2xl focus:bg-white focus:ring-4 focus:ring-electric-blue/5 focus:border-electric-blue outline-none transition-all font-medium text-dark-choc resize-none"
+                  />
+                </div>
+              </div>
             </div>
           </div>
         </div>

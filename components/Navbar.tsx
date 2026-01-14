@@ -1,12 +1,14 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
 import { Menu, Linkedin, Facebook, Instagram } from "lucide-react";
 import { Playfair_Display, Inter, Bodoni_Moda } from "next/font/google";
+
+import { getSiteSettings } from "@/lib/content";
 
 // 1. Setup Fonts
 const playfair = Playfair_Display({ subsets: ["latin"], variable: "--font-serif" });
@@ -36,7 +38,26 @@ const contactInfo = [
 
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
+  const [socialLinks, setSocialLinks] = useState({
+    instagram: "https://www.instagram.com/bloom.branding_/",
+    linkedin: "https://in.linkedin.com/company/bloombranding-digital-media-marketing-branding-agency",
+    facebook: "https://www.facebook.com/hello.bloombranding/"
+  });
   const pathname = usePathname();
+
+  useEffect(() => {
+    const fetchLinks = async () => {
+      const settings = await getSiteSettings();
+      if (settings?.socialLinks) {
+        setSocialLinks({
+          instagram: settings.socialLinks.instagram || "https://www.instagram.com/bloom.branding_/",
+          linkedin: settings.socialLinks.linkedin || "https://in.linkedin.com/company/bloombranding-digital-media-marketing-branding-agency",
+          facebook: settings.socialLinks.facebook || "https://www.facebook.com/hello.bloombranding/"
+        });
+      }
+    };
+    fetchLinks();
+  }, []);
 
   const toggleMenu = () => setIsOpen(!isOpen);
 
@@ -181,9 +202,9 @@ export default function Navbar() {
                   {/* Middle: Socials (Real Links) */}
                   <div className="flex gap-4 order-1 lg:order-2">
                     {[
-                      { Icon: Linkedin, href: "https://in.linkedin.com/company/bloombranding-digital-media-marketing-branding-agency" },
-                      { Icon: Facebook, href: "https://www.facebook.com/hello.bloombranding/" },
-                      { Icon: Instagram, href: "https://www.instagram.com/bloom.branding_/" }
+                      { Icon: Linkedin, href: socialLinks.linkedin },
+                      { Icon: Facebook, href: socialLinks.facebook },
+                      { Icon: Instagram, href: socialLinks.instagram }
                     ].map(({ Icon, href }, i) => (
                       <Link
                         key={i}

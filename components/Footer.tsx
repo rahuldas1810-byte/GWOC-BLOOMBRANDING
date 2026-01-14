@@ -4,7 +4,9 @@ import Image from 'next/image'
 import Link from 'next/link'
 import { Instagram, Linkedin, Facebook, Mail, MapPin, Phone } from 'lucide-react'
 import { Inter, Cinzel_Decorative } from 'next/font/google'
+import { getSiteSettings } from '@/lib/content'
 import { motion } from 'framer-motion'
+import { useEffect, useState } from 'react'
 
 const inter = Inter({
   subsets: ['latin'],
@@ -19,6 +21,26 @@ const cinzel = Cinzel_Decorative({
 })
 
 export default function Footer() {
+  const [socialLinks, setSocialLinks] = useState({
+    instagram: 'https://www.instagram.com/bloom.branding_/',
+    linkedin: 'https://in.linkedin.com/company/bloombranding-digital-media-marketing-branding-agency',
+    facebook: 'https://www.facebook.com/hello.bloombranding/',
+  })
+
+  useEffect(() => {
+    const fetchSettings = async () => {
+      const settings = await getSiteSettings()
+      if (settings?.socialLinks) {
+        setSocialLinks({
+          instagram: settings.socialLinks.instagram || 'https://www.instagram.com/bloom.branding_/',
+          linkedin: settings.socialLinks.linkedin || 'https://in.linkedin.com/company/bloombranding-digital-media-marketing-branding-agency',
+          facebook: settings.socialLinks.facebook || 'https://www.facebook.com/hello.bloombranding/',
+        })
+      }
+    }
+    fetchSettings()
+  }, [])
+
   return (
     <footer className={`relative overflow-hidden pt-16 pb-16 md:pt-20 md:pb-8 ${inter.variable} font-sans text-[#FDF6EE]`}>
 
@@ -85,32 +107,36 @@ export default function Footer() {
                 </span>
               </motion.a>
               <div className="flex items-center gap-3">
-                <motion.a
-                  href="https://www.instagram.com/bloom.branding_/"
+                <Link
+                  href={socialLinks.instagram}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="w-8 h-8 rounded-full bg-white/10 flex items-center justify-center text-white/90 hover:text-white hover:bg-white/20 transition-all duration-300"
-                  whileHover={{ scale: 1.1, rotate: 5 }}
-                  whileTap={{ scale: 0.95 }}
                 >
-                  <Instagram size={16} strokeWidth={1.5} />
-                </motion.a>
-                <motion.a
-                  href="#"
+                  <motion.div whileHover={{ scale: 1.1, rotate: 5 }} whileTap={{ scale: 0.95 }} className="flex items-center justify-center w-full h-full">
+                    <Instagram size={16} strokeWidth={1.5} />
+                  </motion.div>
+                </Link>
+                <Link
+                  href={socialLinks.linkedin}
+                  target="_blank"
+                  rel="noopener noreferrer"
                   className="w-8 h-8 rounded-full bg-white/10 flex items-center justify-center text-white/90 hover:text-white hover:bg-white/20 transition-all duration-300"
-                  whileHover={{ scale: 1.1, rotate: -5 }}
-                  whileTap={{ scale: 0.95 }}
                 >
-                  <Linkedin size={16} strokeWidth={1.5} />
-                </motion.a>
-                <motion.a
-                  href="#"
+                  <motion.div whileHover={{ scale: 1.1, rotate: -5 }} whileTap={{ scale: 0.95 }} className="flex items-center justify-center w-full h-full">
+                    <Linkedin size={16} strokeWidth={1.5} />
+                  </motion.div>
+                </Link>
+                <Link
+                  href={socialLinks.facebook}
+                  target="_blank"
+                  rel="noopener noreferrer"
                   className="w-8 h-8 rounded-full bg-white/10 flex items-center justify-center text-white/90 hover:text-white hover:bg-white/20 transition-all duration-300"
-                  whileHover={{ scale: 1.1, rotate: 5 }}
-                  whileTap={{ scale: 0.95 }}
                 >
-                  <Facebook size={16} strokeWidth={1.5} />
-                </motion.a>
+                  <motion.div whileHover={{ scale: 1.1, rotate: 5 }} whileTap={{ scale: 0.95 }} className="flex items-center justify-center w-full h-full">
+                    <Facebook size={16} strokeWidth={1.5} />
+                  </motion.div>
+                </Link>
               </div>
             </div>
           </motion.div>
