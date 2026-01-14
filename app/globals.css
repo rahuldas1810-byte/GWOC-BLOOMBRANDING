@@ -188,15 +188,19 @@ img[loading="lazy"] {
 }
 
 ::-webkit-scrollbar-track {
-  @apply bg-earl-gray;
+  background-color: #E8E6D8;
+  /* bg-earl-gray */
 }
 
 ::-webkit-scrollbar-thumb {
-  @apply bg-dark-choc/20 rounded-full;
+  background-color: rgba(98, 74, 65, 0.2);
+  /* bg-dark-choc/20 */
+  border-radius: 9999px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  @apply bg-dark-choc/40;
+  background-color: rgba(98, 74, 65, 0.4);
+  /* bg-dark-choc/40 */
 }
 
 /* Smooth transitions for interactive elements */

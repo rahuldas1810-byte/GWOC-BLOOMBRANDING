@@ -5,11 +5,13 @@ import { useState, useRef, ReactNode } from "react";
 interface SpotlightCardProps {
   children: ReactNode;
   className?: string;
+  innerClassName?: string;
 }
 
 export default function SpotlightCard({
   children,
   className = "",
+  innerClassName = "bg-[#3E2B26]",
 }: SpotlightCardProps) {
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
   const [isHovered, setIsHovered] = useState(false);
@@ -48,7 +50,7 @@ export default function SpotlightCard({
 
       {/* Inner Div - 5px inset for thick border */}
       <div
-        className="absolute inset-[5px] rounded-[19px] bg-[#3E2B26] z-10 overflow-hidden"
+        className={`absolute inset-[5px] rounded-[19px] z-10 overflow-hidden ${innerClassName}`}
       >
         {children}
       </div>
