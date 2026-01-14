@@ -88,7 +88,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
 
 
   return (
-    <div className="min-h-screen bg-earl-gray flex">
+    <div className="min-h-screen bg-[#E0DED0] flex">
       <ToastContainer />
 
       {/* Sidebar */}

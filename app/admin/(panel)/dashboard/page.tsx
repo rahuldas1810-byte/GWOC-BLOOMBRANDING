@@ -3,8 +3,23 @@
 import { useEffect, useState } from 'react'
 import { api } from '@/lib/api'
 import { Users, MessageSquare, Mail, Film, FileText, Briefcase, Plus } from 'lucide-react'
+import { motion, useMotionValue, useTransform, animate } from 'framer-motion'
 import Link from 'next/link'
 import LoadingSpinner from '@/components/admin/LoadingSpinner'
+
+const MotionLink = motion(Link)
+
+function AnimatedNumber({ value }: { value: number }) {
+  const count = useMotionValue(0)
+  const rounded = useTransform(count, (latest) => Math.round(latest))
+
+  useEffect(() => {
+    const controls = animate(count, value, { duration: 1, ease: "easeOut" })
+    return controls.stop
+  }, [count, value])
+
+  return <motion.span>{rounded}</motion.span>
+}
 
 export default function AdminDashboard() {
   const [stats, setStats] = useState<any>(null)
@@ -72,12 +87,22 @@ export default function AdminDashboard() {
             </div>
           )
 
-          return stat.href ? (
-            <Link key={stat.label} href={stat.href}>
-              {CardContent}
-            </Link>
-          ) : (
-            <div key={stat.label}>{CardContent}</div>
+          return (
+            <motion.div
+              key={stat.label}
+              variants={{
+                hidden: { opacity: 0, y: 20 },
+                visible: { opacity: 1, y: 0, transition: { duration: 0.5, ease: "easeOut" } }
+              }}
+            >
+              {stat.href ? (
+                <Link href={stat.href}>
+                  {CardContent}
+                </Link>
+              ) : (
+                CardContent
+              )}
+            </motion.div>
           )
         })}
       </div>
