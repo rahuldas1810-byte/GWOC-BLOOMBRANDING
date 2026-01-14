@@ -7,9 +7,10 @@ import { motion, AnimatePresence } from "framer-motion";
 import SectionReveal from "@/components/SectionReveal";
 import ExperienceSection from "@/components/ExperienceSection";
 import { getTestimonials, getClients, getHomepageContent, getServices, getSiteSettings } from "@/lib/content";
+import TestimonialsSection from "@/components/homepage/TestimonialsSection";
+import SkewedClients from "@/components/homepage/SkewedClients";
 import type { Testimonial, Client } from "@/types";
 import TextMarquee from "@/components/TextMarquee";
-import Testimonials from "@/components/Testimonials";
 
 const SERVICE_IMAGES = [
   "https://images.unsplash.com/photo-1600508774634-4e11d34730e2?q=80&w=2070&auto=format&fit=crop", // Brand Identity
@@ -57,7 +58,8 @@ export default function Home() {
           getServices(),
           getSiteSettings(),
         ]);
-        setClients(clientsData);
+
+        setClients(clientsData || []);
 
         // Transform services for homepage (only title and description)
         if (servicesData && servicesData.length > 0) {
@@ -518,7 +520,7 @@ export default function Home() {
 
             {/* MARQUEE */}
             <div className="mb-8 sm:mb-12 md:mb-20">
-              <TextMarquee text="WHY BRANDS CHOOSE US • BLOOM BRANDING • " />
+              {/* <TextMarquee text="WHY BRANDS CHOOSE US • BLOOM BRANDING • " /> */}
             </div>
 
             {/* Decorative background elements */}
@@ -666,142 +668,10 @@ export default function Home() {
       )}
 
       {/* ================= CLIENTS ================= */}
-      {clients.length > 0 && (
-        <SectionReveal>
-          <section className="section-padding bg-white relative overflow-hidden">
-            {/* Gradient overlay */}
-            <motion.div
-              className="absolute inset-0 bg-gradient-to-br from-earl-gray/20 via-transparent to-butter-yellow/10"
-              animate={{
-                backgroundPosition: ["0% 0%", "100% 100%"],
-              }}
-              transition={{
-                duration: 30,
-                repeat: Infinity,
-                repeatType: "reverse",
-                ease: "linear",
-              }}
-            ></motion.div>
-            {/* Subtle diagonal lines pattern */}
-            <motion.div
-              className="absolute inset-0 opacity-[0.015]"
-              style={{
-                backgroundImage: `repeating-linear-gradient(
-                  45deg,
-                  transparent,
-                  transparent 10px,
-                  #624A41 10px,
-                  #624A41 11px
-                )`,
-                backgroundSize: "40px 40px",
-              }}
-              animate={{
-                backgroundPosition: ["0 0", "40px 40px"],
-              }}
-              transition={{
-                duration: 20,
-                repeat: Infinity,
-                ease: "linear",
-              }}
-            ></motion.div>
-            <div className="container-custom relative z-10">
-              <div className="text-center mb-16 sm:mb-20 overflow-hidden flex flex-col items-center">
-                <motion.p
-                  className="label-text mb-5"
-                  initial={{ opacity: 0, y: 20 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ duration: 0.5, delay: 0.1 }}
-                >
-                  {homepageContent.clientsLabel || 'Our Clients'}
-                </motion.p>
-                
-                {/* Headline Staggered Reveal */}
-                <motion.h2
-                  className="heading-2 flex flex-wrap justify-center gap-[0.25em] mb-6"
-                  initial="hidden"
-                  whileInView="visible"
-                  viewport={{ once: true, margin: "-10%" }}
-                  variants={{
-                    visible: { transition: { delayChildren: 0.1, staggerChildren: 0.04 } }
-                  }}
-                >
-                  {(homepageContent.clientsTitle || 'Trusted By').split(" ").map((word, i) => (
-                    <span key={i} className="inline-block overflow-hidden pb-2">
-                      <motion.span
-                        className="inline-block"
-                        variants={{
-                          hidden: { opacity: 0, y: 40, filter: "blur(6px)" },
-                          visible: {
-                            opacity: 1,
-                            y: 0,
-                            filter: "blur(0px)",
-                            transition: { ease: [0.22, 1, 0.36, 1], duration: 0.6 }
-                          }
-                        }}
-                      >
-                        {word}
-                      </motion.span>
-                    </span>
-                  ))}
-                </motion.h2>
-
-                {/* Divider Line - Center Outward */}
-                <motion.div 
-                  className="h-[1px] bg-dark-choc/20"
-                  initial={{ width: 0 }}
-                  whileInView={{ width: "80px" }}
-                  viewport={{ once: true }}
-                  transition={{ delay: 0.4, duration: 0.5, ease: "easeInOut" }}
-                />
-              </div>
-
-              {/* Client Grid */}
-              <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-6 gap-4 sm:gap-8 md:gap-12">
-                {clients.map((client, index) => (
-                  <motion.div
-                    key={client.id}
-                    className="flex justify-center items-center"
-                    initial={{ opacity: 0, y: 16 }}
-                    whileInView={{ opacity: 1, y: 0 }}
-                    viewport={{ once: true, margin: "-5%" }}
-                    transition={{ duration: 0.5, delay: index * 0.04 + 0.6, ease: "easeOut" }} // Faster start (0.6s)
-                  >
-                    {/* CSS Drift Wrapper - Stable & Pausable */}
-                    <div 
-                      className="relative inline-block animate-subtle-drift hover-pause"
-                      style={{ animationDelay: `${index * 0.5}s`, animationDuration: `${10 + (index % 4)}s` }}
-                    >
-                      <motion.span
-                        className="inline-block text-center font-serif text-sm sm:text-lg md:text-xl lg:text-2xl font-medium tracking-tight text-dark-choc/40 relative cursor-default py-1 px-1"
-                        whileHover="hover"
-                        variants={{
-                          hover: {
-                            color: "rgba(62, 43, 38, 0.9)",
-                            // REMOVED letterSpacing to prevent layout shift/glitch
-                            transition: { duration: 0.3, ease: "easeOut" }
-                          }
-                        }}
-                      >
-                        {client.name}
-                        {/* Underline Interaction */}
-                        <motion.span
-                          className="absolute bottom-0 left-0 w-full h-[1px] bg-dark-choc/80 origin-center"
-                          variants={{
-                            hover: { scaleX: 1, opacity: 1 }
-                          }}
-                          initial={{ scaleX: 0, opacity: 0 }}
-                          transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
-                        />
-                      </motion.span>
-                    </div>
-                  </motion.div>
-                ))}
-              </div>
-            </div>
-          </section>
-        </SectionReveal>
-      )}
+      <SkewedClients
+        clients={clients}
+        label={homepageContent.clientsLabel}
+      />
 
       {/* ================= EXPERIENCE ================= */}
       <SectionReveal>
@@ -811,7 +681,11 @@ export default function Home() {
 
 
       {/* ================= TESTIMONIALS SLIDER ================= */}
-      <Testimonials />
+      <TestimonialsSection
+        testimonials={testimonials}
+        label={homepageContent.testimonialsLabel}
+        heading={homepageContent.testimonialsHeading}
+      />
 
       <SectionReveal>
         <section className="section-padding bg-earl-gray relative overflow-hidden">

@@ -210,7 +210,7 @@ export default function Contact() {
         reset();
       } else {
         setSubmitStatus("error");
-        setErrorMessage(result.error || "Something went wrong. Please try again.");
+        setErrorMessage(result.message || "Something went wrong. Please try again.");
       }
     });
   };
