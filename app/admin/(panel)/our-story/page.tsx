@@ -137,236 +137,245 @@ export default function OurStoryPage() {
   }
 
   return (
-    <div className="space-y-6 max-w-7xl mx-auto">
-      {/* Header Section */}
-      <div className="bg-white rounded-2xl shadow-sm border border-dark-choc/10 p-5 sm:p-6 mb-8 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-6">
-        <div>
-          <h1 className="text-2xl sm:text-3xl font-bold text-dark-choc mb-2">Our Story Management</h1>
-          <p className="text-dark-choc/60 text-sm sm:text-base">Control the narrative and brand statistics.</p>
-        </div>
-        <button
-          onClick={handleSave}
-          disabled={saving}
-          className="w-full sm:w-auto flex items-center justify-center gap-2 bg-dark-choc text-white px-8 py-3 rounded-xl hover:bg-dark-choc/90 transition-all shadow-sm active:scale-95 disabled:opacity-50 font-bold"
-        >
-          {saving ? <Loader2 className="w-5 h-5 animate-spin" /> : <Save className="w-5 h-5" />}
-          Save Changes
-        </button>
-      </div>
-
-      <div className="space-y-6 pb-12">
-        {/* Hero Section */}
-        <div className="bg-white rounded-2xl shadow-sm border border-dark-choc/10 overflow-hidden">
-          <div className="p-6 border-b border-dark-choc/5 bg-earl-gray/10">
-            <h2 className="text-lg font-bold text-dark-choc flex items-center gap-2">
-              <Sparkles className="w-5 h-5 text-electric-blue" />
-              Hero Narrative
-            </h2>
-          </div>
-          <div className="p-6 grid grid-cols-1 md:grid-cols-2 gap-8">
-            <div className="space-y-6">
-              <div>
-                <label className="block text-xs font-black uppercase tracking-widest text-dark-choc/40 mb-3 ml-1">Main Headline</label>
-                <input
-                  type="text"
-                  value={formData.hero.headline}
-                  onChange={e => setFormData({ ...formData, hero: { ...formData.hero, headline: e.target.value } })}
-                  className="w-full px-5 py-3.5 bg-earl-gray/20 border-0 rounded-xl focus:bg-white focus:ring-4 focus:ring-electric-blue/5 focus:border-electric-blue outline-none transition-all font-bold text-dark-choc text-lg"
-                  placeholder="e.g. Crafted for Connection"
-                />
-              </div>
-              <div>
-                <label className="block text-xs font-black uppercase tracking-widest text-dark-choc/40 mb-3 ml-1">Subheadline</label>
-                <input
-                  type="text"
-                  value={formData.hero.subheadline}
-                  onChange={e => setFormData({ ...formData, hero: { ...formData.hero, subheadline: e.target.value } })}
-                  className="w-full px-5 py-3.5 bg-earl-gray/20 border-0 rounded-xl focus:bg-white focus:ring-4 focus:ring-electric-blue/5 focus:border-electric-blue outline-none transition-all font-bold text-dark-choc"
-                  placeholder="Supporting tagline..."
-                />
-              </div>
-              <div>
-                <label className="block text-xs font-black uppercase tracking-widest text-dark-choc/40 mb-3 ml-1">Narrative Description</label>
-                <textarea
-                  value={formData.hero.description}
-                  onChange={e => setFormData({ ...formData, hero: { ...formData.hero, description: e.target.value } })}
-                  className="w-full px-5 py-3.5 bg-earl-gray/20 border-0 rounded-xl focus:bg-white focus:ring-4 focus:ring-electric-blue/5 focus:border-electric-blue outline-none transition-all font-bold text-dark-choc h-48 resize-none"
-                  placeholder="Type the full story here..."
-                />
-              </div>
-            </div>
+    <div className="min-h-screen pb-12">
+      <div className="max-w-7xl mx-auto space-y-6">
+        {/* Header Section */}
+        <div className="bg-white rounded-3xl shadow-sm border border-dark-choc/10 p-6 sm:p-10 mb-8">
+          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-6">
             <div>
-              <MediaSelector
-                type="image"
-                value={formData.hero.image}
-                onChange={img => setFormData({ ...formData, hero: { ...formData.hero, image: img } })}
-                label="Hero Featured Image"
-              />
+              <h1 className="text-3xl font-black text-dark-choc tracking-tight">Our Story</h1>
+              <p className="text-dark-choc/50 font-medium">Control the narrative, team identity, and brand legacy.</p>
             </div>
+            <button
+              onClick={handleSave}
+              disabled={saving}
+              className="flex items-center justify-center gap-3 bg-dark-choc text-white px-10 py-4 rounded-2xl hover:bg-dark-choc/90 transition-all font-black shadow-xl shadow-dark-choc/20 active:scale-95 disabled:opacity-50"
+            >
+              {saving ? <Loader2 className="w-5 h-5 animate-spin" /> : <Save className="w-5 h-5" />}
+              Save Changes
+            </button>
           </div>
         </div>
 
-        {/* Who We Are Labels */}
-        <div className="bg-white rounded-2xl shadow-sm border border-dark-choc/10 overflow-hidden">
-          <div className="p-6 border-b border-dark-choc/5 bg-earl-gray/10">
-            <h2 className="text-lg font-bold text-dark-choc flex items-center gap-2">
-              <User className="w-5 h-5 text-electric-blue" />
-              "Who We Are" Labels
-            </h2>
-          </div>
-          <div className="p-6 grid grid-cols-1 md:grid-cols-3 gap-6">
-            <div>
-              <label className="block text-xs font-black uppercase tracking-widest text-dark-choc/40 mb-3 ml-1">Section Eyebrow</label>
-              <input
-                type="text"
-                value={formData.ourStoryAdditional.whoWeAreLabel}
-                onChange={e => setFormData({ ...formData, ourStoryAdditional: { ...formData.ourStoryAdditional, whoWeAreLabel: e.target.value } })}
-                className="w-full px-5 py-3.5 bg-earl-gray/20 border-0 rounded-xl focus:bg-white focus:ring-4 focus:ring-electric-blue/5 focus:border-electric-blue outline-none transition-all font-bold text-dark-choc"
-              />
+        <div className="space-y-8">
+          {/* Hero Section */}
+          <div className="bg-white rounded-3xl shadow-xl border border-dark-choc/10 overflow-hidden">
+            <div className="p-8 border-b border-dark-choc/5 bg-earl-gray/10">
+              <h2 className="text-lg font-black text-dark-choc flex items-center gap-3 uppercase tracking-widest text-sm">
+                <Sparkles className="w-5 h-5 text-electric-blue" />
+                Hero Narrative
+              </h2>
             </div>
-            <div className="md:col-span-2">
-              <label className="block text-xs font-black uppercase tracking-widest text-dark-choc/40 mb-3 ml-1">Additional Brand Paragraph</label>
-              <textarea
-                value={formData.ourStoryAdditional.additionalParagraph}
-                onChange={e => setFormData({ ...formData, ourStoryAdditional: { ...formData.ourStoryAdditional, additionalParagraph: e.target.value } })}
-                className="w-full px-5 py-3.5 bg-earl-gray/20 border-0 rounded-xl focus:bg-white focus:ring-4 focus:ring-electric-blue/5 focus:border-electric-blue outline-none transition-all font-bold text-dark-choc h-24 resize-none"
-              />
-            </div>
-          </div>
-        </div>
-
-        {/* Purpose Section */}
-        <div className="bg-white rounded-2xl shadow-sm border border-dark-choc/10 overflow-hidden">
-          <div className="p-6 border-b border-dark-choc/5 bg-earl-gray/10">
-            <h2 className="text-lg font-bold text-dark-choc flex items-center gap-2">
-              <Heart className="w-5 h-5 text-electric-blue" />
-              Purpose & Statistics
-            </h2>
-          </div>
-          <div className="p-6">
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-8">
+            <div className="p-8 grid grid-cols-1 lg:grid-cols-2 gap-10">
               <div className="space-y-6">
                 <div>
-                  <label className="block text-xs font-black uppercase tracking-widest text-dark-choc/40 mb-3 ml-1">Purpose Eyebrow</label>
+                  <label className="block text-[10px] font-black uppercase tracking-widest text-dark-choc/40 mb-2 ml-1">Main Headline</label>
                   <input
                     type="text"
-                    value={formData.purpose.eyebrow}
-                    onChange={e => setFormData({ ...formData, purpose: { ...formData.purpose, eyebrow: e.target.value } })}
-                    className="w-full px-5 py-3.5 bg-earl-gray/20 border-0 rounded-xl focus:bg-white focus:ring-4 focus:ring-electric-blue/5 focus:border-electric-blue outline-none transition-all font-bold text-dark-choc"
+                    value={formData.hero.headline}
+                    onChange={e => setFormData({ ...formData, hero: { ...formData.hero, headline: e.target.value } })}
+                    className="w-full px-5 py-4 bg-earl-gray/20 border-0 rounded-2xl focus:bg-white focus:ring-4 focus:ring-electric-blue/5 focus:border-electric-blue outline-none transition-all font-black text-dark-choc text-xl"
                   />
                 </div>
                 <div>
-                  <label className="block text-xs font-black uppercase tracking-widest text-dark-choc/40 mb-3 ml-1">Purpose Title</label>
+                  <label className="block text-[10px] font-black uppercase tracking-widest text-dark-choc/40 mb-2 ml-1">Subheadline</label>
                   <input
                     type="text"
-                    value={formData.purpose.title}
-                    onChange={e => setFormData({ ...formData, purpose: { ...formData.purpose, title: e.target.value } })}
-                    className="w-full px-5 py-3.5 bg-earl-gray/20 border-0 rounded-xl focus:bg-white focus:ring-4 focus:ring-electric-blue/5 focus:border-electric-blue outline-none transition-all font-bold text-dark-choc text-lg"
+                    value={formData.hero.subheadline}
+                    onChange={e => setFormData({ ...formData, hero: { ...formData.hero, subheadline: e.target.value } })}
+                    className="w-full px-5 py-4 bg-earl-gray/20 border-0 rounded-2xl focus:bg-white focus:ring-4 focus:ring-electric-blue/5 focus:border-electric-blue outline-none transition-all font-bold text-dark-choc"
+                  />
+                </div>
+                <div>
+                  <label className="block text-[10px] font-black uppercase tracking-widest text-dark-choc/40 mb-2 ml-1">Narrative Description</label>
+                  <textarea
+                    rows={6}
+                    value={formData.hero.description}
+                    onChange={e => setFormData({ ...formData, hero: { ...formData.hero, description: e.target.value } })}
+                    className="w-full px-5 py-4 bg-earl-gray/20 border-0 rounded-2xl focus:bg-white focus:ring-4 focus:ring-electric-blue/5 focus:border-electric-blue outline-none transition-all font-medium text-dark-choc resize-none"
                   />
                 </div>
               </div>
-              <div>
-                <label className="block text-xs font-black uppercase tracking-widest text-dark-choc/40 mb-3 ml-1">Detailed Description</label>
-                <textarea
-                  value={formData.purpose.description}
-                  onChange={e => setFormData({ ...formData, purpose: { ...formData.purpose, description: e.target.value } })}
-                  className="w-full px-5 py-3.5 bg-earl-gray/20 border-0 rounded-xl focus:bg-white focus:ring-4 focus:ring-electric-blue/5 focus:border-electric-blue outline-none transition-all font-bold text-dark-choc h-40 resize-none"
+              <div className="space-y-6">
+                <div className="flex items-center gap-3 mb-2">
+                  <div className="w-1.5 h-6 bg-electric-blue rounded-full" />
+                  <h3 className="font-black text-dark-choc uppercase tracking-widest text-sm">Visual Identity</h3>
+                </div>
+                <MediaSelector
+                  type="image"
+                  value={formData.hero.image}
+                  onChange={img => setFormData({ ...formData, hero: { ...formData.hero, image: img } })}
+                  label="Hero Featured Image"
                 />
               </div>
             </div>
-
-            <div className="space-y-6">
-              <div className="flex items-center justify-between px-2">
-                <h3 className="text-xs font-black uppercase tracking-widest text-dark-choc/40">Stats & Accomplishments</h3>
-                <button
-                  onClick={addDetail}
-                  className="flex items-center gap-2 text-electric-blue hover:text-dark-choc transition-colors font-black text-xs uppercase tracking-[0.2em]"
-                >
-                  <Plus className="w-4 h-4" /> Add Stat
-                </button>
-              </div>
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                {formData.purpose.details.map((detail, idx) => (
-                  <div key={idx} className="flex items-center gap-4 bg-earl-gray/10 p-5 rounded-2xl border border-dark-choc/5 group transition-all hover:bg-white hover:shadow-md">
-                    <div className="flex-1 space-y-1">
-                      <input
-                        type="text"
-                        value={detail.label}
-                        onChange={e => updateDetail(idx, 'label', e.target.value)}
-                        placeholder="Label"
-                        className="w-full bg-transparent border-0 outline-none font-bold text-dark-choc py-1 text-sm"
-                      />
-                      <input
-                        type="text"
-                        value={detail.value}
-                        onChange={e => updateDetail(idx, 'value', e.target.value)}
-                        placeholder="Value"
-                        className="w-full bg-transparent border-0 outline-none font-black text-electric-blue py-1"
-                      />
-                    </div>
-                    <button
-                      onClick={() => removeDetail(idx)}
-                      className="p-2.5 text-dark-choc/20 hover:text-red-500 hover:bg-red-50 rounded-xl transition-all opacity-0 group-hover:opacity-100"
-                    >
-                      <Trash2 className="w-4 h-4" />
-                    </button>
-                  </div>
-                ))}
-              </div>
-            </div>
           </div>
-        </div>
 
-        {/* Philosophy Section */}
-        <div className="bg-white rounded-2xl shadow-sm border border-dark-choc/10 overflow-hidden">
-          <div className="p-6 border-b border-dark-choc/5 bg-earl-gray/10">
-            <div className="flex items-center justify-between">
-              <h2 className="text-lg font-bold text-dark-choc flex items-center gap-2">
-                <FileText className="w-5 h-5 text-electric-blue" />
-                Philosophy Cards
+          {/* Who We Are Labels */}
+          <div className="bg-white rounded-3xl shadow-xl border border-dark-choc/10 overflow-hidden">
+            <div className="p-8 border-b border-dark-choc/5 bg-earl-gray/10">
+              <h2 className="text-lg font-black text-dark-choc flex items-center gap-3 uppercase tracking-widest text-sm">
+                <User className="w-5 h-5 text-electric-blue" />
+                "Who We Are" Labels
               </h2>
-              <button
-                onClick={() => setFormData({ ...formData, philosophyCards: [...formData.philosophyCards, { title: '', description: '', icon: '', order: formData.philosophyCards.length }] })}
-                className="flex items-center gap-2 text-electric-blue hover:text-dark-choc transition-colors font-black text-xs uppercase tracking-[0.2em]"
-              >
-                <Plus className="w-4 h-4" /> Add Card
-              </button>
+            </div>
+            <div className="p-8 grid grid-cols-1 md:grid-cols-3 gap-8">
+              <div className="md:col-span-1">
+                <label className="block text-[10px] font-black uppercase tracking-widest text-dark-choc/40 mb-2 ml-1">Section Eyebrow</label>
+                <input
+                  type="text"
+                  value={formData.ourStoryAdditional.whoWeAreLabel}
+                  onChange={e => setFormData({ ...formData, ourStoryAdditional: { ...formData.ourStoryAdditional, whoWeAreLabel: e.target.value } })}
+                  className="w-full px-5 py-4 bg-earl-gray/20 border-0 rounded-2xl focus:bg-white focus:ring-4 focus:ring-electric-blue/5 focus:border-electric-blue outline-none transition-all font-black text-dark-choc"
+                />
+              </div>
+              <div className="md:col-span-2">
+                <label className="block text-[10px] font-black uppercase tracking-widest text-dark-choc/40 mb-2 ml-1">Additional Brand Paragraph</label>
+                <textarea
+                  rows={3}
+                  value={formData.ourStoryAdditional.additionalParagraph}
+                  onChange={e => setFormData({ ...formData, ourStoryAdditional: { ...formData.ourStoryAdditional, additionalParagraph: e.target.value } })}
+                  className="w-full px-5 py-4 bg-earl-gray/20 border-0 rounded-2xl focus:bg-white focus:ring-4 focus:ring-electric-blue/5 focus:border-electric-blue outline-none transition-all font-medium text-dark-choc resize-none"
+                />
+              </div>
             </div>
           </div>
-          <div className="p-6 grid grid-cols-1 md:grid-cols-2 gap-6">
-            {formData.philosophyCards.map((card, idx) => (
-              <div key={idx} className="p-6 bg-earl-gray/10 rounded-2xl border border-dark-choc/5 relative group transition-all hover:bg-white hover:shadow-lg">
-                <button
-                  onClick={() => setFormData({ ...formData, philosophyCards: formData.philosophyCards.filter((_, i) => i !== idx) })}
-                  className="absolute top-4 right-4 p-2.5 text-dark-choc/20 hover:text-red-500 hover:bg-red-50 rounded-xl transition-all opacity-0 group-hover:opacity-100"
-                >
-                  <Trash2 className="w-4 h-4" />
-                </button>
-                <div className="space-y-4">
-                  <input
-                    type="text"
-                    value={card.title}
-                    onChange={e => {
-                      const updated = [...formData.philosophyCards]
-                      updated[idx].title = e.target.value
-                      setFormData({ ...formData, philosophyCards: updated })
-                    }}
-                    placeholder="Core Principle Title"
-                    className="w-full bg-transparent border-0 outline-none font-black text-dark-choc py-2 text-lg focus:text-electric-blue transition-colors"
-                  />
+
+          {/* Purpose Section */}
+          <div className="bg-white rounded-3xl shadow-xl border border-dark-choc/10 overflow-hidden">
+            <div className="p-8 border-b border-dark-choc/5 bg-earl-gray/10">
+              <h2 className="text-lg font-black text-dark-choc flex items-center gap-3 uppercase tracking-widest text-sm">
+                <Heart className="w-5 h-5 text-electric-blue" />
+                Purpose & Statistics
+              </h2>
+            </div>
+            <div className="p-8 space-y-10">
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-10">
+                <div className="space-y-6">
+                  <div>
+                    <label className="block text-[10px] font-black uppercase tracking-widest text-dark-choc/40 mb-2 ml-1">Purpose Eyebrow</label>
+                    <input
+                      type="text"
+                      value={formData.purpose.eyebrow}
+                      onChange={e => setFormData({ ...formData, purpose: { ...formData.purpose, eyebrow: e.target.value } })}
+                      className="w-full px-5 py-4 bg-earl-gray/20 border-0 rounded-2xl focus:bg-white focus:ring-4 focus:ring-electric-blue/5 focus:border-electric-blue outline-none transition-all font-black text-dark-choc"
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-[10px] font-black uppercase tracking-widest text-dark-choc/40 mb-2 ml-1">Purpose Title</label>
+                    <input
+                      type="text"
+                      value={formData.purpose.title}
+                      onChange={e => setFormData({ ...formData, purpose: { ...formData.purpose, title: e.target.value } })}
+                      className="w-full px-5 py-4 bg-earl-gray/20 border-0 rounded-2xl focus:bg-white focus:ring-4 focus:ring-electric-blue/5 focus:border-electric-blue outline-none transition-all font-black text-dark-choc text-xl"
+                    />
+                  </div>
+                </div>
+                <div>
+                  <label className="block text-[10px] font-black uppercase tracking-widest text-dark-choc/40 mb-2 ml-1">Detailed Description</label>
                   <textarea
-                    value={card.description}
-                    onChange={e => {
-                      const updated = [...formData.philosophyCards]
-                      updated[idx].description = e.target.value
-                      setFormData({ ...formData, philosophyCards: updated })
-                    }}
-                    placeholder="Describe this philosophy..."
-                    className="w-full bg-transparent border-0 outline-none font-medium h-32 resize-none text-sm text-dark-choc/60"
+                    rows={6}
+                    value={formData.purpose.description}
+                    onChange={e => setFormData({ ...formData, purpose: { ...formData.purpose, description: e.target.value } })}
+                    className="w-full px-5 py-4 bg-earl-gray/20 border-0 rounded-2xl focus:bg-white focus:ring-4 focus:ring-electric-blue/5 focus:border-electric-blue outline-none transition-all font-medium text-dark-choc resize-none"
                   />
                 </div>
               </div>
-            ))}
+
+              <div className="space-y-6">
+                <div className="flex items-center justify-between">
+                  <h3 className="text-[10px] font-black uppercase tracking-widest text-dark-choc/40 ml-1">Stats & Accomplishments</h3>
+                  <button
+                    onClick={addDetail}
+                    className="flex items-center gap-2 bg-electric-blue/10 text-electric-blue px-4 py-2 rounded-xl hover:bg-electric-blue hover:text-white transition-all font-black text-[10px] uppercase tracking-widest shadow-lg shadow-electric-blue/10 active:scale-95"
+                  >
+                    <Plus className="w-4 h-4" /> Add Stat
+                  </button>
+                </div>
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                  {formData.purpose.details.map((detail, idx) => (
+                    <div key={idx} className="flex items-center gap-4 bg-earl-gray/20 p-6 rounded-2xl border border-dark-choc/5 group transition-all hover:bg-white hover:shadow-xl hover:border-dark-choc/10">
+                      <div className="flex-1 space-y-2">
+                        <input
+                          type="text"
+                          value={detail.label}
+                          onChange={e => updateDetail(idx, 'label', e.target.value)}
+                          placeholder="Label (e.g. Clients)"
+                          className="w-full bg-transparent border-0 outline-none font-bold text-dark-choc/40 py-1 text-[10px] uppercase tracking-widest"
+                        />
+                        <input
+                          type="text"
+                          value={detail.value}
+                          onChange={e => updateDetail(idx, 'value', e.target.value)}
+                          placeholder="Value (e.g. 100+)"
+                          className="w-full bg-transparent border-0 outline-none font-black text-dark-choc py-1 text-xl"
+                        />
+                      </div>
+                      <button
+                        onClick={() => removeDetail(idx)}
+                        className="p-3 text-dark-choc/20 hover:text-red-500 hover:bg-red-50 rounded-xl transition-all"
+                      >
+                        <Trash2 className="w-5 h-5" />
+                      </button>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* Philosophy Section */}
+          <div className="bg-white rounded-3xl shadow-xl border border-dark-choc/10 overflow-hidden">
+            <div className="p-8 border-b border-dark-choc/5 bg-earl-gray/10">
+              <div className="flex items-center justify-between">
+                <h2 className="text-lg font-black text-dark-choc flex items-center gap-3 uppercase tracking-widest text-sm">
+                  <FileText className="w-5 h-5 text-electric-blue" />
+                  Philosophy Cards
+                </h2>
+                <button
+                  onClick={() => setFormData({ ...formData, philosophyCards: [...formData.philosophyCards, { title: '', description: '', icon: '', order: formData.philosophyCards.length }] })}
+                  className="flex items-center gap-2 bg-electric-blue/10 text-electric-blue px-4 py-2 rounded-xl hover:bg-electric-blue hover:text-white transition-all font-black text-[10px] uppercase tracking-widest shadow-lg shadow-electric-blue/10 active:scale-95"
+                >
+                  <Plus className="w-4 h-4" /> Add Logic
+                </button>
+              </div>
+            </div>
+            <div className="p-8 grid grid-cols-1 md:grid-cols-2 gap-8">
+              {formData.philosophyCards.map((card, idx) => (
+                <div key={idx} className="p-8 bg-earl-gray/20 rounded-3xl border border-dark-choc/5 relative group transition-all hover:bg-white hover:shadow-2xl hover:border-dark-choc/10">
+                  <button
+                    onClick={() => setFormData({ ...formData, philosophyCards: formData.philosophyCards.filter((_, i) => i !== idx) })}
+                    className="absolute top-6 right-6 p-3 text-dark-choc/20 hover:text-red-500 hover:bg-red-50 rounded-xl transition-all"
+                  >
+                    <Trash2 className="w-5 h-5" />
+                  </button>
+                  <div className="space-y-4">
+                    <input
+                      type="text"
+                      value={card.title}
+                      onChange={e => {
+                        const updated = [...formData.philosophyCards]
+                        updated[idx].title = e.target.value
+                        setFormData({ ...formData, philosophyCards: updated })
+                      }}
+                      placeholder="Core Principle Title"
+                      className="w-full bg-transparent border-0 outline-none font-black text-dark-choc py-2 text-xl focus:text-electric-blue transition-colors"
+                    />
+                    <textarea
+                      rows={4}
+                      value={card.description}
+                      onChange={e => {
+                        const updated = [...formData.philosophyCards]
+                        updated[idx].description = e.target.value
+                        setFormData({ ...formData, philosophyCards: updated })
+                      }}
+                      placeholder="Describe this philosophy..."
+                      className="w-full bg-transparent border-0 outline-none font-medium text-sm text-dark-choc/60 resize-none"
+                    />
+                  </div>
+                </div>
+              ))}
+            </div>
           </div>
         </div>
       </div>

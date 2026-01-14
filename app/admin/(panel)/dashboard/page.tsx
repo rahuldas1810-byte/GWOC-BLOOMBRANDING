@@ -61,27 +61,27 @@ export default function AdminDashboard() {
   }
 
   return (
-    <div className="space-y-8 max-w-7xl mx-auto">
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+    <div className="space-y-10 max-w-7xl mx-auto pb-12">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-6">
         <div>
-          <h1 className="text-3xl font-bold text-dark-choc mb-2">Dashboard</h1>
-          <p className="text-dark-choc/60 text-base">Welcome to the Bloom Branding Command Center.</p>
+          <h1 className="text-4xl font-black text-dark-choc mb-2 tracking-tight">Dashboard</h1>
+          <p className="text-dark-choc/50 font-medium">Welcome to the Bloom Branding Command Center.</p>
         </div>
       </div>
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
         {statCards.map((stat) => {
           const Icon = stat.icon
           const CardContent = (
-            <div className="bg-white rounded-2xl shadow-sm hover:shadow-md transition-all p-6 border border-dark-choc/10 group cursor-pointer h-full relative overflow-hidden">
-              <div className="absolute top-0 right-0 w-24 h-24 bg-gradient-to-br from-dark-choc/5 to-transparent rounded-bl-full -mr-12 -mt-12 transition-all group-hover:scale-110" />
+            <div className="bg-white rounded-[2.5rem] shadow-xl shadow-dark-choc/5 hover:shadow-2xl hover:shadow-dark-choc/10 transition-all p-8 border border-dark-choc/5 group cursor-pointer h-full relative overflow-hidden active:scale-95">
+              <div className="absolute top-0 right-0 w-32 h-32 bg-gradient-to-br from-dark-choc/5 to-transparent rounded-bl-full -mr-12 -mt-12 transition-all group-hover:scale-110" />
               <div className="flex items-center justify-between relative z-10">
                 <div className="flex-1">
-                  <p className="text-dark-choc/40 text-[10px] font-black uppercase tracking-widest mb-3">{stat.label}</p>
-                  <p className="text-4xl font-black text-dark-choc">{stat.value}</p>
+                  <p className="text-dark-choc/40 text-[10px] font-black uppercase tracking-[0.2em] mb-4">{stat.label}</p>
+                  <p className="text-5xl font-black text-dark-choc tracking-tighter">{stat.value}</p>
                 </div>
-                <div className={`${stat.color} p-4 rounded-2xl group-hover:scale-110 transition-all shadow-sm`}>
-                  <Icon className="w-7 h-7 text-white" />
+                <div className={`${stat.color} p-5 rounded-3xl group-hover:rotate-6 transition-all shadow-lg shadow-black/5`}>
+                  <Icon className="w-8 h-8 text-white" />
                 </div>
               </div>
             </div>
@@ -107,47 +107,47 @@ export default function AdminDashboard() {
         })}
       </div>
 
-      <div className="bg-white rounded-2xl shadow-sm p-6 sm:p-8 border border-dark-choc/10">
-        <h2 className="text-xl font-bold text-dark-choc mb-8 flex items-center gap-2">
-          <FileText className="w-6 h-6 text-electric-blue" />
+      <div className="bg-white rounded-[3rem] shadow-xl shadow-dark-choc/5 p-8 sm:p-12 border border-dark-choc/10">
+        <h2 className="text-2xl font-black text-dark-choc mb-10 flex items-center gap-4">
+          <div className="w-2 h-8 bg-electric-blue rounded-full" />
           Quick Actions
         </h2>
-        <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
+        <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-6 sm:gap-8">
           <Link
             href="/admin/brands/new"
-            className="p-6 bg-earl-gray/10 border border-dark-choc/5 rounded-2xl hover:border-electric-blue hover:bg-white hover:shadow-lg transition-all text-center group"
+            className="p-8 bg-earl-gray/10 border border-dark-choc/5 rounded-[2rem] hover:border-electric-blue hover:bg-white hover:shadow-2xl transition-all text-center group active:scale-95"
           >
-            <div className="w-14 h-14 bg-white rounded-xl flex items-center justify-center mx-auto mb-4 shadow-sm border border-dark-choc/5 group-hover:scale-110 transition-transform">
-              <Plus className="w-8 h-8 text-electric-blue" />
+            <div className="w-16 h-16 bg-white rounded-2xl flex items-center justify-center mx-auto mb-5 shadow-inner border border-dark-choc/5 group-hover:scale-110 transition-transform">
+              <Plus className="w-10 h-10 text-electric-blue" />
             </div>
-            <span className="text-dark-choc text-sm font-bold block">Add Brand</span>
+            <span className="text-dark-choc text-xs font-black uppercase tracking-widest block">Add Brand</span>
           </Link>
           <Link
             href="/admin/testimonials/new"
-            className="p-6 bg-earl-gray/10 border border-dark-choc/5 rounded-2xl hover:border-electric-blue hover:bg-white hover:shadow-lg transition-all text-center group"
+            className="p-8 bg-earl-gray/10 border border-dark-choc/5 rounded-[2rem] hover:border-electric-blue hover:bg-white hover:shadow-2xl transition-all text-center group active:scale-95"
           >
-            <div className="w-14 h-14 bg-white rounded-xl flex items-center justify-center mx-auto mb-4 shadow-sm border border-dark-choc/5 group-hover:scale-110 transition-transform">
-              <MessageSquare className="w-8 h-8 text-electric-blue" />
+            <div className="w-16 h-16 bg-white rounded-2xl flex items-center justify-center mx-auto mb-5 shadow-inner border border-dark-choc/5 group-hover:scale-110 transition-transform">
+              <MessageSquare className="w-10 h-10 text-electric-blue" />
             </div>
-            <span className="text-dark-choc text-sm font-bold block">Add Testimonial</span>
+            <span className="text-dark-choc text-xs font-black uppercase tracking-widest block">Add Testimonial</span>
           </Link>
           <Link
             href="/admin/services/new"
-            className="p-6 bg-earl-gray/10 border border-dark-choc/5 rounded-2xl hover:border-electric-blue hover:bg-white hover:shadow-lg transition-all text-center group"
+            className="p-8 bg-earl-gray/10 border border-dark-choc/5 rounded-[2rem] hover:border-electric-blue hover:bg-white hover:shadow-2xl transition-all text-center group active:scale-95"
           >
-            <div className="w-14 h-14 bg-white rounded-xl flex items-center justify-center mx-auto mb-4 shadow-sm border border-dark-choc/5 group-hover:scale-110 transition-transform">
-              <Briefcase className="w-8 h-8 text-electric-blue" />
+            <div className="w-16 h-16 bg-white rounded-2xl flex items-center justify-center mx-auto mb-5 shadow-inner border border-dark-choc/5 group-hover:scale-110 transition-transform">
+              <Briefcase className="w-10 h-10 text-electric-blue" />
             </div>
-            <span className="text-dark-choc text-sm font-bold block">Add Service</span>
+            <span className="text-dark-choc text-xs font-black uppercase tracking-widest block">Add Service</span>
           </Link>
           <Link
             href="/admin/media"
-            className="p-6 bg-earl-gray/10 border border-dark-choc/5 rounded-2xl hover:border-electric-blue hover:bg-white hover:shadow-lg transition-all text-center group"
+            className="p-8 bg-earl-gray/10 border border-dark-choc/5 rounded-[2rem] hover:border-electric-blue hover:bg-white hover:shadow-2xl transition-all text-center group active:scale-95"
           >
-            <div className="w-14 h-14 bg-white rounded-xl flex items-center justify-center mx-auto mb-4 shadow-sm border border-dark-choc/5 group-hover:scale-110 transition-transform">
-              <Film className="w-8 h-8 text-electric-blue" />
+            <div className="w-16 h-16 bg-white rounded-2xl flex items-center justify-center mx-auto mb-5 shadow-inner border border-dark-choc/5 group-hover:scale-110 transition-transform">
+              <Film className="w-10 h-10 text-electric-blue" />
             </div>
-            <span className="text-dark-choc text-sm font-bold block">Media Hub</span>
+            <span className="text-dark-choc text-xs font-black uppercase tracking-widest block">Media Hub</span>
           </Link>
         </div>
       </div>

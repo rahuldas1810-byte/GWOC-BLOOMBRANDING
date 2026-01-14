@@ -4,7 +4,8 @@ import { useEffect, useState } from 'react'
 import { api } from '@/lib/api'
 import {
   Save, Loader2, Plus, Edit, Trash2, Eye, EyeOff, Layout,
-  ImageIcon, Quote, BarChart3, Settings2, Video, MousePointer2
+  ImageIcon, Quote, BarChart3, Settings2, Video, MousePointer2,
+  Zap, Building2, MoveVertical
 } from 'lucide-react'
 import MediaSelector from '@/components/admin/MediaSelector'
 import Link from 'next/link'
@@ -169,276 +170,299 @@ export default function HomepagePage() {
   }
 
   return (
-    <div className="space-y-6 max-w-7xl mx-auto">
-      {/* Header Section */}
-      <div className="bg-white rounded-2xl shadow-sm border border-dark-choc/10 p-5 sm:p-6 mb-8">
-        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-6">
-          <div>
-            <h1 className="text-2xl sm:text-3xl font-bold text-dark-choc mb-2">Homepage Management</h1>
-            <p className="text-dark-choc/60 text-sm sm:text-base">Control hero copy, partner logos, and section flow.</p>
+    <div className="min-h-screen pb-12">
+      <div className="max-w-7xl mx-auto">
+        <div className="flex flex-col gap-6 mb-8">
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+            <div>
+              <h1 className="text-3xl font-black text-dark-choc tracking-tight">Homepage</h1>
+              <p className="text-dark-choc/50 font-medium">Control hero content, site-wide stats, and section visibility.</p>
+            </div>
+            <div className="flex gap-2">
+              {activeTab === 'brands' && (
+                <Link href="/admin/brands/new" className="flex items-center gap-2 bg-electric-blue text-white px-6 py-3 rounded-2xl hover:bg-electric-blue/90 transition-all font-black shadow-lg shadow-electric-blue/20 active:scale-95">
+                  <Plus className="w-5 h-5" />
+                  Add Brand
+                </Link>
+              )}
+            </div>
           </div>
 
-          <div className="flex flex-row items-center gap-3 w-full sm:w-auto">
-            <button
-              onClick={handleSave}
-              disabled={saving}
-              className="flex-1 sm:flex-none flex items-center justify-center gap-2 bg-dark-choc text-white px-6 py-2.5 rounded-xl hover:bg-dark-choc/90 transition-all shadow-sm active:scale-95 disabled:opacity-50 font-medium"
-            >
-              {saving ? <Loader2 className="w-4 h-4 animate-spin" /> : <Save className="w-4 h-4" />}
-              Save Changes
-            </button>
-            {activeTab === 'brands' && (
-              <Link
-                href="/admin/brands/new"
-                className="flex-1 sm:flex-none flex items-center justify-center gap-2 bg-electric-blue text-white px-6 py-2.5 rounded-xl hover:bg-electric-blue/90 transition-all shadow-sm active:scale-95 font-medium whitespace-nowrap"
+          {/* Premium Tabs */}
+          <div className="flex bg-white/50 backdrop-blur-md p-1.5 rounded-[2rem] border border-dark-choc/10 overflow-x-auto no-scrollbar">
+            {[
+              { id: 'hero', label: 'Hero', icon: Zap },
+              { id: 'brands', label: 'Partners', icon: Building2 },
+              { id: 'stats', label: 'Statistics', icon: BarChart3 },
+              { id: 'visibility', label: 'Layout', icon: MoveVertical }
+            ].map((tab) => (
+              <button
+                key={tab.id}
+                onClick={() => setActiveTab(tab.id as any)}
+                className={`flex items-center gap-2.5 px-6 py-3 rounded-[1.5rem] transition-all whitespace-nowrap ${activeTab === tab.id
+                  ? 'bg-dark-choc text-white shadow-xl shadow-dark-choc/20 scale-[1.02]'
+                  : 'text-dark-choc/50 hover:text-dark-choc hover:bg-white'
+                  }`}
               >
-                <Plus className="w-5 h-5" />
-                Add Brand
-              </Link>
-            )}
+                <tab.icon className="w-4 h-4" />
+                <span className="text-sm font-bold uppercase tracking-widest leading-none">{tab.label}</span>
+              </button>
+            ))}
           </div>
         </div>
 
-        {/* Tab Navigation */}
-        <div className="flex items-center gap-1 mt-8 p-1 bg-earl-gray/30 rounded-2xl w-full sm:w-fit overflow-x-auto no-scrollbar max-w-full">
-          <button onClick={() => setActiveTab('hero')} className={`flex items-center gap-2 px-5 py-2.5 rounded-xl transition-all whitespace-nowrap ${activeTab === 'hero' ? 'bg-white text-dark-choc shadow-md' : 'text-dark-choc/50 hover:text-dark-choc hover:bg-white/50'}`}>
-            <Layout className="w-4 h-4" />
-            <span className="text-xs font-black uppercase tracking-widest">Hero</span>
-          </button>
-          <button onClick={() => setActiveTab('brands')} className={`flex items-center gap-2 px-5 py-2.5 rounded-xl transition-all whitespace-nowrap ${activeTab === 'brands' ? 'bg-white text-dark-choc shadow-md' : 'text-dark-choc/50 hover:text-dark-choc hover:bg-white/50'}`}>
-            <ImageIcon className="w-4 h-4" />
-            <span className="text-xs font-black uppercase tracking-widest">Partners</span>
-          </button>
-          <button onClick={() => setActiveTab('testimonials')} className={`flex items-center gap-2 px-5 py-2.5 rounded-xl transition-all whitespace-nowrap ${activeTab === 'testimonials' ? 'bg-white text-dark-choc shadow-md' : 'text-dark-choc/50 hover:text-dark-choc hover:bg-white/50'}`}>
-            <Quote className="w-4 h-4" />
-            <span className="text-xs font-black uppercase tracking-widest">Testimonials</span>
-          </button>
-          <button onClick={() => setActiveTab('stats')} className={`flex items-center gap-2 px-5 py-2.5 rounded-xl transition-all whitespace-nowrap ${activeTab === 'stats' ? 'bg-white text-dark-choc shadow-md' : 'text-dark-choc/50 hover:text-dark-choc hover:bg-white/50'}`}>
-            <BarChart3 className="w-4 h-4" />
-            <span className="text-xs font-black uppercase tracking-widest">Stats</span>
-          </button>
-          <button onClick={() => setActiveTab('visibility')} className={`flex items-center gap-2 px-5 py-2.5 rounded-xl transition-all whitespace-nowrap ${activeTab === 'visibility' ? 'bg-white text-dark-choc shadow-md' : 'text-dark-choc/50 hover:text-dark-choc hover:bg-white/50'}`}>
-            <Settings2 className="w-4 h-4" />
-            <span className="text-xs font-black uppercase tracking-widest">Flow</span>
-          </button>
-        </div>
-      </div>
-
-      {/* Tab Panels */}
-      <div className="space-y-6">
-
-        {/* HERO PANEL */}
-        {activeTab === 'hero' && (
-          <div className="space-y-6 animate-in fade-in duration-300">
-            <div className="bg-white rounded-2xl shadow-sm border border-dark-choc/10 p-6">
-              <h2 className="text-xl font-bold text-dark-choc mb-6 flex items-center gap-2"><Layout className="w-5 h-5 text-electric-blue" />Hero Copy</h2>
-              <div className="space-y-4">
-                <div>
-                  <label className="block text-xs font-black uppercase tracking-widest text-dark-choc/40 mb-2">Main Headline</label>
-                  <input type="text" value={formData.heroHeadline} onChange={e => setFormData({ ...formData, heroHeadline: e.target.value })} className="w-full px-4 py-3 bg-earl-gray/20 border-0 rounded-xl outline-none font-bold text-xl" />
+        <div className="space-y-6">
+          {activeTab === 'hero' && (
+            <div className="bg-white rounded-3xl shadow-xl border border-dark-choc/10 p-6 sm:p-10 space-y-10">
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-10">
+                <div className="space-y-6">
+                  <div className="flex items-center gap-3 mb-2">
+                    <div className="w-1.5 h-6 bg-electric-blue rounded-full" />
+                    <h3 className="font-black text-dark-choc uppercase tracking-widest text-sm">Main Headlines</h3>
+                  </div>
+                  <div className="space-y-4">
+                    <div>
+                      <label className="block text-[10px] font-black uppercase tracking-widest text-dark-choc/40 mb-2 ml-1">Hero Headline</label>
+                      <input
+                        type="text"
+                        value={formData.heroHeadline}
+                        onChange={(e) => setFormData({ ...formData, heroHeadline: e.target.value })}
+                        className="w-full px-5 py-4 bg-earl-gray/20 border-0 rounded-2xl focus:bg-white focus:ring-4 focus:ring-electric-blue/5 focus:border-electric-blue outline-none transition-all font-black text-dark-choc"
+                      />
+                    </div>
+                    <div>
+                      <label className="block text-[10px] font-black uppercase tracking-widest text-dark-choc/40 mb-2 ml-1">Subheading</label>
+                      <textarea
+                        rows={3}
+                        value={formData.heroSubheading}
+                        onChange={(e) => setFormData({ ...formData, heroSubheading: e.target.value })}
+                        className="w-full px-5 py-4 bg-earl-gray/20 border-0 rounded-2xl focus:bg-white focus:ring-4 focus:ring-electric-blue/5 focus:border-electric-blue outline-none transition-all font-medium text-dark-choc resize-none"
+                      />
+                    </div>
+                    <div>
+                      <label className="block text-[10px] font-black uppercase tracking-widest text-dark-choc/40 mb-2 ml-1">Scrolling Tagline</label>
+                      <input
+                        type="text"
+                        value={formData.tagline}
+                        onChange={(e) => setFormData({ ...formData, tagline: e.target.value })}
+                        className="w-full px-5 py-4 bg-earl-gray/20 border-0 rounded-2xl focus:bg-white focus:ring-4 focus:ring-electric-blue/5 focus:border-electric-blue outline-none transition-all font-black text-dark-choc"
+                      />
+                    </div>
+                  </div>
                 </div>
-                <div>
-                  <label className="block text-xs font-black uppercase tracking-widest text-dark-choc/40 mb-2">Subheading</label>
-                  <textarea value={formData.heroSubheading} onChange={e => setFormData({ ...formData, heroSubheading: e.target.value })} className="w-full px-4 py-3 bg-earl-gray/20 border-0 rounded-xl outline-none font-medium h-24 resize-none" />
-                </div>
-                <div>
-                  <label className="block text-xs font-black uppercase tracking-widest text-dark-choc/40 mb-2">Tagline (Scrolling)</label>
-                  <input type="text" value={formData.tagline} onChange={e => setFormData({ ...formData, tagline: e.target.value })} className="w-full px-4 py-3 bg-earl-gray/20 border-0 rounded-xl outline-none font-medium" />
+
+                <div className="space-y-6">
+                  <div className="flex items-center gap-3 mb-2">
+                    <div className="w-1.5 h-6 bg-electric-blue rounded-full" />
+                    <h3 className="font-black text-dark-choc uppercase tracking-widest text-sm">Visual Identity</h3>
+                  </div>
+                  <div className="space-y-4">
+                    <MediaSelector
+                      label="Intro Video (Small Overlay)"
+                      value={formData.heroVideo}
+                      onChange={(video) => setFormData({ ...formData, heroVideo: video })}
+                      type="video"
+                    />
+                    <MediaSelector
+                      label="Background Video (Main Loop)"
+                      value={formData.backgroundVideo}
+                      onChange={(video) => setFormData({ ...formData, backgroundVideo: video })}
+                      type="video"
+                    />
+                    <MediaSelector
+                      label="Section Break Video (Lower Page)"
+                      value={formData.sectionVideo}
+                      onChange={(video) => setFormData({ ...formData, sectionVideo: video })}
+                      type="video"
+                    />
+                  </div>
                 </div>
               </div>
-            </div>
 
-            <div className="bg-white rounded-2xl shadow-sm border border-dark-choc/10 p-6">
-              <h2 className="text-xl font-bold text-dark-choc mb-6 flex items-center gap-2"><Video className="w-5 h-5 text-electric-blue" />Hero & Section Videos</h2>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-                <MediaSelector type="video" value={formData.heroVideo} onChange={v => setFormData({ ...formData, heroVideo: v })} label="Intro Video (Small Overlay)" />
-                <MediaSelector type="video" value={formData.backgroundVideo} onChange={v => setFormData({ ...formData, backgroundVideo: v })} label="Looping Background Video" />
-                <div className="md:col-span-2">
-                  <MediaSelector type="video" value={formData.sectionVideo} onChange={v => setFormData({ ...formData, sectionVideo: v })} label="Section Break Video (Middle of Page)" />
-                </div>
+              <div className="flex justify-end pt-8 border-t border-dark-choc/5">
+                <button
+                  onClick={handleSave}
+                  disabled={saving}
+                  className="flex items-center gap-3 bg-dark-choc text-white px-10 py-4 rounded-2xl hover:bg-dark-choc/90 transition-all font-black shadow-xl shadow-dark-choc/20 active:scale-95 disabled:opacity-50"
+                >
+                  {saving ? <Loader2 className="w-5 h-5 animate-spin" /> : <Save className="w-5 h-5" />}
+                  Synchronize Hero
+                </button>
               </div>
             </div>
-          </div>
-        )}
+          )}
 
-        {/* BRANDS PANEL */}
-        {activeTab === 'brands' && (
-          <div className="bg-white rounded-2xl shadow-sm border border-dark-choc/10 overflow-hidden animate-in fade-in duration-300">
-            <div className="p-6 border-b border-dark-choc/5 flex items-center justify-between">
-              <h2 className="text-lg font-bold text-dark-choc">Partner Logos Portfolio</h2>
-              <span className="text-[10px] font-black text-electric-blue uppercase bg-electric-blue/5 px-2.5 py-1 rounded-full border border-electric-blue/10 tracking-widest">{allBrands.length} Total</span>
-            </div>
-            <div className="overflow-x-auto">
-              <table className="w-full text-left border-collapse">
-                <thead className="bg-earl-gray/30 text-dark-choc/70 text-[10px] font-black uppercase tracking-[0.2em]">
-                  <tr>
-                    <th className="px-6 py-5">Brand</th>
-                    <th className="px-6 py-5">Category</th>
-                    <th className="px-6 py-5 text-center">Order</th>
-                    <th className="px-6 py-5 text-right">Actions</th>
-                  </tr>
-                </thead>
-                <tbody className="divide-y divide-dark-choc/5 text-sm">
-                  {allBrands.length > 0 ? (
-                    allBrands.map(brand => (
-                      <tr key={brand._id} className="hover:bg-earl-gray/10 group transition-colors">
-                        <td className="px-6 py-4">
-                          <div className="flex items-center gap-3 min-w-[200px]">
-                            <div className="w-10 h-10 rounded-lg bg-white border border-dark-choc/10 p-1.5 flex items-center justify-center overflow-hidden shrink-0 group-hover:scale-105 transition-transform duration-300">
-                              {brand.image?.url ? <img src={brand.image.url} className="max-w-full max-h-full object-contain" /> : <ImageIcon className="w-5 h-5 text-dark-choc/10" />}
+          {activeTab === 'brands' && (
+            <div className="bg-white rounded-3xl shadow-sm border border-dark-choc/10 overflow-hidden">
+              <div className="hidden md:block overflow-x-auto">
+                <table className="w-full text-left">
+                  <thead>
+                    <tr className="bg-earl-gray/30 border-b border-dark-choc/10">
+                      <th className="px-8 py-5 text-[10px] font-black text-dark-choc/40 uppercase tracking-[0.2em]">Partner Logo</th>
+                      <th className="px-8 py-5 text-[10px] font-black text-dark-choc/40 uppercase tracking-[0.2em] text-center">Status</th>
+                      <th className="px-8 py-5 text-[10px] font-black text-dark-choc/40 uppercase tracking-[0.2em] text-right">Actions</th>
+                    </tr>
+                  </thead>
+                  <tbody className="divide-y divide-dark-choc/5">
+                    {allBrands.map((brand) => (
+                      <tr key={brand._id} className="hover:bg-earl-gray/20 transition-colors group">
+                        <td className="px-8 py-5">
+                          <div className="flex items-center gap-4">
+                            <div className="w-20 h-12 bg-earl-gray/50 rounded-xl p-2 flex items-center justify-center border border-dark-choc/5 group-hover:scale-110 transition-transform">
+                              {brand.image?.url && (
+                                <img src={brand.image.url} alt="" className="w-full h-full object-contain filter grayscale group-hover:grayscale-0 transition-all" />
+                              )}
                             </div>
-                            <span className="font-bold text-dark-choc group-hover:text-electric-blue transition-colors line-clamp-1">{brand.name}</span>
+                            <span className="font-bold text-dark-choc/40 text-xs uppercase tracking-widest">{brand.name || 'Untitled Branding'}</span>
                           </div>
                         </td>
-                        <td className="px-6 py-4">
-                          <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-[10px] font-bold uppercase bg-dark-choc/5 text-dark-choc/70 border border-dark-choc/10">
-                            {brand.category || 'General'}
+                        <td className="px-8 py-5 text-center">
+                          <span className={`px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-widest ${brand.isActive ? 'bg-green-100 text-green-700' : 'bg-red-100 text-red-700'}`}>
+                            {brand.isActive ? 'Live' : 'Hidden'}
                           </span>
                         </td>
-                        <td className="px-6 py-4 text-center">
-                          <span className="font-mono font-bold text-dark-choc/40">{brand.order || 0}</span>
-                        </td>
-                        <td className="px-6 py-4 text-right">
+                        <td className="px-8 py-5 text-right">
                           <div className="flex items-center justify-end gap-1">
-                            <Link href={`/admin/brands/${brand._id}`} className="p-2 text-dark-choc/30 hover:text-electric-blue hover:bg-electric-blue/5 rounded-lg transition-all" title="Edit Brand">
-                              <Edit className="w-4 h-4" />
+                            <Link href={`/admin/brands/${brand._id}`} className="p-2.5 text-dark-choc/20 hover:text-electric-blue hover:bg-electric-blue/5 rounded-xl transition-all">
+                              <Edit className="w-5 h-5" />
                             </Link>
-                            <button onClick={() => handleDeleteBrand(brand._id, brand.name)} className="p-2 text-dark-choc/30 hover:text-red-500 hover:bg-red-50 rounded-lg transition-all" title="Delete">
-                              <Trash2 className="w-4 h-4" />
+                            <button onClick={() => handleDeleteBrand(brand._id, brand.name)} className="p-2.5 text-dark-choc/20 hover:text-red-500 hover:bg-red-50 rounded-xl transition-all">
+                              <Trash2 className="w-5 h-5" />
                             </button>
                           </div>
                         </td>
                       </tr>
-                    ))
-                  ) : (
-                    <tr>
-                      <td colSpan={4} className="px-6 py-12 text-center text-dark-choc/30 italic font-medium">
-                        No brands found in your portfolio.
-                      </td>
-                    </tr>
-                  )}
-                </tbody>
-              </table>
-            </div>
-          </div>
-        )}
-
-        {/* TESTIMONIALS PANEL */}
-        {activeTab === 'testimonials' && (
-          <div className="space-y-6 animate-in fade-in duration-300">
-            <div className="bg-white rounded-2xl shadow-sm border border-dark-choc/10 p-6">
-              <h2 className="text-xl font-bold text-dark-choc mb-6">Homepage Testimonials Logic</h2>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6 pb-6 border-b border-dark-choc/5 mb-6">
-                <div>
-                  <label className="block text-xs font-black uppercase tracking-widest text-dark-choc/40 mb-2">Section Eyebrow</label>
-                  <input type="text" value={formData.testimonialsLabel} onChange={e => setFormData({ ...formData, testimonialsLabel: e.target.value })} className="w-full px-4 py-3 bg-earl-gray/20 border-0 rounded-xl outline-none font-medium" />
-                </div>
-                <div>
-                  <label className="block text-xs font-black uppercase tracking-widest text-dark-choc/40 mb-2">Main Section Heading</label>
-                  <input type="text" value={formData.testimonialsHeading} onChange={e => setFormData({ ...formData, testimonialsHeading: e.target.value })} className="w-full px-4 py-3 bg-earl-gray/20 border-0 rounded-xl outline-none font-medium" />
-                </div>
+                    ))}
+                  </tbody>
+                </table>
               </div>
-              <div className="space-y-3">
-                <h3 className="text-sm font-bold text-dark-choc/60 uppercase tracking-widest">Selected Testimonials</h3>
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                  {allTestimonials.map(t => {
-                    const isSelected = formData.homepageTestimonialIds.includes(t._id)
-                    return (
-                      <div key={t._id} onClick={() => {
-                        const ids = isSelected ? formData.homepageTestimonialIds.filter(id => id !== t._id) : [...formData.homepageTestimonialIds, t._id]
-                        setFormData({ ...formData, homepageTestimonialIds: ids })
-                      }} className={`p-4 rounded-xl border-2 cursor-pointer transition-all flex items-center gap-4 ${isSelected ? 'border-electric-blue bg-electric-blue/5' : 'border-dark-choc/10 hover:border-dark-choc/30'}`}>
-                        <div className={`w-5 h-5 rounded-md border-2 flex items-center justify-center shrink-0 ${isSelected ? 'bg-electric-blue border-electric-blue' : 'border-dark-choc/20'}`}>
-                          {isSelected && <Plus className="w-3 h-3 text-white rotate-45" />}
-                        </div>
-                        <div className="min-w-0">
-                          <p className="font-bold text-dark-choc truncate text-sm">{t.clientName}</p>
-                          <p className="text-xs text-dark-choc/50 truncate">{t.company}</p>
-                        </div>
+
+              {/* Mobile View */}
+              <div className="md:hidden divide-y divide-dark-choc/5">
+                {allBrands.map((brand) => (
+                  <div key={brand._id} className="p-5 flex items-center justify-between">
+                    <div className="flex items-center gap-4">
+                      <div className="w-16 h-10 bg-earl-gray/50 rounded-lg p-2 flex items-center justify-center border border-dark-choc/5">
+                        {brand.image?.url && (
+                          <img src={brand.image.url} alt="" className="w-full h-full object-contain filter grayscale" />
+                        )}
                       </div>
-                    )
-                  })}
-                </div>
-              </div>
-            </div>
-          </div>
-        )}
-
-        {/* STATS PANEL */}
-        {activeTab === 'stats' && (
-          <div className="space-y-6 animate-in fade-in duration-300">
-            <div className="bg-white rounded-2xl shadow-sm border border-dark-choc/10 p-6">
-              <h2 className="text-xl font-bold text-dark-choc mb-6 flex items-center gap-2"><BarChart3 className="w-5 h-5 text-electric-blue" />Performance Stats</h2>
-              <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
-                <div>
-                  <label className="block text-xs font-black uppercase tracking-widest text-dark-choc/40 mb-2">Years of Legacy</label>
-                  <input type="number" value={formData.experienceStats.years} onChange={e => setFormData({ ...formData, experienceStats: { ...formData.experienceStats, years: parseInt(e.target.value) } })} className="w-full px-4 py-3 bg-earl-gray/20 border-0 rounded-xl outline-none font-bold text-center text-2xl" />
-                </div>
-                <div>
-                  <label className="block text-xs font-black uppercase tracking-widest text-dark-choc/40 mb-2">Trusted Clients</label>
-                  <input type="number" value={formData.experienceStats.clients} onChange={e => setFormData({ ...formData, experienceStats: { ...formData.experienceStats, clients: parseInt(e.target.value) } })} className="w-full px-4 py-3 bg-earl-gray/20 border-0 rounded-xl outline-none font-bold text-center text-2xl" />
-                </div>
-                <div>
-                  <label className="block text-xs font-black uppercase tracking-widest text-dark-choc/40 mb-2">Projects Completed</label>
-                  <input type="number" value={formData.experienceStats.projects} onChange={e => setFormData({ ...formData, experienceStats: { ...formData.experienceStats, projects: parseInt(e.target.value) } })} className="w-full px-4 py-3 bg-earl-gray/20 border-0 rounded-xl outline-none font-bold text-center text-2xl" />
-                </div>
-              </div>
-            </div>
-
-            <div className="bg-white rounded-2xl shadow-sm border border-dark-choc/10 p-6">
-              <h2 className="text-xl font-bold text-dark-choc mb-6 flex items-center gap-2"><Quote className="w-5 h-5 text-electric-blue" />"Trusted By" Section Labels</h2>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <div>
-                  <label className="block text-xs font-black uppercase tracking-widest text-dark-choc/40 mb-2">Section Label (Eyebrow)</label>
-                  <input type="text" value={formData.homepageSections.clientsLabel} onChange={e => setFormData({ ...formData, homepageSections: { ...formData.homepageSections, clientsLabel: e.target.value } })} className="w-full px-4 py-3 bg-earl-gray/20 border-0 rounded-xl outline-none font-medium" />
-                </div>
-                <div>
-                  <label className="block text-xs font-black uppercase tracking-widest text-dark-choc/40 mb-2">Section Headline</label>
-                  <input type="text" value={formData.homepageSections.clientsTitle} onChange={e => setFormData({ ...formData, homepageSections: { ...formData.homepageSections, clientsTitle: e.target.value } })} className="w-full px-4 py-3 bg-earl-gray/20 border-0 rounded-xl outline-none font-medium text-lg font-bold" />
-                </div>
-              </div>
-            </div>
-          </div>
-        )}
-
-        {/* VISIBILITY PANEL */}
-        {activeTab === 'visibility' && (
-          <div className="bg-white rounded-2xl shadow-sm border border-dark-choc/10 p-6 animate-in fade-in duration-300">
-            <h2 className="text-xl font-bold text-dark-choc mb-6 flex items-center gap-2"><Settings2 className="w-5 h-5 text-electric-blue" />Homepage Flow</h2>
-            <div className="space-y-4">
-              {Object.keys(formData.sections).map((key) => (
-                <div key={key} className="flex items-center justify-between p-4 bg-earl-gray/20 rounded-xl">
-                  <div className="flex items-center gap-4">
-                    <div className="w-10 h-10 rounded-lg bg-white flex items-center justify-center font-bold text-dark-choc/20 border border-dark-choc/5">{formData.sections[key as keyof typeof formData.sections].order}</div>
-                    <span className="font-bold text-dark-choc uppercase tracking-widest text-sm">{key} Section</span>
+                      <div className="flex flex-col gap-1">
+                        <span className="text-[10px] font-black uppercase tracking-widest text-dark-choc/40">{brand.name}</span>
+                        <span className={`w-fit px-2 py-0.5 rounded-full text-[8px] font-black uppercase tracking-tighter ${brand.isActive ? 'bg-green-50 text-green-600 border border-green-100' : 'bg-red-50 text-red-600 border border-red-100'}`}>
+                          {brand.isActive ? 'Live' : 'Hidden'}
+                        </span>
+                      </div>
+                    </div>
+                    <div className="flex items-center gap-1">
+                      <Link href={`/admin/brands/${brand._id}`} className="p-3 text-electric-blue bg-electric-blue/5 rounded-xl">
+                        <Edit className="w-5 h-5" />
+                      </Link>
+                      <button onClick={() => handleDeleteBrand(brand._id, brand.name)} className="p-3 text-red-500 bg-red-50 rounded-xl">
+                        <Trash2 className="w-5 h-5" />
+                      </button>
+                    </div>
                   </div>
-                  <div className="flex items-center gap-6">
-                    <div className="flex items-center gap-2">
-                      <span className="text-xs font-bold text-dark-choc/40">Order:</span>
-                      <input type="number" value={formData.sections[key as keyof typeof formData.sections].order} onChange={e => setFormData({
+                ))}
+              </div>
+            </div>
+          )}
+
+          {activeTab === 'stats' && (
+            <div className="bg-white rounded-3xl shadow-xl border border-dark-choc/10 p-6 sm:p-10 space-y-10">
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <div className="bg-earl-gray/20 p-6 rounded-2xl border border-dark-choc/5 space-y-4">
+                  <div className="flex items-center gap-2">
+                    <span className="text-[10px] font-black text-electric-blue uppercase tracking-[0.2em]">Years Legacy</span>
+                  </div>
+                  <input
+                    type="number"
+                    value={formData.experienceStats.years}
+                    onChange={(e) => setFormData({ ...formData, experienceStats: { ...formData.experienceStats, years: parseInt(e.target.value) } })}
+                    className="w-full px-4 py-3 bg-white border-0 rounded-xl focus:ring-2 focus:ring-electric-blue outline-none transition-all font-black text-dark-choc text-xl text-center"
+                  />
+                </div>
+                <div className="bg-earl-gray/20 p-6 rounded-2xl border border-dark-choc/5 space-y-4">
+                  <div className="flex items-center gap-2">
+                    <span className="text-[10px] font-black text-electric-blue uppercase tracking-[0.2em]">Global Clients</span>
+                  </div>
+                  <input
+                    type="number"
+                    value={formData.experienceStats.clients}
+                    onChange={(e) => setFormData({ ...formData, experienceStats: { ...formData.experienceStats, clients: parseInt(e.target.value) } })}
+                    className="w-full px-4 py-3 bg-white border-0 rounded-xl focus:ring-2 focus:ring-electric-blue outline-none transition-all font-black text-dark-choc text-xl text-center"
+                  />
+                </div>
+                <div className="bg-earl-gray/20 p-6 rounded-2xl border border-dark-choc/5 space-y-4">
+                  <div className="flex items-center gap-2">
+                    <span className="text-[10px] font-black text-electric-blue uppercase tracking-[0.2em]">Live Projects</span>
+                  </div>
+                  <input
+                    type="number"
+                    value={formData.experienceStats.projects}
+                    onChange={(e) => setFormData({ ...formData, experienceStats: { ...formData.experienceStats, projects: parseInt(e.target.value) } })}
+                    className="w-full px-4 py-3 bg-white border-0 rounded-xl focus:ring-2 focus:ring-electric-blue outline-none transition-all font-black text-dark-choc text-xl text-center"
+                  />
+                </div>
+              </div>
+              <div className="flex justify-end pt-8 border-t border-dark-choc/5">
+                <button
+                  onClick={handleSave}
+                  disabled={saving}
+                  className="flex items-center gap-3 bg-dark-choc text-white px-10 py-4 rounded-2xl hover:bg-dark-choc/90 transition-all font-black shadow-xl shadow-dark-choc/20 active:scale-95 disabled:opacity-50"
+                >
+                  {saving ? <Loader2 className="w-5 h-5 animate-spin" /> : <Save className="w-5 h-5" />}
+                  Update Statistics
+                </button>
+              </div>
+            </div>
+          )}
+
+          {activeTab === 'visibility' && (
+            <div className="bg-white rounded-3xl shadow-xl border border-dark-choc/10 p-6 sm:p-10 space-y-8">
+              <div className="flex items-center gap-3 mb-4">
+                <div className="w-1.5 h-6 bg-electric-blue rounded-full" />
+                <h3 className="font-black text-dark-choc uppercase tracking-widest text-sm">Main Layout Controls</h3>
+              </div>
+
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                {Object.keys(formData.sections).map((key) => (
+                  <div key={key} className="flex items-center justify-between p-6 bg-earl-gray/20 rounded-2xl border border-dark-choc/5 group hover:border-dark-choc/20 transition-all">
+                    <div className="flex items-center gap-4">
+                      <div className="w-10 h-10 rounded-xl bg-white flex items-center justify-center shadow-sm group-hover:scale-110 transition-transform">
+                        <Settings2 className="w-5 h-5 text-dark-choc/30" />
+                      </div>
+                      <span className="text-xs font-black uppercase tracking-widest text-dark-choc/60">{key} Section</span>
+                    </div>
+                    <button
+                      onClick={() => setFormData({
                         ...formData,
                         sections: {
                           ...formData.sections,
-                          [key]: { ...formData.sections[key as keyof typeof formData.sections], order: parseInt(e.target.value) }
+                          [key]: { ...formData.sections[key as keyof typeof formData.sections], enabled: !formData.sections[key as keyof typeof formData.sections].enabled }
                         }
-                      })} className="w-12 text-center bg-white border-0 rounded text-sm font-bold py-1" />
-                    </div>
-                    <button onClick={() => setFormData({
-                      ...formData,
-                      sections: {
-                        ...formData.sections,
-                        [key]: { ...formData.sections[key as keyof typeof formData.sections], enabled: !formData.sections[key as keyof typeof formData.sections].enabled }
-                      }
-                    })} className={`p-2 rounded-lg transition-all ${formData.sections[key as keyof typeof formData.sections].enabled ? 'text-electric-blue bg-electric-blue/10' : 'text-dark-choc/20 bg-dark-choc/5'}`}>
-                      {formData.sections[key as keyof typeof formData.sections].enabled ? <Eye className="w-5 h-5" /> : <EyeOff className="w-5 h-5" />}
+                      })}
+                      className={`relative w-12 h-6 rounded-full p-1 transition-colors duration-300 ${formData.sections[key as keyof typeof formData.sections].enabled ? 'bg-electric-blue' : 'bg-dark-choc/20'}`}
+                    >
+                      <div className={`w-4 h-4 bg-white rounded-full transition-transform duration-300 transform ${formData.sections[key as keyof typeof formData.sections].enabled ? 'translate-x-6' : 'translate-x-0'}`} />
                     </button>
                   </div>
-                </div>
-              ))}
-            </div>
-          </div>
-        )}
+                ))}
+              </div>
 
+              <div className="flex justify-end pt-8 border-t border-dark-choc/5">
+                <button
+                  onClick={handleSave}
+                  disabled={saving}
+                  className="flex items-center gap-3 bg-dark-choc text-white px-10 py-4 rounded-2xl hover:bg-dark-choc/90 transition-all font-black shadow-xl shadow-dark-choc/20 active:scale-95 disabled:opacity-50"
+                >
+                  {saving ? <Loader2 className="w-5 h-5 animate-spin" /> : <Save className="w-5 h-5" />}
+                  Deploy Layout Changes
+                </button>
+              </div>
+            </div>
+          )}
+        </div>
       </div>
     </div>
   )

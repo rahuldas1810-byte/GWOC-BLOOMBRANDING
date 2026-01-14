@@ -69,6 +69,11 @@ export async function GET(request: NextRequest) {
             description: 'Hear from companies who have worked with us to build their brand identity.',
             buttonText: 'Client Stories',
           },
+          socialLinks: {
+            instagram: 'https://www.instagram.com/bloom.branding_/',
+            linkedin: 'https://in.linkedin.com/company/bloombranding-digital-media-marketing-branding-agency',
+            facebook: 'https://www.facebook.com/hello.bloombranding/',
+          },
         },
       })
       response.headers.set('Cache-Control', 'no-store, no-cache, must-revalidate, proxy-revalidate')

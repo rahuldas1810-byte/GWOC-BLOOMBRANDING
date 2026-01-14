@@ -167,6 +167,8 @@ export default function Contact() {
     email: "hello@bloombranding.com",
     socialLinks: {
       instagram: "https://www.instagram.com/bloom.branding_/",
+      linkedin: "https://in.linkedin.com/company/bloombranding-digital-media-marketing-branding-agency",
+      facebook: "https://www.facebook.com/hello.bloombranding/",
     },
     address: {
       line1: "Bloom Branding, Solarium",
@@ -277,27 +279,27 @@ export default function Contact() {
                   <div>
                     <h3 className="label-text mb-6">SOCIAL</h3>
                     <div className="flex gap-6">
-                      {(siteSettings?.socialMedia?.instagram || data.socialLinks?.instagram) && (
+                      {(siteSettings?.socialLinks?.instagram || data.socialLinks?.instagram) && (
                         <Link
-                          href={siteSettings?.socialMedia?.instagram || data.socialLinks?.instagram}
+                          href={siteSettings?.socialLinks?.instagram || data.socialLinks?.instagram}
                           target="_blank"
                           className="w-12 h-12 rounded-full border border-dark-choc/20 flex items-center justify-center text-dark-choc hover:bg-dark-choc hover:text-white transition-all duration-300"
                         >
                           <Instagram className="w-5 h-5" />
                         </Link>
                       )}
-                      {(siteSettings?.socialMedia?.linkedin || data.socialLinks?.linkedin) && (
+                      {(siteSettings?.socialLinks?.linkedin || data.socialLinks?.linkedin) && (
                         <Link
-                          href={siteSettings?.socialMedia?.linkedin || data.socialLinks?.linkedin}
+                          href={siteSettings?.socialLinks?.linkedin || data.socialLinks?.linkedin}
                           target="_blank"
                           className="w-12 h-12 rounded-full border border-dark-choc/20 flex items-center justify-center text-dark-choc hover:bg-dark-choc hover:text-white transition-all duration-300"
                         >
                           <Linkedin className="w-5 h-5" />
                         </Link>
                       )}
-                      {(siteSettings?.socialMedia?.facebook || data.socialLinks?.facebook) && (
+                      {(siteSettings?.socialLinks?.facebook || data.socialLinks?.facebook) && (
                         <Link
-                          href={siteSettings?.socialMedia?.facebook || data.socialLinks?.facebook}
+                          href={siteSettings?.socialLinks?.facebook || data.socialLinks?.facebook}
                           target="_blank"
                           className="w-12 h-12 rounded-full border border-dark-choc/20 flex items-center justify-center text-dark-choc hover:bg-dark-choc hover:text-white transition-all duration-300"
                         >

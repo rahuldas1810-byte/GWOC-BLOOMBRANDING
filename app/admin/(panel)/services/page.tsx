@@ -157,320 +157,316 @@ export default function ServicesPage() {
   }
 
   return (
-    <div className="space-y-6 max-w-7xl mx-auto">
-      {/* Header Section */}
-      <div className="bg-white rounded-2xl shadow-sm border border-dark-choc/10 p-5 sm:p-6 mb-8">
-        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-6">
-          <div>
-            <h1 className="text-2xl sm:text-3xl font-bold text-dark-choc mb-2">Services Management</h1>
-            <p className="text-dark-choc/60 text-sm sm:text-base">Control hero copy, service cards, and page blocks.</p>
+    <div className="min-h-screen pb-12">
+      <div className="max-w-7xl mx-auto">
+        <div className="flex flex-col gap-6 mb-8">
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+            <div>
+              <h1 className="text-3xl font-black text-dark-choc tracking-tight">Services</h1>
+              <p className="text-dark-choc/50 font-medium">Manage service cards, hero copy, and workflow blocks.</p>
+            </div>
+            <div className="flex gap-2">
+              {activeTab === 'list' && (
+                <Link href="/admin/services/new" className="flex items-center gap-2 bg-electric-blue text-white px-6 py-3 rounded-2xl hover:bg-electric-blue/90 transition-all font-black shadow-lg shadow-electric-blue/20 active:scale-95">
+                  <Plus className="w-5 h-5" />
+                  Add Service
+                </Link>
+              )}
+            </div>
           </div>
 
-          <div className="flex flex-row items-center gap-3 w-full sm:w-auto">
-            {activeTab !== 'list' && (
+          {/* Premium Tabs */}
+          <div className="flex bg-white/50 backdrop-blur-md p-1.5 rounded-[2rem] border border-dark-choc/10 overflow-x-auto no-scrollbar">
+            {[
+              { id: 'list', label: 'Offerings', icon: Briefcase },
+              { id: 'hero', label: 'Hero Section', icon: FileText },
+              { id: 'content', label: 'Page Content', icon: LayoutTemplate },
+              { id: 'newsletter', label: 'Newsletter', icon: CheckCircle2 }
+            ].map((tab) => (
               <button
-                onClick={handleSaveGlobal}
-                disabled={saving}
-                className="flex-1 sm:flex-none flex items-center justify-center gap-2 bg-dark-choc text-white px-6 py-2.5 rounded-xl hover:bg-dark-choc/90 transition-all shadow-sm active:scale-95 disabled:opacity-50 font-medium whitespace-nowrap"
+                key={tab.id}
+                onClick={() => setActiveTab(tab.id as any)}
+                className={`flex items-center gap-2.5 px-6 py-3 rounded-[1.5rem] transition-all whitespace-nowrap ${activeTab === tab.id
+                  ? 'bg-dark-choc text-white shadow-xl shadow-dark-choc/20 scale-[1.02]'
+                  : 'text-dark-choc/50 hover:text-dark-choc hover:bg-white'
+                  }`}
               >
-                {saving ? <Loader2 className="w-4 h-4 animate-spin" /> : <Save className="w-4 h-4" />}
-                Save Page
+                <tab.icon className="w-4 h-4" />
+                <span className="text-sm font-bold uppercase tracking-widest leading-none">{tab.label}</span>
               </button>
-            )}
-            <Link
-              href="/admin/services/new"
-              className="flex-1 sm:flex-none flex items-center justify-center gap-2 bg-electric-blue text-white px-6 py-2.5 rounded-xl hover:bg-electric-blue/90 transition-all shadow-sm active:scale-95 font-medium whitespace-nowrap"
-            >
-              <Plus className="w-5 h-5" />
-              Add Service
-            </Link>
+            ))}
           </div>
         </div>
 
-        {/* Tab Navigation */}
-        <div className="flex items-center gap-1 mt-8 p-1 bg-earl-gray/30 rounded-2xl w-full sm:w-fit overflow-x-auto no-scrollbar max-w-full">
-          <button
-            onClick={() => setActiveTab('list')}
-            className={`flex items-center gap-2 px-5 py-2.5 rounded-xl transition-all whitespace-nowrap ${activeTab === 'list' ? 'bg-white text-dark-choc shadow-md' : 'text-dark-choc/50 hover:text-dark-choc hover:bg-white/50'}`}
-          >
-            <Briefcase className="w-4 h-4" />
-            <span className="text-xs font-black uppercase tracking-widest">Cards</span>
-          </button>
-          <button
-            onClick={() => setActiveTab('hero')}
-            className={`flex items-center gap-2 px-5 py-2.5 rounded-xl transition-all whitespace-nowrap ${activeTab === 'hero' ? 'bg-white text-dark-choc shadow-md' : 'text-dark-choc/50 hover:text-dark-choc hover:bg-white/50'}`}
-          >
-            <FileText className="w-4 h-4" />
-            <span className="text-xs font-black uppercase tracking-widest">Hero</span>
-          </button>
-          <button
-            onClick={() => setActiveTab('content')}
-            className={`flex items-center gap-2 px-5 py-2.5 rounded-xl transition-all whitespace-nowrap ${activeTab === 'content' ? 'bg-white text-dark-choc shadow-md' : 'text-dark-choc/50 hover:text-dark-choc hover:bg-white/50'}`}
-          >
-            <LayoutTemplate className="w-4 h-4" />
-            <span className="text-xs font-black uppercase tracking-widest">Blocks</span>
-          </button>
-          <button
-            onClick={() => setActiveTab('newsletter')}
-            className={`flex items-center gap-2 px-5 py-2.5 rounded-xl transition-all whitespace-nowrap ${activeTab === 'newsletter' ? 'bg-white text-dark-choc shadow-md' : 'text-dark-choc/50 hover:text-dark-choc hover:bg-white/50'}`}
-          >
-            <CheckCircle2 className="w-4 h-4" />
-            <span className="text-xs font-black uppercase tracking-widest">Letter</span>
-          </button>
-        </div>
-      </div>
-
-      {/* Tab Content */}
-      <div className="space-y-6">
-        {/* SERVICE LIST TAB */}
-        {activeTab === 'list' && (
-          <div className="bg-white rounded-2xl shadow-sm border border-dark-choc/10 overflow-hidden">
-            <div className="overflow-x-auto">
-              <table className="w-full text-left border-collapse">
-                <thead className="bg-earl-gray/30 text-dark-choc/70 text-[10px] font-black uppercase tracking-[0.2em]">
-                  <tr>
-                    <th className="px-6 py-5">Service</th>
-                    <th className="px-6 py-5 hidden md:table-cell">Description</th>
-                    <th className="px-6 py-5 text-center">Images</th>
-                    <th className="px-6 py-5 text-center">Order</th>
-                    <th className="px-6 py-5 text-center">Status</th>
-                    <th className="px-6 py-5 text-right">Actions</th>
-                  </tr>
-                </thead>
-                <tbody className="divide-y divide-dark-choc/5 text-sm">
-                  {services.length === 0 ? (
-                    <tr>
-                      <td colSpan={6} className="px-6 py-12 text-center text-dark-choc/30 italic font-medium">
-                        No services found. Get started by adding one!
-                      </td>
+        <div className="space-y-6">
+          {activeTab === 'list' && (
+            <div className="bg-white rounded-3xl shadow-sm border border-dark-choc/10 overflow-hidden">
+              <div className="hidden md:block overflow-x-auto">
+                <table className="w-full text-left">
+                  <thead>
+                    <tr className="bg-earl-gray/30 border-b border-dark-choc/10">
+                      <th className="px-8 py-5 text-[10px] font-black text-dark-choc/40 uppercase tracking-[0.2em]">Service</th>
+                      <th className="px-8 py-5 text-[10px] font-black text-dark-choc/40 uppercase tracking-[0.2em] text-center">Status</th>
+                      <th className="px-8 py-5 text-[10px] font-black text-dark-choc/40 uppercase tracking-[0.2em] text-right">Actions</th>
                     </tr>
-                  ) : (
-                    services.map((service) => (
-                      <tr key={service._id} className="hover:bg-earl-gray/10 group transition-colors">
-                        <td className="px-6 py-4">
-                          <span className="font-bold text-dark-choc group-hover:text-electric-blue transition-colors min-w-[150px] inline-block">{service.title}</span>
+                  </thead>
+                  <tbody className="divide-y divide-dark-choc/5">
+                    {services.map((service) => (
+                      <tr key={service._id} className="hover:bg-earl-gray/20 transition-colors group">
+                        <td className="px-8 py-5">
+                          <div className="flex items-center gap-4">
+                            <div className="w-12 h-12 rounded-2xl bg-earl-gray flex items-center justify-center border border-dark-choc/5 shadow-sm overflow-hidden group-hover:scale-105 transition-transform">
+                              {service.mainImage?.url ? (
+                                <img src={service.mainImage.url} alt="" className="w-full h-full object-cover" />
+                              ) : (
+                                <span className="font-bold text-dark-choc/20">{service.title[0]}</span>
+                              )}
+                            </div>
+                            <span className="font-black text-dark-choc group-hover:text-electric-blue transition-colors leading-tight">{service.title}</span>
+                          </div>
                         </td>
-                        <td className="px-6 py-4 hidden md:table-cell">
-                          <p className="text-dark-choc/60 max-w-xs truncate">{service.description}</p>
-                        </td>
-                        <td className="px-6 py-4 text-center">
-                          <span className="inline-flex items-center px-2 py-0.5 bg-dark-choc/5 rounded-md text-[10px] font-bold text-dark-choc/40 border border-dark-choc/10">
-                            {service.images?.length || 0}
+                        <td className="px-8 py-5 text-center">
+                          <span className={`px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-widest ${service.isActive ? 'bg-green-100 text-green-700' : 'bg-red-100 text-red-700'}`}>
+                            {service.isActive ? 'Active' : 'Offline'}
                           </span>
                         </td>
-                        <td className="px-6 py-4 text-center">
-                          <span className="font-mono font-bold text-dark-choc/40">{service.order || 0}</span>
-                        </td>
-                        <td className="px-6 py-4 text-center">
-                          <button
-                            onClick={() => handleToggleActive(service._id, service.isActive)}
-                            className={`px-3 py-1 rounded-full text-[9px] font-black uppercase tracking-widest transition-all border ${service.isActive
-                              ? 'bg-green-50 text-green-600 border-green-100 hover:bg-green-100'
-                              : 'bg-gray-50 text-gray-500 border-gray-100 hover:bg-gray-100'
-                              }`}
-                          >
-                            {service.isActive ? 'Active' : 'Hidden'}
-                          </button>
-                        </td>
-                        <td className="px-6 py-4 text-right">
+                        <td className="px-8 py-5 text-right">
                           <div className="flex items-center justify-end gap-1">
-                            <button
-                              onClick={() => handleManageContent(service)}
-                              className="p-2 text-dark-choc/30 hover:text-dark-choc hover:bg-earl-gray/50 rounded-lg transition-all"
-                              title="Manage Website Content"
-                            >
-                              <LayoutTemplate className="w-4 h-4" />
+                            <button onClick={() => handleManageContent(service)} className="p-2.5 text-dark-choc/20 hover:text-dark-choc hover:bg-earl-gray rounded-xl transition-all">
+                              <LayoutTemplate className="w-5 h-5" />
                             </button>
-                            <Link
-                              href={`/admin/services/${service._id}`}
-                              className="p-2 text-dark-choc/30 hover:text-electric-blue hover:bg-electric-blue/5 rounded-lg transition-all"
-                              title="Edit Basic Info"
-                            >
-                              <Edit className="w-4 h-4" />
-                            </Link>
-                            <button
-                              onClick={() => handleDelete(service._id, service.title)}
-                              className="p-2 text-dark-choc/30 hover:text-red-500 hover:bg-red-50 rounded-lg transition-all"
-                              title="Delete"
-                            >
-                              <Trash2 className="w-4 h-4" />
+                            <button onClick={() => handleToggleActive(service._id, service.isActive)} className="p-2.5 text-dark-choc/20 hover:text-dark-choc hover:bg-earl-gray rounded-xl transition-all">
+                              {service.isActive ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
                             </button>
+                            <Link href={`/admin/services/${service._id}`} className="p-2.5 text-dark-choc/20 hover:text-electric-blue hover:bg-electric-blue/5 rounded-xl transition-all"><Edit className="w-5 h-5" /></Link>
+                            <button onClick={() => handleDelete(service._id, service.title)} className="p-2.5 text-dark-choc/20 hover:text-red-500 hover:bg-red-50 rounded-xl transition-all"><Trash2 className="w-5 h-5" /></button>
                           </div>
                         </td>
                       </tr>
-                    ))
-                  )}
-                </tbody>
-              </table>
-            </div>
-          </div>
-        )}
-
-        {/* HERO TAB */}
-        {activeTab === 'hero' && (
-          <div className="space-y-6 animate-in fade-in duration-300">
-            {/* Hero Labels (SiteSettings) */}
-            <div className="bg-white rounded-2xl shadow-sm border border-dark-choc/10 overflow-hidden">
-              <div className="p-6 border-b border-dark-choc/5 bg-earl-gray/10">
-                <h2 className="text-lg font-bold text-dark-choc flex items-center gap-2">
-                  <FileText className="w-5 h-5 text-electric-blue" />
-                  Hero Text & Labels
-                </h2>
+                    ))}
+                  </tbody>
+                </table>
               </div>
-              <div className="p-6 grid grid-cols-1 md:grid-cols-2 gap-6">
-                <div className="space-y-4">
-                  <div>
-                    <label className="block text-xs font-black uppercase tracking-widest text-dark-choc/40 mb-3 ml-1">Eyebrow Label</label>
-                    <input
-                      type="text"
-                      value={heroLabels.label}
-                      onChange={(e) => setHeroLabels({ ...heroLabels, label: e.target.value })}
-                      className="w-full px-5 py-3.5 bg-earl-gray/20 border-0 rounded-xl focus:bg-white focus:ring-4 focus:ring-electric-blue/5 focus:border-electric-blue outline-none transition-all font-bold text-dark-choc"
-                      placeholder="e.g. WHAT WE DO"
-                    />
+
+              {/* Mobile View */}
+              <div className="md:hidden divide-y divide-dark-choc/5">
+                {services.map((service) => (
+                  <div key={service._id} className="p-5 space-y-4">
+                    <div className="flex items-center justify-between">
+                      <div className="flex items-center gap-3">
+                        <div className="w-12 h-12 rounded-xl bg-earl-gray flex items-center justify-center border border-dark-choc/5 shadow-sm overflow-hidden">
+                          {service.mainImage?.url ? (
+                            <img src={service.mainImage.url} alt="" className="w-full h-full object-cover" />
+                          ) : (
+                            <span className="font-bold text-dark-choc/20">{service.title[0]}</span>
+                          )}
+                        </div>
+                        <div>
+                          <p className="font-black text-dark-choc text-sm leading-tight">{service.title}</p>
+                          <span className={`w-fit mt-1 px-2 py-0.5 rounded-full text-[8px] font-black uppercase tracking-tighter ${service.isActive ? 'bg-green-50 text-green-600 border border-green-100' : 'bg-red-50 text-red-600 border border-red-100'}`}>
+                            {service.isActive ? 'Active' : 'Offline'}
+                          </span>
+                        </div>
+                      </div>
+                      <div className="flex items-center gap-1">
+                        <button onClick={() => handleManageContent(service)} className="p-2 text-dark-choc/30 bg-earl-gray/50 rounded-lg"><LayoutTemplate className="w-4 h-4" /></button>
+                        <button onClick={() => handleToggleActive(service._id, service.isActive)} className="p-2 text-dark-choc/30 bg-earl-gray/50 rounded-lg">
+                          {service.isActive ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+                        </button>
+                        <Link href={`/admin/services/${service._id}`} className="p-2 text-electric-blue bg-electric-blue/5 rounded-lg"><Edit className="w-4 h-4" /></Link>
+                        <button onClick={() => handleDelete(service._id, service.title)} className="p-2 text-red-500 bg-red-50 rounded-lg"><Trash2 className="w-4 h-4" /></button>
+                      </div>
+                    </div>
                   </div>
-                  <div>
-                    <label className="block text-xs font-black uppercase tracking-widest text-dark-choc/40 mb-3 ml-1">Main Headline</label>
-                    <input
-                      type="text"
-                      value={heroLabels.title}
-                      onChange={(e) => setHeroLabels({ ...heroLabels, title: e.target.value })}
-                      className="w-full px-5 py-3.5 bg-earl-gray/20 border-0 rounded-xl focus:bg-white focus:ring-4 focus:ring-electric-blue/5 focus:border-electric-blue outline-none transition-all font-bold text-dark-choc text-lg"
-                      placeholder="e.g. Our Services"
-                    />
-                  </div>
-                </div>
-                <div>
-                  <label className="block text-xs font-black uppercase tracking-widest text-dark-choc/40 mb-3 ml-1">Supporting Description</label>
-                  <textarea
-                    value={heroLabels.description}
-                    onChange={(e) => setHeroLabels({ ...heroLabels, description: e.target.value })}
-                    className="w-full px-5 py-3.5 bg-earl-gray/20 border-0 rounded-xl focus:bg-white focus:ring-4 focus:ring-electric-blue/5 focus:border-electric-blue outline-none transition-all font-bold text-dark-choc h-[145px] resize-none"
-                    placeholder="Enter a brief intro about your services..."
-                  />
-                </div>
+                ))}
               </div>
             </div>
+          )}
 
-            {/* Hero Visuals (ServicesPage) */}
-            <div className="bg-white rounded-2xl shadow-sm border border-dark-choc/10 overflow-hidden">
-              <div className="p-6 border-b border-dark-choc/5 bg-earl-gray/10">
-                <h2 className="text-lg font-bold text-dark-choc flex items-center gap-2">
-                  <Video className="w-5 h-5 text-electric-blue" />
-                  Hero Media Content
-                </h2>
-              </div>
-              <div className="p-6 grid grid-cols-1 md:grid-cols-2 gap-8">
+          {activeTab === 'hero' && (
+            <div className="bg-white rounded-3xl shadow-xl border border-dark-choc/10 p-6 sm:p-10 space-y-10">
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-10">
                 <div className="space-y-6">
-                  <div>
-                    <label className="block text-xs font-black uppercase tracking-widest text-dark-choc/40 mb-3 ml-1">Hero Floating Text (Left)</label>
-                    <textarea
-                      value={globalContent.hero.text}
-                      onChange={(e) => setGlobalContent({ ...globalContent, hero: { ...globalContent.hero, text: e.target.value } })}
-                      className="w-full px-5 py-3.5 bg-earl-gray/20 border-0 rounded-xl focus:bg-white focus:ring-4 focus:ring-electric-blue/5 focus:border-electric-blue outline-none transition-all font-bold text-dark-choc h-[200px] resize-none"
-                      placeholder="Large text displayed on the left side of the hero..."
+                  <div className="flex items-center gap-3 mb-2">
+                    <div className="w-1.5 h-6 bg-electric-blue rounded-full" />
+                    <h3 className="font-black text-dark-choc uppercase tracking-widest text-sm">Services Intro Content</h3>
+                  </div>
+                  <div className="space-y-4">
+                    <div>
+                      <label className="block text-[10px] font-black uppercase tracking-widest text-dark-choc/40 mb-2 ml-1">Eyebrow Label</label>
+                      <input
+                        type="text"
+                        value={heroLabels.label}
+                        onChange={(e) => setHeroLabels({ ...heroLabels, label: e.target.value })}
+                        className="w-full px-5 py-4 bg-earl-gray/20 border-0 rounded-2xl focus:bg-white focus:ring-4 focus:ring-electric-blue/5 focus:border-electric-blue outline-none transition-all font-black text-dark-choc"
+                      />
+                    </div>
+                    <div>
+                      <label className="block text-[10px] font-black uppercase tracking-widest text-dark-choc/40 mb-2 ml-1">Main Headline</label>
+                      <input
+                        type="text"
+                        value={heroLabels.title}
+                        onChange={(e) => setHeroLabels({ ...heroLabels, title: e.target.value })}
+                        className="w-full px-5 py-4 bg-earl-gray/20 border-0 rounded-2xl focus:bg-white focus:ring-4 focus:ring-electric-blue/5 focus:border-electric-blue outline-none transition-all font-black text-dark-choc text-xl"
+                      />
+                    </div>
+                    <div>
+                      <label className="block text-[10px] font-black uppercase tracking-widest text-dark-choc/40 mb-2 ml-1">Narrative Description</label>
+                      <textarea
+                        rows={4}
+                        value={heroLabels.description}
+                        onChange={(e) => setHeroLabels({ ...heroLabels, description: e.target.value })}
+                        className="w-full px-5 py-4 bg-earl-gray/20 border-0 rounded-2xl focus:bg-white focus:ring-4 focus:ring-electric-blue/5 focus:border-electric-blue outline-none transition-all font-medium text-dark-choc resize-none"
+                      />
+                    </div>
+                  </div>
+                </div>
+
+                <div className="space-y-6">
+                  <div className="flex items-center gap-3 mb-2">
+                    <div className="w-1.5 h-6 bg-electric-blue rounded-full" />
+                    <h3 className="font-black text-dark-choc uppercase tracking-widest text-sm">Visual Identity</h3>
+                  </div>
+                  <div className="space-y-6">
+                    <div>
+                      <label className="block text-[10px] font-black uppercase tracking-widest text-dark-choc/40 mb-2 ml-1">Hero Overlay Text (Left)</label>
+                      <textarea
+                        rows={4}
+                        value={globalContent.hero.text}
+                        onChange={(e) => setGlobalContent({ ...globalContent, hero: { ...globalContent.hero, text: e.target.value } })}
+                        className="w-full px-5 py-4 bg-earl-gray/20 border-0 rounded-2xl focus:bg-white focus:ring-4 focus:ring-electric-blue/5 focus:border-electric-blue outline-none transition-all font-black text-dark-choc"
+                      />
+                    </div>
+                    <MediaSelector
+                      label="Hero Video Content"
+                      type="video"
+                      value={globalContent.hero.video}
+                      onChange={(media) => setGlobalContent({ ...globalContent, hero: { ...globalContent.hero, video: media } })}
                     />
                   </div>
                 </div>
-                <div>
+              </div>
+
+              <div className="flex justify-end pt-8 border-t border-dark-choc/5">
+                <button
+                  onClick={handleSaveGlobal}
+                  disabled={saving}
+                  className="flex items-center gap-3 bg-dark-choc text-white px-10 py-4 rounded-2xl hover:bg-dark-choc/90 transition-all font-black shadow-xl shadow-dark-choc/20 active:scale-95 disabled:opacity-50"
+                >
+                  {saving ? <Loader2 className="w-5 h-5 animate-spin" /> : <Save className="w-5 h-5" />}
+                  Deploy Hero Updates
+                </button>
+              </div>
+            </div>
+          )}
+
+          {activeTab === 'content' && (
+            <div className="bg-white rounded-3xl shadow-xl border border-dark-choc/10 p-6 sm:p-10 space-y-10">
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-10">
+                <div className="space-y-6">
+                  <div className="flex items-center gap-3 mb-2">
+                    <div className="w-1.5 h-6 bg-electric-blue rounded-full" />
+                    <h3 className="font-black text-dark-choc uppercase tracking-widest text-sm">Brand Statements</h3>
+                  </div>
+                  <div className="space-y-4">
+                    <div>
+                      <label className="block text-[10px] font-black uppercase tracking-widest text-dark-choc/40 mb-2 ml-1">Statement Alpha</label>
+                      <textarea
+                        rows={3}
+                        value={globalContent.statementA.text}
+                        onChange={(e) => setGlobalContent({ ...globalContent, statementA: { text: e.target.value } })}
+                        className="w-full px-5 py-4 bg-earl-gray/20 border-0 rounded-2xl focus:bg-white focus:ring-4 focus:ring-electric-blue/5 focus:border-electric-blue outline-none transition-all font-black text-dark-choc"
+                      />
+                    </div>
+                    <div>
+                      <label className="block text-[10px] font-black uppercase tracking-widest text-dark-choc/40 mb-2 ml-1">Statement Beta</label>
+                      <textarea
+                        rows={3}
+                        value={globalContent.statementB.text}
+                        onChange={(e) => setGlobalContent({ ...globalContent, statementB: { text: e.target.value } })}
+                        className="w-full px-5 py-4 bg-earl-gray/20 border-0 rounded-2xl focus:bg-white focus:ring-4 focus:ring-electric-blue/5 focus:border-electric-blue outline-none transition-all font-black text-dark-choc"
+                      />
+                    </div>
+                  </div>
+                </div>
+                <div className="space-y-6">
+                  <div className="flex items-center gap-3 mb-2">
+                    <div className="w-1.5 h-6 bg-electric-blue rounded-full" />
+                    <h3 className="font-black text-dark-choc uppercase tracking-widest text-sm">Section Background</h3>
+                  </div>
                   <MediaSelector
-                    type="video"
-                    value={globalContent.hero.video || undefined}
-                    onChange={(media) => setGlobalContent({ ...globalContent, hero: { ...globalContent.hero, video: media } })}
-                    label="Hero Intro Video"
+                    label="Main Page Background Image"
+                    value={globalContent.backgroundImage}
+                    onChange={(media) => setGlobalContent({ ...globalContent, backgroundImage: media })}
                   />
                 </div>
               </div>
-            </div>
-          </div>
-        )}
 
-        {/* PAGE BLOCKS TAB */}
-        {activeTab === 'content' && (
-          <div className="space-y-6 animate-in fade-in duration-300">
-            {/* Background Image */}
-            <div className="bg-white rounded-2xl shadow-sm border border-dark-choc/10 overflow-hidden">
-              <div className="p-6 border-b border-dark-choc/5 bg-earl-gray/10">
-                <h2 className="text-lg font-bold text-dark-choc flex items-center gap-2">
-                  <ImageIcon className="w-5 h-5 text-electric-blue" />
-                  Background Visuals
-                </h2>
-              </div>
-              <div className="p-6">
-                <MediaSelector
-                  type="image"
-                  value={globalContent.backgroundImage || undefined}
-                  onChange={(media) => setGlobalContent({ ...globalContent, backgroundImage: media })}
-                  label="Full-Width Background Image"
-                />
+              <div className="flex justify-end pt-8 border-t border-dark-choc/5">
+                <button
+                  onClick={handleSaveGlobal}
+                  disabled={saving}
+                  className="flex items-center gap-3 bg-dark-choc text-white px-10 py-4 rounded-2xl hover:bg-dark-choc/90 transition-all font-black shadow-xl shadow-dark-choc/20 active:scale-95 disabled:opacity-50"
+                >
+                  {saving ? <Loader2 className="w-5 h-5 animate-spin" /> : <Save className="w-5 h-5" />}
+                  Synchronize Content
+                </button>
               </div>
             </div>
+          )}
 
-            {/* Statement Blocks */}
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              <div className="bg-white rounded-2xl shadow-sm border border-dark-choc/10 overflow-hidden">
-                <div className="p-6 border-b border-dark-choc/5 bg-earl-gray/10">
-                  <h3 className="text-lg font-bold text-dark-choc">Statement Block A</h3>
+          {activeTab === 'newsletter' && (
+            <div className="bg-white rounded-3xl shadow-xl border border-dark-choc/10 p-6 sm:p-10 space-y-10">
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-10">
+                <div className="space-y-6">
+                  <div className="flex items-center gap-3 mb-2">
+                    <div className="w-1.5 h-6 bg-electric-blue rounded-full" />
+                    <h3 className="font-black text-dark-choc uppercase tracking-widest text-sm">Newsletter Invitation</h3>
+                  </div>
+                  <div className="space-y-4">
+                    <div>
+                      <label className="block text-[10px] font-black uppercase tracking-widest text-dark-choc/40 mb-2 ml-1">Invitation Title</label>
+                      <input
+                        type="text"
+                        value={globalContent.newsletter.title}
+                        onChange={(e) => setGlobalContent({ ...globalContent, newsletter: { ...globalContent.newsletter, title: e.target.value } })}
+                        className="w-full px-5 py-4 bg-earl-gray/20 border-0 rounded-2xl focus:bg-white focus:ring-4 focus:ring-electric-blue/5 focus:border-electric-blue outline-none transition-all font-black text-dark-choc text-xl"
+                      />
+                    </div>
+                    <div>
+                      <label className="block text-[10px] font-black uppercase tracking-widest text-dark-choc/40 mb-2 ml-1">Supporting Copy</label>
+                      <textarea
+                        rows={4}
+                        value={globalContent.newsletter.description}
+                        onChange={(e) => setGlobalContent({ ...globalContent, newsletter: { ...globalContent.newsletter, description: e.target.value } })}
+                        className="w-full px-5 py-4 bg-earl-gray/20 border-0 rounded-2xl focus:bg-white focus:ring-4 focus:ring-electric-blue/5 focus:border-electric-blue outline-none transition-all font-medium text-dark-choc resize-none"
+                      />
+                    </div>
+                  </div>
                 </div>
-                <div className="p-6">
-                  <textarea
-                    value={globalContent.statementA.text}
-                    onChange={(e) => setGlobalContent({ ...globalContent, statementA: { text: e.target.value } })}
-                    className="w-full px-5 py-3.5 bg-earl-gray/20 border-0 rounded-xl focus:bg-white focus:ring-4 focus:ring-electric-blue/5 focus:border-electric-blue outline-none transition-all font-bold text-dark-choc h-40 resize-none"
-                    placeholder="Enter the first statement block..."
-                  />
+                <div className="flex items-center justify-center p-8 bg-electric-blue/5 rounded-[2rem] border border-electric-blue/10">
+                  <div className="text-center space-y-4">
+                    <div className="w-16 h-16 bg-white rounded-2xl flex items-center justify-center mx-auto shadow-lg shadow-electric-blue/10">
+                      <CheckCircle2 className="w-8 h-8 text-electric-blue" />
+                    </div>
+                    <p className="text-xs font-black uppercase tracking-[0.2em] text-electric-blue">Sync with CRM</p>
+                    <p className="text-sm font-medium text-dark-choc/60 max-w-[200px]">Subscribers are managed globally. Updates here only reflect the section's copy.</p>
+                  </div>
                 </div>
               </div>
-              <div className="bg-white rounded-2xl shadow-sm border border-dark-choc/10 overflow-hidden">
-                <div className="p-6 border-b border-dark-choc/5 bg-earl-gray/10">
-                  <h3 className="text-lg font-bold text-dark-choc">Statement Block B</h3>
-                </div>
-                <div className="p-6">
-                  <textarea
-                    value={globalContent.statementB.text}
-                    onChange={(e) => setGlobalContent({ ...globalContent, statementB: { text: e.target.value } })}
-                    className="w-full px-5 py-3.5 bg-earl-gray/20 border-0 rounded-xl focus:bg-white focus:ring-4 focus:ring-electric-blue/5 focus:border-electric-blue outline-none transition-all font-bold text-dark-choc h-40 resize-none"
-                    placeholder="Enter the second statement block..."
-                  />
-                </div>
-              </div>
-            </div>
-          </div>
-        )}
-
-        {/* NEWSLETTER TAB */}
-        {activeTab === 'newsletter' && (
-          <div className="bg-white rounded-2xl shadow-sm border border-dark-choc/10 overflow-hidden animate-in fade-in duration-300">
-            <div className="p-6 border-b border-dark-choc/5 bg-earl-gray/10">
-              <h2 className="text-lg font-bold text-dark-choc flex items-center gap-2">
-                <CheckCircle2 className="w-5 h-5 text-electric-blue" />
-                Newsletter Section
-              </h2>
-            </div>
-            <div className="p-6 grid grid-cols-1 md:grid-cols-2 gap-6">
-              <div>
-                <label className="block text-xs font-black uppercase tracking-widest text-dark-choc/40 mb-3 ml-1">Section Title</label>
-                <input
-                  type="text"
-                  value={globalContent.newsletter.title}
-                  onChange={(e) => setGlobalContent({ ...globalContent, newsletter: { ...globalContent.newsletter, title: e.target.value } })}
-                  className="w-full px-5 py-3.5 bg-earl-gray/20 border-0 rounded-xl focus:bg-white focus:ring-4 focus:ring-electric-blue/5 focus:border-electric-blue outline-none transition-all font-bold text-dark-choc"
-                  placeholder="e.g. Join the Community"
-                />
-              </div>
-              <div>
-                <label className="block text-xs font-black uppercase tracking-widest text-dark-choc/40 mb-3 ml-1">Section Description</label>
-                <input
-                  type="text"
-                  value={globalContent.newsletter.description}
-                  onChange={(e) => setGlobalContent({ ...globalContent, newsletter: { ...globalContent.newsletter, description: e.target.value } })}
-                  className="w-full px-5 py-3.5 bg-earl-gray/20 border-0 rounded-xl focus:bg-white focus:ring-4 focus:ring-electric-blue/5 focus:border-electric-blue outline-none transition-all font-bold text-dark-choc"
-                  placeholder="e.g. Subscribe for the latest brand insights."
-                />
+              <div className="flex justify-end pt-8 border-t border-dark-choc/5">
+                <button
+                  onClick={handleSaveGlobal}
+                  disabled={saving}
+                  className="flex items-center gap-3 bg-dark-choc text-white px-10 py-4 rounded-2xl hover:bg-dark-choc/90 transition-all font-black shadow-xl shadow-dark-choc/20 active:scale-95 disabled:opacity-50"
+                >
+                  {saving ? <Loader2 className="w-5 h-5 animate-spin" /> : <Save className="w-5 h-5" />}
+                  Deploy Newsletter Settings
+                </button>
               </div>
             </div>
-          </div>
-        )}
+          )}
+        </div>
       </div>
 
       {/* Service Content Drawer */}
