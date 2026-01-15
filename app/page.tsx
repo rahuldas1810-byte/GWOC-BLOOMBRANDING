@@ -11,6 +11,7 @@ import TestimonialsSection from "@/components/homepage/TestimonialsSection";
 import SkewedClients from "@/components/homepage/SkewedClients";
 import type { Testimonial, Client } from "@/types";
 import TextMarquee from "@/components/TextMarquee";
+import { useHeroVideo } from "@/contexts/HeroVideoContext";
 
 const SERVICE_IMAGES = [
   "https://images.unsplash.com/photo-1600508774634-4e11d34730e2?q=80&w=2070&auto=format&fit=crop", // Brand Identity
@@ -56,6 +57,7 @@ export default function Home() {
   const videoRef = useRef<HTMLVideoElement>(null);
   const backgroundVideoRef = useRef<HTMLVideoElement>(null);
   const lastPlayedVideoRef = useRef<string | null>(null);
+  const { hideNavbar, showNavbar } = useHeroVideo();
 
   useEffect(() => {
     const fetchData = async () => {
@@ -133,10 +135,12 @@ export default function Home() {
             setVideoEnded(true);
             setIsInitialLoad(false);
             setHeroVideoReady(true); // Mark as ready since there's no video
+            showNavbar();
           } else {
             // If hero video exists, but it's the one we just played, don't reset
             if (heroVideoUrl === lastPlayedVideoRef.current) {
               // keep current state (which should be ended)
+              showNavbar(); // Ensure navbar is visible if video already played
             } else {
               // If it's a new video, or first load, keep content hidden
               // setVideoEnded(false); // DO NOT reset here, let the effect handle it
@@ -150,9 +154,11 @@ export default function Home() {
           setVideoEnded(false);
           setIsInitialLoad(true);
           setHeroVideoReady(false);
+          showNavbar();
         }
       } catch (error) {
         console.error('Error fetching homepage data:', error);
+        showNavbar(); // Ensure navbar shows on error
       }
     };
     fetchData();
@@ -173,6 +179,7 @@ export default function Home() {
       setHeroVideoReady(true);
       setIsInitialLoad(false);
       setIsTransitioning(false);
+      showNavbar();
       return;
     }
 
@@ -182,11 +189,13 @@ export default function Home() {
       setHeroVideoReady(true);
       setIsInitialLoad(false);
       setIsTransitioning(false);
+      showNavbar();
       return;
     }
 
     // Checking if we already played this video
     if (homepageContent.heroVideo === lastPlayedVideoRef.current) {
+      showNavbar();
       return;
     }
 
@@ -196,7 +205,7 @@ export default function Home() {
     setIsInitialLoad(true);
     setIsTransitioning(false);
     setHeroVideoReady(false); // Reset to false so black background shows while loading
-
+    
     // Ensure background video is paused and reset when hero video is present
     if (backgroundVideoRef.current && homepageContent.heroVideo) {
       backgroundVideoRef.current.pause();
@@ -209,7 +218,10 @@ export default function Home() {
     if (!homepageContent.heroVideo) return;
     
     // If we've already played this video, don't set up listeners to restart it
-    if (homepageContent.heroVideo === lastPlayedVideoRef.current) return;
+    if (homepageContent.heroVideo === lastPlayedVideoRef.current) {
+        showNavbar(); 
+        return;
+    }
 
     const video = videoRef.current;
     if (!video) return;
@@ -219,6 +231,7 @@ export default function Home() {
       // Ensure video plays when loaded
       video.play().catch((error) => {
         console.error('Error playing hero video:', error);
+        showNavbar(); // Show navbar if video fails
       });
     };
 
@@ -227,6 +240,7 @@ export default function Home() {
       // Ensure video plays when it can play
       video.play().catch((error) => {
         console.error('Error playing hero video:', error);
+        showNavbar(); // Show navbar if video fails
       });
     };
 
@@ -234,6 +248,9 @@ export default function Home() {
       // Mark this video as played so we don't play it again
       lastPlayedVideoRef.current = homepageContent.heroVideo;
       
+      // Reveal navbar smoothly
+      showNavbar();
+
       // Start smooth transition
       setIsTransitioning(true);
       // Small delay to ensure background video is ready, then complete transition
@@ -247,6 +264,7 @@ export default function Home() {
     const handleVideoError = () => {
       // If video fails to load, show content after a short delay
       setHeroVideoReady(true);
+      showNavbar();
       setTimeout(() => {
         setVideoEnded(true);
         setIsInitialLoad(false);
@@ -442,6 +460,7 @@ export default function Home() {
                   // Start transition 0.8 seconds before end for smooth crossfade
                   if (timeRemaining <= 0.8 && timeRemaining > 0.1) {
                     setIsTransitioning(true);
+                    showNavbar(); // Trigger UI reveal earlier
                   }
                 }
               }}
@@ -517,16 +536,19 @@ export default function Home() {
                 transition={{ duration: 1.2, ease: [0.4, 0, 0.2, 1] }}
                 className="max-w-5xl"
               >
-                <p className="label-text mb-3 sm:mb-4 md:mb-8 text-dark-choc/70 text-[9px] sm:text-[10px] md:text-xs">
+                <p className="label-text mb-3 sm:mb-4 md:mb-8 text-[#3A2A23]/80 text-[9px] sm:text-xs md:text-sm tracking-wide-editorial">
                   {homepageContent.tagline}
                 </p>
                 <h1
-                  className="font-serif text-dark-choc leading-[1.1] mb-4 sm:mb-6 md:mb-10"
-                  style={{ fontSize: "clamp(2.5rem, 10vw, 8rem)" }}
+                  className="text-[#3A2A23] leading-[1.1] mb-4 sm:mb-6 md:mb-10 font-normal"
+                  style={{ 
+                    fontFamily: 'Canela, "Canela Text", serif',
+                    fontSize: "clamp(2.5rem, 10vw, 8rem)" 
+                  }}
                 >
                   {homepageContent.heroHeadline || 'We craft brand identities that resonate.'}
                 </h1>
-                <p className="body-text max-w-xl mb-6 sm:mb-8 md:mb-14 text-dark-choc/80 text-sm sm:text-base md:text-lg">
+                <p className="body-text max-w-xl mb-6 sm:mb-8 md:mb-14 text-[#3A2A23]/90 text-sm sm:text-base md:text-lg lg:text-xl font-light leading-relaxed">
                   {homepageContent.heroSubheading}
                 </p>
                 <motion.div
@@ -535,7 +557,7 @@ export default function Home() {
                 >
                   <Link
                     href="/contact"
-                    className="btn-primary bg-[#892F1A] border-[#892F1A] hover:bg-[#6d2514] hover:border-[#6d2514] inline-block text-[10px] sm:text-xs px-6 py-3 sm:px-8 sm:py-4 md:px-10 md:py-5"
+                    className="btn-primary bg-[#8C3B1F] border-[#8C3B1F] text-[#F6F1EC] hover:bg-[#7a331b] hover:border-[#7a331b] inline-block text-[10px] sm:text-xs px-6 py-3 sm:px-8 sm:py-4 md:px-10 md:py-5 font-medium tracking-wider"
                   >
                     Start Your Project
                   </Link>
