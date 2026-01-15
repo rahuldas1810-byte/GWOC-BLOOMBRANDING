@@ -536,16 +536,19 @@ export default function Home() {
                 transition={{ duration: 1.2, ease: [0.4, 0, 0.2, 1] }}
                 className="max-w-5xl"
               >
-                <p className="label-text mb-3 sm:mb-4 md:mb-8 text-dark-choc/70 text-[9px] sm:text-[10px] md:text-xs">
+                <p className="label-text mb-3 sm:mb-4 md:mb-8 text-[#3A2A23]/80 text-[9px] sm:text-xs md:text-sm tracking-wide-editorial">
                   {homepageContent.tagline}
                 </p>
                 <h1
-                  className="font-serif text-dark-choc leading-[1.1] mb-4 sm:mb-6 md:mb-10"
-                  style={{ fontSize: "clamp(2.5rem, 10vw, 8rem)" }}
+                  className="text-[#3A2A23] leading-[1.1] mb-4 sm:mb-6 md:mb-10 font-normal"
+                  style={{ 
+                    fontFamily: 'Canela, "Canela Text", serif',
+                    fontSize: "clamp(2.5rem, 10vw, 8rem)" 
+                  }}
                 >
                   {homepageContent.heroHeadline || 'We craft brand identities that resonate.'}
                 </h1>
-                <p className="body-text max-w-xl mb-6 sm:mb-8 md:mb-14 text-dark-choc/80 text-sm sm:text-base md:text-lg">
+                <p className="body-text max-w-xl mb-6 sm:mb-8 md:mb-14 text-[#3A2A23]/90 text-sm sm:text-base md:text-lg lg:text-xl font-light leading-relaxed">
                   {homepageContent.heroSubheading}
                 </p>
                 <motion.div
@@ -554,7 +557,7 @@ export default function Home() {
                 >
                   <Link
                     href="/contact"
-                    className="btn-primary bg-[#892F1A] border-[#892F1A] hover:bg-[#6d2514] hover:border-[#6d2514] inline-block text-[10px] sm:text-xs px-6 py-3 sm:px-8 sm:py-4 md:px-10 md:py-5"
+                    className="btn-primary bg-[#8C3B1F] border-[#8C3B1F] text-[#F6F1EC] hover:bg-[#7a331b] hover:border-[#7a331b] inline-block text-[10px] sm:text-xs px-6 py-3 sm:px-8 sm:py-4 md:px-10 md:py-5 font-medium tracking-wider"
                   >
                     Start Your Project
                   </Link>
