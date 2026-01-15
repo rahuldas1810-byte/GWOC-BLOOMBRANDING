@@ -74,16 +74,9 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
     router.push('/admin/login')
   }
 
-  if (loading) {
-    return (
-      <div className="min-h-screen flex items-center justify-center bg-earl-gray">
-        <div className="text-center">
-          <LoadingSpinner size="lg" />
-          <p className="mt-4 text-dark-choc/60">Loading admin panel...</p>
-        </div>
-      </div>
-    )
-  }
+  // No blocking full-page loader here. Middleware handles basic protection.
+  // The layout will render the shell immediately, and page content will show.
+  // getMe() will still run to populate user-specific UI in the background.
 
 
 
@@ -95,15 +88,15 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
       <aside className={`fixed lg:static inset-y-0 left-0 z-50 w-72 bg-white border-r border-dark-choc/10 shadow-2xl lg:shadow-none transform transition-all duration-500 ease-in-out ${sidebarOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'
         }`}>
         <div className="flex flex-col h-full">
-          <div className="p-8 border-b border-dark-choc/10 bg-gradient-to-br from-electric-blue to-electric-blue/90 flex items-center justify-center relative overflow-hidden">
+          <div className="py-3 px-3 border-b border-dark-choc/10 bg-gradient-to-br from-electric-blue to-electric-blue/90 flex items-center justify-center relative overflow-hidden">
             <div className="absolute inset-0 bg-[url('/noise.png')] opacity-10 mix-blend-overlay" />
-            <div className="relative h-12 w-auto">
+            <div className="relative w-full flex items-center justify-center">
               <Image
                 src="/bloom-logo.png"
                 alt="Bloom Branding Logo"
-                width={200}
-                height={48}
-                className="h-12 w-auto object-contain brightness-0 invert"
+                width={280}
+                height={70}
+                className="w-[90%] h-auto object-contain brightness-0 invert"
                 priority
               />
             </div>
@@ -163,9 +156,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
             {sidebarOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
           </button>
           <div className="flex-1 px-4">
-            <div className="hidden sm:block">
-              <span className="text-xs font-black uppercase tracking-[0.2em] text-dark-choc/30">Bloom CRM // Command</span>
-            </div>
+            {/* Tagline removed as requested */}
           </div>
           <div className="flex items-center gap-4">
             <div className="flex items-center gap-3 bg-earl-gray px-4 py-2 rounded-full border border-dark-choc/5">
