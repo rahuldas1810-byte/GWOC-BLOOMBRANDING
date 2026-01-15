@@ -11,6 +11,27 @@ export const getTestimonials = async (retries = 3): Promise<Testimonial[]> => {
       ? ''
       : process.env.NEXT_PUBLIC_SITE_URL || 'http://localhost:3000'
 
+    // 1. Check Site Settings First
+    const settings = await getSiteSettings();
+    const useGoogleReviews = settings?.useGoogleReviews !== false; // Default to true if undefined
+
+    if (useGoogleReviews) {
+      try {
+        const googleRes = await fetch(`${baseUrl}/api/google-reviews`, {
+          next: { revalidate: 3600 }, // Cache for 1 hour locally
+        });
+        if (googleRes.ok) {
+          const googleData = await googleRes.json();
+          if (googleData.success && googleData.data && googleData.data.length > 0) {
+            return googleData.data;
+          }
+        }
+      } catch (e) {
+        console.warn("Failed to fetch Google Reviews, falling back to CMS", e);
+      }
+    }
+
+    // 2. Fallback to CMS (Existing Logic)
     const fetchWithRetry = async (attempt: number): Promise<Response> => {
       try {
         const controller = new AbortController()

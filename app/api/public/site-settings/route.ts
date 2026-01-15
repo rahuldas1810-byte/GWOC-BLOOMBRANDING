@@ -74,6 +74,7 @@ export async function GET(request: NextRequest) {
             linkedin: 'https://in.linkedin.com/company/bloombranding-digital-media-marketing-branding-agency',
             facebook: 'https://www.facebook.com/hello.bloombranding/',
           },
+          googleMapsUrl: 'https://www.google.com/maps/search/?api=1&query=Bloom+Branding+Studio+Surat+Gujarat',
         },
       })
       response.headers.set('Cache-Control', 'no-store, no-cache, must-revalidate, proxy-revalidate')

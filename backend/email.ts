@@ -1,92 +1,100 @@
 import "server-only";
-import nodemailer from 'nodemailer'
+import { Resend } from 'resend';
+import jwt from 'jsonwebtoken';
+
+// Initialize Resend with API key
+if (!process.env.RESEND_API_KEY) {
+  console.warn('⚠️ RESEND_API_KEY is missing in environment variables');
+}
+
+export const resend = new Resend(process.env.RESEND_API_KEY);
+
+// Default sender identity
+const DEFAULT_SENDER = process.env.EMAIL_FROM || 'Bloom Branding <hello@bloombranding.com>';
+const JWT_SECRET = process.env.JWT_SECRET || 'fallback-secret-do-not-use-in-prod';
+const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL || 'http://localhost:3000';
 
 interface EmailOptions {
-  to: string
-  subject: string
-  html: string
-  text?: string
+  to: string;
+  subject: string;
+  html: string;
+  text?: string;
+  includeUnsubscribe?: boolean;
 }
 
-// Create reusable transporter
-const createTransporter = () => {
+/**
+ * Generates a signed unsubscribe link for a given email.
+ */
+export const generateUnsubscribeLink = (email: string): string => {
+  const token = jwt.sign({ email }, JWT_SECRET, { expiresIn: '30d' });
+  return `${BASE_URL}/api/newsletter/unsubscribe?token=${token}`;
+};
 
-console.log('🧪 SMTP ENV CHECK:', {
-  SMTP_HOST: process.env.SMTP_HOST,
-  SMTP_EMAIL: process.env.SMTP_EMAIL,
-  SMTP_PASSWORD_EXISTS: !!process.env.SMTP_PASSWORD,
-  SMTP_PORT: process.env.SMTP_PORT,
-})
-
-  // Check if email is configured
-  const emailHost = process.env.SMTP_HOST
-  const emailUser = process.env.SMTP_EMAIL
-  const emailPass = process.env.SMTP_PASSWORD
-  const emailPort = process.env.SMTP_PORT || '587'
-
-  // If no email config, return null (will use console logging fallback)
-  if (!emailHost || !emailUser || !emailPass) {
-    return null
-  }
- 
-  return nodemailer.createTransport({
-    host: emailHost,
-    port: parseInt(emailPort),
-    secure: emailPort === '465', // true for 465, false for other ports
-    auth: {
-      user: emailUser,
-      pass: emailPass,
-    },
-  })
-}
-
+/**
+ * Sends an email using Resend API
+ */
 export const sendEmail = async (options: EmailOptions): Promise<boolean> => {
   try {
-    const transporter = createTransporter()
+    const { to, subject, html, text, includeUnsubscribe } = options;
 
-    // If no email config, log to console (for development)
-    if (!transporter) {
-  console.error('❌ SMTP not configured properly')
-  return false
-}
-
-    const mailOptions = {
-      from: `"Bloom Branding" <${process.env.SMTP_FROM || process.env.SMTP_EMAIL}>`,
-      to: options.to,
-      subject: options.subject,
-      html: options.html,
-      text: options.text || options.html.replace(/<[^>]*>/g, ''), // Strip HTML for text version
+    if (!process.env.RESEND_API_KEY) {
+      console.error('❌ Cannot send email: RESEND_API_KEY is not configured');
+      return false;
     }
 
-    // Verify connection before sending
-    try {
-      await transporter.verify()
-    } catch (verifyError: any) {
-      console.error('❌ SMTP connection verification failed:', verifyError.message)
-      console.error('   Please check your SMTP credentials in .env.local')
-      return false
+    let finalHtml = html;
+    let finalText = text || '';
+
+    if (includeUnsubscribe) {
+      const unsubscribeLink = generateUnsubscribeLink(to);
+      const unsubscribeHtml = `
+        <div style="margin-top: 40px; padding-top: 20px; border-top: 1px solid #eee; font-size: 12px; color: #888; text-align: center;">
+          <p>
+            You received this email because you are subscribed to Bloom Branding updates.
+            <br>
+            <a href="${unsubscribeLink}" style="color: #666; text-decoration: underline;">Unsubscribe</a>
+          </p>
+        </div>
+      `;
+      const unsubscribeText = `\n\nTo unsubscribe, visit: ${unsubscribeLink}`;
+
+      // Append to HTML (before closing body if present, else just append)
+      if (finalHtml.includes('</body>')) {
+        finalHtml = finalHtml.replace('</body>', `${unsubscribeHtml}</body>`);
+      } else {
+        finalHtml += unsubscribeHtml;
+      }
+
+      finalText += unsubscribeText;
     }
 
-    const info = await transporter.sendMail(mailOptions)
-    console.log('✅ Email sent successfully:', info.messageId)
-    return true
+    const { data, error } = await resend.emails.send({
+      from: DEFAULT_SENDER,
+      to: to,
+      subject: subject,
+      html: finalHtml,
+      text: finalText,
+    });
+
+    if (error) {
+      console.error('❌ Resend API Error:', error);
+      return false;
+    }
+
+    // specific success log for tracking but less verbose than before
+    // console.log('✅ Email sent successfully via Resend:', data?.id); 
+    return true;
   } catch (error: any) {
-    console.error('❌ Error sending email:', error.message)
-    if (error.code === 'EAUTH') {
-      console.error('   Authentication failed. Check your SMTP_EMAIL and SMTP_PASSWORD')
-    } else if (error.code === 'ECONNECTION') {
-      console.error('   Connection failed. Check your SMTP_HOST and SMTP_PORT')
-    }
-    return false
+    console.error('❌ Unexpected error sending email:', error.message);
+    return false;
   }
-}
+};
 
 export const sendPasswordResetEmail = async (
   email: string,
   resetToken: string
 ): Promise<boolean> => {
-  const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'http://localhost:3000'
-  const resetLink = `${baseUrl}/admin/reset-password?token=${resetToken}`
+  const resetLink = `${BASE_URL}/admin/reset-password?token=${resetToken}`;
 
   const html = `
     <!DOCTYPE html>
@@ -137,7 +145,7 @@ export const sendPasswordResetEmail = async (
         </div>
       </body>
     </html>
-  `
+  `;
 
   const text = `
 Reset Your Password - Bloom Branding
@@ -153,15 +161,15 @@ This link will expire in 1 hour. If you didn't request a password reset, please 
 
 Best regards,
 Bloom Branding Team
-  `
+  `;
 
   return await sendEmail({
     to: email,
     subject: 'Reset Your Password - Bloom Branding Admin',
     html,
     text,
-  })
-}
+  });
+};
 
 
 export const sendOtpEmail = async (
@@ -209,7 +217,7 @@ export const sendOtpEmail = async (
         </div>
       </body>
     </html>
-  `
+  `;
 
   const text = `
 Password Reset OTP - Bloom Branding
@@ -224,15 +232,15 @@ This OTP will expire in 5 minutes. If you didn't request a password reset, pleas
 
 Best regards,
 Bloom Branding Team
-  `
+  `;
 
   return await sendEmail({
     to: email,
     subject: 'Password Reset OTP - Bloom Branding Admin',
     html,
     text,
-  })
-}
+  });
+};
 
 export const sendQueryConfirmationEmail = async (
   email: string,
@@ -269,7 +277,7 @@ export const sendQueryConfirmationEmail = async (
         </div>
       </body>
     </html>
-  `
+  `;
 
   const text = `
 Thank You for Your Query - Bloom Branding
@@ -282,12 +290,12 @@ Best regards,
 Bloom Branding Team
 
 This is an automated message. Please do not reply to this email.
-  `
+  `;
 
   return await sendEmail({
     to: email,
     subject: 'Thank You for Your Query - Bloom Branding',
     html,
     text,
-  })
-}
+  });
+};
