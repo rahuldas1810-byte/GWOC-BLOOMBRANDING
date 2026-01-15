@@ -30,6 +30,13 @@ export interface HomepageContent {
   testimonialsLabel?: string
   testimonialsHeading?: string
   homepageTestimonialIds?: string[]
+  sections?: {
+    hero: { enabled: boolean; order: number };
+    about: { enabled: boolean; order: number };
+    services: { enabled: boolean; order: number };
+    clients: { enabled: boolean; order: number };
+    testimonials: { enabled: boolean; order: number };
+  };
 }
 
 export interface ContactSubmission {

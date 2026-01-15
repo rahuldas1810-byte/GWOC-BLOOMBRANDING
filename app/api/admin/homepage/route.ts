@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { authenticate } from '@/backend'
 import connectDB from '@/lib/db'
+import { revalidatePath } from 'next/cache'
 import Homepage from '@/models/Homepage'
 
 // GET - Get homepage content (admin)
@@ -18,7 +19,7 @@ export async function GET(request: NextRequest) {
 
     // Get or create homepage document (only one should exist)
     let homepage = await Homepage.findOne()
-    
+
     if (!homepage) {
       // Create default homepage if none exists
       homepage = await Homepage.create({
@@ -80,6 +81,10 @@ export async function PUT(request: NextRequest) {
         runValidators: true, // Run schema validators
       }
     )
+
+    // Revalidate the homepage to ensure changes reflect immediately
+    revalidatePath('/')
+    revalidatePath('/admin/(panel)/homepage', 'page')
 
     return NextResponse.json({
       success: true,
