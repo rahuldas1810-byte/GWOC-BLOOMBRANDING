@@ -8,10 +8,10 @@ interface SkewedClientsProps {
     label?: string;
 }
 
-    const transition = {
-        duration: 0.6,
-        ease: [0.16, 1, 0.3, 1]
-    };
+const transition = {
+    duration: 0.6,
+    ease: [0.16, 1, 0.3, 1]
+};
 
 export default function SkewedClients({ clients, label = "TRUSTED BY" }: SkewedClientsProps) {
     if (!clients || clients.length === 0) return null;
@@ -25,15 +25,15 @@ export default function SkewedClients({ clients, label = "TRUSTED BY" }: SkewedC
         { name: "Wellness" }
     ];
 
-    // Duplicate list for seamless marquee loop
-    const marqueeClients = [...displayClients, ...displayClients, ...displayClients];
+    // Duplicate list for seamless marquee loop (exactly 2 for % based animation)
+    const marqueeClients = [...displayClients, ...displayClients];
 
     return (
         <section className="bg-earl-gray py-24 sm:py-32 overflow-hidden relative border-y border-dark-choc/5">
             {/* Global Organic Grain Texture (Ultra Subtle) */}
-            <div 
+            <div
                 className="absolute inset-0 opacity-[0.03] z-0 pointer-events-none mix-blend-multiply bg-[url('https://grainy-gradients.vercel.app/noise.svg')] bg-repeat"
-                style={{ backgroundSize: '100px 100px' }} 
+                style={{ backgroundSize: '100px 100px' }}
             />
 
             {/* Subtle Background Pattern (Existing) */}
@@ -95,25 +95,25 @@ export default function SkewedClients({ clients, label = "TRUSTED BY" }: SkewedC
             </div>
 
             {/* Single Moving Stripe Container */}
-            <div className="relative w-full py-16 sm:py-24">
-                
+            <div className="relative w-full py-12 sm:py-24">
+
                 <div
-                    className="relative py-6 sm:py-8 transform -skew-y-[6deg] origin-center z-10 overflow-hidden shadow-[0_30px_60px_-12px_rgba(0,0,0,0.4)] bg-[#1E3570]"
-                    style={{ width: '120%', marginLeft: '-10%' }}
+                    className="relative py-8 sm:py-12 transform -skew-y-[3deg] sm:-skew-y-[6deg] origin-center z-10 overflow-hidden shadow-[0_30px_60px_-12px_rgba(0,0,0,0.4)] bg-[#1E3570]"
+                    style={{ width: '140%', marginLeft: '-20%' }}
                 >
                     {/* Subtle Vertical Gradient for Depth (No Shine) */}
                     <div className="absolute inset-0 bg-gradient-to-b from-[#1E3570] to-[#152648] z-0" />
-                    
+
                     {/* Top/Bottom Borders for definition */}
                     <div className="absolute top-0 left-0 right-0 h-[1px] bg-white/10 z-10" />
                     <div className="absolute bottom-0 left-0 right-0 h-[1px] bg-white/10 z-10" />
 
                     {/* Marquee Motion Container */}
                     <motion.div
-                        className="relative z-10 flex items-center gap-24 sm:gap-32 md:gap-40 whitespace-nowrap px-4"
-                        animate={{ x: [0, -1000] }}
+                        className="relative z-10 flex items-center gap-16 sm:gap-32 md:gap-40 whitespace-nowrap px-4"
+                        animate={{ x: ["0%", "-50%"] }}
                         transition={{
-                            duration: 20, // Faster speed (Round 3)
+                            duration: 25,
                             repeat: Infinity,
                             ease: "linear"
                         }}
@@ -128,9 +128,9 @@ export default function SkewedClients({ clients, label = "TRUSTED BY" }: SkewedC
                                     whileHover={{ scale: 1.05 }}
                                     transition={{ duration: 0.4, ease: [0.33, 1, 0.68, 1] }}
                                 >
-                                    <span 
+                                    <span
                                         className="font-serif italic font-medium tracking-wide text-[#F2EBE3] transition-colors duration-300 block capitalize"
-                                        style={{ fontSize: 'clamp(1.75rem, 4vw, 3rem)' }}
+                                        style={{ fontSize: 'clamp(1.5rem, 5vw, 3.5rem)' }}
                                     >
                                         {client.name}
                                     </span>
