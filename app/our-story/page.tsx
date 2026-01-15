@@ -336,7 +336,7 @@ export default function OurStory() {
       </SectionReveal>
 
       {/* Why We Exist - EDITORIAL OVERLAP */}
-      <section ref={purposeRef} className="section-padding bg-white relative overflow-hidden py-12 sm:py-16 md:py-32 lg:py-48">
+      <section ref={purposeRef} className="section-padding bg-white relative py-12 sm:py-16 md:py-32 lg:py-48">
         <div className="container-custom relative z-10">
 
           <div className="relative">
@@ -366,8 +366,8 @@ export default function OurStory() {
             {/* Overlapping Content Card - FAANG TILT */}
             <TiltCard
               className="bg-white/95 backdrop-blur-md p-5 sm:p-6 md:p-10 lg:p-16 rounded-xl sm:rounded-2xl md:rounded-[2rem] shadow-[0_40px_100px_rgba(0,0,0,0.1)] border border-dark-choc/5
-                            relative mt-[-8%] sm:mt-[-10%] mx-auto w-[92%] sm:w-[90%]
-                            lg:absolute lg:right-0 lg:bottom-[10%] lg:w-[45%] lg:mt-0 lg:ml-0 overflow-hidden group/card"
+                            relative mt-[-4%] sm:mt-[-5%] mx-auto w-[92%] sm:w-[90%]
+                            lg:absolute lg:right-0 lg:inset-y-0 lg:my-auto lg:h-fit lg:w-[45%] lg:ml-0 group/card"
             >
               {/* Rotating Badge */}
               <div className="absolute -top-12 -right-12 w-48 h-48 opacity-10 md:opacity-100 hidden md:block pointer-events-none z-20">
