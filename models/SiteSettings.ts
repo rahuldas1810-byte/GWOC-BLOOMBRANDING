@@ -58,12 +58,14 @@ export interface ISiteSettings extends Document {
     description: string
     buttonText: string
   }
+  useGoogleReviews: boolean
   // Social Links
   socialLinks: {
     instagram: string
     linkedin: string
     facebook: string
   }
+  googleMapsUrl: string
   createdAt: Date
   updatedAt: Date
 }
@@ -212,6 +214,10 @@ const SiteSettingsSchema = new Schema<ISiteSettings>(
         default: 'Client Stories',
       },
     },
+    useGoogleReviews: {
+      type: Boolean,
+      default: true,
+    },
     socialLinks: {
       instagram: {
         type: String,
@@ -225,6 +231,10 @@ const SiteSettingsSchema = new Schema<ISiteSettings>(
         type: String,
         default: 'https://www.facebook.com/hello.bloombranding/',
       },
+    },
+    googleMapsUrl: {
+      type: String,
+      default: 'https://www.google.com/maps/search/?api=1&query=Bloom+Branding+Studio+Surat+Gujarat',
     },
   },
   {
