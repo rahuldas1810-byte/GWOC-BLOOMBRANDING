@@ -183,6 +183,7 @@ export const getHomepageContent = async (retries = 3): Promise<HomepageContent> 
         testimonialsLabel: result.data.testimonialsLabel,
         testimonialsHeading: result.data.testimonialsHeading,
         homepageTestimonialIds: result.data.homepageTestimonialIds,
+        sections: result.data.sections,
       }
     }
 
@@ -206,6 +207,13 @@ function getDefaultHomepageContent(): HomepageContent {
     heroVideo: null,
     backgroundVideo: null,
     sectionVideo: null,
+    sections: {
+      hero: { enabled: true, order: 1 },
+      services: { enabled: true, order: 3 },
+      clients: { enabled: true, order: 4 },
+      about: { enabled: true, order: 2 },
+      testimonials: { enabled: true, order: 5 }
+    }
   }
 }
 

@@ -37,6 +37,13 @@ export default function Home() {
     clientsTitle: 'Trusted By',
     testimonialsLabel: 'Testimonials',
     testimonialsHeading: 'What Clients Say',
+    sections: {
+      hero: { enabled: true, order: 1 },
+      services: { enabled: true, order: 3 },
+      clients: { enabled: true, order: 4 },
+      about: { enabled: true, order: 2 },
+      testimonials: { enabled: true, order: 5 }
+    },
     googleMapsUrl: 'https://www.google.com/maps/search/?api=1&query=Bloom+Branding+Studio+Surat+Gujarat',
   });
   const [hoveredService, setHoveredService] = useState<number | null>(null);
@@ -96,6 +103,13 @@ export default function Home() {
             clientsTitle: siteSettings?.homepageSections?.clientsTitle || 'Trusted By',
             testimonialsLabel: homepageData.testimonialsLabel !== undefined && homepageData.testimonialsLabel !== null ? homepageData.testimonialsLabel : 'Testimonials',
             testimonialsHeading: homepageData.testimonialsHeading !== undefined && homepageData.testimonialsHeading !== null ? homepageData.testimonialsHeading : 'What Clients Say',
+            sections: homepageData.sections || {
+              hero: { enabled: true, order: 1 },
+              services: { enabled: true, order: 3 },
+              clients: { enabled: true, order: 4 },
+              about: { enabled: true, order: 2 },
+              testimonials: { enabled: true, order: 5 }
+            },
             googleMapsUrl: siteSettings?.googleMapsUrl || 'https://www.google.com/maps/search/?api=1&query=Bloom+Branding+Studio+Surat+Gujarat',
           });
 
@@ -346,312 +360,314 @@ export default function Home() {
   return (
     <div className="min-h-screen relative">
       {/* ================= HERO SECTION ================= */}
-      <section className="relative w-full h-auto md:min-h-screen overflow-hidden flex flex-col justify-center">
-        {/* Hero Video - plays first, then fades out smoothly when it ends */}
-        {homepageContent.heroVideo && (
-          <video
-            ref={videoRef}
-            className={`relative w-full h-auto md:absolute md:inset-0 md:h-full object-contain md:object-cover z-40 transition-opacity duration-[1500ms] ease-in-out ${videoEnded || isTransitioning ? "opacity-0 pointer-events-none z-0" : "opacity-100 z-40"
-              }`}
-            autoPlay
-            muted
-            playsInline
-            preload="auto"
-            style={{
-              transition: 'opacity 1.5s cubic-bezier(0.4, 0, 0.2, 1)',
-              visibility: videoEnded ? 'hidden' : 'visible',
-              display: 'block', // Always block to maintain height on mobile
-              zIndex: videoEnded || isTransitioning ? 0 : 40
-            }}
-            onLoadStart={() => {
-              // Video started loading - try to play immediately
-              if (videoRef.current && videoRef.current.paused) {
-                videoRef.current.play().catch(() => {
-                  // Ignore errors, will retry when ready
-                });
-              }
-            }}
-            onLoadedMetadata={() => {
-              // Video metadata loaded - try to play
-              if (videoRef.current && videoRef.current.paused) {
-                videoRef.current.play().catch(() => {
-                  // Ignore errors, will retry when ready
-                });
-              }
-            }}
-            onLoadedData={() => {
-              setHeroVideoReady(true);
-              // Ensure video plays immediately when loaded
-              if (videoRef.current) {
-                videoRef.current.play().catch(console.error);
-              }
-            }}
-            onCanPlay={() => {
-              setHeroVideoReady(true);
-              // Force play when video can play
-              if (videoRef.current && videoRef.current.paused) {
-                videoRef.current.play().catch(console.error);
-              }
-            }}
-            onCanPlayThrough={() => {
-              setHeroVideoReady(true);
-              // Video can play through - ensure it's playing
-              if (videoRef.current && videoRef.current.paused) {
-                videoRef.current.play().catch(console.error);
-              }
-            }}
-            onPlaying={() => {
-              setHeroVideoReady(true);
-            }}
-            onTimeUpdate={() => {
-              // Start transition slightly before video ends for seamless crossfade
-              if (videoRef.current && !isTransitioning && !videoEnded && videoRef.current.duration) {
-                const timeRemaining = videoRef.current.duration - videoRef.current.currentTime;
-                // Start transition 0.8 seconds before end for smooth crossfade
-                if (timeRemaining <= 0.8 && timeRemaining > 0.1) {
-                  setIsTransitioning(true);
+      {homepageContent.sections.hero.enabled && (
+        <section className="relative w-full h-auto md:min-h-screen overflow-hidden flex flex-col justify-center">
+          {/* Hero Video - plays first, then fades out smoothly when it ends */}
+          {homepageContent.heroVideo && (
+            <video
+              ref={videoRef}
+              className={`relative w-full h-auto md:absolute md:inset-0 md:h-full object-contain md:object-cover z-40 transition-opacity duration-[1500ms] ease-in-out ${videoEnded || isTransitioning ? "opacity-0 pointer-events-none z-0" : "opacity-100 z-40"
+                }`}
+              autoPlay
+              muted
+              playsInline
+              preload="auto"
+              style={{
+                transition: 'opacity 1.5s cubic-bezier(0.4, 0, 0.2, 1)',
+                visibility: videoEnded ? 'hidden' : 'visible',
+                display: 'block', // Always block to maintain height on mobile
+                zIndex: videoEnded || isTransitioning ? 0 : 40
+              }}
+              onLoadStart={() => {
+                // Video started loading - try to play immediately
+                if (videoRef.current && videoRef.current.paused) {
+                  videoRef.current.play().catch(() => {
+                    // Ignore errors, will retry when ready
+                  });
                 }
-              }
-            }}
-          >
-            <source src={homepageContent.heroVideo} type="video/mp4" />
-            <source src={homepageContent.heroVideo} type="video/webm" />
-          </video>
-        )}
+              }}
+              onLoadedMetadata={() => {
+                // Video metadata loaded - try to play
+                if (videoRef.current && videoRef.current.paused) {
+                  videoRef.current.play().catch(() => {
+                    // Ignore errors, will retry when ready
+                  });
+                }
+              }}
+              onLoadedData={() => {
+                setHeroVideoReady(true);
+                // Ensure video plays immediately when loaded
+                if (videoRef.current) {
+                  videoRef.current.play().catch(console.error);
+                }
+              }}
+              onCanPlay={() => {
+                setHeroVideoReady(true);
+                // Force play when video can play
+                if (videoRef.current && videoRef.current.paused) {
+                  videoRef.current.play().catch(console.error);
+                }
+              }}
+              onCanPlayThrough={() => {
+                setHeroVideoReady(true);
+                // Video can play through - ensure it's playing
+                if (videoRef.current && videoRef.current.paused) {
+                  videoRef.current.play().catch(console.error);
+                }
+              }}
+              onPlaying={() => {
+                setHeroVideoReady(true);
+              }}
+              onTimeUpdate={() => {
+                // Start transition slightly before video ends for seamless crossfade
+                if (videoRef.current && !isTransitioning && !videoEnded && videoRef.current.duration) {
+                  const timeRemaining = videoRef.current.duration - videoRef.current.currentTime;
+                  // Start transition 0.8 seconds before end for smooth crossfade
+                  if (timeRemaining <= 0.8 && timeRemaining > 0.1) {
+                    setIsTransitioning(true);
+                  }
+                }
+              }}
+            >
+              <source src={homepageContent.heroVideo} type="video/mp4" />
+              <source src={homepageContent.heroVideo} type="video/webm" />
+            </video>
+          )}
 
-        {/* Background Video - fades in smoothly after hero video ends */}
-        {homepageContent.backgroundVideo && (
-          <video
-            ref={backgroundVideoRef}
-            className={`absolute inset-0 w-full h-full object-cover scale-[1.35] z-10 transition-opacity duration-[1500ms] ease-in-out ${videoEnded || isTransitioning || !homepageContent.heroVideo ? "opacity-100 z-10" : "opacity-0 z-0 pointer-events-none"
+          {/* Background Video - fades in smoothly after hero video ends */}
+          {homepageContent.backgroundVideo && (
+            <video
+              ref={backgroundVideoRef}
+              className={`absolute inset-0 w-full h-full object-cover scale-[1.35] z-10 transition-opacity duration-[1500ms] ease-in-out ${videoEnded || isTransitioning || !homepageContent.heroVideo ? "opacity-100 z-10" : "opacity-0 z-0 pointer-events-none"
+                }`}
+              autoPlay={!homepageContent.heroVideo || videoEnded || isTransitioning}
+              loop
+              muted
+              playsInline
+              preload={homepageContent.heroVideo ? "auto" : "auto"}
+              style={{
+                transition: 'opacity 1.5s cubic-bezier(0.4, 0, 0.2, 1)',
+                visibility: homepageContent.heroVideo && !videoEnded && !isTransitioning ? 'hidden' : 'visible',
+                display: homepageContent.heroVideo && !videoEnded && !isTransitioning ? 'none' : 'block',
+                pointerEvents: homepageContent.heroVideo && !videoEnded && !isTransitioning ? 'none' : 'auto'
+              }}
+              onCanPlay={() => {
+                setBackgroundVideoReady(true);
+                // If we're transitioning or video has ended, ensure it plays
+                if ((isTransitioning || videoEnded || !homepageContent.heroVideo) && backgroundVideoRef.current?.paused) {
+                  backgroundVideoRef.current.play().catch(console.error);
+                }
+              }}
+            >
+              <source src={homepageContent.backgroundVideo} type="video/mp4" />
+              <source src={homepageContent.backgroundVideo} type="video/webm" />
+            </video>
+          )}
+
+          {/* Fallback: Only show gradient if no videos at all AND content is loaded AND we've confirmed no hero video */}
+          {contentLoaded && !homepageContent.heroVideo && !homepageContent.backgroundVideo && videoEnded && (
+            <div className="absolute inset-0 w-full h-full bg-gradient-to-br from-dark-choc via-earl-gray to-butter-yellow z-10" />
+          )}
+
+          {/* Content - fades in smoothly after hero video ends or if no hero video (and content is loaded) */}
+          <div
+            className={`absolute inset-0 md:relative z-20 h-full flex items-center transition-opacity duration-[1500ms] ease-in-out ${contentLoaded && (
+              (homepageContent.heroVideo && (videoEnded || isTransitioning)) ||
+              (!homepageContent.heroVideo && !isInitialLoad)
+            ) ? "opacity-100" : "opacity-0 pointer-events-none"
               }`}
-            autoPlay={!homepageContent.heroVideo || videoEnded || isTransitioning}
-            loop
-            muted
-            playsInline
-            preload={homepageContent.heroVideo ? "auto" : "auto"}
             style={{
               transition: 'opacity 1.5s cubic-bezier(0.4, 0, 0.2, 1)',
-              visibility: homepageContent.heroVideo && !videoEnded && !isTransitioning ? 'hidden' : 'visible',
-              display: homepageContent.heroVideo && !videoEnded && !isTransitioning ? 'none' : 'block',
-              pointerEvents: homepageContent.heroVideo && !videoEnded && !isTransitioning ? 'none' : 'auto'
-            }}
-            onCanPlay={() => {
-              setBackgroundVideoReady(true);
-              // If we're transitioning or video has ended, ensure it plays
-              if ((isTransitioning || videoEnded || !homepageContent.heroVideo) && backgroundVideoRef.current?.paused) {
-                backgroundVideoRef.current.play().catch(console.error);
-              }
+              visibility: contentLoaded && (
+                (homepageContent.heroVideo && (videoEnded || isTransitioning)) ||
+                (!homepageContent.heroVideo && !isInitialLoad)
+              ) ? 'visible' : 'hidden',
+              display: contentLoaded && (
+                (homepageContent.heroVideo && (videoEnded || isTransitioning)) ||
+                (!homepageContent.heroVideo && !isInitialLoad)
+              ) ? 'flex' : 'none'
             }}
           >
-            <source src={homepageContent.backgroundVideo} type="video/mp4" />
-            <source src={homepageContent.backgroundVideo} type="video/webm" />
-          </video>
-        )}
-
-        {/* Fallback: Only show gradient if no videos at all AND content is loaded AND we've confirmed no hero video */}
-        {contentLoaded && !homepageContent.heroVideo && !homepageContent.backgroundVideo && videoEnded && (
-          <div className="absolute inset-0 w-full h-full bg-gradient-to-br from-dark-choc via-earl-gray to-butter-yellow z-10" />
-        )}
-
-
-
-        {/* Content - fades in smoothly after hero video ends or if no hero video (and content is loaded) */}
-        <div
-          className={`absolute inset-0 md:relative z-20 h-full flex items-center transition-opacity duration-[1500ms] ease-in-out ${contentLoaded && (
-            (homepageContent.heroVideo && (videoEnded || isTransitioning)) ||
-            (!homepageContent.heroVideo && !isInitialLoad)
-          ) ? "opacity-100" : "opacity-0 pointer-events-none"
-            }`}
-          style={{
-            transition: 'opacity 1.5s cubic-bezier(0.4, 0, 0.2, 1)',
-            visibility: contentLoaded && (
-              (homepageContent.heroVideo && (videoEnded || isTransitioning)) ||
-              (!homepageContent.heroVideo && !isInitialLoad)
-            ) ? 'visible' : 'hidden',
-            display: contentLoaded && (
-              (homepageContent.heroVideo && (videoEnded || isTransitioning)) ||
-              (!homepageContent.heroVideo && !isInitialLoad)
-            ) ? 'flex' : 'none'
-          }}
-        >
-          <div className="container-custom">
-            <motion.div
-              initial={{ opacity: 0, y: 12 }}
-              animate={
-                contentLoaded && (
-                  (homepageContent.heroVideo && (videoEnded || isTransitioning)) ||
-                  (!homepageContent.heroVideo && !isInitialLoad)
-                ) ? { opacity: 1, y: 0 } : { opacity: 0, y: 12 }
-              }
-              transition={{ duration: 1.2, ease: [0.4, 0, 0.2, 1] }}
-              className="max-w-5xl"
-            >
-              <p className="label-text mb-3 sm:mb-4 md:mb-8 text-dark-choc/70 text-[9px] sm:text-[10px] md:text-xs">
-                {homepageContent.tagline}
-              </p>
-              <h1
-                className="font-serif text-dark-choc leading-[1.1] mb-4 sm:mb-6 md:mb-10"
-                style={{ fontSize: "clamp(2.5rem, 10vw, 8rem)" }}
-              >
-                {homepageContent.heroHeadline || 'We craft brand identities that resonate.'}
-              </h1>
-              <p className="body-text max-w-xl mb-6 sm:mb-8 md:mb-14 text-dark-choc/80 text-sm sm:text-base md:text-lg">
-                {homepageContent.heroSubheading}
-              </p>
+            <div className="container-custom">
               <motion.div
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
+                initial={{ opacity: 0, y: 12 }}
+                animate={
+                  contentLoaded && (
+                    (homepageContent.heroVideo && (videoEnded || isTransitioning)) ||
+                    (!homepageContent.heroVideo && !isInitialLoad)
+                  ) ? { opacity: 1, y: 0 } : { opacity: 0, y: 12 }
+                }
+                transition={{ duration: 1.2, ease: [0.4, 0, 0.2, 1] }}
+                className="max-w-5xl"
               >
-                <Link
-                  href="/contact"
-                  className="btn-primary bg-[#892F1A] border-[#892F1A] hover:bg-[#6d2514] hover:border-[#6d2514] inline-block text-[10px] sm:text-xs px-6 py-3 sm:px-8 sm:py-4 md:px-10 md:py-5"
+                <p className="label-text mb-3 sm:mb-4 md:mb-8 text-dark-choc/70 text-[9px] sm:text-[10px] md:text-xs">
+                  {homepageContent.tagline}
+                </p>
+                <h1
+                  className="font-serif text-dark-choc leading-[1.1] mb-4 sm:mb-6 md:mb-10"
+                  style={{ fontSize: "clamp(2.5rem, 10vw, 8rem)" }}
                 >
-                  Start Your Project
-                </Link>
+                  {homepageContent.heroHeadline || 'We craft brand identities that resonate.'}
+                </h1>
+                <p className="body-text max-w-xl mb-6 sm:mb-8 md:mb-14 text-dark-choc/80 text-sm sm:text-base md:text-lg">
+                  {homepageContent.heroSubheading}
+                </p>
+                <motion.div
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.95 }}
+                >
+                  <Link
+                    href="/contact"
+                    className="btn-primary bg-[#892F1A] border-[#892F1A] hover:bg-[#6d2514] hover:border-[#6d2514] inline-block text-[10px] sm:text-xs px-6 py-3 sm:px-8 sm:py-4 md:px-10 md:py-5"
+                  >
+                    Start Your Project
+                  </Link>
+                </motion.div>
               </motion.div>
-            </motion.div>
+            </div>
           </div>
-        </div>
-      </section>
+        </section>
+      )}
 
       {/* ================= SERVICES ================= */}
-      <div className="-mt-[1px] relative z-20">
-        <SectionReveal>
-          <section className="bg-earl-gray relative overflow-hidden pb-8 sm:pb-10 pt-12 sm:pt-16 md:pt-20">
+      {homepageContent.sections.services.enabled && (
+        <div className="-mt-[1px] relative z-20">
+          <SectionReveal>
+            <section className="bg-earl-gray relative overflow-hidden pb-8 sm:pb-10 pt-12 sm:pt-16 md:pt-20">
 
-            {/* MARQUEE */}
-            <div className="mb-8 sm:mb-12 md:mb-20">
-              {/* <TextMarquee text="WHY BRANDS CHOOSE US • BLOOM BRANDING • " /> */}
-            </div>
+              {/* MARQUEE */}
+              <div className="mb-8 sm:mb-12 md:mb-20">
+                {/* <TextMarquee text="WHY BRANDS CHOOSE US • BLOOM BRANDING • " /> */}
+              </div>
 
-            {/* Decorative background elements */}
-            <div className="absolute inset-0 opacity-[0.03] pointer-events-none">
-              <motion.div
-                className="absolute top-0 right-0 w-96 h-96 bg-electric-blue rounded-full blur-3xl transform translate-x-1/2 -translate-y-1/2"
-                animate={{
-                  scale: [1, 1.1, 1],
-                  x: ["50%", "45%", "50%"],
-                  y: ["-50%", "-55%", "-50%"],
-                }}
-                transition={{
-                  duration: 20,
-                  repeat: Infinity,
-                  ease: "easeInOut",
-                }}
-              ></motion.div>
-            </div>
+              {/* Decorative background elements */}
+              <div className="absolute inset-0 opacity-[0.03] pointer-events-none">
+                <motion.div
+                  className="absolute top-0 right-0 w-96 h-96 bg-electric-blue rounded-full blur-3xl transform translate-x-1/2 -translate-y-1/2"
+                  animate={{
+                    scale: [1, 1.1, 1],
+                    x: ["50%", "45%", "50%"],
+                    y: ["-50%", "-55%", "-50%"],
+                  }}
+                  transition={{
+                    duration: 20,
+                    repeat: Infinity,
+                    ease: "easeInOut",
+                  }}
+                ></motion.div>
+              </div>
 
-            <div className="w-full max-w-[95%] mx-auto px-4 sm:px-4 relative z-10">
-              <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 sm:gap-8 lg:gap-16 items-start">
+              <div className="w-full max-w-[95%] mx-auto px-4 sm:px-4 relative z-10">
+                <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 sm:gap-8 lg:gap-16 items-start">
 
-                {/* LEFT COLUMN: Grid of Services */}
-                <div className="lg:col-span-7 flex flex-col pt-4">
-                  <div className="grid grid-cols-1 xs:grid-cols-2 sm:grid-cols-2 gap-3 sm:gap-4 md:gap-8 border-t border-dark-choc/20 pt-6 sm:pt-6 md:pt-8">
-                    {services.map((service, index) => (
-                      <motion.div
-                        key={service.title}
-                        initial={{ opacity: 0, y: 12 }}
-                        whileInView={{ opacity: 1, y: 0 }}
-                        viewport={{ once: true }}
-                        transition={{ duration: 0.5, delay: index * 0.1 }}
-                        onClick={() => setHoveredService(index)}
-                        onHoverStart={() => setHoveredService(index)}
-                        className={`group relative border border-dark-choc/20 rounded-2xl p-5 sm:p-6 md:p-8 lg:p-10 cursor-pointer transition-all duration-500 h-full flex flex-col justify-between min-h-[160px] sm:min-h-[180px] ${hoveredService === index ? "bg-dark-choc shadow-xl scale-[1.01]" : "hover:bg-dark-choc/5 hover:border-dark-choc/40"}`}
-                      >
-                        <div className="flex flex-col gap-4 sm:gap-6 relative z-10">
-                          {/* Header Group */}
-                          <div className="flex items-center justify-between">
-                            <span className={`font-serif text-base sm:text-lg md:text-xl transition-all duration-300 ${hoveredService === index ? "text-earl-gray/30" : "text-dark-choc/40"}`}>
-                              0{index + 1}
-                            </span>
-                            {/* Arrow (Visible on hover/active) */}
-                            <motion.div
-                              className={`flex items-center justify-center w-8 h-8 sm:w-10 sm:h-10 rounded-full border transition-all duration-300 ${hoveredService === index ? "border-earl-gray bg-earl-gray text-dark-choc" : "border-dark-choc/20 text-dark-choc/40 group-hover:border-dark-choc group-hover:text-dark-choc opacity-50 group-hover:opacity-100"}`}
-                              animate={{
-                                rotate: hoveredService === index ? -45 : 0,
-                              }}
-                            >
-                              <svg className="w-4 h-4" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                <path d="M5 12H19M19 12L12 5M19 12L12 19" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-                              </svg>
-                            </motion.div>
+                  {/* LEFT COLUMN: Grid of Services */}
+                  <div className="lg:col-span-7 flex flex-col pt-4">
+                    <div className="grid grid-cols-1 xs:grid-cols-2 sm:grid-cols-2 gap-3 sm:gap-4 md:gap-8 border-t border-dark-choc/20 pt-6 sm:pt-6 md:pt-8">
+                      {services.map((service, index) => (
+                        <motion.div
+                          key={service.title}
+                          initial={{ opacity: 0, y: 12 }}
+                          whileInView={{ opacity: 1, y: 0 }}
+                          viewport={{ once: true }}
+                          transition={{ duration: 0.5, delay: index * 0.1 }}
+                          onClick={() => setHoveredService(index)}
+                          onHoverStart={() => setHoveredService(index)}
+                          className={`group relative border border-dark-choc/20 rounded-2xl p-5 sm:p-6 md:p-8 lg:p-10 cursor-pointer transition-all duration-500 h-full flex flex-col justify-between min-h-[160px] sm:min-h-[180px] ${hoveredService === index ? "bg-dark-choc shadow-xl scale-[1.01]" : "hover:bg-dark-choc/5 hover:border-dark-choc/40"}`}
+                        >
+                          <div className="flex flex-col gap-4 sm:gap-6 relative z-10">
+                            {/* Header Group */}
+                            <div className="flex items-center justify-between">
+                              <span className={`font-serif text-base sm:text-lg md:text-xl transition-all duration-300 ${hoveredService === index ? "text-earl-gray/30" : "text-dark-choc/40"}`}>
+                                0{index + 1}
+                              </span>
+                              {/* Arrow (Visible on hover/active) */}
+                              <motion.div
+                                className={`flex items-center justify-center w-8 h-8 sm:w-10 sm:h-10 rounded-full border transition-all duration-300 ${hoveredService === index ? "border-earl-gray bg-earl-gray text-dark-choc" : "border-dark-choc/20 text-dark-choc/40 group-hover:border-dark-choc group-hover:text-dark-choc opacity-50 group-hover:opacity-100"}`}
+                                animate={{
+                                  rotate: hoveredService === index ? -45 : 0,
+                                }}
+                              >
+                                <svg className="w-4 h-4" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                  <path d="M5 12H19M19 12L12 5M19 12L12 19" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+                                </svg>
+                              </motion.div>
+                            </div>
+
+                            <h3 className={`heading-3 text-xl sm:text-2xl md:text-3xl lg:text-4xl transition-all duration-300 leading-tight ${hoveredService === index ? "text-earl-gray" : "text-dark-choc"}`}>
+                              {service.title}
+                            </h3>
+
+                            {/* Mobile-Only Context Image - Restores visual parity with desktop - Reveal on Tap */}
+                            {hoveredService === index && (
+                              <div className="relative w-full h-[180px] sm:h-[220px] rounded-xl overflow-hidden mt-2 lg:hidden animate-in fade-in slide-in-from-top-2 duration-300">
+                                <Image
+                                  src={SERVICE_IMAGES[index % SERVICE_IMAGES.length]}
+                                  alt={service.title}
+                                  fill
+                                  className="object-cover"
+                                  sizes="(max-width: 1024px) 100vw, 0vw"
+                                />
+                                <div className="absolute inset-0 bg-dark-choc/5" />
+                              </div>
+                            )}
                           </div>
 
-                          <h3 className={`heading-3 text-xl sm:text-2xl md:text-3xl lg:text-4xl transition-all duration-300 leading-tight ${hoveredService === index ? "text-earl-gray" : "text-dark-choc"}`}>
-                            {service.title}
-                          </h3>
-
-                          {/* Mobile-Only Context Image - Restores visual parity with desktop - Reveal on Tap */}
-                          {hoveredService === index && (
-                            <div className="relative w-full h-[180px] sm:h-[220px] rounded-xl overflow-hidden mt-2 lg:hidden animate-in fade-in slide-in-from-top-2 duration-300">
-                              <Image
-                                src={SERVICE_IMAGES[index % SERVICE_IMAGES.length]}
-                                alt={service.title}
-                                fill
-                                className="object-cover"
-                                sizes="(max-width: 1024px) 100vw, 0vw"
-                              />
-                              <div className="absolute inset-0 bg-dark-choc/5" />
-                            </div>
-                          )}
-                        </div>
-
-                        {/* Description */}
-                        <div className="mt-4 sm:mt-6">
-                          <p className={`body-text text-sm sm:text-base md:text-lg lg:text-xl leading-relaxed transition-all duration-300 ${hoveredService === index ? "text-earl-gray/80" : "text-dark-choc/60 line-clamp-3"}`}>
-                            {service.description}
-                          </p>
-                        </div>
-                      </motion.div>
-                    ))}
+                          {/* Description */}
+                          <div className="mt-4 sm:mt-6">
+                            <p className={`body-text text-sm sm:text-base md:text-lg lg:text-xl leading-relaxed transition-all duration-300 ${hoveredService === index ? "text-earl-gray/80" : "text-dark-choc/60 line-clamp-3"}`}>
+                              {service.description}
+                            </p>
+                          </div>
+                        </motion.div>
+                      ))}
+                    </div>
                   </div>
-                </div>
 
-                {/* RIGHT COLUMN: Dynamic Image (Sticky) */}
-                <div className="hidden lg:flex lg:col-span-5 sticky top-0 h-screen flex-col justify-center">
-                  <div className="relative w-full h-[60vh] max-h-[600px] rounded-3xl overflow-hidden shadow-2xl bg-dark-choc/5">
-                    <AnimatePresence mode="wait">
-                      <motion.div
-                        key={hoveredService || 0}
-                        initial={{ opacity: 0, scale: 1.05 }}
-                        animate={{ opacity: 1, scale: 1 }}
-                        exit={{ opacity: 0 }}
-                        transition={{ duration: 0.5, ease: "easeInOut" }}
-                        className="absolute inset-0"
-                      >
-                        <Image
-                          src={SERVICE_IMAGES[(hoveredService || 0) % SERVICE_IMAGES.length]}
-                          alt="Service visualization"
-                          fill
-                          className="object-cover"
-                          priority
-                          sizes="(max-width: 1024px) 0vw, 50vw"
-                        />
-                        {/* Subtle Overlay */}
-                        <div className="absolute inset-0 bg-dark-choc/10 mix-blend-multiply" />
+                  {/* RIGHT COLUMN: Dynamic Image (Sticky) */}
+                  <div className="hidden lg:flex lg:col-span-5 sticky top-0 h-screen flex-col justify-center">
+                    <div className="relative w-full h-[60vh] max-h-[600px] rounded-3xl overflow-hidden shadow-2xl bg-dark-choc/5">
+                      <AnimatePresence mode="wait">
+                        <motion.div
+                          key={hoveredService || 0}
+                          initial={{ opacity: 0, scale: 1.05 }}
+                          animate={{ opacity: 1, scale: 1 }}
+                          exit={{ opacity: 0 }}
+                          transition={{ duration: 0.5, ease: "easeInOut" }}
+                          className="absolute inset-0"
+                        >
+                          <Image
+                            src={SERVICE_IMAGES[(hoveredService || 0) % SERVICE_IMAGES.length]}
+                            alt="Service visualization"
+                            fill
+                            className="object-cover"
+                            priority
+                            sizes="(max-width: 1024px) 0vw, 50vw"
+                          />
+                          {/* Subtle Overlay */}
+                          <div className="absolute inset-0 bg-dark-choc/10 mix-blend-multiply" />
 
-                        {/* Text Overlay */}
-                        <div className="absolute bottom-10 left-10 z-10 w-3/4">
-                          <motion.p
-                            initial={{ y: 20, opacity: 0 }}
-                            animate={{ y: 0, opacity: 1 }}
-                            transition={{ delay: 0.2 }}
-                            className="font-serif text-4xl md:text-5xl text-white/90 leading-tight"
-                          >
-                            {services[hoveredService || 0]?.title}
-                          </motion.p>
-                        </div>
-                      </motion.div>
-                    </AnimatePresence>
+                          {/* Text Overlay */}
+                          <div className="absolute bottom-10 left-10 z-10 w-3/4">
+                            <motion.p
+                              initial={{ y: 20, opacity: 0 }}
+                              animate={{ y: 0, opacity: 1 }}
+                              transition={{ delay: 0.2 }}
+                              className="font-serif text-4xl md:text-5xl text-white/90 leading-tight"
+                            >
+                              {services[hoveredService || 0]?.title}
+                            </motion.p>
+                          </div>
+                        </motion.div>
+                      </AnimatePresence>
+                    </div>
                   </div>
-                </div>
 
+                </div>
               </div>
-            </div>
-          </section>
-        </SectionReveal>
-      </div>
+            </section>
+          </SectionReveal>
+        </div>
+      )}
 
       {/* ================= VIDEO BREAK ================= */}
       {homepageContent.sectionVideo && (
@@ -670,24 +686,28 @@ export default function Home() {
       )}
 
       {/* ================= CLIENTS ================= */}
-      <SkewedClients
-        clients={clients}
-        label={homepageContent.clientsLabel}
-      />
+      {homepageContent.sections.clients.enabled && (
+        <SkewedClients
+          clients={clients}
+          label={homepageContent.clientsLabel}
+        />
+      )}
 
       {/* ================= EXPERIENCE ================= */}
-      <SectionReveal>
-        <ExperienceSection />
-      </SectionReveal>
-
-
+      {homepageContent.sections.about.enabled && (
+        <SectionReveal>
+          <ExperienceSection />
+        </SectionReveal>
+      )}
 
       {/* ================= TESTIMONIALS SLIDER ================= */}
-      <TestimonialsSection
-        testimonials={testimonials}
-        label={homepageContent.testimonialsLabel}
-        heading={homepageContent.testimonialsHeading}
-      />
+      {homepageContent.sections.testimonials.enabled && (
+        <TestimonialsSection
+          testimonials={testimonials}
+          label={homepageContent.testimonialsLabel}
+          heading={homepageContent.testimonialsHeading}
+        />
+      )}
 
       <SectionReveal>
         <section className="section-padding bg-earl-gray relative overflow-hidden">

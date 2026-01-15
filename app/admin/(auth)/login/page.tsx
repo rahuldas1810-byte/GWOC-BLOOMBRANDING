@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 import { api } from '@/lib/api'
 import { Eye, EyeOff, Mail, Lock, ArrowRight, Loader2, CheckCircle2, AlertCircle } from 'lucide-react'
@@ -25,6 +25,13 @@ export default function AdminLogin() {
   const [forgotPasswordEmail, setForgotPasswordEmail] = useState('')
   const [forgotPasswordLoading, setForgotPasswordLoading] = useState(false)
   const [forgotPasswordMessage, setForgotPasswordMessage] = useState('')
+  const [isSuccess, setIsSuccess] = useState(false)
+
+  // Prefetch dashboard for near-instant navigation
+  useEffect(() => {
+    router.prefetch('/admin/dashboard')
+    router.prefetch('/admin/homepage')
+  }, [router])
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -35,13 +42,15 @@ export default function AdminLogin() {
       const response = await api.login(email, password)
 
       if (response.success) {
+        setIsSuccess(true)
+        // Optimistic redirect: start navigating immediately
         router.push('/admin/dashboard')
       } else {
         setError(response.message || 'Login failed')
+        setLoading(false)
       }
     } catch (err) {
       setError('An error occurred. Please try again.')
-    } finally {
       setLoading(false)
     }
   }
@@ -228,7 +237,8 @@ export default function AdminLogin() {
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
                     required
-                    className="w-full pl-12 pr-4 h-12 bg-white border border-slate-300 rounded-xl focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all duration-200 text-base text-slate-900 placeholder:text-slate-400 outline-none hover:border-slate-400"
+                    disabled={loading || isSuccess}
+                    className="w-full pl-12 pr-4 h-12 bg-white border border-slate-300 rounded-xl focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all duration-200 text-base text-slate-900 placeholder:text-slate-400 outline-none hover:border-slate-400 disabled:opacity-70 disabled:bg-slate-50"
                     style={{ fontFamily: 'var(--font-inter), system-ui, sans-serif' }}
                     placeholder="admin@bloombranding.com"
                   />
@@ -254,7 +264,8 @@ export default function AdminLogin() {
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
                     required
-                    className="w-full pl-12 pr-14 h-12 bg-white border border-slate-300 rounded-xl focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all duration-200 text-base text-slate-900 placeholder:text-slate-400 outline-none hover:border-slate-400"
+                    disabled={loading || isSuccess}
+                    className="w-full pl-12 pr-14 h-12 bg-white border border-slate-300 rounded-xl focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all duration-200 text-base text-slate-900 placeholder:text-slate-400 outline-none hover:border-slate-400 disabled:opacity-70 disabled:bg-slate-50"
                     style={{ fontFamily: 'var(--font-inter), system-ui, sans-serif' }}
                     placeholder="Enter your password"
                   />
@@ -296,18 +307,26 @@ export default function AdminLogin() {
                 initial={{ opacity: 0, y: 10 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.3, delay: 0.5, ease: "easeOut" }}
-                whileHover={{ scale: 1.01 }}
-                whileTap={{ scale: 0.99 }}
+                whileHover={!loading && !isSuccess ? { scale: 1.01 } : {}}
+                whileTap={!loading && !isSuccess ? { scale: 0.99 } : {}}
                 type="submit"
-                disabled={loading || !email || !password}
-                className="w-full bg-gradient-to-r from-blue-600 to-indigo-600 text-white h-12 rounded-xl font-semibold text-base shadow-lg shadow-blue-500/25 hover:shadow-xl hover:shadow-blue-500/30 transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100 flex items-center justify-center gap-2 group relative overflow-hidden"
+                disabled={loading || isSuccess || !email || !password}
+                className={`w-full h-12 rounded-xl font-semibold text-base shadow-lg transition-all duration-200 flex items-center justify-center gap-2 group relative overflow-hidden ${isSuccess
+                  ? 'bg-green-600 shadow-green-500/25'
+                  : 'bg-gradient-to-r from-blue-600 to-indigo-600 text-white shadow-blue-500/25 hover:shadow-xl hover:shadow-blue-500/30'
+                  } disabled:opacity-70 disabled:cursor-not-allowed`}
                 style={{ fontFamily: 'var(--font-inter), system-ui, sans-serif' }}
               >
                 <span className="relative z-10 flex items-center gap-2">
-                  {loading ? (
+                  {isSuccess ? (
+                    <>
+                      <CheckCircle2 className="w-5 h-5 animate-in zoom-in duration-300" />
+                      Welcome Back
+                    </>
+                  ) : loading ? (
                     <>
                       <Loader2 className="w-5 h-5 animate-spin" />
-                      Logging in...
+                      Verifying...
                     </>
                   ) : (
                     <>
@@ -345,8 +364,8 @@ export default function AdminLogin() {
                         exit={{ opacity: 0, y: -8 }}
                         transition={{ duration: 0.2 }}
                         className={`mb-6 p-4 rounded-xl flex items-start gap-3 ${forgotPasswordMessage.includes('sent')
-                            ? 'bg-green-50 border border-green-200 text-green-700'
-                            : 'bg-red-50 border border-red-200 text-red-700'
+                          ? 'bg-green-50 border border-green-200 text-green-700'
+                          : 'bg-red-50 border border-red-200 text-red-700'
                           }`}
                         style={{ fontFamily: 'var(--font-inter), system-ui, sans-serif' }}
                       >

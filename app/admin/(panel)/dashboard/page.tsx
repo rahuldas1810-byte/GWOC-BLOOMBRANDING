@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from 'react'
 import { api } from '@/lib/api'
-import { Users, MessageSquare, Mail, Film, FileText, Briefcase, Plus } from 'lucide-react'
+import { Users, MessageSquare, Mail, Film, FileText, Briefcase, Plus, Loader2, LayoutDashboard } from 'lucide-react'
 import { motion, useMotionValue, useTransform, animate } from 'framer-motion'
 import Link from 'next/link'
 import LoadingSpinner from '@/components/admin/LoadingSpinner'
@@ -14,7 +14,7 @@ function AnimatedNumber({ value }: { value: number }) {
   const rounded = useTransform(count, (latest) => Math.round(latest))
 
   useEffect(() => {
-    const controls = animate(count, value, { duration: 1, ease: "easeOut" })
+    const controls = animate(count, value, { duration: 0.5, ease: "easeOut" })
     return controls.stop
   }, [count, value])
 
@@ -23,20 +23,27 @@ function AnimatedNumber({ value }: { value: number }) {
 
 export default function AdminDashboard() {
   const [stats, setStats] = useState<any>(null)
+  const [recentEnquiries, setRecentEnquiries] = useState<any[]>([])
+  const [recentMedia, setRecentMedia] = useState<any[]>([])
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
-    fetchStats()
+    fetchData()
   }, [])
 
-  const fetchStats = async () => {
+  const fetchData = async () => {
     try {
-      const response = await api.getStats()
-      if (response.success && response.data) {
-        setStats(response.data)
-      }
+      const [statsRes, enquiriesRes, mediaRes] = await Promise.all([
+        api.getStats(),
+        api.getEnquiries({ limit: 5 }),
+        api.getMedia({ limit: 4 })
+      ])
+
+      if (statsRes.success) setStats(statsRes.data)
+      if (enquiriesRes.success) setRecentEnquiries(enquiriesRes.data || [])
+      if (mediaRes.success) setRecentMedia(mediaRes.data || [])
     } catch (error) {
-      console.error('Failed to fetch stats:', error)
+      console.error('Failed to fetch dashboard data:', error)
     } finally {
       setLoading(false)
     }
@@ -51,106 +58,184 @@ export default function AdminDashboard() {
     { label: 'New Enquiries', value: stats?.newEnquiries || 0, icon: Mail, color: 'bg-red-500', href: '/admin/enquiries' },
   ]
 
-  if (loading) {
-    return (
-      <div className="flex flex-col items-center justify-center min-h-[400px]">
-        <LoadingSpinner size="lg" />
-        <p className="mt-4 text-dark-choc/40 font-medium">Syncing dashboard...</p>
-      </div>
-    )
-  }
+  // No full-page blocking loader. Instead, show skeletons or empty states within the cards.
+  // This ensures the sidebar and top bar (from layout) and dashboard title render instantly.
 
   return (
-    <div className="space-y-10 max-w-7xl mx-auto pb-12">
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-6">
-        <div>
-          <h1 className="text-4xl font-black text-dark-choc mb-2 tracking-tight">Dashboard</h1>
-          <p className="text-dark-choc/50 font-medium">Welcome to the Bloom Branding Command Center.</p>
+    <div className="space-y-8 max-w-7xl mx-auto pb-12">
+      {/* Welcome Hero Container */}
+      <div className="relative overflow-hidden rounded-[2.5rem] bg-electric-blue p-8 md:p-12 text-white shadow-2xl">
+        {/* Animated Background Mesh */}
+        <div className="absolute inset-0 z-0">
+          <motion.div
+            animate={{
+              scale: [1, 1.2, 1],
+              opacity: [0.1, 0.2, 0.1],
+            }}
+            transition={{ duration: 15, repeat: Infinity, ease: "easeInOut" }}
+            className="absolute -top-1/2 -right-1/4 w-[100%] h-[150%] bg-white/10 rounded-full blur-[120px]"
+          />
+          <motion.div
+            animate={{
+              scale: [1.2, 1, 1.2],
+              opacity: [0.1, 0.3, 0.1],
+            }}
+            transition={{ duration: 20, repeat: Infinity, ease: "easeInOut" }}
+            className="absolute -bottom-1/2 -left-1/4 w-[100%] h-[150%] bg-butter-yellow/20 rounded-full blur-[120px]"
+          />
+          <div className="absolute inset-0 bg-[url('/noise.png')] opacity-10 mix-blend-overlay" />
         </div>
-      </div>
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
-        {statCards.map((stat) => {
-          const Icon = stat.icon
-          const CardContent = (
-            <div className="bg-white rounded-[2.5rem] shadow-xl shadow-dark-choc/5 hover:shadow-2xl hover:shadow-dark-choc/10 transition-all p-8 border border-dark-choc/5 group cursor-pointer h-full relative overflow-hidden active:scale-95">
-              <div className="absolute top-0 right-0 w-32 h-32 bg-gradient-to-br from-dark-choc/5 to-transparent rounded-bl-full -mr-12 -mt-12 transition-all group-hover:scale-110" />
-              <div className="flex items-center justify-between relative z-10">
-                <div className="flex-1">
-                  <p className="text-dark-choc/40 text-[10px] font-black uppercase tracking-[0.2em] mb-4">{stat.label}</p>
-                  <p className="text-5xl font-black text-dark-choc tracking-tighter">{stat.value}</p>
-                </div>
-                <div className={`${stat.color} p-5 rounded-3xl group-hover:rotate-6 transition-all shadow-lg shadow-black/5`}>
-                  <Icon className="w-8 h-8 text-white" />
-                </div>
-              </div>
-            </div>
-          )
-
-          return (
+        <div className="relative z-10 flex flex-col md:flex-row md:items-center justify-between gap-8">
+          <div className="max-w-xl">
             <motion.div
-              key={stat.label}
-              variants={{
-                hidden: { opacity: 0, y: 20 },
-                visible: { opacity: 1, y: 0, transition: { duration: 0.5, ease: "easeOut" } }
-              }}
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              className="flex items-center gap-3 mb-6"
             >
-              {stat.href ? (
-                <Link href={stat.href}>
-                  {CardContent}
-                </Link>
-              ) : (
-                CardContent
-              )}
+              <div className="w-10 h-10 rounded-xl bg-white/10 backdrop-blur-md flex items-center justify-center border border-white/10">
+                <LayoutDashboard className="w-5 h-5 text-butter-yellow" />
+              </div>
+              <span className="text-xs font-black uppercase tracking-[0.2em] text-white/50">Command Center</span>
             </motion.div>
-          )
-        })}
-      </div>
 
-      <div className="bg-white rounded-[3rem] shadow-xl shadow-dark-choc/5 p-8 sm:p-12 border border-dark-choc/10">
-        <h2 className="text-2xl font-black text-dark-choc mb-10 flex items-center gap-4">
-          <div className="w-2 h-8 bg-electric-blue rounded-full" />
-          Quick Actions
-        </h2>
-        <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-6 sm:gap-8">
-          <Link
-            href="/admin/brands/new"
-            className="p-8 bg-earl-gray/10 border border-dark-choc/5 rounded-[2rem] hover:border-electric-blue hover:bg-white hover:shadow-2xl transition-all text-center group active:scale-95"
-          >
-            <div className="w-16 h-16 bg-white rounded-2xl flex items-center justify-center mx-auto mb-5 shadow-inner border border-dark-choc/5 group-hover:scale-110 transition-transform">
-              <Plus className="w-10 h-10 text-electric-blue" />
-            </div>
-            <span className="text-dark-choc text-xs font-black uppercase tracking-widest block">Add Brand</span>
-          </Link>
-          <Link
-            href="/admin/testimonials/new"
-            className="p-8 bg-earl-gray/10 border border-dark-choc/5 rounded-[2rem] hover:border-electric-blue hover:bg-white hover:shadow-2xl transition-all text-center group active:scale-95"
-          >
-            <div className="w-16 h-16 bg-white rounded-2xl flex items-center justify-center mx-auto mb-5 shadow-inner border border-dark-choc/5 group-hover:scale-110 transition-transform">
-              <MessageSquare className="w-10 h-10 text-electric-blue" />
-            </div>
-            <span className="text-dark-choc text-xs font-black uppercase tracking-widest block">Add Testimonial</span>
-          </Link>
-          <Link
-            href="/admin/services/new"
-            className="p-8 bg-earl-gray/10 border border-dark-choc/5 rounded-[2rem] hover:border-electric-blue hover:bg-white hover:shadow-2xl transition-all text-center group active:scale-95"
-          >
-            <div className="w-16 h-16 bg-white rounded-2xl flex items-center justify-center mx-auto mb-5 shadow-inner border border-dark-choc/5 group-hover:scale-110 transition-transform">
-              <Briefcase className="w-10 h-10 text-electric-blue" />
-            </div>
-            <span className="text-dark-choc text-xs font-black uppercase tracking-widest block">Add Service</span>
-          </Link>
-          <Link
-            href="/admin/media"
-            className="p-8 bg-earl-gray/10 border border-dark-choc/5 rounded-[2rem] hover:border-electric-blue hover:bg-white hover:shadow-2xl transition-all text-center group active:scale-95"
-          >
-            <div className="w-16 h-16 bg-white rounded-2xl flex items-center justify-center mx-auto mb-5 shadow-inner border border-dark-choc/5 group-hover:scale-110 transition-transform">
-              <Film className="w-10 h-10 text-electric-blue" />
-            </div>
-            <span className="text-dark-choc text-xs font-black uppercase tracking-widest block">Media Hub</span>
-          </Link>
+            <h1 className="text-4xl md:text-5xl lg:text-7xl font-black mb-4 tracking-tighter text-butter-yellow">
+              Bloom Admin
+            </h1>
+            <p className="text-white/60 text-lg font-medium max-w-md leading-relaxed">
+              Everything is in bloom. Your branding ecosystem is currently performing at its peak.
+            </p>
+          </div>
+
+          <div className="flex flex-wrap gap-4">
+            <Link href="/admin/site-settings" className="px-6 py-3 rounded-2xl bg-white/10 hover:bg-white/20 border border-white/10 transition-all font-bold text-sm backdrop-blur-md">
+              Settings
+            </Link>
+            <Link href="/" target="_blank" className="px-6 py-3 rounded-2xl bg-butter-yellow text-dark-choc hover:scale-105 transition-all font-black text-sm shadow-xl shadow-butter-yellow/20">
+              View Website
+            </Link>
+          </div>
         </div>
       </div>
+
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
+        {/* Left Column: Stats & Actions */}
+        <div className="lg:col-span-8 space-y-8">
+          {/* Stats Grid */}
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
+            {statCards.map((stat, index) => {
+              const Icon = stat.icon
+              return (
+                <motion.div
+                  key={stat.label}
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: index * 0.1 }}
+                >
+                  <Link href={stat.href || '#'}>
+                    <div className="bg-white rounded-3xl p-6 border border-dark-choc/5 shadow-xl shadow-dark-choc/5 hover:shadow-2xl transition-all group active:scale-95">
+                      <div className="flex items-center justify-between mb-6">
+                        <div className={`p-3 rounded-2xl ${stat.color} shadow-lg shadow-black/5 text-white group-hover:rotate-6 transition-transform`}>
+                          <Icon className="w-5 h-5" />
+                        </div>
+                        {loading && <Loader2 className="w-3 h-3 animate-spin text-dark-choc/20" />}
+                      </div>
+                      <p className="text-dark-choc/40 text-[10px] font-black uppercase tracking-[0.2em] mb-1">{stat.label}</p>
+                      <div className="flex items-baseline gap-2">
+                        <p className="text-4xl font-black text-dark-choc tracking-tighter">
+                          <AnimatedNumber value={stat.value} />
+                        </p>
+                        <span className="relative flex h-2 w-2">
+                          <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
+                          <span className="relative inline-flex rounded-full h-2 w-2 bg-green-500"></span>
+                        </span>
+                        <span className="text-[10px] font-bold text-green-500 uppercase tracking-widest">Live</span>
+                      </div>
+                    </div>
+                  </Link>
+                </motion.div>
+              )
+            })}
+          </div>
+
+          {/* Quick Actions Grid */}
+          <div className="bg-white rounded-[2.5rem] p-8 sm:p-10 border border-dark-choc/5 shadow-xl shadow-dark-choc/5">
+            <h2 className="text-xl font-black text-dark-choc mb-8 flex items-center gap-3">
+              <Plus className="w-5 h-5 text-electric-blue" />
+              Quick Actions
+            </h2>
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+              {[
+                { label: 'Add Brand', href: '/admin/brands/new', icon: Plus, sub: 'New showcase' },
+                { label: 'Testimonial', href: '/admin/testimonials/new', icon: MessageSquare, sub: 'Client feedback' },
+                { label: 'New Service', href: '/admin/services/new', icon: Briefcase, sub: 'Expand offer' },
+                { label: 'Upload Media', href: '/admin/media', icon: Film, sub: 'Gallery update' },
+              ].map((action, i) => (
+                <Link
+                  key={i}
+                  href={action.href}
+                  className="p-6 bg-earl-gray/30 border border-transparent hover:border-electric-blue/20 hover:bg-white hover:shadow-xl transition-all rounded-3xl group active:scale-95"
+                >
+                  <div className="w-12 h-12 bg-white rounded-2xl flex items-center justify-center mb-4 shadow-sm border border-dark-choc/5 group-hover:scale-110 transition-transform">
+                    <action.icon className="w-6 h-6 text-electric-blue" />
+                  </div>
+                  <span className="text-dark-choc text-sm font-bold block mb-1">{action.label}</span>
+                  <span className="text-dark-choc/40 text-[10px] font-medium block">{action.sub}</span>
+                </Link>
+              ))}
+            </div>
+          </div>
+        </div>
+
+        {/* Right Column: Activity Feed */}
+        <div className="lg:col-span-4 space-y-8">
+          {/* Latest Enquiries */}
+          <div className="bg-white rounded-[2.5rem] p-8 border border-dark-choc/5 shadow-xl shadow-dark-choc/5 h-full">
+            <h2 className="text-xl font-black text-dark-choc mb-8 flex items-center gap-3">
+              <Mail className="w-5 h-5 text-red-500" />
+              Recent Enquiries
+            </h2>
+            <div className="space-y-6">
+              {recentEnquiries.length > 0 ? (
+                recentEnquiries.map((enquiry, i) => (
+                  <motion.div
+                    key={i}
+                    initial={{ opacity: 0, x: 20 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    transition={{ delay: i * 0.1 }}
+                    className="group"
+                  >
+                    <Link href={`/admin/enquiries/${enquiry._id}`} className="block">
+                      <div className="flex items-start gap-4 p-3 -m-3 rounded-2xl hover:bg-earl-gray/50 transition-colors">
+                        <div className="w-10 h-10 rounded-xl bg-earl-gray flex items-center justify-center flex-shrink-0 text-dark-choc/60 font-black text-xs">
+                          {enquiry.name?.charAt(0) || '?'}
+                        </div>
+                        <div className="flex-1 min-w-0">
+                          <p className="text-sm font-bold text-dark-choc truncate">{enquiry.name}</p>
+                          <p className="text-[11px] text-dark-choc/40 font-medium truncate mb-1">{enquiry.email}</p>
+                          <span className={`text-[9px] font-black uppercase tracking-widest px-2 py-0.5 rounded-full ${enquiry.status === 'new' ? 'bg-red-100 text-red-600' : 'bg-blue-100 text-blue-600'
+                            }`}>
+                            {enquiry.status}
+                          </span>
+                        </div>
+                      </div>
+                    </Link>
+                  </motion.div>
+                ))
+              ) : (
+                <div className="text-center py-12">
+                  <p className="text-dark-choc/30 text-sm font-medium">No recent enquiries</p>
+                </div>
+              )}
+            </div>
+
+            <Link href="/admin/enquiries" className="mt-8 pt-8 border-t border-dark-choc/5 flex items-center justify-center text-[10px] font-black uppercase tracking-[0.2em] text-dark-choc/40 hover:text-electric-blue transition-colors">
+              View All Enquiries
+            </Link>
+          </div>
+        </div>
+      </div>
+
     </div>
   )
 }
