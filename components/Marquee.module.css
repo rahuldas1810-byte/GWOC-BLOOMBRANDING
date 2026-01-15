@@ -1,0 +1,68 @@
+/* Integrated Theme (Blended) */
+.marqueeWrapper {
+  background-color: transparent;
+  color: #624A41;
+  /* Dark Choc to blend with page */
+  padding: 18px 0;
+  width: 100%;
+  overflow: hidden;
+  white-space: nowrap;
+  position: relative;
+  user-select: none;
+}
+
+.marqueeTrack {
+  display: flex;
+  width: max-content;
+  animation: scroll 25s linear infinite;
+  will-change: transform;
+}
+
+.marqueeContent {
+  display: flex;
+  align-items: center;
+}
+
+.marqueeItem {
+  font-family: sans-serif;
+  font-weight: 700;
+  font-size: 1.5rem;
+  /* Increased from 1.2rem */
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  padding: 0 2rem;
+  display: flex;
+  align-items: center;
+}
+
+.separator {
+  display: inline-block;
+  width: 8px;
+  height: 8px;
+  background-color: #624A41;
+  /* Brown (Dark Choc) */
+  border-radius: 50%;
+  margin-left: 2rem;
+}
+
+@media (max-width: 768px) {
+  .marqueeItem {
+    font-size: 1.1rem;
+    padding: 0 1.5rem;
+  }
+
+  /* Increased from 0.9rem */
+  .separator {
+    margin-left: 1.5rem;
+  }
+}
+
+@keyframes scroll {
+  0% {
+    transform: translateX(0);
+  }
+
+  100% {
+    transform: translateX(-50%);
+  }
+}

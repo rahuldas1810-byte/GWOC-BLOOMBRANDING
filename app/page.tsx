@@ -11,6 +11,7 @@ import TestimonialsSection from "@/components/homepage/TestimonialsSection";
 import SkewedClients from "@/components/homepage/SkewedClients";
 import type { Testimonial, Client } from "@/types";
 import TextMarquee from "@/components/TextMarquee";
+import Marquee from "@/components/Marquee";
 import { useHeroVideo } from "@/contexts/HeroVideoContext";
 
 const SERVICE_IMAGES = [
@@ -394,6 +395,7 @@ export default function Home() {
 
   return (
     <div className="min-h-screen relative">
+
       {/* ================= HERO SECTION ================= */}
       {homepageContent.sections.hero.enabled && (
         <section className="relative w-full h-auto md:min-h-screen overflow-hidden flex flex-col justify-center">
@@ -575,8 +577,9 @@ export default function Home() {
             <section className="bg-earl-gray relative overflow-hidden pb-8 sm:pb-10 pt-12 sm:pt-16 md:pt-20">
 
               {/* MARQUEE */}
+              {/* MARQUEE */}
               <div className="mb-8 sm:mb-12 md:mb-20">
-                {/* <TextMarquee text="WHY BRANDS CHOOSE US • BLOOM BRANDING • " /> */}
+                <Marquee />
               </div>
 
               {/* Decorative background elements */}
