@@ -55,6 +55,7 @@ export default function Home() {
   const [backgroundVideoReady, setBackgroundVideoReady] = useState(false);
   const videoRef = useRef<HTMLVideoElement>(null);
   const backgroundVideoRef = useRef<HTMLVideoElement>(null);
+  const lastPlayedVideoRef = useRef<string | null>(null);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -133,10 +134,15 @@ export default function Home() {
             setIsInitialLoad(false);
             setHeroVideoReady(true); // Mark as ready since there's no video
           } else {
-            // If hero video exists, keep content hidden until video ends
-            setVideoEnded(false);
-            setIsInitialLoad(true);
-            setHeroVideoReady(false); // Will be set to true when video loads
+            // If hero video exists, but it's the one we just played, don't reset
+            if (heroVideoUrl === lastPlayedVideoRef.current) {
+              // keep current state (which should be ended)
+            } else {
+              // If it's a new video, or first load, keep content hidden
+              // setVideoEnded(false); // DO NOT reset here, let the effect handle it
+              // setIsInitialLoad(true);
+              setHeroVideoReady(false); // Will be set to true when video loads
+            }
           }
         } else {
           // If no data, mark as loaded but keep content hidden
@@ -179,6 +185,11 @@ export default function Home() {
       return;
     }
 
+    // Checking if we already played this video
+    if (homepageContent.heroVideo === lastPlayedVideoRef.current) {
+      return;
+    }
+
     // Reset states when hero video changes - hero video should play first
     // Always start with hero video playing, background video hidden
     setVideoEnded(false);
@@ -196,6 +207,9 @@ export default function Home() {
   // Handle hero video events and ensure it plays
   useEffect(() => {
     if (!homepageContent.heroVideo) return;
+    
+    // If we've already played this video, don't set up listeners to restart it
+    if (homepageContent.heroVideo === lastPlayedVideoRef.current) return;
 
     const video = videoRef.current;
     if (!video) return;
@@ -217,6 +231,9 @@ export default function Home() {
     };
 
     const handleVideoEnd = () => {
+      // Mark this video as played so we don't play it again
+      lastPlayedVideoRef.current = homepageContent.heroVideo;
+      
       // Start smooth transition
       setIsTransitioning(true);
       // Small delay to ensure background video is ready, then complete transition
