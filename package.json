@@ -22,7 +22,6 @@
     "@gsap/react": "^2.1.2",
     "@hookform/resolvers": "^3.3.2",
     "@studio-freight/lenis": "^1.0.42",
-    "@types/nodemailer": "^7.0.4",
     "bcryptjs": "^2.4.3",
     "cloudinary": "^2.8.0",
     "dotenv": "^17.2.3",
@@ -33,11 +32,11 @@
     "lucide-react": "^0.562.0",
     "mongoose": "^8.20.4",
     "next": "14.0.4",
-    "nodemailer": "^7.0.12",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-hook-form": "^7.49.2",
     "react-markdown": "^10.1.0",
+    "resend": "^6.7.0",
     "zod": "^3.22.4"
   },
   "devDependencies": {

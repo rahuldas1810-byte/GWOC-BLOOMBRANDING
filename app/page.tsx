@@ -43,7 +43,8 @@ export default function Home() {
       clients: { enabled: true, order: 4 },
       about: { enabled: true, order: 2 },
       testimonials: { enabled: true, order: 5 }
-    }
+    },
+    googleMapsUrl: 'https://www.google.com/maps/search/?api=1&query=Bloom+Branding+Studio+Surat+Gujarat',
   });
   const [hoveredService, setHoveredService] = useState<number | null>(null);
   const [videoEnded, setVideoEnded] = useState(false);
@@ -109,6 +110,7 @@ export default function Home() {
               about: { enabled: true, order: 2 },
               testimonials: { enabled: true, order: 5 }
             },
+            googleMapsUrl: siteSettings?.googleMapsUrl || 'https://www.google.com/maps/search/?api=1&query=Bloom+Branding+Studio+Surat+Gujarat',
           });
 
           // Filter testimonials based on homepage selection
@@ -832,7 +834,7 @@ export default function Home() {
                       </motion.p>
                     ))}
                     <motion.a
-                      href="https://maps.google.com/?q=Bloom+Branding+Studio,+Solarium+Business+Centre,+515,+beside+Times+Corner,+Surat,+Gujarat+395007"
+                      href={homepageContent.googleMapsUrl}
                       target="_blank"
                       rel="noopener noreferrer"
                       className="btn-secondary mt-8 w-full md:w-auto"
@@ -867,6 +869,14 @@ export default function Home() {
                   className="w-full h-full rounded-2xl shadow-[0_10px_40px_rgba(0,0,0,0.08)]"
                   title="Bloom Branding Studio Location"
                 />
+                
+                {/* Clickable Overlay for Map */}
+                <div 
+                  className="absolute inset-0 z-20 cursor-pointer"
+                  onClick={() => window.open(homepageContent.googleMapsUrl, "_blank", "noopener,noreferrer")}
+                  aria-label="Open Google Maps"
+                ></div>
+
                 {/* Red Location Marker */}
                 <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 pointer-events-none z-10">
                   <div className="relative">

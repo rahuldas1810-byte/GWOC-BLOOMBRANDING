@@ -62,6 +62,8 @@ export default function SiteSettingsPage() {
       linkedin: '',
       facebook: '',
     },
+    useGoogleReviews: true,
+    googleMapsUrl: 'https://www.google.com/maps/search/?api=1&query=Bloom+Branding+Studio+Surat+Gujarat',
   })
 
   useEffect(() => {
@@ -83,6 +85,8 @@ export default function SiteSettingsPage() {
           contactLabels: response.data.contactLabels || formData.contactLabels,
           testimonialsHero: response.data.testimonialsHero || formData.testimonialsHero,
           socialLinks: response.data.socialLinks || formData.socialLinks,
+          useGoogleReviews: response.data.useGoogleReviews ?? formData.useGoogleReviews,
+          googleMapsUrl: response.data.googleMapsUrl || formData.googleMapsUrl,
         })
       }
     } catch (error) {
@@ -358,6 +362,47 @@ export default function SiteSettingsPage() {
                     </div>
                   </div>
                 </div>
+              </div>
+
+              {/* Testimonials Source Toggle */}
+              <div className="bg-white rounded-3xl shadow-xl border border-dark-choc/10 overflow-hidden">
+                <div className="p-8 border-b border-dark-choc/5 bg-earl-gray/10">
+                  <h2 className="text-lg font-black text-dark-choc uppercase tracking-widest text-sm">Review Source</h2>
+                </div>
+                <div className="p-8 flex items-center justify-between">
+                  <div>
+                    <h3 className="font-bold text-dark-choc text-lg">Use Google Reviews</h3>
+                    <p className="text-sm text-dark-choc/60 mt-1">If enabled, reviews will be fetched from Google Places. If disabled or if the API fails, CMS testimonials will be used.</p>
+                  </div>
+                  <button
+                    onClick={() => setFormData({ ...formData, useGoogleReviews: !formData.useGoogleReviews })}
+                    className={`relative inline-flex h-8 w-14 items-center rounded-full transition-colors focus:outline-none focus:ring-2 focus:ring-electric-blue focus:ring-offset-2 ${formData.useGoogleReviews ? 'bg-electric-blue' : 'bg-gray-200'}`}
+                  >
+                    <span
+                      className={`${formData.useGoogleReviews ? 'translate-x-7' : 'translate-x-1'} inline-block h-6 w-6 transform rounded-full bg-white transition-transform`}
+                    />
+                  </button>
+                </div>
+              </div>
+            </div>
+            
+            {/* Location Settings */}
+            <div className="bg-white rounded-3xl shadow-xl border border-dark-choc/10 overflow-hidden">
+              <div className="p-8 border-b border-dark-choc/5 bg-earl-gray/10">
+                <h2 className="text-lg font-black text-dark-choc uppercase tracking-widest text-sm">Location Settings</h2>
+              </div>
+              <div className="p-8">
+                <label className="block text-[10px] font-black uppercase tracking-widest text-dark-choc/40 mb-2 ml-1">Google Maps URL</label>
+                <input
+                  type="text"
+                  value={formData.googleMapsUrl}
+                  onChange={e => setFormData({ ...formData, googleMapsUrl: e.target.value })}
+                  className="w-full px-5 py-4 bg-earl-gray/20 border-0 rounded-2xl focus:bg-white focus:ring-4 focus:ring-electric-blue/5 focus:border-electric-blue outline-none transition-all font-bold text-dark-choc"
+                  placeholder="https://www.google.com/maps/..."
+                />
+                <p className="text-sm text-dark-choc/60 mt-2 font-medium">
+                  Use a search or directions URL. Example: <span className="font-mono bg-earl-gray/30 px-1 rounded">https://www.google.com/maps/search/?api=1&query=...</span>
+                </p>
               </div>
             </div>
 
