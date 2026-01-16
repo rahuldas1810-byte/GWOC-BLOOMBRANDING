@@ -26,8 +26,7 @@ export default function Testimonials() {
           getBrands(),
           getSiteSettings(),
         ]);
-        setTestimonials(Array.isArray(testimonialsData) ? testimonialsData : []);
-
+        setTestimonials(testimonialsData || []);
         setBrands(brandsData || []);
         setSiteSettings(settings);
 
@@ -261,8 +260,7 @@ export default function Testimonials() {
       )}
 
       {/* ================= SPLIT TESTIMONIALS ================= */}
-      {Array.isArray(testimonials) && testimonials.length > 0 && (
-
+      {testimonials.length > 0 && (
         <section id="client-reviews" className="relative bg-white pb-0">
           <div className="flex flex-col lg:flex-row relative">
             {/* Left Sticky Image - Sticky on both mobile (Top) and desktop (Left) */}

@@ -3,7 +3,7 @@ import connectDB from '@/lib/db'
 import Testimonial from '@/models/Testimonial'
 
 // Force dynamic rendering - disable caching
-export const dynamic = 'force-dynamic'
+export const dynamic = "force-dynamic";
 export const revalidate = 0
 
 // GET - Public API: List active testimonials (read-only)

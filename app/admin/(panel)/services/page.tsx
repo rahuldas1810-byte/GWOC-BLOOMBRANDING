@@ -447,7 +447,7 @@ export default function ServicesPage() {
                       <CheckCircle2 className="w-8 h-8 text-electric-blue" />
                     </div>
                     <p className="text-xs font-black uppercase tracking-[0.2em] text-electric-blue">Sync with CRM</p>
-                    <p className="text-sm font-medium text-dark-choc/60 max-w-[200px]">Subscribers are managed globally. Updates here only reflect the section's copy.</p>
+                    <p className="text-sm font-medium text-dark-choc/60 max-w-[200px]">Subscribers are managed globally. Updates here only reflect the section&apos;s copy.</p>
                   </div>
                 </div>
               </div>
