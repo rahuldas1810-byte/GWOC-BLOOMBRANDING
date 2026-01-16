@@ -216,7 +216,7 @@ export default function Footer() {
                   href="/contact"
                   className="group inline-flex items-center gap-2 bg-white/10 backdrop-blur-sm hover:bg-white/20 border border-white/20 hover:border-white/40 text-white font-[family-name:var(--font-inter)] font-semibold text-[13px] md:text-[14px] px-6 py-3 rounded-full transition-all duration-300 shadow-lg hover:shadow-xl"
                 >
-                  <span>Book a Consultation</span>
+                  <span>Get in Touch</span>
                   <motion.svg
                     className="w-4 h-4"
                     fill="none"
