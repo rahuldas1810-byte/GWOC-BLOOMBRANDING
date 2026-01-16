@@ -64,10 +64,17 @@ export default function ConditionalLayout({
 }: {
   children: React.ReactNode
 }) {
+  const pathname = usePathname()
+  const isAdminRoute = pathname?.startsWith('/admin')
+
   return (
     <LoaderProvider>
-      <GlobalPreloader />
-      <RouteLoader />
+      {!isAdminRoute && (
+        <>
+          <GlobalPreloader />
+          <RouteLoader />
+        </>
+      )}
       <HeroVideoProvider>
         <InnerLayout>{children}</InnerLayout>
       </HeroVideoProvider>

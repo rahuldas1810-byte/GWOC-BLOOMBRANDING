@@ -110,14 +110,6 @@ export default function ClientsPage() {
     }
   }
 
-  if (loading) {
-    return (
-      <div className="flex flex-col items-center justify-center py-20">
-        <Loader2 className="w-10 h-10 animate-spin text-electric-blue/40" />
-        <p className="mt-4 text-dark-choc/40 font-medium">Loading management...</p>
-      </div>
-    )
-  }
 
   return (
     <div className="min-h-screen pb-12">

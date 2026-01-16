@@ -126,14 +126,6 @@ export default function SiteSettingsPage() {
     })
   }
 
-  if (loading) {
-    return (
-      <div className="flex items-center justify-center min-vh-screen py-12">
-        <Loader2 className="w-8 h-8 animate-spin text-electric-blue" />
-        <span className="ml-3 text-dark-choc font-medium">Loading settings...</span>
-      </div>
-    )
-  }
 
   return (
     <div className="min-h-screen pb-12">
@@ -385,7 +377,7 @@ export default function SiteSettingsPage() {
                 </div>
               </div>
             </div>
-            
+
             {/* Location Settings */}
             <div className="bg-white rounded-3xl shadow-xl border border-dark-choc/10 overflow-hidden">
               <div className="p-8 border-b border-dark-choc/5 bg-earl-gray/10">

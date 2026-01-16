@@ -5,7 +5,7 @@ import { usePathname, useSearchParams } from 'next/navigation'
 import { motion, AnimatePresence } from 'framer-motion'
 import Image from 'next/image'
 
-export default function RouteLoader() {
+export default function RouteLoader({ className }: { className?: string }) {
     const pathname = usePathname()
     const searchParams = useSearchParams()
 
@@ -52,8 +52,8 @@ export default function RouteLoader() {
                 }
             }
         }
-        window.addEventListener('click', handleClick)
-        return () => window.removeEventListener('click', handleClick)
+        window.addEventListener('click', handleClick, true)
+        return () => window.removeEventListener('click', handleClick, true)
     }, [])
 
     // --- CSS GENERATION (Scaled Down) ---
@@ -102,7 +102,7 @@ export default function RouteLoader() {
         <AnimatePresence mode='wait'>
             {isVisible && (
                 <motion.div
-                    className="fixed inset-0 z-[9998] flex items-center justify-center bg-[#E8E6D8]"
+                    className={className || "fixed inset-0 z-[9998] flex items-center justify-center bg-[#E8E6D8]"}
                     initial={{ opacity: 0 }}
                     animate={{ opacity: 1 }}
                     exit={{ opacity: 0, transition: { duration: 0.5 } }}
