@@ -3,9 +3,12 @@
 import { usePathname } from 'next/navigation'
 import Navbar from '@/components/Navbar'
 import Footer from '@/components/Footer'
-import ScrollToTop from '@/components/ScrollToTop'
+
 import Chatbot from '@/components/Chatbot'
 import { HeroVideoProvider, useHeroVideo } from '@/contexts/HeroVideoContext'
+import { LoaderProvider } from '@/contexts/LoaderContext'
+import GlobalPreloader from '@/components/preloader/GlobalPreloader'
+import RouteLoader from '@/components/preloader/RouteLoader'
 import { motion, AnimatePresence } from 'framer-motion'
 
 function InnerLayout({ children }: { children: React.ReactNode }) {
@@ -36,7 +39,7 @@ function InnerLayout({ children }: { children: React.ReactNode }) {
       </AnimatePresence>
       <main>{children}</main>
       <Footer />
-      <ScrollToTop />
+
       <AnimatePresence>
         {!isNavbarHidden && (
           <motion.div
@@ -46,9 +49,9 @@ function InnerLayout({ children }: { children: React.ReactNode }) {
             transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
             className="fixed bottom-0 right-0 z-50 pointer-events-none"
           >
-             <div className="pointer-events-auto">
-                <Chatbot />
-             </div>
+            <div className="pointer-events-auto">
+              <Chatbot />
+            </div>
           </motion.div>
         )}
       </AnimatePresence>
@@ -62,9 +65,13 @@ export default function ConditionalLayout({
   children: React.ReactNode
 }) {
   return (
-    <HeroVideoProvider>
-      <InnerLayout>{children}</InnerLayout>
-    </HeroVideoProvider>
+    <LoaderProvider>
+      <GlobalPreloader />
+      <RouteLoader />
+      <HeroVideoProvider>
+        <InnerLayout>{children}</InnerLayout>
+      </HeroVideoProvider>
+    </LoaderProvider>
   )
 }
 
