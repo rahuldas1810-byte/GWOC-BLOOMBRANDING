@@ -22,7 +22,8 @@ export default function BrandsPage() {
         try {
             const response = await api.getBrands()
             if (response.success) {
-                setBrands(response.data)
+                setBrands(response.data ?? [])
+
             }
         } catch (error) {
             console.error('Failed to fetch brands:', error)
@@ -167,8 +168,8 @@ export default function BrandsPage() {
                                             <td className="px-6 py-4 text-dark-choc font-medium">{brand.order}</td>
                                             <td className="px-6 py-4">
                                                 <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${brand.isActive
-                                                        ? 'bg-green-100 text-green-800'
-                                                        : 'bg-red-100 text-red-800'
+                                                    ? 'bg-green-100 text-green-800'
+                                                    : 'bg-red-100 text-red-800'
                                                     }`}>
                                                     {brand.isActive ? 'Active' : 'Inactive'}
                                                 </span>
@@ -178,8 +179,8 @@ export default function BrandsPage() {
                                                     <button
                                                         onClick={() => handleToggleActive(brand._id, brand.isActive)}
                                                         className={`p-2 rounded-lg transition-colors ${brand.isActive
-                                                                ? 'text-dark-choc/40 hover:text-dark-choc hover:bg-earl-gray'
-                                                                : 'text-green-600 hover:bg-green-50'
+                                                            ? 'text-dark-choc/40 hover:text-dark-choc hover:bg-earl-gray'
+                                                            : 'text-green-600 hover:bg-green-50'
                                                             }`}
                                                         title={brand.isActive ? 'Deactivate' : 'Activate'}
                                                     >
@@ -232,8 +233,8 @@ export default function BrandsPage() {
                                 )}
                                 <div className="absolute top-2 right-2 flex gap-2">
                                     <span className={`px-2 py-1 rounded-full text-[10px] font-bold uppercase shadow-sm ${brand.isActive
-                                            ? 'bg-green-500 text-white'
-                                            : 'bg-red-500 text-white'
+                                        ? 'bg-green-500 text-white'
+                                        : 'bg-red-500 text-white'
                                         }`}>
                                         {brand.isActive ? 'Active' : 'Inactive'}
                                     </span>

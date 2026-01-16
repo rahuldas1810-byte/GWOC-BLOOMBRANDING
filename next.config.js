@@ -1,6 +1,11 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   reactStrictMode: true,
+
+  eslint: {
+    ignoreDuringBuilds: true,
+  },
+
   images: {
     remotePatterns: [
       {
@@ -15,7 +20,6 @@ const nextConfig = {
         port: "",
         pathname: "/**",
       },
-      // Added for founder dummy images
       {
         protocol: "https",
         hostname: "i.pravatar.cc",

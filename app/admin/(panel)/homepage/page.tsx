@@ -82,8 +82,9 @@ export default function HomepagePage() {
         }))
       }
 
-      if (testiRes.success) setAllTestimonials(testiRes.data)
-      if (brandsRes.success) setAllBrands(brandsRes.data)
+     if (testiRes.success) setAllTestimonials(testiRes.data ?? [])
+if (brandsRes.success) setAllBrands(brandsRes.data ?? [])
+
 
       if (settingsRes.success && settingsRes.data) {
         setSiteSettings(settingsRes.data)

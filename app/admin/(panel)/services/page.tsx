@@ -49,7 +49,8 @@ export default function ServicesPage() {
         api.getSiteSettings()
       ])
 
-      if (servicesRes.success) setServices(servicesRes.data)
+     if (servicesRes.success) setServices(servicesRes.data ?? [])
+
 
       if (pageRes.success && pageRes.data) {
         const data = pageRes.data
@@ -386,11 +387,15 @@ export default function ServicesPage() {
                     <div className="w-1.5 h-6 bg-electric-blue rounded-full" />
                     <h3 className="font-black text-dark-choc uppercase tracking-widest text-sm">Section Background</h3>
                   </div>
-                  <MediaSelector
-                    label="Main Page Background Image"
-                    value={globalContent.backgroundImage}
-                    onChange={(media) => setGlobalContent({ ...globalContent, backgroundImage: media })}
-                  />
+            <MediaSelector
+  type="image"
+  label="Main Page Background Image"
+  value={globalContent.backgroundImage}
+  onChange={(media) =>
+    setGlobalContent({ ...globalContent, backgroundImage: media })
+  }
+/>
+
                 </div>
               </div>
 

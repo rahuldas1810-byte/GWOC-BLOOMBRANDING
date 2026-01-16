@@ -40,15 +40,15 @@ export default function ClientsPage() {
         api.getTestimonials()
       ])
 
-      if (clientsRes.success) setClients(clientsRes.data)
-      if (sectorsRes.success) setSectors(sectorsRes.data)
+      if (clientsRes.success) setClients(clientsRes.data ?? [])
+      if (sectorsRes.success) setSectors(sectorsRes.data ?? [])
       if (settingsRes.success) {
-        setSettings(settingsRes.data)
+        setSettings(settingsRes.data ?? {})
         setTextForm({
           clientsHero: settingsRes.data.clientsHero || textForm.clientsHero
         })
       }
-      if (testimonialsRes.success) setTestimonials(testimonialsRes.data)
+      if (testimonialsRes.success) setTestimonials(testimonialsRes.data ?? [])
     } catch (error) {
       console.error('Failed to fetch data:', error)
     } finally {
