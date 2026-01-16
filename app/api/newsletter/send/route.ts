@@ -1,82 +1,95 @@
-import { NextRequest, NextResponse } from 'next/server';
-import { authenticate } from '@/backend';
-import connectDB from '@/lib/db';
-import NewsletterSubscriber from '@/models/NewsletterSubscriber';
-import { sendEmail } from '@/backend/email';
+import { NextRequest, NextResponse } from 'next/server'
+import { authenticate } from '@/backend'
+import connectDB from '@/lib/db'
+import NewsletterSubscriber from '@/models/NewsletterSubscriber'
+import { sendEmail } from '@/backend/email'
 
 export async function POST(req: NextRequest) {
     try {
-        // 1. Authenticate Admin
-        const authResult = await authenticate(req);
+        // 1️⃣ Authenticate Admin
+        const authResult = await authenticate(req)
         if ('error' in authResult) {
             return NextResponse.json(
                 { success: false, message: authResult.error },
                 { status: authResult.status }
-            );
+            )
         }
 
-        // 2. Parse Request
-        const { subject, message } = await req.json();
+        // 2️⃣ Parse Request Body
+        const { subject, message } = await req.json()
 
         if (!subject || !message) {
             return NextResponse.json(
                 { success: false, message: 'Subject and message are required.' },
                 { status: 400 }
-            );
+            )
         }
 
-        await connectDB();
+        // 3️⃣ Connect DB
+        await connectDB()
 
-        // 3. Fetch Active Subscribers
-        const subscribers = await NewsletterSubscriber.find({ status: 'active' });
+        // 4️⃣ Fetch ACTIVE Subscribers (NO LIMITS)
+        const subscribers = await NewsletterSubscriber.find({
+            status: 'active'
+        })
 
-        if (subscribers.length === 0) {
+        if (!subscribers.length) {
             return NextResponse.json(
                 { success: false, message: 'No active subscribers found.' },
                 { status: 404 }
-            );
+            )
         }
 
-        // 4. Send Emails
-        let sentCount = 0;
-        let failedCount = 0;
+        // 5️⃣ Send Emails (SEQUENTIAL + SMTP SAFE)
+        let sentCount = 0
+        let failedCount = 0
 
-        // Use sendEmail helper to ensure unsubscribe links are included
-        await Promise.allSettled(
-            subscribers.map(async (sub) => {
+        for (const sub of subscribers) {
+            try {
                 const success = await sendEmail({
                     to: sub.email,
-                    subject: subject,
+                    subject,
                     html: `
-              <div style="font-family: sans-serif; color: #2c2420; padding: 20px;">
-                ${message}
-                <hr style="border: 0; border-top: 1px solid #eee; margin: 40px 0;" />
-              </div>
-            `,
+            <div style="font-family: sans-serif; color: #2c2420; padding: 20px;">
+              ${message}
+              <hr style="border: 0; border-top: 1px solid #eee; margin: 40px 0;" />
+            </div>
+          `,
                     text: message,
                     includeUnsubscribe: true
-                });
+                })
 
                 if (success) {
-                    sentCount++;
+                    sentCount++
                 } else {
-                    failedCount++;
+                    failedCount++
                 }
-            })
-        );
 
+                // ⏳ Cooldown to prevent SMTP rate-limit
+                await new Promise(resolve => setTimeout(resolve, 800))
+
+            } catch (err) {
+                failedCount++
+                console.error(`Newsletter failed for ${sub.email}`, err)
+            }
+        }
+
+        // 6️⃣ Return Accurate Result
         return NextResponse.json({
             success: true,
-            message: `Newsletter sent to ${sentCount} subscribers. (${failedCount} failed)`,
-            data: { sent: sentCount, failed: failedCount }
-        });
+            message: `Newsletter sent to ${sentCount} subscribers.`,
+            data: {
+                sent: sentCount,
+                failed: failedCount,
+                total: subscribers.length
+            }
+        })
 
-    } catch (error: any) {
-        console.error('Newsletter Broadcast Error:', error);
+    } catch (error) {
+        console.error('Newsletter Broadcast Error:', error)
         return NextResponse.json(
             { success: false, message: 'Internal server error.' },
             { status: 500 }
-        );
+        )
     }
 }
-

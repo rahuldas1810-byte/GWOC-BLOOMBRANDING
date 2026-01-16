@@ -147,14 +147,6 @@ export default function ServicesPage() {
     setDrawerOpen(true)
   }
 
-  if (loading) {
-    return (
-      <div className="flex items-center justify-center min-vh-screen py-12">
-        <Loader2 className="w-8 h-8 animate-spin text-electric-blue" />
-        <span className="ml-3 text-dark-choc font-medium">Loading services...</span>
-      </div>
-    )
-  }
 
   return (
     <div className="min-h-screen pb-12">

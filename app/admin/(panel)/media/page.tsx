@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from 'react'
 import { api } from '@/lib/api'
-import { Upload, Trash2, Image as ImageIcon, Video } from 'lucide-react'
+import { Upload, Trash2, Image as ImageIcon, Video, Loader2 } from 'lucide-react'
 
 export default function MediaPage() {
   const [media, setMedia] = useState<any[]>([])
@@ -60,9 +60,6 @@ export default function MediaPage() {
     }
   }
 
-  if (loading) {
-    return <div className="text-dark-choc">Loading media...</div>
-  }
 
   return (
     <div className="min-h-screen bg-dark-choc/5 py-4 sm:py-8">

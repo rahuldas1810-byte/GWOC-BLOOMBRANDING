@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from 'react'
 import { api } from '@/lib/api'
-import { Trash2, Mail, CheckCircle } from 'lucide-react'
+import { Trash2, Mail, CheckCircle, Loader2 } from 'lucide-react'
 
 export default function EnquiriesPage() {
   const [enquiries, setEnquiries] = useState<any[]>([])
@@ -54,9 +54,6 @@ export default function EnquiriesPage() {
     }
   }
 
-  if (loading) {
-    return <div className="text-dark-choc">Loading enquiries...</div>
-  }
 
   return (
     <div className="space-y-6 max-w-7xl mx-auto">
@@ -74,8 +71,8 @@ export default function EnquiriesPage() {
               key={status}
               onClick={() => setFilter(status)}
               className={`px-5 py-2.5 rounded-xl transition-all whitespace-nowrap text-xs font-black uppercase tracking-widest ${filter === status
-                  ? 'bg-white text-dark-choc shadow-md'
-                  : 'text-dark-choc/50 hover:text-dark-choc hover:bg-white/50'
+                ? 'bg-white text-dark-choc shadow-md'
+                : 'text-dark-choc/50 hover:text-dark-choc hover:bg-white/50'
                 }`}
             >
               {status}
@@ -101,9 +98,9 @@ export default function EnquiriesPage() {
                     <div className="flex flex-wrap items-center gap-3 mb-4">
                       <h3 className="text-xl font-bold text-dark-choc group-hover:text-electric-blue transition-colors">{enquiry.name}</h3>
                       <span className={`px-2.5 py-1 text-[10px] font-black uppercase tracking-widest rounded-full border ${enquiry.status === 'new' ? 'bg-blue-50 text-blue-600 border-blue-100' :
-                          enquiry.status === 'contacted' ? 'bg-yellow-50 text-yellow-600 border-yellow-100' :
-                            enquiry.status === 'resolved' ? 'bg-green-50 text-green-600 border-green-100' :
-                              'bg-gray-50 text-gray-600 border-gray-100'
+                        enquiry.status === 'contacted' ? 'bg-yellow-50 text-yellow-600 border-yellow-100' :
+                          enquiry.status === 'resolved' ? 'bg-green-50 text-green-600 border-green-100' :
+                            'bg-gray-50 text-gray-600 border-gray-100'
                         }`}>
                         {enquiry.status}
                       </span>

@@ -8,7 +8,7 @@ import Image from 'next/image'
 
 const MIN_DISPLAY_TIME = 2500;
 
-export default function GlobalPreloader() {
+export default function GlobalPreloader({ className }: { className?: string }) {
     const pathname = usePathname()
     const { isHeroVideoReady, setIsInitialLoadComplete, isInitialLoadComplete } = useLoader()
 
@@ -105,7 +105,7 @@ export default function GlobalPreloader() {
         <AnimatePresence mode='wait'>
             {!isInitialLoadComplete && pathname !== '/' && (
                 <motion.div
-                    className="fixed inset-0 z-[9999] flex items-center justify-center bg-[#E8E6D8]"
+                    className={className || "fixed inset-0 z-[9999] flex items-center justify-center bg-[#E8E6D8]"}
                     exit={{ opacity: 0, transition: { duration: 0.8 } }}
                 >
                     <style>{cssStyles}</style>

@@ -23,7 +23,8 @@ import {
   Send
 } from 'lucide-react'
 import ToastContainer from '@/components/admin/Toast'
-import LoadingSpinner from '@/components/admin/LoadingSpinner'
+import GlobalPreloader from '@/components/preloader/GlobalPreloader'
+import RouteLoader from '@/components/preloader/RouteLoader'
 
 const navigation = [
   { name: 'Dashboard', href: '/admin/dashboard', icon: LayoutDashboard },
@@ -146,7 +147,11 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
       />
 
       {/* Main content */}
-      <div className="flex-1 flex flex-col min-w-0">
+      <div className="flex-1 flex flex-col min-w-0 relative">
+        {/* Preloaders - fixed position to center in viewport, offset for sidebar on large screens */}
+        <GlobalPreloader className="fixed inset-0 lg:left-72 z-[46] flex items-center justify-center bg-[#E8E6D8]" />
+        <RouteLoader className="fixed inset-0 lg:left-72 z-[45] flex items-center justify-center bg-[#E8E6D8]" />
+
         {/* Top bar */}
         <header className="bg-white/80 backdrop-blur-md border-b border-dark-choc/10 px-4 sm:px-8 py-4 flex items-center justify-between sticky top-0 z-30">
           <button

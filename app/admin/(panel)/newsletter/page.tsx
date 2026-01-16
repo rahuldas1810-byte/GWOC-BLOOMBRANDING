@@ -215,191 +215,185 @@ export default function NewsletterPage() {
         </div>
 
         {/* Content */}
-        {loading ? (
-          <div className="flex justify-center py-20">
-            <Loader2 className="w-8 h-8 animate-spin text-dark-choc/30" />
+        <div className="bg-white rounded-2xl shadow-sm border border-dark-choc/5 overflow-hidden">
+          <div className="p-3 sm:p-6 border-b border-dark-choc/5 flex justify-between items-center bg-white/50">
+            <h2 className="font-bold text-base sm:text-lg text-dark-choc flex items-center gap-2 min-w-0">
+              <span className="truncate">Subscribers</span>
+              <span className="bg-electric-blue/10 text-electric-blue text-[9px] px-1.5 py-0.5 rounded-full uppercase tracking-tighter shrink-0">
+                {filteredSubscribers.length} Result{filteredSubscribers.length !== 1 ? 's' : ''}
+              </span>
+            </h2>
+            {searchQuery && (
+              <button
+                onClick={() => setSearchQuery('')}
+                className="text-xs font-bold text-electric-blue hover:underline"
+              >
+                Clear Results
+              </button>
+            )}
           </div>
-        ) : (
-          <div className="bg-white rounded-2xl shadow-sm border border-dark-choc/5 overflow-hidden">
-            <div className="p-3 sm:p-6 border-b border-dark-choc/5 flex justify-between items-center bg-white/50">
-              <h2 className="font-bold text-base sm:text-lg text-dark-choc flex items-center gap-2 min-w-0">
-                <span className="truncate">Subscribers</span>
-                <span className="bg-electric-blue/10 text-electric-blue text-[9px] px-1.5 py-0.5 rounded-full uppercase tracking-tighter shrink-0">
-                  {filteredSubscribers.length} Result{filteredSubscribers.length !== 1 ? 's' : ''}
-                </span>
-              </h2>
-              {searchQuery && (
-                <button
-                  onClick={() => setSearchQuery('')}
-                  className="text-xs font-bold text-electric-blue hover:underline"
-                >
-                  Clear Results
-                </button>
-              )}
-            </div>
 
-            {/* Desktop Table View */}
-            <div className="hidden md:block overflow-x-auto">
-              <table className="w-full text-left">
-                <thead className="bg-earl-gray/30 text-dark-choc/70 text-[10px] font-black uppercase tracking-[0.2em]">
+          {/* Desktop Table View */}
+          <div className="hidden md:block overflow-x-auto">
+            <table className="w-full text-left">
+              <thead className="bg-earl-gray/30 text-dark-choc/70 text-[10px] font-black uppercase tracking-[0.2em]">
+                <tr>
+                  <th className="px-6 py-5">Email Address</th>
+                  <th className="px-6 py-5">Status</th>
+                  <th className="px-6 py-5 hidden lg:table-cell">Subscription Date</th>
+                  <th className="px-6 py-5 text-right">Actions</th>
+                </tr>
+              </thead>
+              <tbody className="divide-y divide-dark-choc/5">
+                {filteredSubscribers.length === 0 ? (
                   <tr>
-                    <th className="px-6 py-5">Email Address</th>
-                    <th className="px-6 py-5">Status</th>
-                    <th className="px-6 py-5 hidden lg:table-cell">Subscription Date</th>
-                    <th className="px-6 py-5 text-right">Actions</th>
+                    <td colSpan={4} className="px-6 py-20 text-center">
+                      <div className="flex flex-col items-center gap-2 opacity-30">
+                        <Search className="w-10 h-10" />
+                        <p className="text-sm font-bold">No matching subscribers found</p>
+                      </div>
+                    </td>
                   </tr>
-                </thead>
-                <tbody className="divide-y divide-dark-choc/5">
-                  {filteredSubscribers.length === 0 ? (
-                    <tr>
-                      <td colSpan={4} className="px-6 py-20 text-center">
-                        <div className="flex flex-col items-center gap-2 opacity-30">
-                          <Search className="w-10 h-10" />
-                          <p className="text-sm font-bold">No matching subscribers found</p>
+                ) : (
+                  filteredSubscribers.map((sub) => (
+                    <tr key={sub._id} className="hover:bg-earl-gray/10 transition-colors group">
+                      <td className="px-6 py-4 text-dark-choc">
+                        <div className="flex items-center gap-3">
+                          <div className="w-10 h-10 rounded-xl bg-electric-blue/5 flex items-center justify-center text-electric-blue shrink-0 group-hover:bg-electric-blue/10 transition-colors">
+                            <Mail className="w-4 h-4" />
+                          </div>
+                          <span className="truncate max-w-[250px] font-medium" title={sub.email}>{sub.email}</span>
                         </div>
                       </td>
-                    </tr>
-                  ) : (
-                    filteredSubscribers.map((sub) => (
-                      <tr key={sub._id} className="hover:bg-earl-gray/10 transition-colors group">
-                        <td className="px-6 py-4 text-dark-choc">
-                          <div className="flex items-center gap-3">
-                            <div className="w-10 h-10 rounded-xl bg-electric-blue/5 flex items-center justify-center text-electric-blue shrink-0 group-hover:bg-electric-blue/10 transition-colors">
-                              <Mail className="w-4 h-4" />
-                            </div>
-                            <span className="truncate max-w-[250px] font-medium" title={sub.email}>{sub.email}</span>
-                          </div>
-                        </td>
-                        <td className="px-6 py-4">
-                          <span className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider ${sub.status === 'active'
-                            ? 'bg-green-100 text-green-700'
-                            : 'bg-red-100 text-red-700'
-                            }`}>
-                            {sub.status === 'active' ? <CheckCircle className="w-3 h-3" /> : <XCircle className="w-3 h-3" />}
-                            <span>{sub.status}</span>
-                          </span>
-                        </td>
-                        <td className="px-6 py-4 text-dark-choc/60 text-sm hidden lg:table-cell">
-                          {new Date(sub.subscribedAt).toLocaleDateString(undefined, {
-                            year: 'numeric',
-                            month: 'long',
-                            day: 'numeric',
-                          })}
-                        </td>
-                        <td className="px-6 py-4 text-right">
-                          <div className="flex justify-end gap-2">
-                            {sub.status === 'active' ? (
-                              <button
-                                onClick={() => handleManageSubscriber(sub.email, 'deactivate')}
-                                disabled={processingSub === sub.email}
-                                className="inline-flex items-center gap-1.5 px-3 py-2 rounded-lg text-xs font-bold text-red-600 bg-red-50 hover:bg-red-100 transition-all disabled:opacity-50"
-                              >
-                                {processingSub === sub.email ? (
-                                  <Loader2 className="w-3.5 h-3.5 animate-spin" />
-                                ) : (
-                                  <Ban className="w-3.5 h-3.5" />
-                                )}
-                                Deactivate
-                              </button>
-                            ) : (
-                              <button
-                                onClick={() => handleManageSubscriber(sub.email, 'reactivate')}
-                                disabled={processingSub === sub.email}
-                                className="inline-flex items-center gap-1.5 px-3 py-2 rounded-lg text-xs font-bold text-green-600 bg-green-50 hover:bg-green-100 transition-all disabled:opacity-50"
-                              >
-                                {processingSub === sub.email ? (
-                                  <Loader2 className="w-3.5 h-3.5 animate-spin" />
-                                ) : (
-                                  <ArrowRightCircle className="w-3.5 h-3.5" />
-                                )}
-                                Reactivate
-                              </button>
-                            )}
-                          </div>
-                        </td>
-                      </tr>
-                    ))
-                  )}
-                </tbody>
-              </table>
-            </div>
-
-            {/* Mobile/Tablet Card View */}
-            <div className="md:hidden divide-y divide-dark-choc/5">
-              <AnimatePresence mode="popLayout">
-                {filteredSubscribers.length === 0 ? (
-                  <div className="px-6 py-20 text-center opacity-30">
-                    <p className="text-sm font-bold">No matching subscribers found</p>
-                  </div>
-                ) : (
-                  filteredSubscribers.map((sub, idx) => (
-                    <motion.div
-                      layout
-                      key={sub._id}
-                      initial={{ opacity: 0, y: 10 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      transition={{ delay: idx * 0.05 }}
-                      className="p-4 space-y-4"
-                    >
-                      <div className="flex items-start justify-between gap-3">
-                        <div className="flex items-center gap-3 min-w-0">
-                          <div className="w-12 h-12 rounded-2xl bg-electric-blue/5 flex items-center justify-center text-electric-blue shrink-0">
-                            <Mail className="w-5 h-5" />
-                          </div>
-                          <div className="min-w-0">
-                            <p className="font-bold text-dark-choc truncate text-base" title={sub.email}>
-                              {sub.email}
-                            </p>
-                            <p className="text-xs text-dark-choc/40 font-medium">
-                              Since {new Date(sub.subscribedAt).toLocaleDateString()}
-                            </p>
-                          </div>
-                        </div>
-                        <span className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-widest shrink-0 ${sub.status === 'active'
+                      <td className="px-6 py-4">
+                        <span className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider ${sub.status === 'active'
                           ? 'bg-green-100 text-green-700'
                           : 'bg-red-100 text-red-700'
                           }`}>
-                          <div className={`w-1.5 h-1.5 rounded-full ${sub.status === 'active' ? 'bg-green-600' : 'bg-red-600'} animate-pulse shrink-0`} />
-                          {sub.status === 'active' ? 'Active' : 'Stopped'}
+                          {sub.status === 'active' ? <CheckCircle className="w-3 h-3" /> : <XCircle className="w-3 h-3" />}
+                          <span>{sub.status}</span>
                         </span>
-                      </div>
-
-                      <div className="flex gap-2">
-                        {sub.status === 'active' ? (
-                          <button
-                            onClick={() => handleManageSubscriber(sub.email, 'deactivate')}
-                            disabled={processingSub === sub.email}
-                            className="flex-1 flex items-center justify-center gap-2 px-4 py-3 rounded-xl text-sm font-bold text-red-600 bg-red-50 hover:bg-red-100 active:scale-95 transition-all disabled:opacity-50"
-                          >
-                            {processingSub === sub.email ? (
-                              <Loader2 className="w-4 h-4 animate-spin" />
-                            ) : (
-                              <Ban className="w-4 h-4" />
-                            )}
-                            Deactivate
-                          </button>
-                        ) : (
-                          <button
-                            onClick={() => handleManageSubscriber(sub.email, 'reactivate')}
-                            disabled={processingSub === sub.email}
-                            className="flex-1 flex items-center justify-center gap-2 px-4 py-3 rounded-xl text-sm font-bold text-green-600 bg-green-50 hover:bg-green-100 active:scale-95 transition-all disabled:opacity-50"
-                          >
-                            {processingSub === sub.email ? (
-                              <Loader2 className="w-4 h-4 animate-spin" />
-                            ) : (
-                              <ArrowRightCircle className="w-4 h-4" />
-                            )}
-                            Reactivate
-                          </button>
-                        )}
-                      </div>
-                    </motion.div>
+                      </td>
+                      <td className="px-6 py-4 text-dark-choc/60 text-sm hidden lg:table-cell">
+                        {new Date(sub.subscribedAt).toLocaleDateString(undefined, {
+                          year: 'numeric',
+                          month: 'long',
+                          day: 'numeric',
+                        })}
+                      </td>
+                      <td className="px-6 py-4 text-right">
+                        <div className="flex justify-end gap-2">
+                          {sub.status === 'active' ? (
+                            <button
+                              onClick={() => handleManageSubscriber(sub.email, 'deactivate')}
+                              disabled={processingSub === sub.email}
+                              className="inline-flex items-center gap-1.5 px-3 py-2 rounded-lg text-xs font-bold text-red-600 bg-red-50 hover:bg-red-100 transition-all disabled:opacity-50"
+                            >
+                              {processingSub === sub.email ? (
+                                <Loader2 className="w-3.5 h-3.5 animate-spin" />
+                              ) : (
+                                <Ban className="w-3.5 h-3.5" />
+                              )}
+                              Deactivate
+                            </button>
+                          ) : (
+                            <button
+                              onClick={() => handleManageSubscriber(sub.email, 'reactivate')}
+                              disabled={processingSub === sub.email}
+                              className="inline-flex items-center gap-1.5 px-3 py-2 rounded-lg text-xs font-bold text-green-600 bg-green-50 hover:bg-green-100 transition-all disabled:opacity-50"
+                            >
+                              {processingSub === sub.email ? (
+                                <Loader2 className="w-3.5 h-3.5 animate-spin" />
+                              ) : (
+                                <ArrowRightCircle className="w-3.5 h-3.5" />
+                              )}
+                              Reactivate
+                            </button>
+                          )}
+                        </div>
+                      </td>
+                    </tr>
                   ))
                 )}
-              </AnimatePresence>
-            </div>
+              </tbody>
+            </table>
           </div>
-        )}
+
+          {/* Mobile/Tablet Card View */}
+          <div className="md:hidden divide-y divide-dark-choc/5">
+            <AnimatePresence mode="popLayout">
+              {filteredSubscribers.length === 0 ? (
+                <div className="px-6 py-20 text-center opacity-30">
+                  <p className="text-sm font-bold">No matching subscribers found</p>
+                </div>
+              ) : (
+                filteredSubscribers.map((sub, idx) => (
+                  <motion.div
+                    layout
+                    key={sub._id}
+                    initial={{ opacity: 0, y: 10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: idx * 0.05 }}
+                    className="p-4 space-y-4"
+                  >
+                    <div className="flex items-start justify-between gap-3">
+                      <div className="flex items-center gap-3 min-w-0">
+                        <div className="w-12 h-12 rounded-2xl bg-electric-blue/5 flex items-center justify-center text-electric-blue shrink-0">
+                          <Mail className="w-5 h-5" />
+                        </div>
+                        <div className="min-w-0">
+                          <p className="font-bold text-dark-choc truncate text-base" title={sub.email}>
+                            {sub.email}
+                          </p>
+                          <p className="text-xs text-dark-choc/40 font-medium">
+                            Since {new Date(sub.subscribedAt).toLocaleDateString()}
+                          </p>
+                        </div>
+                      </div>
+                      <span className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-widest shrink-0 ${sub.status === 'active'
+                        ? 'bg-green-100 text-green-700'
+                        : 'bg-red-100 text-red-700'
+                        }`}>
+                        <div className={`w-1.5 h-1.5 rounded-full ${sub.status === 'active' ? 'bg-green-600' : 'bg-red-600'} animate-pulse shrink-0`} />
+                        {sub.status === 'active' ? 'Active' : 'Stopped'}
+                      </span>
+                    </div>
+
+                    <div className="flex gap-2">
+                      {sub.status === 'active' ? (
+                        <button
+                          onClick={() => handleManageSubscriber(sub.email, 'deactivate')}
+                          disabled={processingSub === sub.email}
+                          className="flex-1 flex items-center justify-center gap-2 px-4 py-3 rounded-xl text-sm font-bold text-red-600 bg-red-50 hover:bg-red-100 active:scale-95 transition-all disabled:opacity-50"
+                        >
+                          {processingSub === sub.email ? (
+                            <Loader2 className="w-4 h-4 animate-spin" />
+                          ) : (
+                            <Ban className="w-4 h-4" />
+                          )}
+                          Deactivate
+                        </button>
+                      ) : (
+                        <button
+                          onClick={() => handleManageSubscriber(sub.email, 'reactivate')}
+                          disabled={processingSub === sub.email}
+                          className="flex-1 flex items-center justify-center gap-2 px-4 py-3 rounded-xl text-sm font-bold text-green-600 bg-green-50 hover:bg-green-100 active:scale-95 transition-all disabled:opacity-50"
+                        >
+                          {processingSub === sub.email ? (
+                            <Loader2 className="w-4 h-4 animate-spin" />
+                          ) : (
+                            <ArrowRightCircle className="w-4 h-4" />
+                          )}
+                          Reactivate
+                        </button>
+                      )}
+                    </div>
+                  </motion.div>
+                ))
+              )}
+            </AnimatePresence>
+          </div>
+        </div>
       </div>
 
       {/* Send Modal */}
