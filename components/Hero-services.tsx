@@ -1,7 +1,7 @@
 'use client';
 
 import { useRef, useEffect } from 'react';
-import { motion } from 'framer-motion';
+import { motion, stagger } from 'framer-motion';
 import gsap from 'gsap';
 import { useGSAP } from '@gsap/react';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
@@ -80,6 +80,8 @@ superstructures.`;
   return (
     <section ref={containerRef} className="relative w-full h-screen overflow-hidden bg-[#4A3B32]">
 
+
+
       {/* Split Layer */}
       <div
         ref={splitLayerRef}
@@ -126,11 +128,11 @@ superstructures.`;
 
       {/* Aesthetic Details */}
       {/* Hidden on Mobile */}
-      <div ref={leftDetailRef} className={`hidden md:block absolute left-[2vw] top-1/2 -translate-y-1/2 z-20 opacity-0 writing-vertical-lr rotate-180 ${manrope.className} text-[#E8E6DD] text-[10px] tracking-[0.3em] uppercase`}>
+      <div ref={leftDetailRef} className={`hidden md:block absolute left-[2vw] top-1/2 -translate-y-1/2 z-20 opacity-0 translate-y-8 writing-vertical-lr rotate-180 ${manrope.className} text-[#E8E6DD] text-[10px] tracking-[0.3em] uppercase`}>
         Est. 2024 — Strategic Living
       </div>
       {/* Mobile: Safe Padding */}
-      <div ref={rightDetailRef} className={`absolute right-6 bottom-8 md:right-[3vw] md:bottom-[5vh] z-20 opacity-0 text-right ${manrope.className} text-[#E8E6DD] text-xs leading-relaxed tracking-widest uppercase`}>
+      <div ref={rightDetailRef} className={`absolute right-6 bottom-8 md:right-[3vw] md:bottom-[5vh] z-20 opacity-0 translate-y-8 text-right ${manrope.className} text-[#E8E6DD] text-xs leading-relaxed tracking-widest uppercase`}>
         <p>Global Reach.</p>
         <p>Local Roots.</p>
       </div>

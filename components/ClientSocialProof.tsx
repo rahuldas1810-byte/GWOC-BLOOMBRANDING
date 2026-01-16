@@ -35,7 +35,7 @@ export default function ClientSocialProof() {
 
         if (testimonialsData && testimonialsData.length > 0) {
           const mappedBrands = testimonialsData.map((t, i) => ({
-            name: t.company,
+            name: t.company === 'Google Review' ? t.clientName : t.company,
             quote: t.quote,
             author: `${t.clientName}, ${t.company}`,
             font: FONT_STYLES[i % FONT_STYLES.length]
