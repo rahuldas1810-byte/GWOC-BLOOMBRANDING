@@ -150,9 +150,9 @@ export default function ClientShowcase() {
                 onMouseEnter={() =>
                   handleHover((activeIndex + i - 2 + displayClients.length) % displayClients.length)
                 }
-                className={`absolute rounded-2xl overflow-hidden shadow-2xl transition-all duration-500 ${isCenter
-                  ? 'w-[75vw] h-[55vh] max-w-[300px] max-h-[400px] sm:max-w-none sm:max-h-none sm:w-[360px] sm:h-[460px] md:w-[420px] md:h-[520px] bg-white hover:shadow-3xl'
-                  : 'w-[50vw] h-[40vh] max-w-[200px] max-h-[300px] sm:max-w-none sm:max-h-none sm:w-56 sm:h-[320px] md:w-72 md:h-[420px] bg-[linear-gradient(150deg,#3A2F2A_0%,#C8BBAA_100%)] opacity-70 hover:opacity-85' // Espresso Brown -> Soft Sand
+                className={`absolute rounded-2xl overflow-hidden transition-all duration-500 ${isCenter
+                  ? 'shadow-2xl w-[75vw] h-[55vh] max-w-[300px] max-h-[400px] sm:max-w-none sm:max-h-none sm:w-[360px] sm:h-[460px] md:w-[420px] md:h-[520px] bg-white hover:shadow-3xl'
+                  : 'shadow-[0_25px_50px_rgba(0,0,0,0.12)] w-[50vw] h-[40vh] max-w-[200px] max-h-[300px] sm:max-w-none sm:max-h-none sm:w-56 sm:h-[320px] md:w-72 md:h-[420px] bg-[linear-gradient(135deg,rgba(236,158,152,0.65),rgba(239,189,122,0.60))]' // Soft Sunset (Darkened)
                   }`}
                 style={{ zIndex }}
               >
