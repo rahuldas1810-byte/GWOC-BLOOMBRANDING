@@ -13,6 +13,7 @@ import type { Testimonial, Client } from "@/types";
 import TextMarquee from "@/components/TextMarquee";
 import Marquee from "@/components/Marquee";
 import { useHeroVideo } from "@/contexts/HeroVideoContext";
+import { useLoader } from "@/contexts/LoaderContext";
 
 const SERVICE_IMAGES = [
   "https://images.unsplash.com/photo-1600508774634-4e11d34730e2?q=80&w=2070&auto=format&fit=crop", // Brand Identity
@@ -59,6 +60,7 @@ export default function Home() {
   const backgroundVideoRef = useRef<HTMLVideoElement>(null);
   const lastPlayedVideoRef = useRef<string | null>(null);
   const { hideNavbar, showNavbar } = useHeroVideo();
+  const { setHeroVideoReady: setGlobalVideoReady } = useLoader();
 
   useEffect(() => {
     const fetchData = async () => {
@@ -136,6 +138,7 @@ export default function Home() {
             setVideoEnded(true);
             setIsInitialLoad(false);
             setHeroVideoReady(true); // Mark as ready since there's no video
+            setGlobalVideoReady(true);
             showNavbar();
           } else {
             // If hero video exists, but it's the one we just played, don't reset
@@ -178,6 +181,7 @@ export default function Home() {
     if (!homepageContent.heroVideo && homepageContent.backgroundVideo) {
       setVideoEnded(true);
       setHeroVideoReady(true);
+      setGlobalVideoReady(true);
       setIsInitialLoad(false);
       setIsTransitioning(false);
       showNavbar();
@@ -188,6 +192,7 @@ export default function Home() {
     if (!homepageContent.heroVideo) {
       setVideoEnded(true);
       setHeroVideoReady(true);
+      setGlobalVideoReady(true);
       setIsInitialLoad(false);
       setIsTransitioning(false);
       showNavbar();
@@ -206,7 +211,7 @@ export default function Home() {
     setIsInitialLoad(true);
     setIsTransitioning(false);
     setHeroVideoReady(false); // Reset to false so black background shows while loading
-    
+
     // Ensure background video is paused and reset when hero video is present
     if (backgroundVideoRef.current && homepageContent.heroVideo) {
       backgroundVideoRef.current.pause();
@@ -217,11 +222,11 @@ export default function Home() {
   // Handle hero video events and ensure it plays
   useEffect(() => {
     if (!homepageContent.heroVideo) return;
-    
+
     // If we've already played this video, don't set up listeners to restart it
     if (homepageContent.heroVideo === lastPlayedVideoRef.current) {
-        showNavbar(); 
-        return;
+      showNavbar();
+      return;
     }
 
     const video = videoRef.current;
@@ -229,6 +234,7 @@ export default function Home() {
 
     const handleVideoLoaded = () => {
       setHeroVideoReady(true);
+      setGlobalVideoReady(true);
       // Ensure video plays when loaded
       video.play().catch((error) => {
         console.error('Error playing hero video:', error);
@@ -238,6 +244,7 @@ export default function Home() {
 
     const handleVideoCanPlay = () => {
       setHeroVideoReady(true);
+      setGlobalVideoReady(true);
       // Ensure video plays when it can play
       video.play().catch((error) => {
         console.error('Error playing hero video:', error);
@@ -248,7 +255,7 @@ export default function Home() {
     const handleVideoEnd = () => {
       // Mark this video as played so we don't play it again
       lastPlayedVideoRef.current = homepageContent.heroVideo;
-      
+
       // Reveal navbar smoothly
       showNavbar();
 
@@ -265,6 +272,7 @@ export default function Home() {
     const handleVideoError = () => {
       // If video fails to load, show content after a short delay
       setHeroVideoReady(true);
+      setGlobalVideoReady(true);
       showNavbar();
       setTimeout(() => {
         setVideoEnded(true);
@@ -290,6 +298,7 @@ export default function Home() {
     // Check if video is already loaded and play it immediately
     if (video.readyState >= 2) {
       setHeroVideoReady(true);
+      setGlobalVideoReady(true);
       attemptPlay();
     } else if (video.readyState >= 1) {
       // Video has metadata, try to play
@@ -433,6 +442,7 @@ export default function Home() {
               }}
               onLoadedData={() => {
                 setHeroVideoReady(true);
+                setGlobalVideoReady(true);
                 // Ensure video plays immediately when loaded
                 if (videoRef.current) {
                   videoRef.current.play().catch(console.error);
@@ -440,6 +450,7 @@ export default function Home() {
               }}
               onCanPlay={() => {
                 setHeroVideoReady(true);
+                setGlobalVideoReady(true);
                 // Force play when video can play
                 if (videoRef.current && videoRef.current.paused) {
                   videoRef.current.play().catch(console.error);
@@ -447,6 +458,7 @@ export default function Home() {
               }}
               onCanPlayThrough={() => {
                 setHeroVideoReady(true);
+                setGlobalVideoReady(true);
                 // Video can play through - ensure it's playing
                 if (videoRef.current && videoRef.current.paused) {
                   videoRef.current.play().catch(console.error);
@@ -454,6 +466,7 @@ export default function Home() {
               }}
               onPlaying={() => {
                 setHeroVideoReady(true);
+                setGlobalVideoReady(true);
               }}
               onTimeUpdate={() => {
                 // Start transition slightly before video ends for seamless crossfade
@@ -543,9 +556,9 @@ export default function Home() {
                 </p>
                 <h1
                   className="text-[#3A2A23] leading-[1.1] mb-4 sm:mb-6 md:mb-10 font-normal"
-                  style={{ 
+                  style={{
                     fontFamily: 'Canela, "Canela Text", serif',
-                    fontSize: "clamp(2.5rem, 10vw, 8rem)" 
+                    fontSize: "clamp(2.5rem, 10vw, 8rem)"
                   }}
                 >
                   {homepageContent.heroHeadline || 'We craft brand identities that resonate.'}
@@ -911,9 +924,9 @@ export default function Home() {
                   className="w-full h-full rounded-2xl shadow-[0_10px_40px_rgba(0,0,0,0.08)]"
                   title="Bloom Branding Studio Location"
                 />
-                
+
                 {/* Clickable Overlay for Map */}
-                <div 
+                <div
                   className="absolute inset-0 z-20 cursor-pointer"
                   onClick={() => window.open(homepageContent.googleMapsUrl, "_blank", "noopener,noreferrer")}
                   aria-label="Open Google Maps"

@@ -6,6 +6,9 @@ import Footer from '@/components/Footer'
 
 import Chatbot from '@/components/Chatbot'
 import { HeroVideoProvider, useHeroVideo } from '@/contexts/HeroVideoContext'
+import { LoaderProvider } from '@/contexts/LoaderContext'
+import GlobalPreloader from '@/components/preloader/GlobalPreloader'
+import RouteLoader from '@/components/preloader/RouteLoader'
 import { motion, AnimatePresence } from 'framer-motion'
 
 function InnerLayout({ children }: { children: React.ReactNode }) {
@@ -62,9 +65,13 @@ export default function ConditionalLayout({
   children: React.ReactNode
 }) {
   return (
-    <HeroVideoProvider>
-      <InnerLayout>{children}</InnerLayout>
-    </HeroVideoProvider>
+    <LoaderProvider>
+      <GlobalPreloader />
+      <RouteLoader />
+      <HeroVideoProvider>
+        <InnerLayout>{children}</InnerLayout>
+      </HeroVideoProvider>
+    </LoaderProvider>
   )
 }
 
