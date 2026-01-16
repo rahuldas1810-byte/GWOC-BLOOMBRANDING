@@ -1,9 +1,9 @@
+export const dynamic = 'force-dynamic'
 import { NextRequest, NextResponse } from 'next/server'
 import connectDB from '@/lib/db'
 import SiteSettings from '@/models/SiteSettings'
 
 // Force dynamic rendering
-export const dynamic = 'force-dynamic'
 export const revalidate = 0
 
 // GET - Public API: Get site settings
