@@ -9,6 +9,7 @@ import ImpactStats from '@/components/ImpactStats'
 import ClientSocialProof from '@/components/ClientSocialProof'
 import { getClients, getSiteSettings } from '@/lib/content'
 import SectorShowcase from '@/components/SectorShowcase'
+import ClientShowcase1 from '@/components/ClientShowcase-1';
 
 export default function Clients() {
   const [settings, setSettings] = useState<any>(null)
@@ -116,6 +117,9 @@ export default function Clients() {
         {/* Sharp Architectural Cut */}
         <div className="absolute bottom-0 left-0 w-full h-[1px] bg-dark-choc/5 z-[5]" />
       </section>
+
+      {/* INSERT THE NEW SECTION HERE */}
+      <ClientShowcase1 />
 
       {/* Impact Stats */}
       <ImpactStats />
