@@ -22,9 +22,8 @@ export default function GlobalPreloader() {
 
             if (document.readyState === 'complete') {
                 if (isHome) {
-                    if (isHeroVideoReady) {
-                        setTimeout(() => completeLoading(), remainingTime)
-                    }
+                    // Skip preloader on homepage
+                    completeLoading()
                 } else {
                     setTimeout(() => completeLoading(), remainingTime)
                 }
@@ -104,7 +103,7 @@ export default function GlobalPreloader() {
 
     return (
         <AnimatePresence mode='wait'>
-            {!isInitialLoadComplete && (
+            {!isInitialLoadComplete && pathname !== '/' && (
                 <motion.div
                     className="fixed inset-0 z-[9999] flex items-center justify-center bg-[#E8E6D8]"
                     exit={{ opacity: 0, transition: { duration: 0.8 } }}

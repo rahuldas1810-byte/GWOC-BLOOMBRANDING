@@ -44,7 +44,8 @@ export default function RouteLoader() {
 
                 if (url.origin === currentUrl.origin &&
                     (url.pathname !== currentUrl.pathname || url.search !== currentUrl.search) &&
-                    !url.hash
+                    !url.hash &&
+                    url.pathname !== '/'
                 ) {
                     setIsVisible(true)
                     setShouldExit(false)
