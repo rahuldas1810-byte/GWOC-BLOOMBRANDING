@@ -190,9 +190,9 @@ export default function Navbar() {
               <div className="flex-1 grid grid-cols-1 lg:grid-cols-12 px-6 md:px-12 pb-12 pt-4 h-full overflow-y-auto lg:overflow-visible">
 
                 {/* Column 1: Branding & Visuals (Grouped at Bottom) */}
-                <div className="flex lg:col-span-3 flex-col h-full lg:pr-8 justify-end pb-8 lg:pb-24 gap-6 lg:gap-10">
+                <div className="flex lg:col-span-3 flex-col h-full lg:pr-8 justify-end items-start pb-8 lg:pb-24 gap-6 lg:gap-10 text-left">
                   {/* Top: Copyright (Bodoni) */}
-                  <div className="order-2 lg:order-1">
+                  <div className="order-2 lg:order-1 w-full flex flex-col items-start">
                     <h2 className="font-bodoni text-2xl lg:text-3xl mb-2"><span className="mr-1 font-sans text-lg relative -top-[2px]">©</span>2026</h2>
                     <p className="text-[10px] lg:text-xs text-[#3E2B26]/70 w-full lg:w-3/4 leading-relaxed font-sans">
                       Bloom Branding Industries. All rights reserved.
@@ -200,7 +200,7 @@ export default function Navbar() {
                   </div>
 
                   {/* Middle: Socials (Real Links) */}
-                  <div className="flex gap-4 order-1 lg:order-2">
+                  <div className="flex gap-4 order-1 lg:order-2 justify-start w-full">
                     {[
                       { Icon: Linkedin, href: socialLinks.linkedin },
                       { Icon: Facebook, href: socialLinks.facebook },
