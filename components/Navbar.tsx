@@ -115,20 +115,7 @@ export default function Navbar() {
       {/* 
          --- Top Navigation Bar --- 
       */}
-      <nav 
-        className={`fixed top-0 left-0 w-full z-[60] px-6 md:px-12 py-6 md:py-8 flex justify-between items-center transition-all duration-300
-          ${/* Mobile: Hide/Show transformation */ ""}
-          ${isVisible ? 'translate-y-0' : '-translate-y-full md:translate-y-0'}
-          
-          ${/* Desktop: Bg Opacity logic */ ""}
-          ${isScrolled ? 'md:bg-[#F3F0E7] md:shadow-sm' : 'bg-transparent'}
-          
-          ${/* Blend mode: Only use difference when NOT scrolled/opaque on desktop (to see logo over hero images) */ ""}
-          ${isScrolled ? 'text-[#3E2B26]' : 'mix-blend-mode-difference text-[#3E2B26]'}
-          
-          pointer-events-none
-        `}
-      >
+      <nav className="fixed top-0 left-0 w-full z-[60] px-6 md:px-12 py-6 md:py-8 flex justify-between items-center bg-transparent mix-blend-mode-difference lg:mix-blend-normal text-[#3E2B26] pointer-events-none">
 
         {/* Logo */}
         <Link href="/" className="pointer-events-auto">
