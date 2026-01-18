@@ -22,7 +22,7 @@ function Counter({ value, suffix, index }: { value: number; suffix: string; inde
   }, [count, isInView, value, index])
 
   return (
-    <span ref={ref} className="font-serif text-4xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-8xl text-dark-choc tracking-tighter font-light">
+    <span ref={ref} className="font-serif text-2xl xs:text-3xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-8xl text-dark-choc tracking-tighter font-light">
       <motion.span>{rounded}</motion.span>
       <span className="text-[#BDAF62]">{suffix}</span>
     </span>
@@ -41,7 +41,7 @@ function PolygonEnclosure({ children, index }: { children: React.ReactNode; inde
       >
         <svg
           viewBox="0 0 200 200"
-          className="w-32 h-32 sm:w-40 sm:h-40 md:w-56 md:h-56 lg:w-64 lg:h-64 drop-shadow-[0_0_30px_rgba(189,175,98,0.1)]"
+          className="w-24 h-24 xs:w-28 xs:h-28 sm:w-40 sm:h-40 md:w-56 md:h-56 lg:w-64 lg:h-64 drop-shadow-[0_0_30px_rgba(189,175,98,0.1)]"
         >
           {/* Main Glass Polygon */}
           <motion.path
@@ -185,7 +185,7 @@ export default function ImpactStats() {
           </div>
 
           {/* Stats Cards - Balanced Architectural Grid */}
-          <div className="grid grid-cols-1 md:grid-cols-3 items-center relative gap-8 sm:gap-12 md:gap-0">
+          <div className="grid grid-cols-3 md:grid-cols-3 items-center relative gap-2 xs:gap-4 sm:gap-12 md:gap-0">
             {stats.map((stat, index) => (
               <motion.div
                 key={stat.label}
@@ -194,9 +194,9 @@ export default function ImpactStats() {
                 viewport={{ once: true }}
                 transition={{ duration: 1, delay: index * 0.2, ease: [0.22, 1, 0.36, 1] }}
                 className={`
-                  relative flex flex-col items-center justify-center p-6 sm:p-8 md:p-14
+                  relative flex flex-col items-center justify-center p-2 xs:p-4 sm:p-8 md:p-14
                   group cursor-default
-                  ${index !== 2 ? 'md:border-r border-dark-choc/5' : ''}
+                  ${index !== 2 ? 'border-r md:border-r border-dark-choc/5' : ''}
                 `}
               >
                 {/* Polygon Enclosure with Reactive Scaling */}
@@ -211,9 +211,9 @@ export default function ImpactStats() {
                 </motion.div>
 
                 {/* Sub-labeling */}
-                <div className="flex flex-col items-center text-center space-y-1 sm:space-y-2 relative z-10 transition-transform duration-500 group-hover:translate-y-1">
-                  <span className="font-serif text-xl sm:text-2xl text-dark-choc/80 italic">{stat.label}</span>
-                  <span className="font-mono text-[8px] sm:text-[9px] uppercase tracking-[0.4em] sm:tracking-[0.5em] text-[#BDAF62]/80 font-black">{stat.sublabel}</span>
+                <div className="flex flex-col items-center text-center space-y-0.5 sm:space-y-2 relative z-10 transition-transform duration-500 group-hover:translate-y-1">
+                  <span className="font-serif text-xs xs:text-sm sm:text-2xl text-dark-choc/80 italic">{stat.label}</span>
+                  <span className="font-mono text-[6px] xs:text-[7px] sm:text-[9px] uppercase tracking-[0.2em] xs:tracking-[0.4em] sm:tracking-[0.5em] text-[#BDAF62]/80 font-black">{stat.sublabel}</span>
                 </div>
 
                 {/* Vertical accent on hover - architectural detail */}

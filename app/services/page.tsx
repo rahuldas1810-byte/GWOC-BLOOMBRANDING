@@ -111,13 +111,13 @@ Let's turn your vision into reality.`;
   return (
     <div className="w-full bg-[#F2F0E9] overflow-x-hidden">
       {/* HERO SECTION - Isolated from motion wrapper to fix GSAP Pinning */}
-      <Hero 
+      <Hero
         text={content?.hero?.text}
         videoUrl={content?.hero?.video?.url}
       />
 
-      <motion.div 
-        ref={containerRef} 
+      <motion.div
+        ref={containerRef}
         className="w-full h-auto text-[#2c2420]"
         initial={{ opacity: 0, y: 8 }}
         animate={{ opacity: 1, y: 0 }}
@@ -129,64 +129,90 @@ Let's turn your vision into reality.`;
 
         {/* TEXT SECTION 1 - FIX: Reduced Padding to close gap */}
         <section className="px-4 sm:px-6 md:px-20 pt-8 sm:pt-10 pb-12 sm:pb-20 flex flex-col justify-center">
-          <div className="max-w-7xl mx-auto space-y-3 sm:space-y-6">
-            {statementAText.split('\n').map((line: string, index: number) => (
-              <SplitText key={index} className={`text-2xl sm:text-3xl md:text-5xl lg:text-6xl font-serif leading-[1.1] sm:leading-[1.05] ${index === 2 ? 'italic' : ''}`}>
-                {line}
+          <div className="max-w-7xl mx-auto">
+            {/* Desktop/Tablet - 4 Lines */}
+            <div className="hidden sm:block space-y-3 sm:space-y-6">
+              {statementAText.split('\n').map((line: string, index: number) => (
+                <SplitText key={index} className={`text-3xl md:text-5xl lg:text-6xl font-serif leading-[1.05] ${index === 2 ? 'italic' : ''}`}>
+                  {line}
+                </SplitText>
+              ))}
+            </div>
+
+            {/* Mobile - 2 Lines */}
+            <div className="block sm:hidden space-y-6">
+              <SplitText className="text-lg font-serif leading-[1.2]">
+                {statementAText.split('\n').slice(0, 2).join(' ')}
               </SplitText>
-            ))}
+              <SplitText className="text-lg font-serif leading-[1.2] italic">
+                {statementAText.split('\n').slice(2, 4).join(' ')}
+              </SplitText>
+            </div>
           </div>
         </section>
 
         {/* GALLERY SECTION */}
         <section className="gallery-section py-8 sm:py-16 w-full relative flex flex-col gap-4 sm:gap-8">
           <div id="row-1" className="flex gap-4 sm:gap-8 w-[800%] sm:w-[600%]">
-          {ROW_DATA.map((img, i) => (
-            <div key={`r1-${i}`} className={`relative bg-gray-300 flex-shrink-0 overflow-hidden ${img.cls}`}>
-              <img src={`${img.url}?q=80&w=800&auto=format&fit=crop`} alt="" className="w-full h-full object-cover transition duration-700 hover:scale-105" />
-            </div>
-          ))}
-        </div>
-        <div id="row-2" className="flex gap-4 sm:gap-8 w-[800%] sm:w-[600%] -ml-[350%] sm:-ml-[250%]">
-          {ROW_DATA.map((img, i) => (
-            <div key={`r2-${i}`} className={`relative bg-gray-300 flex-shrink-0 overflow-hidden ${img.cls}`}>
-              <img src={`${img.url}?q=80&w=800&auto=format&fit=crop`} alt="" className="w-full h-full object-cover transition duration-700 hover:scale-105" />
-            </div>
-          ))}
-        </div>
-      </section>
+            {ROW_DATA.map((img, i) => (
+              <div key={`r1-${i}`} className={`relative bg-gray-300 flex-shrink-0 overflow-hidden ${img.cls}`}>
+                <img src={`${img.url}?q=80&w=800&auto=format&fit=crop`} alt="" className="w-full h-full object-cover transition duration-700 hover:scale-105" />
+              </div>
+            ))}
+          </div>
+          <div id="row-2" className="flex gap-4 sm:gap-8 w-[800%] sm:w-[600%] -ml-[350%] sm:-ml-[250%]">
+            {ROW_DATA.map((img, i) => (
+              <div key={`r2-${i}`} className={`relative bg-gray-300 flex-shrink-0 overflow-hidden ${img.cls}`}>
+                <img src={`${img.url}?q=80&w=800&auto=format&fit=crop`} alt="" className="w-full h-full object-cover transition duration-700 hover:scale-105" />
+              </div>
+            ))}
+          </div>
+        </section>
 
-      {/* TEXT SECTION 2 - FIX: Updated Copy & CTA */}
-      <section className="px-4 sm:px-6 md:px-20 pt-12 sm:pt-20 pb-6 sm:pb-10 flex flex-col justify-center">
-        <div className="max-w-7xl mx-auto space-y-3 sm:space-y-6 mb-10 sm:mb-20">
-          {statementBText.split('\n').map((line: string, index: number) => (
-            <SplitText key={index} className={`text-2xl sm:text-3xl md:text-5xl lg:text-6xl font-serif leading-[1.1] sm:leading-[1.05] ${index === 2 ? 'italic' : ''}`}>
-               {line}
-            </SplitText>
-          ))}
-        </div>
-
-        <div className="max-w-7xl mx-auto w-full border-t border-[#2c2420]/20 pt-6 sm:pt-8 flex justify-between items-center">
-          <span className="uppercase tracking-[0.15em] sm:tracking-[0.2em] text-xs sm:text-sm font-medium">About Us</span>
-          <Link href="/contact" className="group relative inline-flex h-10 w-10 sm:h-12 sm:w-12 items-center justify-center overflow-hidden rounded-full border border-[#2c2420]/30 bg-transparent transition-all duration-300 sm:hover:w-32 hover:bg-[#2c2420] hover:text-[#F2F0E9]">
-            <div className="absolute flex w-full items-center justify-center transition-all duration-300 sm:group-hover:translate-x-[150%]">
-              <ArrowRight className="h-4 w-4 sm:h-5 sm:w-5" />
+        {/* TEXT SECTION 2 - FIX: Updated Copy & CTA */}
+        <section className="px-4 sm:px-6 md:px-20 pt-12 sm:pt-20 pb-6 sm:pb-10 flex flex-col justify-center">
+          <div className="max-w-7xl mx-auto mb-10 sm:mb-20">
+            {/* Desktop/Tablet - 4 Lines */}
+            <div className="hidden sm:block space-y-3 sm:space-y-6">
+              {statementBText.split('\n').map((line: string, index: number) => (
+                <SplitText key={index} className={`text-3xl md:text-5xl lg:text-6xl font-serif leading-[1.05] ${index === 2 ? 'italic' : ''}`}>
+                  {line}
+                </SplitText>
+              ))}
             </div>
-            <div className="absolute translate-x-[-150%] hidden sm:flex w-full items-center justify-center gap-2 transition-all duration-300 group-hover:translate-x-0">
-              <span className="text-sm font-medium whitespace-nowrap pl-2">Contact</span>
-              <ArrowRight className="h-5 w-5" />
+
+            {/* Mobile - 2 Lines */}
+            <div className="block sm:hidden space-y-6">
+              <SplitText className="text-lg font-serif leading-[1.2]">
+                {statementBText.split('\n').slice(0, 2).join(' ')}
+              </SplitText>
+              <SplitText className="text-lg font-serif leading-[1.2] italic">
+                {statementBText.split('\n').slice(2, 4).join(' ')}
+              </SplitText>
             </div>
-          </Link>
-        </div>
-      </section>
+          </div>
 
-      {/* NEW NEWSLETTER SECTION */}
-      <NewsletterSection 
-        title={content?.newsletter?.title}
-        description={content?.newsletter?.description}
-      />
+          <div className="max-w-7xl mx-auto w-full border-t border-[#2c2420]/20 pt-6 sm:pt-8 flex justify-between items-center">
+            <span className="uppercase tracking-[0.15em] sm:tracking-[0.2em] text-xs sm:text-sm font-medium">About Us</span>
+            <Link href="/contact" className="group relative inline-flex h-10 w-10 sm:h-12 sm:w-12 items-center justify-center overflow-hidden rounded-full border border-[#2c2420]/30 bg-transparent transition-all duration-300 sm:hover:w-32 hover:bg-[#2c2420] hover:text-[#F2F0E9]">
+              <div className="absolute flex w-full items-center justify-center transition-all duration-300 sm:group-hover:translate-x-[150%]">
+                <ArrowRight className="h-4 w-4 sm:h-5 sm:w-5" />
+              </div>
+              <div className="absolute translate-x-[-150%] hidden sm:flex w-full items-center justify-center gap-2 transition-all duration-300 group-hover:translate-x-0">
+                <span className="text-sm font-medium whitespace-nowrap pl-2">Contact</span>
+                <ArrowRight className="h-5 w-5" />
+              </div>
+            </Link>
+          </div>
+        </section>
 
-    </motion.div>
+        {/* NEW NEWSLETTER SECTION */}
+        <NewsletterSection
+          title={content?.newsletter?.title}
+          description={content?.newsletter?.description}
+        />
+
+      </motion.div>
     </div>
   );
 }

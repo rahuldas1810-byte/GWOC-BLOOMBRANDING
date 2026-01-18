@@ -135,7 +135,7 @@ export default function Clients() {
 
       {/* CTA - Fill on Hover */}
       <Link href="/contact" className="block">
-        <section className="relative h-[50vh] min-h-[300px] md:h-[60vh] md:min-h-[400px] flex items-center justify-center bg-dark-choc overflow-hidden cursor-pointer group px-4">
+        <section className="relative h-auto py-16 md:h-[60vh] md:min-h-[400px] flex items-center justify-center bg-dark-choc overflow-hidden cursor-pointer group px-4">
           {/* Expanding Background Bubble */}
           <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-0 h-0 bg-[#F0EBE5] rounded-full transition-all duration-[800ms] ease-[cubic-bezier(0.32,0.72,0,1)] group-hover:w-[150%] group-hover:h-[150%]" />
 
