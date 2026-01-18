@@ -2,7 +2,7 @@
 
 import Image from 'next/image'
 import Link from 'next/link'
-import { Instagram, Linkedin, Facebook, Mail, MapPin, Phone } from 'lucide-react'
+import { Instagram, Linkedin, Facebook, Twitter, Mail, MapPin, Phone } from 'lucide-react'
 import { Inter, Cinzel_Decorative } from 'next/font/google'
 import { getSiteSettings } from '@/lib/content'
 import { motion } from 'framer-motion'
@@ -25,6 +25,7 @@ export default function Footer() {
     instagram: 'https://www.instagram.com/bloom.branding_/',
     linkedin: 'https://in.linkedin.com/company/bloombranding-digital-media-marketing-branding-agency',
     facebook: 'https://www.facebook.com/hello.bloombranding/',
+    twitter: 'https://x.com/bloombranding_',
   })
 
   useEffect(() => {
@@ -35,6 +36,7 @@ export default function Footer() {
           instagram: settings.socialLinks.instagram || 'https://www.instagram.com/bloom.branding_/',
           linkedin: settings.socialLinks.linkedin || 'https://in.linkedin.com/company/bloombranding-digital-media-marketing-branding-agency',
           facebook: settings.socialLinks.facebook || 'https://www.facebook.com/hello.bloombranding/',
+          twitter: settings.socialLinks.twitter || 'https://x.com/bloombranding_',
         })
       }
     }
@@ -76,7 +78,7 @@ export default function Footer() {
             <address className="font-[family-name:var(--font-inter)] font-normal text-[14px] leading-[1.6] text-white not-italic space-y-1">
               <p className="flex items-start gap-3 text-white">
                 <MapPin className="w-4 h-4 mt-1 flex-shrink-0 text-white/80" />
-                <span className="text-white">Bloom Branding Studio<br />Bloom Branding, Solarium<br />Business Centre, 515,<br />beside Times Corner, Surat,<br />Gujarat 395007</span>
+                <span className="text-white">Bloom Branding Studio<br />Bloom Branding, Solarium Business Centre, 515,<br />beside Times Corner, Surat, Gujarat 395007</span>
               </p>
             </address>
           </motion.div>
@@ -92,7 +94,7 @@ export default function Footer() {
             <h3 className="font-[family-name:var(--font-inter)] font-semibold text-[18px] text-white tracking-wide uppercase">
               Say hello
             </h3>
-            <div className="flex flex-col gap-3">
+            <div className="flex flex-row flex-wrap items-center md:flex-col md:items-start gap-4 md:gap-3">
               <motion.a
                 href="mailto:hello@bloombranding.com"
                 className="group flex items-center gap-2.5 font-[family-name:var(--font-inter)] font-normal text-[14px] text-white/90 hover:text-white transition-all duration-300"
@@ -137,6 +139,16 @@ export default function Footer() {
                     <Facebook size={16} strokeWidth={1.5} />
                   </motion.div>
                 </Link>
+                <Link
+                  href={socialLinks.twitter}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="w-8 h-8 rounded-full bg-white/10 flex items-center justify-center text-white/90 hover:text-white hover:bg-white/20 transition-all duration-300"
+                >
+                  <motion.div whileHover={{ scale: 1.1, rotate: -5 }} whileTap={{ scale: 0.95 }} className="flex items-center justify-center w-full h-full">
+                    <Twitter size={16} strokeWidth={1.5} />
+                  </motion.div>
+                </Link>
               </div>
             </div>
           </motion.div>
@@ -152,7 +164,7 @@ export default function Footer() {
             <h3 className="font-[family-name:var(--font-inter)] font-semibold text-[18px] text-white tracking-wide uppercase">
               Explore
             </h3>
-            <nav className="flex flex-col gap-2.5">
+            <nav className="flex flex-row flex-wrap sm:flex-col gap-x-6 gap-y-2 sm:gap-2.5">
               {[
                 { href: '/', label: 'Home' },
                 { href: '/our-story', label: 'Our Story' },
@@ -200,7 +212,7 @@ export default function Footer() {
                   alt="Bloom Branding"
                   width={240}
                   height={80}
-                  className="hidden md:block w-48 md:w-56 h-auto object-contain brightness-0 invert"
+                  className="w-48 md:w-56 h-auto object-contain brightness-0 invert"
                 />
               </motion.div>
               <p className="font-serif italic font-light text-[22px] md:text-[26px] leading-[1.3] text-white/95">
@@ -258,13 +270,13 @@ export default function Footer() {
           whileInView={{ opacity: 1 }}
           viewport={{ once: true }}
           transition={{ duration: 0.6, delay: 0.6 }}
-          className="border-t border-white/10 pt-4 md:pt-5 text-center"
+          className="border-t border-white/10 pt-4 md:pt-5 text-left"
         >
           <p className="font-[family-name:var(--font-inter)] text-[12px] md:text-[13px] text-white/60">
             © {new Date().getFullYear()} Bloom Branding. All rights reserved.
           </p>
         </motion.div>
-      </div>
-    </footer>
+      </div >
+    </footer >
   )
 }
