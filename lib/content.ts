@@ -320,6 +320,27 @@ export const getSiteSettings = async () => {
 /**
  * Fetch brands from API (public) with retry logic
  */
+const FALLBACK_BRANDS = [
+  { name: 'Amar Gems', category: 'JEWELLERY', image: '/brands/amar.jpg', order: 1 },
+  { name: 'AMBC', category: 'OTHER', image: '/brands/ambc.jpg', order: 2 },
+  { name: 'Bafna Marble', category: 'HOME FURNISHING', image: '/brands/bafna-marble.jpg', order: 3 },
+  { name: 'Beach', category: 'LIFESTYLE', image: '/brands/beach.jpg', order: 4 },
+  { name: 'Binal Patel', category: 'FASHION', image: '/brands/binal-patel.jpg', order: 5 },
+  { name: 'BThere', category: 'LIFESTYLE', image: '/brands/bthere.jpg', order: 6 },
+  { name: 'Dhruv', category: 'OTHER', image: '/brands/dhruv.jpg', order: 7 },
+  { name: 'Fine Decor', category: 'HOME FURNISHING', image: '/brands/fine-decor.jpg', order: 8 },
+  { name: 'Kaffyn', category: 'CAFE & RESTAURANTS', image: '/brands/kaffyn.jpg', order: 9 },
+  { name: 'Mansi Nagdev', category: 'FASHION', image: '/brands/mansi-nagdev.jpg', order: 10 },
+  { name: 'Moire Rugs', category: 'HOME FURNISHING', image: '/brands/moire-rugs.jpg', order: 11 },
+  { name: 'The Shop', category: 'LIFESTYLE', image: '/brands/shop.jpg', order: 12 },
+  { name: 'The Right Cut', category: 'FASHION', image: '/brands/the-right-cut.jpg', order: 13 },
+  { name: 'Thyme', category: 'CAFE & RESTAURANTS', image: '/brands/thyme.jpg', order: 14 },
+  { name: 'Vardhaman', category: 'JEWELLERY', image: '/brands/vardhaman.jpg', order: 15 },
+];
+
+/**
+ * Fetch brands from API (public) with retry logic
+ */
 export const getBrands = async (category?: string, retries = 3) => {
   try {
     const baseUrl = typeof window !== 'undefined'
@@ -352,16 +373,28 @@ export const getBrands = async (category?: string, retries = 3) => {
     const response = await fetchWithRetry(1)
 
     if (!response.ok) {
-      console.warn('Failed to fetch brands from API')
-      return []
+      console.warn('Failed to fetch brands from API, using fallback')
+      return filterFallbackBrands(category)
     }
 
     const result = await response.json()
-    return result.success && Array.isArray(result.data) ? result.data : []
+    if (result.success && Array.isArray(result.data) && result.data.length > 0) {
+      return result.data
+    } else {
+      // API success but no data (empty DB) -> Return fallback
+      return filterFallbackBrands(category)
+    }
+
   } catch (error) {
     console.error('Error fetching brands:', error)
-    return []
+    return filterFallbackBrands(category)
   }
+}
+
+// Helper to filter fallback data
+function filterFallbackBrands(category?: string) {
+  if (!category) return FALLBACK_BRANDS;
+  return FALLBACK_BRANDS.filter(b => b.category === category);
 }
 
 /**
