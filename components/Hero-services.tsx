@@ -47,7 +47,7 @@ superstructures.`;
       scrollTrigger: {
         trigger: containerRef.current,
         start: 'top top',
-        end: '+=150%', // Reduced from 250% for faster scroll (1-2 scrolls)
+        end: () => typeof window !== 'undefined' && window.innerWidth < 768 ? '+=20%' : '+=150%', // Maximum speed for mobile scroll
         // SCROLL LAG FIX: Set to 1 for smoother, interpolated response
         scrub: 1,
         pin: true,
@@ -96,9 +96,9 @@ superstructures.`;
             transition={{ duration: 0.8, ease: "easeOut" }}
             className={`${manrope.className} text-[#E8E6DD] text-3xl sm:text-4xl md:text-[clamp(2rem,3.2vw,4rem)] leading-[1.2] sm:leading-[1.15] font-normal tracking-tight`}
           >
-           {/* Handle new lines if text is passed as a string with \n */}
+            {/* Handle new lines if text is passed as a string with \n */}
             {displayText.split('\n').map((line, i) => (
-                <span key={i} className="block">{line}</span>
+              <span key={i} className="block">{line}</span>
             ))}
           </motion.h1>
 

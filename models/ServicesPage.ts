@@ -56,9 +56,6 @@ const ServicesPageSchema = new Schema<IServicesPage>(
     }
 )
 
-// Ensure only one document exists
-ServicesPageSchema.index({ _id: 1 }, { unique: true })
-
 let ServicesPage: Model<IServicesPage>
 
 if (typeof mongoose !== 'undefined' && mongoose.models && mongoose.models.ServicesPage) {

@@ -127,9 +127,6 @@ const ContactSchema = new Schema<IContact>(
   }
 )
 
-// Ensure only one contact document exists
-ContactSchema.index({ _id: 1 }, { unique: true })
-
 // ✅ NEXT.JS SAFE MODEL EXPORT
 let Contact: Model<IContact>
 

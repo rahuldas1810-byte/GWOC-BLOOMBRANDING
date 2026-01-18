@@ -432,7 +432,7 @@ export default function Contact() {
                         <button
                           type="submit"
                           disabled={isPending}
-                          className="btn-primary w-full justify-center py-4 text-base"
+                          className="w-full justify-center py-4 text-base font-mono uppercase tracking-widest text-white rounded-full bg-gradient-to-br from-[#3E2B26] to-[#5A4238] shadow-xl shadow-[#3E2B26]/40 border border-white/10 hover:opacity-90 transition-all duration-300 transition-all duration-300 ease-out flex items-center gap-2"
                         >
                           {isPending ? (
                             <>
