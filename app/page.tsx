@@ -62,6 +62,22 @@ export default function Home() {
   const { hideNavbar, showNavbar } = useHeroVideo();
   const { setHeroVideoReady: setGlobalVideoReady } = useLoader();
 
+  // Localized mobile scroll reset
+  useEffect(() => {
+    const isMobile = typeof window !== 'undefined' && /Mobi|Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
+    if (!isMobile) return;
+
+    const forceReset = () => {
+      window.scrollTo(0, 0);
+      document.documentElement.scrollTop = 0;
+      document.body.scrollTop = 0;
+    };
+
+    forceReset();
+    const timeouts = [0, 50, 100, 250, 500, 1000].map(d => setTimeout(forceReset, d));
+    return () => timeouts.forEach(clearTimeout);
+  }, []);
+
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -407,7 +423,7 @@ export default function Home() {
 
       {/* ================= HERO SECTION ================= */}
       {homepageContent.sections.hero.enabled && (
-        <section className="relative w-full h-auto md:min-h-screen overflow-hidden flex flex-col justify-center">
+        <section className="relative w-full min-h-[80vh] md:min-h-screen overflow-hidden flex flex-col justify-center">
           {/* Hero Video - plays first, then fades out smoothly when it ends */}
           {homepageContent.heroVideo && (
             <video
