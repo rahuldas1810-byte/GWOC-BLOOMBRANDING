@@ -120,11 +120,8 @@ export default function Navbar() {
           ${/* Mobile: Hide/Show transformation */ ""}
           ${isVisible ? 'translate-y-0' : '-translate-y-full md:translate-y-0'}
           
-          ${/* Desktop: Bg Opacity logic */ ""}
-          ${isScrolled ? 'md:bg-[#F3F0E7] md:shadow-sm' : 'bg-transparent'}
-          
-          ${/* Blend mode: Only use difference when NOT scrolled/opaque on desktop (to see logo over hero images) */ ""}
-          ${isScrolled ? 'text-[#3E2B26]' : 'mix-blend-mode-difference text-[#3E2B26]'}
+          bg-transparent
+          mix-blend-mode-difference text-[#3E2B26]
           
           pointer-events-none
         `}
@@ -143,7 +140,7 @@ export default function Navbar() {
         </Link>
 
         {/* Header Controls - Squiggle & Wave Pills */}
-        <div className={`flex items-center gap-3 pointer-events-auto ${isScrolled ? '' : 'mix-blend-normal'}`}>
+        <div className="flex items-center gap-3 pointer-events-auto mix-blend-normal">
 
           {/* Pill 1: Decorative Squiggle (Outlined) */}
           <div className="hidden md:flex items-center justify-center w-[72px] h-[44px] rounded-full border border-[#3E2B26] text-[#3E2B26] bg-transparent transition-all duration-300">
