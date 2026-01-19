@@ -190,6 +190,7 @@ export default function Contact() {
     handleSubmit,
     formState: { errors },
     reset,
+    setError,
   } = useForm<ContactFormData>({
     resolver: zodResolver(contactSchema),
   });
@@ -204,6 +205,9 @@ export default function Contact() {
       formData.append("email", data.email);
       formData.append("company", data.company || "");
       formData.append("message", data.message);
+      // Phone is optional and might be conditional, strictly append if exists or leave empty based on logic, 
+      // but simpler to just append what we have. 
+      // Note: original component didn't append phone, ensuring consistency with schema.
 
       const result = await submitContactForm(formData);
 
@@ -213,6 +217,18 @@ export default function Contact() {
       } else {
         setSubmitStatus("error");
         setErrorMessage(result.message || "Something went wrong. Please try again.");
+
+        // Handle field-level errors if returned
+        if (result.errors) {
+          // result.errors is now Record<string, string>
+          Object.entries(result.errors).forEach(([field, message]) => {
+            // Cast field to keyof ContactFormData to satisfy TS
+            setError(field as keyof ContactFormData, {
+              type: 'server',
+              message: message as string
+            });
+          });
+        }
       }
     });
   };
