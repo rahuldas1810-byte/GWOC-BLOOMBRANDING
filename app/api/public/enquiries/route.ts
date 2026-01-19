@@ -3,6 +3,8 @@ import connectDB from '@/lib/db'
 import Enquiry from '@/models/Enquiry'
 
 // POST - Public API: Submit enquiry
+export const runtime = 'nodejs'
+
 export async function POST(request: NextRequest) {
   try {
     await connectDB()

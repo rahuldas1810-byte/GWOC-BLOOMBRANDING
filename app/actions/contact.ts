@@ -2,6 +2,11 @@
 
 import { z } from 'zod'
 import { sendQueryConfirmationEmail } from '@/backend/email'
+import connectDB from '@/lib/db'
+import Enquiry from '@/models/Enquiry'
+
+// Force Node.js runtime for this server action
+export const runtime = 'nodejs'
 
 const contactSchema = z.object({
   name: z.string().min(2, 'Name must be at least 2 characters'),
@@ -25,51 +30,42 @@ export async function submitContactForm(formData: FormData) {
 
     const validatedData = contactSchema.parse(rawData)
 
-    // Submit to API - use absolute URL for server actions
-    const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'http://localhost:3000'
-    const response = await fetch(`${baseUrl}/api/public/enquiries`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(validatedData),
+    // Connect to database
+    await connectDB()
+
+    // Create enquiry directly in DB
+    const enquiry = await Enquiry.create({
+      name: validatedData.name,
+      email: validatedData.email,
+      company: validatedData.company || '',
+      phone: validatedData.phone || '',
+      message: validatedData.message,
+      status: 'new',
     })
 
-    if (!response.ok) {
-      const errorText = await response.text()
-      let errorData
-      try {
-        errorData = JSON.parse(errorText)
-      } catch {
-        errorData = { message: `Server error: ${response.status}` }
-      }
-      throw new Error(errorData.message || 'Failed to submit enquiry')
+    if (!enquiry) {
+      throw new Error('Failed to create enquiry record')
     }
 
-    const result = await response.json()
+    // Send confirmation email to user (non-blocking)
+    sendQueryConfirmationEmail(validatedData.email, validatedData.name)
+      .then((emailSent) => {
+        if (emailSent) {
+          console.log('✅ Confirmation email sent to:', validatedData.email)
+        } else {
+          console.warn('⚠️ Failed to send confirmation email to:', validatedData.email)
+        }
+      })
+      .catch((error) => {
+        console.error('❌ Error sending confirmation email:', error)
+        // Don't throw - email failure shouldn't block form submission
+      })
 
-    if (result.success) {
-      // Send confirmation email to user (non-blocking)
-      sendQueryConfirmationEmail(validatedData.email, validatedData.name)
-        .then((emailSent) => {
-          if (emailSent) {
-            console.log('✅ Confirmation email sent to:', validatedData.email)
-          } else {
-            console.warn('⚠️ Failed to send confirmation email to:', validatedData.email)
-          }
-        })
-        .catch((error) => {
-          console.error('❌ Error sending confirmation email:', error)
-          // Don't throw - email failure shouldn't block form submission
-        })
-
-      return {
-        success: true,
-        message: 'Thank you! Your message has been sent successfully.',
-      }
-    } else {
-      throw new Error(result.message || 'Failed to submit enquiry')
+    return {
+      success: true,
+      message: 'Thank you! Your message has been sent successfully.',
     }
+
   } catch (error) {
     if (error instanceof z.ZodError) {
       return {
