@@ -2,6 +2,10 @@
 
 import { z } from 'zod'
 import { sendQueryConfirmationEmail } from '@/backend/email'
+import connectDB from '@/lib/db'
+import Enquiry from '@/models/Enquiry'
+
+
 
 const contactSchema = z.object({
   name: z.string().min(2, 'Name must be at least 2 characters'),
@@ -13,7 +17,11 @@ const contactSchema = z.object({
 
 export type ContactFormData = z.infer<typeof contactSchema>
 
+// ... (imports remain the same)
+
 export async function submitContactForm(formData: FormData) {
+  console.log('SERVER ACTION: submitContactForm started'); // Debug log
+
   try {
     const rawData = {
       name: formData.get('name'),
@@ -23,33 +31,34 @@ export async function submitContactForm(formData: FormData) {
       phone: formData.get('phone') || undefined,
     }
 
+    console.log('SERVER ACTION: Parsing data', rawData); // Debug log
+
     const validatedData = contactSchema.parse(rawData)
 
-    // Submit to API - use absolute URL for server actions
-    const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'http://localhost:3000'
-    const response = await fetch(`${baseUrl}/api/public/enquiries`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(validatedData),
+    // Connect to database
+    console.log('SERVER ACTION: Connecting to DB...'); // Debug log
+    await connectDB()
+    console.log('SERVER ACTION: DB Connected'); // Debug log
+
+    // Create enquiry directly in DB
+    const enquiry = await Enquiry.create({
+      name: validatedData.name,
+      email: validatedData.email,
+      company: validatedData.company || '',
+      phone: validatedData.phone || '',
+      message: validatedData.message,
+      status: 'new',
     })
 
-    if (!response.ok) {
-      const errorText = await response.text()
-      let errorData
-      try {
-        errorData = JSON.parse(errorText)
-      } catch {
-        errorData = { message: `Server error: ${response.status}` }
-      }
-      throw new Error(errorData.message || 'Failed to submit enquiry')
+    if (!enquiry) {
+      throw new Error('Failed to create enquiry record')
     }
 
-    const result = await response.json()
+    console.log('SERVER ACTION: Enquiry created', enquiry._id); // Debug log
 
-    if (result.success) {
-      // Send confirmation email to user (non-blocking)
+    // Send confirmation email to user (non-blocking)
+    // We wrap this in a try/catch to ensure it NEVER fails the main request
+    try {
       sendQueryConfirmationEmail(validatedData.email, validatedData.name)
         .then((emailSent) => {
           if (emailSent) {
@@ -59,30 +68,42 @@ export async function submitContactForm(formData: FormData) {
           }
         })
         .catch((error) => {
-          console.error('❌ Error sending confirmation email:', error)
-          // Don't throw - email failure shouldn't block form submission
+          console.error('❌ Error sending confirmation email (async):', error)
         })
+    } catch (emailError) {
+      console.error('❌ Synchronous error in email block (ignored):', emailError);
+    }
+
+    return {
+      success: true,
+      message: 'Thank you! Your message has been sent successfully.',
+    }
+
+  } catch (error: any) {
+    console.error('SERVER ACTION ERROR:', error); // Critical Debug Log
+
+    if (error instanceof z.ZodError) {
+      // Serialize Zod errors to a simple object
+      const fieldErrors = error.flatten().fieldErrors;
+      // Convert array of messages to single string for client safety
+      const simpleErrors: Record<string, string> = {};
+      Object.keys(fieldErrors).forEach(key => {
+        if (fieldErrors[key] && fieldErrors[key]!.length > 0) {
+          simpleErrors[key] = fieldErrors[key]![0];
+        }
+      });
 
       return {
-        success: true,
-        message: 'Thank you! Your message has been sent successfully.',
-      }
-    } else {
-      throw new Error(result.message || 'Failed to submit enquiry')
-    }
-  } catch (error) {
-    if (error instanceof z.ZodError) {
-      return {
         success: false,
-        errors: error.flatten().fieldErrors,
+        errors: simpleErrors,
         message: 'Please check your input and try again.',
       }
     }
 
-    console.error('Error submitting contact form:', error)
+    // Generic error fallback
     return {
       success: false,
-      message: 'Something went wrong. Please try again later.',
+      message: error.message || 'Something went wrong. Please try again later.',
     }
   }
 }

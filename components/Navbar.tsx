@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
@@ -46,11 +46,26 @@ export default function Navbar() {
     facebook: "https://www.facebook.com/hello.bloombranding/"
   });
   const pathname = usePathname();
+  const [isScrolled, setIsScrolled] = useState(false);
+  const [isVisible, setIsVisible] = useState(true);
+  const lastScrollY = useRef(0);
 
-  // Scroll State
-  const [isVisible, setIsVisible] = useState(true); // For mobile hide/show
-  const [isScrolled, setIsScrolled] = useState(false); // For desktop opacity
-  const [lastScrollY, setLastScrollY] = useState(0);
+  useEffect(() => {
+    const handleScroll = () => {
+      const currentScrollY = window.scrollY;
+      setIsScrolled(currentScrollY > 20);
+
+      // Hide navbar on scroll down, show on scroll up
+      if (currentScrollY > lastScrollY.current && currentScrollY > 50) {
+        setIsVisible(false);
+      } else {
+        setIsVisible(true);
+      }
+      lastScrollY.current = currentScrollY;
+    };
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
 
   useEffect(() => {
     const fetchLinks = async () => {
@@ -66,32 +81,7 @@ export default function Navbar() {
     fetchLinks();
   }, []);
 
-  // Smart Scroll Logic
-  useEffect(() => {
-    const handleScroll = () => {
-      const currentScrollY = window.scrollY;
-      
-      // Desktop: Check if scrolled past threshold for opacity
-      setIsScrolled(currentScrollY > 50);
 
-      // Mobile: Smart Hide/Show
-      // Visible if scrolling UP or at the very top
-      if (currentScrollY < 10) {
-        setIsVisible(true);
-      } else if (currentScrollY > lastScrollY) {
-        // Scrolling DOWN -> Hide
-        setIsVisible(false);
-      } else {
-        // Scrolling UP -> Show
-        setIsVisible(true);
-      }
-
-      setLastScrollY(currentScrollY);
-    };
-
-    window.addEventListener("scroll", handleScroll, { passive: true });
-    return () => window.removeEventListener("scroll", handleScroll);
-  }, [lastScrollY]);
 
 
   const toggleMenu = () => setIsOpen(!isOpen);
@@ -115,16 +105,16 @@ export default function Navbar() {
       {/* 
          --- Top Navigation Bar --- 
       */}
-      <nav 
+      <nav
         className={`fixed top-0 left-0 w-full z-[60] px-6 md:px-12 py-6 md:py-8 flex justify-between items-center transition-all duration-300
           ${/* Mobile: Hide/Show transformation */ ""}
           ${isVisible ? 'translate-y-0' : '-translate-y-full md:translate-y-0'}
           
           ${/* Desktop: Bg Opacity logic */ ""}
-          ${isScrolled ? 'md:bg-[#F3F0E7] md:shadow-sm' : 'bg-transparent'}
+          ${isScrolled ? 'md:bg-transparent' : 'bg-transparent'}
           
           ${/* Blend mode: Only use difference when NOT scrolled/opaque on desktop (to see logo over hero images) */ ""}
-          ${isScrolled ? 'text-[#3E2B26]' : 'mix-blend-mode-difference text-[#3E2B26]'}
+          ${isScrolled ? 'text-[#3E2B26] md:mix-blend-mode-difference' : 'mix-blend-mode-difference text-[#3E2B26]'}
           
           pointer-events-none
         `}
@@ -278,7 +268,7 @@ export default function Navbar() {
                 {/* --- BRANDING & SOCIALS --- */}
                 {/* Order 2 on Mobile (Grouped below nav for easy access or visual hierarchy), Col-span-3 on Desktop */}
                 <div className="order-2 lg:order-1 flex lg:col-span-3 flex-col h-full lg:pr-8 justify-end pb-8 lg:pb-24 gap-6 lg:gap-10 mt-8 lg:mt-0">
-                  
+
                   {/* Top: Copyright (Bodoni) -> Right aligned on mobile */}
                   <div className="order-2 lg:order-1 w-full flex flex-col lg:items-start items-end text-right lg:text-left">
                     <h2 className="font-bodoni text-2xl lg:text-3xl mb-2"><span className="mr-1 font-sans text-lg relative -top-[2px]">©</span>2026</h2>
@@ -321,10 +311,10 @@ export default function Navbar() {
                 {/* Order 3 on Mobile, Col-span-3 on Desktop */}
                 <div className="order-3 flex lg:col-span-3 flex-col justify-end lg:justify-center lg:pl-16 space-y-6 lg:space-y-4 text-[#3E2B26] border-t lg:border-t-0 border-[#3E2B26]/10 pt-8 lg:pt-0 mt-4 lg:mt-0">
                   {contactInfo.map((info) => {
-                     // Filter out phone number manually if it matches the known phone pattern, 
-                     // OR just render the updated array. 
-                     // Since I removed it from the data array below, this map just renders what's there.
-                     return (
+                    // Filter out phone number manually if it matches the known phone pattern, 
+                    // OR just render the updated array. 
+                    // Since I removed it from the data array below, this map just renders what's there.
+                    return (
                       <div key={info.title}>
                         <h3 className="font-sans text-[10px] lg:text-xs text-[#3E2B26]/50 mb-1 lg:mb-0 uppercase tracking-widest">
                           {info.title}
@@ -335,7 +325,7 @@ export default function Navbar() {
                           </p>
                         ))}
                       </div>
-                     )
+                    )
                   })}
                 </div>
 
